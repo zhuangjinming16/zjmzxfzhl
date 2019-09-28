@@ -45,6 +45,10 @@ service.interceptors.response.use(
             }
             return Promise.reject(res.msg || 'error')
         } else {
+            //打印后台返回数据，用于mock数据
+            // let uri = response.config.url.replace(response.config.baseURL,'')
+            // let log = '{url:"' + uri + '",type:"' + response.config.method + '",response: config => {return '+ JSON.stringify(res) +'}},'
+            // console.log(log)
             return res
         }
     },

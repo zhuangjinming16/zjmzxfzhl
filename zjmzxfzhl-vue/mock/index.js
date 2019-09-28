@@ -1,10 +1,10 @@
 import Mock from 'mockjs'
 import { param2Obj } from '../src/utils'
 
-import user from './user'
+import mockData from './mock-data'
 
 const mocks = [
-  ...user
+  ...mockData
 ]
 
 // for front mock
