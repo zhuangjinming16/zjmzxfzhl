@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysCodeTypeMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysCodeType">
+		select
+			a.CODE_TYPE_ID as codeTypeId,
+			a.CODE_TYPE_NAME as codeTypeName,
+			a.SORT_NO as sortNo,
+			a.REMARK as remark
+
+		from T_SYS_CODE_TYPE a 
+		where 1=1 
+		<if test="entity.codeTypeId != null and entity.codeTypeId !=''">
+			<![CDATA[	AND a.CODE_TYPE_ID = #{entity.codeTypeId}	]]>
+		</if>
+		<if test="entity.codeTypeName != null and entity.codeTypeName !=''">
+			<![CDATA[	AND a.CODE_TYPE_NAME = #{entity.codeTypeName}	]]>
+		</if>
+		<if test="entity.remark != null and entity.remark !=''">
+			<![CDATA[	AND a.REMARK = #{entity.remark}	]]>
+		</if>
+		order by a.sort_no
+	</select>
+</mapper>

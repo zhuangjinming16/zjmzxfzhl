@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysFuncMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysFunc">
+		select
+			a.FUNC_ID as funcId,
+			a.FUNC_NAME as funcName,
+			a.MENU_ID as menuId,
+			a.FUNC_PERMISSIONS as funcPermissions,
+			a.REMARK as remark,
+			a.SORT_NO as sortNo
+
+		from T_SYS_FUNC a 
+		where 1=1 
+		<if test="entity.menuId != null and entity.menuId !=''">
+			<![CDATA[	AND a.MENU_ID=#{entity.menuId}	]]>
+		</if>
+		order by a.FUNC_ID
+	</select>
+</mapper>

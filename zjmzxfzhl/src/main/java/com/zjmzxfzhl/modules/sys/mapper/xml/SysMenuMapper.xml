@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysMenuMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysMenu">
+		select
+			a.MENU_ID as menuId,
+			a.MENU_NAME as menuName,
+			a.PARENT_MENU_ID as parentMenuId,
+			a.MENU_ICON as menuIcon,
+			a.MENU_URL as menuUrl,
+			a.MENU_PERMISSIONS as menuPermissions,
+			a.COMPONENT as component,
+			a.REDIRECT as redirect,
+			a.HIDDEN as hidden,
+			a.IS_ROUTE as isRoute,
+			a.ROUTE_NAME as routeName,
+			a.IS_CACHE as isCache,
+			a.affix as affix,
+			a.IS_LEAF as isLeaf,
+			a.SORT_NO as sortNo,
+			m.MENU_NAME as parentMenuName
+
+		from T_SYS_MENU a 
+		left join T_SYS_MENU m on a.PARENT_MENU_ID=m.MENU_ID
+		where 1=1 
+		order by a.SORT_NO
+	</select>
+</mapper>

@@ -1,39 +1,58 @@
-# zjmzxfzhl
+# zjmzxfzhl（前后端分离）
+当前最新版本: 1.0.0（发布日期: 20191001）
+#### 项目介绍
+zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + 代码生成器 的快速开发平台，采用前后端分离架构。
+#### 技术架构
+##### 后端技术(Maven、Jdk8)
+* mysql5.5,oracle,db2
+* spring-boot2.1.3
+* shiro1.4.0-RC2
+* java-jwt3.4.1
+* mybatis-plus3.0.7.1
+* druid1.1.10数据源
+* redis3.0
+* p6spy3.8.0 sql打印，生产应关闭
+* kaptcha0.0.9验证码
+* jsoup1.12.1防XSS攻击
+* Swagger2-2.9.2接口文档生成
+* redisson3.11.1-redlock分布式锁
+* lombok1.18.4代码简化
 
-#### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+##### 前端技术
+* vue,vuex,vue-router
+* elementui
+* mock
 
-#### 软件架构
-软件架构说明
+#### 主要实现内容
+* 前后分离开发，前后端可以独立部署，也可以合并部署
+* 系统管理模块，包含：参数管理、代码类别、代码信息、菜单管理、功能管理、机构管理、角色管理、用户管理、数据权限、系统日志
+* 功能权限，菜单权限、按钮权限细粒度配置
+* 数据权限，注解实现 + 后台配置实现
+* redis分布式锁，可实现交易防重发、秒杀等业务场景
+* APP开发示例接口，包含：注册、登录、获取用户信息，可设置注解定义不需要登录就能访问的APP接口
+* 代码生成器，包含前端和后端
+* 后续会陆续增加其他功能及相关开发、部署文档
 
+#### 部署启动后访问路径
 
-#### 安装教程
+##### 登录首页
+* http://localhost:8081/zjmzxfzhl
 
-1. xxxx
-2. xxxx
-3. xxxx
+##### 接口文档
+* http://localhost:8081/zjmzxfzhl/swagger-ui.html
 
-#### 使用说明
+##### druid
+* http://localhost:8081/zjmzxfzhl/druid
 
-1. xxxx
-2. xxxx
-3. xxxx
+##### 系统监控
+* http://localhost:8081/zjmzxfzhl/actuator/
+* http://localhost:8081/zjmzxfzhl/actuator/redis/info
+* http://localhost:8081/zjmzxfzhl/actuator/redis/keysSize
+* http://localhost:8081/zjmzxfzhl/actuator/redis/memoryInfo
+* http://localhost:8081/zjmzxfzhl/actuator/queryDiskInfo
 
-#### 参与贡献
+#### 演示地址
+* http://119.23.106.234:8080/zjmzxfzhl
 
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+#### 技术交流
+##### QQ群 : 913659692
