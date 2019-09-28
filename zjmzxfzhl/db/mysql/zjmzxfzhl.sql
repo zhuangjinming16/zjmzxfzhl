@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2019-09-28 13:58:06
+Date: 2019-09-28 22:14:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -289,10 +289,10 @@ CREATE TABLE `t_sys_menu` (
 -- ----------------------------
 -- Records of t_sys_menu
 -- ----------------------------
-INSERT INTO `t_sys_menu` VALUES ('sys', '系统管理', '', 'tools', '/sys', null, '', '', '0', '1', 'Sys', '1', '0', '0', '10000', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:44:53');
+INSERT INTO `t_sys_menu` VALUES ('sys', '系统管理', '', 'tools', '/sys', null, '', '', '0', '1', 'Sys', '1', '0', '0', '10000', null, null, null, 'admin', '2019-09-28', '2019-09-28 16:40:56');
 INSERT INTO `t_sys_menu` VALUES ('sysCodeInfo', '代码信息', 'sys', 'list', 'codeInfo', 'sys:codeType:list,sys:codeInfo:list,sys:codeInfo:listByQw', 'views/sys/codeInfo/index', null, '0', '1', 'SysCodeInfo', '1', '0', '1', '10300', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:03:31');
 INSERT INTO `t_sys_menu` VALUES ('sysCodeType', '代码类别', 'sys', 'list', 'codeType', 'sys:codeType:list,sys:codeType:listByQw', 'views/sys/codeType/index', null, '0', '1', 'SysCodeType', '1', '0', '1', '10200', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:03:48');
-INSERT INTO `t_sys_menu` VALUES ('sysConfig', '参数管理', 'sys', 'list', 'config', 'sys:config:list,sys:config:listByQw', 'views/sys/config/index', null, '0', '1', 'SysConfig', '1', '0', '1', '10100', null, null, null, 'admin', '2019-09-17', '2019-09-17 23:58:50');
+INSERT INTO `t_sys_menu` VALUES ('sysConfig', '参数管理', 'sys', 'list', 'config', 'sys:config:list,sys:config:listByQw', 'views/sys/config/index', null, '0', '1', 'SysConfig', '1', '0', '1', '10100', null, null, null, 'admin', '2019-09-28', '2019-09-28 17:26:07');
 INSERT INTO `t_sys_menu` VALUES ('sysDataPermission', '数据权限', 'sys', 'list', 'dataPermission', 'sys:dataPermission:list,sys:dataPermission:listByQw', 'views/sys/dataPermission/index', null, '0', '1', 'SysDataPermission', '1', '0', '1', '10900', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:04:01');
 INSERT INTO `t_sys_menu` VALUES ('sysFunc', '功能管理', 'sys', 'tree', 'func', 'sys:func:list,sys:func:listByQw,sys:menu:getTreeData', 'views/sys/func/index', null, '0', '1', 'SysFunc', '1', '0', '1', '10500', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:03:30');
 INSERT INTO `t_sys_menu` VALUES ('sysLog', '系统日志', 'sys', 'list', 'log', 'sys:log:list,sys:log:listByQw', 'views/sys/log/index', null, '0', '1', 'SysLog', '1', '0', '1', '11000', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:03:17');
@@ -387,31 +387,27 @@ CREATE TABLE `t_sys_role_permission` (
 INSERT INTO `t_sys_role_permission` VALUES ('0a5e437c3117d5705c24b5bf6ca0de0a', 'queryRole', '1', 'sysCodeInfo', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('0cc3512eb93d630607aabc861c8f66c6', 'queryRole', '1', 'sysFunc', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('0f02c31fa91e961f5c7d0e9bbadb3ca1', 'queryRole', '1', 'sysOrg', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('0f83e30f016a837dad9368c93c8e3b06', 'managerRole', '2', 'sysOrg-1', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('144e9c813df2cbe31a866b8af6f7ab06', 'admin', '2', 'sysUser-2', 'admin', '2019-09-16', '2019-09-16 23:43:09', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('1bbbb72ec57f72f045c6044d4fa43c40', 'managerRole', '1', 'sysUser', 'admin', '2019-09-28', '2019-09-28 22:05:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('22e588331fd00df3ff903c5425a7bff9', 'queryRole', '1', 'sysRole', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('2720b1fa23e3ad748501cfbd94d13c45', 'managerRole', '2', 'sysOrg-2', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('326004cdee3ceb461f731d4414b4a5c9', 'managerRole', '2', 'sysUser-2', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('2d61c9f76cc222d564b142095b9d4ef7', 'managerRole', '1', 'sys', 'admin', '2019-09-28', '2019-09-28 22:05:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('35a43694d1e406046d4f80ff699d12cb', 'admin', '2', 'sysUser-3', 'admin', '2019-09-16', '2019-09-16 23:43:09', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('3b2903ceee913ba12105c971a448bcc6', 'queryRole', '1', 'sysLog', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('4a6691435487d1e638e213f284b35241', 'queryRole', '1', 'sysUser', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('5a37eeea253c8c1b492b7eb79c65ff85', 'admin', '1', 'sysUser', 'admin', '2019-09-16', '2019-09-16 23:43:09', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('5c583c88bdc2a3a41d20edfb69ff7499', 'queryRole', '1', 'sysCodeType', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('5f2602309cf350019e5eb51d4896e348', 'admin', '2', 'sysUser-1', 'admin', '2019-09-16', '2019-09-16 23:43:09', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('74a8b930faba39f89cb5e76dd5e9deda', 'managerRole', '2', 'sysUser-1', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('619029fabba65f44c1b2829ee17af685', 'managerRole', '1', 'sysRole', 'admin', '2019-09-28', '2019-09-28 22:05:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('6e53609856947ece82a4224d35e17299', 'managerRole', '2', 'sysUser-1', 'admin', '2019-09-28', '2019-09-28 22:05:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('783457862a30ef807b22d2f2d5098b7a', 'managerRole', '2', 'sysUser-2', 'admin', '2019-09-28', '2019-09-28 22:05:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('789baa7a119df2300eaf4dc93e7bd837', 'managerRole', '2', 'sysRole-5', 'admin', '2019-09-28', '2019-09-28 22:05:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('80bf79350534e0c49cc03f580a32b17c', 'admin', '1', 'sysRole', 'admin', '2019-09-16', '2019-09-16 23:43:09', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('81f98390210d867db4f9d00f48cd6a38', 'managerRole', '1', 'sysUser', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('8990d5c92e6c4bce92cc3528e15f3722', 'admin', '1', 'sys', 'admin', '2019-09-16', '2019-09-16 23:43:09', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('94b99e02f85d647746010f75722b0817', 'managerRole', '1', 'sys', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('990edecf3f24bb976ad71d1e86021752', 'managerRole', '1', 'sysOrg', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('9b45cbe50e35b1156c57a8460919ec95', 'managerRole', '2', 'sysUser-3', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('ae5c3b11f1de9f8e169fd1b3c76fcdd7', 'managerRole', '2', 'sysRole-5', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('a1e04035efa6e1c23a181ebd5b2d0fa9', 'managerRole', '2', 'sysUser-3', 'admin', '2019-09-28', '2019-09-28 22:05:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('b29279812991e8076c56efbee14e1ae1', 'queryRole', '1', 'sys', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('b48de58cc772d6e0711da8162b8d3725', 'managerRole', '2', 'sysOrg-3', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('c3752401c66299e7c2f4539920630f79', 'admin', '2', 'sysRole-5', 'admin', '2019-09-16', '2019-09-16 23:43:09', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('cd8d8b65d90aeff06d9cfa2c4631d1b9', 'queryRole', '1', 'sysDataPermission', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('de1642051f876429215573f89d606e2f', 'queryRole', '1', 'sysMenu', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('fc395ba9e15dfc6f68ba59a73b2c3b63', 'managerRole', '1', 'sysRole', 'admin', '2019-09-25', '2019-09-25 00:35:07', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('fd0722ca670b8b471237b3ee69bac819', 'queryRole', '1', 'sysConfig', 'admin', '2019-09-08', '2019-09-08 17:51:16', null, null, null);
 
 -- ----------------------------
@@ -435,10 +431,14 @@ CREATE TABLE `t_sys_role_user` (
 -- Records of t_sys_role_user
 -- ----------------------------
 INSERT INTO `t_sys_role_user` VALUES ('admin-admin', 'admin', 'admin', null, null, null, null, null, null);
+INSERT INTO `t_sys_role_user` VALUES ('admin-lizhi2', 'admin', 'lizhi2', 'zjm', '2019-09-28', '2019-09-28 22:07:00', null, null, null);
 INSERT INTO `t_sys_role_user` VALUES ('managerRole-zjm', 'managerRole', 'zjm', 'admin', '2019-09-25', '2019-09-25 00:34:23', null, null, null);
+INSERT INTO `t_sys_role_user` VALUES ('managerRole-zjmzxfzhl', 'managerRole', 'zjmzxfzhl', 'zjm', '2019-09-28', '2019-09-28 22:08:41', null, null, null);
 INSERT INTO `t_sys_role_user` VALUES ('managerRole-zxf', 'managerRole', 'zxf', 'admin', '2019-09-25', '2019-09-25 00:34:23', null, null, null);
 INSERT INTO `t_sys_role_user` VALUES ('queryRole-lizhi1', 'queryRole', 'lizhi1', 'admin', '2019-09-15', '2019-09-15 17:07:14', null, null, null);
 INSERT INTO `t_sys_role_user` VALUES ('queryRole-lizhi2', 'queryRole', 'lizhi2', 'admin', '2019-09-15', '2019-09-15 16:28:23', null, null, null);
+INSERT INTO `t_sys_role_user` VALUES ('queryRole-zjm', 'queryRole', 'zjm', 'admin', '2019-09-28', '2019-09-28 22:06:08', null, null, null);
+INSERT INTO `t_sys_role_user` VALUES ('queryRole-zjmzxfzhl', 'queryRole', 'zjmzxfzhl', 'admin', '2019-09-28', '2019-09-28 22:10:48', null, null, null);
 
 -- ----------------------------
 -- Table structure for t_sys_user
@@ -473,5 +473,6 @@ CREATE TABLE `t_sys_user` (
 INSERT INTO `t_sys_user` VALUES ('admin', 'admin', '26c9817af1b179ba9f87f9d03c6fb966b777217beaca5f2dcbb866c12876b523', 'EZWxbpPx', '1', 'admin', '1000000000', '18888888888', 'xxx', 'xxx@yyy.zz', '1', '1', '1', null, null, null, 'admin', '2019-09-07', '2019-09-07 21:15:12');
 INSERT INTO `t_sys_user` VALUES ('lizhi1', '离职用户1', '902d802fdf9201d1f81d21efbafda7ed833dd3e404825830b1494f34b486d077', '9eG2YY1W', '1', 'queryRole', '1050501000', '18888888888', '1', '1', '2', '5', '', 'admin', '2019-09-15', '2019-09-15 17:07:14', 'admin', '2019-09-15', '2019-09-15 21:42:59');
 INSERT INTO `t_sys_user` VALUES ('lizhi2', '离职用户2', '3efefed2208103a4077e783869832d6ba310b4bec90d441afd51d753e25c842a', 'PgceWId6', '2', 'queryRole', '1050500000', '18888888888', '1', '1', '2', '6', '', 'admin', '2019-09-15', '2019-09-15 16:28:23', null, null, null);
-INSERT INTO `t_sys_user` VALUES ('zjm', '庄金明', 'c7c0493e05a82ce5d022e7db01376b28434f19d8320e32533cd3935e605ecabb', '0oyWsz6S', '1', 'managerRole', '1050500000', '18888888888', '1', '1', '1', '3', '', 'admin', '2019-09-15', '2019-09-15 18:15:52', 'admin', '2019-09-17', '2019-09-17 22:03:16');
+INSERT INTO `t_sys_user` VALUES ('zjm', '庄金明', 'c7c0493e05a82ce5d022e7db01376b28434f19d8320e32533cd3935e605ecabb', '0oyWsz6S', '1', 'managerRole', '1050501000', '18888888888', '1', '1', '1', '3', '', 'admin', '2019-09-15', '2019-09-15 18:15:52', 'zjm', '2019-09-28', '2019-09-28 22:12:10');
+INSERT INTO `t_sys_user` VALUES ('zjmzxfzhl', 'zjmzxfzhl', 'b639a87dad4ccede9bf23215e1f2a742b5aecddaa4f0f94ca514773651f3b0c3', 'hVtw6mZe', '1', 'queryRole', '1050500000', '18888888888', 'xxx', 'xxx@abc.com', '1', '4', '', 'zjm', '2019-09-28', '2019-09-28 22:08:41', 'zjmzxfzhl', '2019-09-28', '2019-09-28 22:11:07');
 INSERT INTO `t_sys_user` VALUES ('zxf', '庄晓芳', '80cb703ef5263788e70ec991fe5cedd8756c63dae6850e40b9cca8aab5b4d8b1', 'jjFcC4hd', '2', 'managerRole', '1050200000', '18888888888', '1', '1', '1', '4', '', 'admin', '2019-09-15', '2019-09-15 16:53:39', 'zxf', '2019-09-15', '2019-09-15 22:35:58');
