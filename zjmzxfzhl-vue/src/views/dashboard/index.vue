@@ -16,7 +16,7 @@
 
         <h5>前端技术</h5>
 
-        <ul><li>vue,vuex,vue-router</li><li>elementui</li><li>mock</li></ul>
+        <ul><li>vue,vuex,vue-router</li><li>elementui</li><li>vue-element-admin</li><li>mock</li></ul>
 
         <h4>主要实现内容</h4>
 
