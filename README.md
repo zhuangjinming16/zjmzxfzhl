@@ -21,8 +21,8 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + 代码生成器 的快速开�
 ##### 前端技术
 * vue,vuex,vue-router
 * elementui
-* mock
 * vue-element-admin
+* mock
 
 #### 主要实现内容
 * 前后分离开发，前后端可以独立部署，也可以合并部署
