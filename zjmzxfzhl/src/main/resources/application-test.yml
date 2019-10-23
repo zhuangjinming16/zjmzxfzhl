@@ -13,9 +13,9 @@ spring:
       druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
         # 连接池的配置信息
         # 初始化大小，最小，最大
-        initial-size: 5
-        min-idle: 5
-        max-active: 20
+        initial-size: 50
+        min-idle: 50
+        max-active: 200
         # 配置获取连接等待超时的时间
         max-wait: 60000
         # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
@@ -50,9 +50,9 @@ spring:
       enabled: false
   redis:
     database: 0
-    port: 6379
-    host: localhost
-    password: #quanzhou123
+    #port: 6379
+    #host: localhost
+    password: zjmzxfzhl
     lettuce:
       pool:
         #最大连接数
@@ -63,8 +63,8 @@ spring:
         max-idle: 200
         #最小空闲
         min-idle: 10
-    #sentinel:
-      #master: mymaster
-      #nodes: 168.168.168.101:26379,168.168.168.102:26379,168.168.168.103:26379
-debug: true 
-swagger-enable: true #生产可关闭设置成false
+    sentinel:
+      master: mymaster
+      nodes: 168.168.168.101:26379,168.168.168.102:26379,168.168.168.103:26379
+debug: false 
+swagger-enable: false #生产可关闭设置成false

@@ -52,7 +52,7 @@ spring:
     database: 0
     #port: 6379
     #host: localhost
-    password: quanzhou123
+    password: zjmzxfzhl
     lettuce:
       pool:
         #最大连接数
