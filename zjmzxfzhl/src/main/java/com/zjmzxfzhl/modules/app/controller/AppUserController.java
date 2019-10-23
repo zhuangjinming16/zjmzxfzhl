@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zjmzxfzhl.common.R;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.modules.app.annotation.WithoutLogin;
 import com.zjmzxfzhl.modules.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
 
@@ -32,11 +31,5 @@ public class AppUserController extends BaseController {
 			userId = appSessionObject.getUserId();
 		}
 		return R.ok(null, userId);
-	}
-
-	@WithoutLogin
-	@GetMapping("/withoutLogin")
-	public R withoutLogin() {
-		return R.ok("不需要登陆，访问的交易，在Controller的Mapping方法使用@WithoutLogin");
 	}
 }

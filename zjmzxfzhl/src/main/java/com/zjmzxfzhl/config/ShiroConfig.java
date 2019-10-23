@@ -30,10 +30,17 @@ public class ShiroConfig {
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
 		// 拦截器
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+		// 不拦截hellowworld请求
+		filterChainDefinitionMap.put("/demo/helloworld/helloworld", "anon");
+
+		// 不拦截redlock请求
+		filterChainDefinitionMap.put("/demo/redlock/*", "anon");
+
 		// 配置不会被拦截的链接 顺序判断
 		filterChainDefinitionMap.put("/sys/login", "anon"); // 登录接口
 		filterChainDefinitionMap.put("/sys/captcha.jpg", "anon");// 登录验证码
 		filterChainDefinitionMap.put("/test/**", "anon");// 开放测试URL，生产应关闭
+
 		// app访问路径shiro不拦截，应自定义拦截器拦截app用户登陆情况
 		filterChainDefinitionMap.put("/app/**", "anon");
 
