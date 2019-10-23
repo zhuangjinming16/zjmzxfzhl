@@ -74,8 +74,8 @@ public class CreateMybatisMapperXml {
 
 		// 【2】得到查询的searchColumns和whereConditions
 		String searchColumns = getSearchColumns(list); // 查询的字段
-		String whereConditions = getWhereConditions(list); // where条件--多表
-		String whereConditions2 = getWhereConditions2(list); // where条件--单表
+		String whereConditions = getWhereConditions(list); // where条件
+		// String whereConditions2 = getWhereConditions2(list); // where条件
 		String orderBy = getOrderBy(primaryKey); // where条件--单表
 
 		// 【3】得到插入的insertColumns和insertValues
@@ -103,8 +103,8 @@ public class CreateMybatisMapperXml {
 			temp = StringUtils.replace(temp, "{tableNameCn}", tableNameCn);
 			temp = StringUtils.replace(temp, "{tableName}", tableName);
 			temp = StringUtils.replace(temp, "{searchColumns}", searchColumns);// 查询的字段
-			temp = StringUtils.replace(temp, "{whereConditions}", whereConditions);// where条件--多表
-			temp = StringUtils.replace(temp, "{whereConditions2}", whereConditions2);// where条件--单表
+			temp = StringUtils.replace(temp, "{whereConditions}", whereConditions);// where条件
+			// temp = StringUtils.replace(temp, "{whereConditions2}", whereConditions2);// where条件
 			temp = StringUtils.replace(temp, "{orderBy}", orderBy);// where条件--单表
 			temp = StringUtils.replace(temp, "{insertColumns}", insertColumns);// 插入列
 			temp = StringUtils.replace(temp, "{insertValues}", insertValues);// 插入值
@@ -135,7 +135,7 @@ public class CreateMybatisMapperXml {
 			if (tableObject.getIsSearch()) {
 				String columnNameEn = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);// 要被搜索的字段名,驼峰法变成小写
 
-				if ("字符型".equals(tableObject.getDataType())) {
+				if ("字符型".equals(tableObject.getDataType()) || "整数型".equals(tableObject.getDataType()) || "浮点型".equals(tableObject.getDataType())) {
 					// <if test="userId != null and userId !=''">
 					// <![CDATA[ a.USER_ID = #{userId} AND ]]>
 					stringBuffer.append("\t\t" + "<if test=\"entity." + columnNameEn + " != null and entity." + columnNameEn + " !=''\">" + "\r\n");
@@ -155,32 +155,32 @@ public class CreateMybatisMapperXml {
 	 * @param list
 	 * @return
 	 */
-	private static String getWhereConditions2(List<TableObject> list) {
-		StringBuffer stringBuffer = new StringBuffer();
-
-		for (int i = 0; i < list.size(); i++) {
-			TableObject tableObject = list.get(i);
-
-			String columnNameEn = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);// 要被搜索的字段名,驼峰法变成小写
-
-			if ("字符型".equals(tableObject.getDataType())) {
-				// <if test="userId != null and userId !=''">
-				// <![CDATA[ a.USER_ID = #{userId} AND ]]>
-				if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {// 下拉框处理查询
-					stringBuffer.append("\t\t\t" + "<if test=\"" + columnNameEn + " != null and " + columnNameEn + " !=''\">" + "\r\n");
-					stringBuffer.append("\t\t\t\t" + "<![CDATA[\tAND a." + tableObject.getColumnNameEn() + " = #{" + columnNameEn + "}\t]]>" + "\r\n");
-					stringBuffer.append("\t\t\t" + "</if>" + "\r\n");
-				} else {// like查询
-					stringBuffer.append("\t\t\t" + "<if test=\"" + columnNameEn + " != null and " + columnNameEn + " !=''\">" + "\r\n");
-					stringBuffer.append("\t\t\t\t" + "<![CDATA[\tAND a." + tableObject.getColumnNameEn() + " = #{" + columnNameEn + "}\t]]>" + "\r\n");
-					stringBuffer.append("\t\t\t" + "</if>" + "\r\n");
-				}
-			}
-
-		}
-
-		return stringBuffer.toString();
-	}
+	// private static String getWhereConditions2(List<TableObject> list) {
+	// StringBuffer stringBuffer = new StringBuffer();
+	//
+	// for (int i = 0; i < list.size(); i++) {
+	// TableObject tableObject = list.get(i);
+	//
+	// String columnNameEn = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);// 要被搜索的字段名,驼峰法变成小写
+	//
+	// if ("字符型".equals(tableObject.getDataType())) {
+	// // <if test="userId != null and userId !=''">
+	// // <![CDATA[ a.USER_ID = #{userId} AND ]]>
+	// if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {// 下拉框处理查询
+	// stringBuffer.append("\t\t\t" + "<if test=\"" + columnNameEn + " != null and " + columnNameEn + " !=''\">" + "\r\n");
+	// stringBuffer.append("\t\t\t\t" + "<![CDATA[\tAND a." + tableObject.getColumnNameEn() + " = #{" + columnNameEn + "}\t]]>" + "\r\n");
+	// stringBuffer.append("\t\t\t" + "</if>" + "\r\n");
+	// } else {// like查询
+	// stringBuffer.append("\t\t\t" + "<if test=\"" + columnNameEn + " != null and " + columnNameEn + " !=''\">" + "\r\n");
+	// stringBuffer.append("\t\t\t\t" + "<![CDATA[\tAND a." + tableObject.getColumnNameEn() + " = #{" + columnNameEn + "}\t]]>" + "\r\n");
+	// stringBuffer.append("\t\t\t" + "</if>" + "\r\n");
+	// }
+	// }
+	//
+	// }
+	//
+	// return stringBuffer.toString();
+	// }
 
 	/**
 	 * 得到查询list的列表字段--字符串
@@ -291,6 +291,6 @@ public class CreateMybatisMapperXml {
 	}
 
 	public static void main(String[] args) {
-		CreateMybatisMapperXml.create(CodeUtil.createTableName, "Mapper");
+		CreateMybatisMapperXml.create(CodeUtil.createTableName, "MapperXml");
 	}
 }

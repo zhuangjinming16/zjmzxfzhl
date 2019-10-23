@@ -104,8 +104,17 @@ public class CreateVue {
 					_searchConditions += "            <el-select v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" class=\"filter-item\"><el-option v-for=\"(item, index) in dicts."
 							+ tableObject.getCodeTypeId() + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select>" + "\r\n";
 				} else {
-					_searchConditions += "            <el-input v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" style=\"width: 200px;\" class=\"filter-item\" @keyup.enter.native=\"btnQuery\"/>"
-							+ "\r\n";
+					if ("日期型".equals(tableObject.getDataType())) {
+						_searchConditions += "            <el-date-picker v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" type=\"date\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>"
+								+ "\r\n";
+					} else if ("时间型".equals(tableObject.getDataType())) {
+						_searchConditions += "            <el-date-picker v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn()
+								+ "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>" + "\r\n";
+					} else {
+						_searchConditions += "            <el-input v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" style=\"width: 200px;\" class=\"filter-item\" @keyup.enter.native=\"btnQuery\"/>"
+								+ "\r\n";
+					}
+
 				}
 				_searchConditionsData += "                    " + _codeTypeId + ": undefined," + "\r\n";
 			}
@@ -124,7 +133,16 @@ public class CreateVue {
 				_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-select v-model=\"temp." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn()
 						+ "\"><el-option v-for=\"(item, index) in dicts." + tableObject.getCodeTypeId() + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select></el-form-item>" + "\r\n";
 			} else {
-				_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-input v-model=\"temp." + _codeTypeId + "\"" + readOnlyStr + "/></el-form-item>" + "\r\n";
+
+				if ("日期型".equals(tableObject.getDataType())) {
+					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-date-picker v-model=\"temp." + _codeTypeId + "\" type=\"date\"></el-date-picker></el-form-item>"
+							+ "\r\n";
+				} else if ("时间型".equals(tableObject.getDataType())) {
+					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-date-picker v-model=\"temp." + _codeTypeId
+							+ "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\"></el-date-picker></el-form-item>" + "\r\n";
+				} else {
+					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-input v-model=\"temp." + _codeTypeId + "\"" + readOnlyStr + "/></el-form-item>" + "\r\n";
+				}
 			}
 
 			if (isNotNull) {

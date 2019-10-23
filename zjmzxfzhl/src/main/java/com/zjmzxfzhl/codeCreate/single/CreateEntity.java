@@ -156,6 +156,7 @@ public class CreateEntity {
 
 					importHashMap.put("import java.util.Date;\r\n", "import java.util.Date;\r\n");
 					importHashMap.put("import com.fasterxml.jackson.annotation.JsonFormat;\r\n", "import com.fasterxml.jackson.annotation.JsonFormat;\r\n");
+					importHashMap.put("import org.springframework.format.annotation.DateTimeFormat;\r\n", "org.springframework.format.annotation.DateTimeFormat;\r\n");
 				} else if ("时间型".equals(tableObject.getDataType())) {
 					stringBufferMid.append("\t" + "@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\", timezone = \"GMT+8\")" + "\r\n");
 					stringBufferMid.append("\t" + "@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")" + "\r\n");

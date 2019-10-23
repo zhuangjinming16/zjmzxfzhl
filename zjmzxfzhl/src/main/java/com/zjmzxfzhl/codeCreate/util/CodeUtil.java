@@ -19,14 +19,14 @@ public class CodeUtil {
 	public static boolean isPringInsertMenuSql = true;// 是否打印插入菜单sql
 
 	public static String author = "庄金明";// 开发人员姓名
-	public static String databaseType = "mysql";// 什么数据库：oracle,mysql
+	public static String databaseType = "mysql";// 数据库类型：oracle,mysql
 
 	public static String projectPath = System.getProperty("user.dir") + "\\";// 开发工程所在系统绝对路径
 
 	public static String createSqlPath = projectPath + "db\\tables\\";// 自动生成的建表语句的输出路径
-	public static String excelDesignPath = projectPath + "db\\数据库设计【SYS_系统管理】.xlsx";// 【数据库设计.xlsx】的实际路径
+	public static String excelDesignPath = projectPath + "db\\数据库设计【DEMO_示例管理】.xlsx";
 
-	public static String createTableName = "T_SYS_CONFIG";// 必须大写，生成哪张表的代码或建表语句【如果为空的话,系统将生成全部表】
+	public static String createTableName = "T_DEMO_ZJMZXFZHL";// 必须大写
 
 	/**
 	 * 返回驼峰命名法结果.

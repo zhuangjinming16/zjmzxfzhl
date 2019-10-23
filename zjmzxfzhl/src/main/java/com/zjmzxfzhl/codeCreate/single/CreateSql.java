@@ -108,7 +108,7 @@ public class CreateSql {
 				if (CodeUtil.isPringInsertMenuSql) {// 打印插入菜单的语句
 					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999', null);\r\n");
 					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" + _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
+					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
 							+ "/" + _codeType + "/index', NULL, '0', '1', '" + _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
@@ -214,7 +214,7 @@ public class CreateSql {
 				if (CodeUtil.isPringInsertMenuSql) {// 打印插入菜单的语句
 					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999', null);\r\n");
 					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" + _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
+					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
 							+ "/" + _codeType + "/index', NULL, '0', '1', '" + _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
@@ -308,7 +308,7 @@ public class CreateSql {
 				if (CodeUtil.isPringInsertMenuSql) {// 打印插入菜单的语句
 					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999', null);\r\n");
 					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" + _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
+					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
 							+ "/" + _codeType + "/index', NULL, '0', '1', '" + _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
