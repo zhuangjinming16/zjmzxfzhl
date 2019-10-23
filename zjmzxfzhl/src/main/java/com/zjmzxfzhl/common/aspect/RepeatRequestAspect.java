@@ -43,7 +43,7 @@ public class RepeatRequestAspect {
 	// @Pointcut("execution(* com.*..*.sys.controller.*.*(..)) || execution(* com.*..*.othermodule.controller.*.*(..))")
 	// 或者使用拦截全部controller，然后排除个别非管理端的controller，如下
 	// @Pointcut("execution(* com.*..*.controller.*.*(..)) && !execution(* com.*..*.app.controller.*.*(..))")
-	@Pointcut("execution(* com.*..*.sys.controller.*.*(..))")
+	@Pointcut("execution(* com.*..*.sys.controller.*.*(..)) || execution(* com.*..*.demo.controller.*.*(..))")
 	private void controllerAspect() {
 	}
 
@@ -56,7 +56,7 @@ public class RepeatRequestAspect {
 	public Object controllerAspectAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		String userId = ShiroUtils.getUserId();
 		if (userId == null || userId.length() == 0) {
-			return joinPoint.proceed();
+			userId = "";
 		}
 		return exec(joinPoint, userId);
 	}
@@ -64,46 +64,81 @@ public class RepeatRequestAspect {
 	@Around("controllerAspectForApp()")
 	public Object controllerAspectForAppAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes().getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
-		if (appSessionObject == null || appSessionObject.getUserId() == null || appSessionObject.getUserId().length() == 0) {
-			return joinPoint.proceed();
+		String userId = "";
+		if (appSessionObject != null && appSessionObject.getUserId() != null && appSessionObject.getUserId().length() != 0) {
+			userId = appSessionObject.getUserId();
 		}
-		return exec(joinPoint, appSessionObject.getUserId());
+		return exec(joinPoint, userId);
 	}
 
+	/**
+	 * 执行登录用户交易防重发
+	 * 
+	 * @param joinPoint
+	 * @param userId
+	 * @return
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws Throwable
+	 */
 	private Object exec(ProceedingJoinPoint joinPoint, String userId) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, Throwable {
-		int waitTime = 0, leaseTime = 30;
-		String lockParams = "";
+		int waitTime = 0, leaseTime = 30; // 默认不等待、且30秒后释放锁
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		RepeatRequest repeatRequest = signature.getMethod().getAnnotation((RepeatRequest.class));
+		if (repeatRequest == null && userId.length() == 0) {// 未设置注解，且未登录
+			return joinPoint.proceed();
+		}
+		String lockParams = "";
 		if (repeatRequest != null) {// 如果controller包含该注解，则解析注解并封装参数lockParams
-			Object[] params = joinPoint.getArgs();
-			int[] lockIndexs = repeatRequest.lockIndexs();
-			String[] fieldNames = repeatRequest.fieldNames();
-			waitTime = repeatRequest.waitTime();
-			leaseTime = repeatRequest.leaseTime();
 
-			// 锁2个及2个以上参数时，fieldNames数量应与lockIndexs一致
-			if (lockIndexs.length > 1 && lockIndexs.length != fieldNames.length) {
-				throw new BaseException("lockIndexs与fieldNames数量不一致");
-			}
-			if (lockIndexs.length > 0) {
-				StringBuffer lockParamsBuffer = new StringBuffer();
-				for (int i = 0; i < lockIndexs.length; i++) {
-					if (fieldNames.length == 0 || fieldNames[i] == null || fieldNames[i].length() == 0) {
-						lockParamsBuffer.append("." + params[lockIndexs[i]]);
-					} else {
-						Object lockParamValue = PropertyUtils.getSimpleProperty(params[lockIndexs[i]], fieldNames[i]);
-						lockParamsBuffer.append("." + lockParamValue);
-					}
+			waitTime = repeatRequest.waitTime();// 设置注解带过来的等待时间
+			leaseTime = repeatRequest.leaseTime();// 设置注解带过来的释放时间
+
+			/**
+			 * repeatRequest.isExistAndOnlyUserId()
+			 * 
+			 * true时，若用户未登陆，则只使用 lockIndexs 组拼key，若用户已登录，只使用 userId 组拼 key 忽略 lockIndexs
+			 * 
+			 * false时，若用户未登陆，则只使用 lockIndexs 组拼key，若用户已登录，即使用 userId 组拼 key 也使用 lockIndexs 组拼key
+			 */
+			if (!repeatRequest.isExistAndOnlyUserId() || userId.length() == 0) {
+				Object[] params = joinPoint.getArgs();
+				int[] lockIndexs = repeatRequest.lockIndexs();
+				String[] fieldNames = repeatRequest.fieldNames();
+				// 锁2个及2个以上参数时，fieldNames数量应与lockIndexs一致
+				if (fieldNames.length > 1 && lockIndexs.length != fieldNames.length) {
+					throw new BaseException("lockIndexs与fieldNames数量不一致");
 				}
-				lockParams = lockParamsBuffer.toString();
+				if (lockIndexs.length > 0) {
+					StringBuffer lockParamsBuffer = new StringBuffer();
+					for (int i = 0; i < lockIndexs.length; i++) {
+						if (fieldNames.length == 0 || fieldNames[i] == null || fieldNames[i].length() == 0) {
+							lockParamsBuffer.append("." + params[lockIndexs[i]]);
+						} else {
+							Object lockParamValue = PropertyUtils.getSimpleProperty(params[lockIndexs[i]], fieldNames[i]);
+							lockParamsBuffer.append("." + lockParamValue);
+						}
+					}
+					lockParams = lockParamsBuffer.toString();
+				}
 			}
+		}
+
+		if (userId.length() == 0 && lockParams.length() == 0) { // 防止锁整个方法
+			return joinPoint.proceed();
 		}
 
 		Object obj = null;
 		// 取得锁的key
 		StringBuffer keyBuffer = new StringBuffer();
-		keyBuffer.append(signature.getDeclaringTypeName()).append(".").append(signature.getName()).append(".").append(userId).append(lockParams);
+		keyBuffer.append(signature.getDeclaringTypeName()).append(".").append(signature.getName());
+		if (userId.length() != 0) {
+			keyBuffer.append(".").append(userId);
+		}
+		if (lockParams.length() != 0) {
+			keyBuffer.append(lockParams);
+		}
 		String key = keyBuffer.toString();
 		RLock rlock = redissonDistributedLocker.getLock(key);
 		boolean isSuccess = redissonDistributedLocker.tryLock(rlock, waitTime, leaseTime, TimeUnit.SECONDS);

@@ -14,8 +14,8 @@ import java.lang.annotation.Target;
  * @RedissonLock(lockIndexs = 0) 锁第一个参数
  * @RedissonLock(lockIndexs = {0,1}) 锁第一个参数和第二个参数组合
  * @RedissonLock(lockIndexs = {1,2}) 锁第二个参数和第三个参数组合
- * @RedissonLock(lockIndexs = 0,fieldName = "transId") 锁第一个参数属性等于transId
- * @RedissonLock(lockIndexs = {0,1},fieldName = {"transId","id"}) 锁第一个参数属性等于transId和第二个参数属性等于id的组合
+ * @RedissonLock(lockIndexs = 0,fieldNames = "transId") 锁第一个参数属性等于transId
+ * @RedissonLock(lockIndexs = {0,1},fieldNames = {"transId","id"}) 锁第一个参数属性等于transId和第二个参数属性等于id的组合
  * 
  * @author 庄金明
  *

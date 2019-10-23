@@ -53,6 +53,8 @@ public @interface DataPermission {
 	 * 
 	 * 3.如果方法只有一个参数，则直接注入到第一个参数中
 	 * 
+	 * 4.index=0表示第1个参数，index=1表示第2个参数
+	 * 
 	 * @return
 	 */
 	int index() default 1;

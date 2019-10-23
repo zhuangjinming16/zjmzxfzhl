@@ -46,7 +46,7 @@ public class RedissonLockAspect {
 		String[] fieldNames = redissonLock.fieldNames();
 		String lockParams = "";
 		// 锁2个及2个以上参数时，fieldNames数量应与lockIndexs一致
-		if (lockIndexs.length > 1 && lockIndexs.length != fieldNames.length) {
+		if (fieldNames.length > 1 && lockIndexs.length != fieldNames.length) {
 			throw new BaseException("lockIndexs与fieldNames数量不一致");
 		}
 		// 数组为空代表锁整个方法
