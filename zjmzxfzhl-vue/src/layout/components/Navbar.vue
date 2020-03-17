@@ -5,7 +5,9 @@
         <breadcrumb class="breadcrumb-container"/>
 
         <div class="right-menu">
-
+            <div class="right-menu-item hover-effect">
+                {{name}}
+            </div>
             <switch-roles class="right-menu-item hover-effect"/>
             <template v-if="device!=='mobile'">
                 <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -64,7 +66,8 @@
             ...mapGetters([
                 'sidebar',
                 'avatar',
-                'device'
+                'device',
+                'name'
             ])
         },
         methods: {

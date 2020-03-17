@@ -2,11 +2,12 @@
     <div class="app-container">
         <div class="filter-container">
             <el-input v-model="listQuery.dataPermissionName" placeholder="数据权限名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.entityType" placeholder="实体类型" class="filter-item"><el-option v-for="(item, index) in dicts.entityType" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
+            <el-input v-model="listQuery.methodId" placeholder="方法Id" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
+            <el-select v-model="listQuery.entityType" placeholder="实体类型" style="width: 200px;" class="filter-item"><el-option v-for="(item, index) in dicts.entityType" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
             <el-input v-model="listQuery.entityId" placeholder="实体ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
+            <el-select v-model="listQuery.sourceStrategy" placeholder="数据源策略" style="width: 200px;" class="filter-item"><el-option v-for="(item, index) in dicts.sourceStrategy" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
             <el-input v-model="listQuery.tableName" placeholder="业务表名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.columnName" placeholder="字段名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.sourceStrategy" placeholder="数据源策略" class="filter-item"><el-option v-for="(item, index) in dicts.sourceStrategy" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
             	<i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -31,6 +32,7 @@
             <el-table-column type="selection" align="center">
             </el-table-column>
             <el-table-column label="数据权限名称" prop="dataPermissionName" align="center"><template slot-scope="scope"><span>{{ scope.row.dataPermissionName }}</span></template></el-table-column>
+            <el-table-column label="方法Id" prop="methodId" align="center"><template slot-scope="scope">{{ scope.row.methodId }}</template></el-table-column>
             <el-table-column label="实体类型" prop="entityType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.entityType,scope.row.entityType)"></span></template></el-table-column>
             <el-table-column label="实体ID" prop="entityId" align="center"><template slot-scope="scope"><span>{{ scope.row.entityId }}</span></template></el-table-column>
             <el-table-column label="业务表名" prop="tableName" align="center"><template slot-scope="scope"><span>{{ scope.row.tableName }}</span></template></el-table-column>
@@ -49,13 +51,14 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize"
+        <pagination v-show="total>0" :total="total" :current.sync="listQuery.current" :size.sync="listQuery.size"
                     @pagination="list"/>
 
         <el-dialog title="数据权限" :visible.sync="dialogFormVisible">
             <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="110px">
-                <el-form-item label="数据权限ID" prop="dataPermissionId"><el-input v-model="temp.dataPermissionId" :readonly="dialogStatus==='update'"/></el-form-item>
+                <el-form-item v-if="dialogStatus!=='create'" label="数据权限ID" prop="dataPermissionId"><el-input v-model="temp.dataPermissionId" :readonly="dialogStatus==='update'"/></el-form-item>
                 <el-form-item label="数据权限名称" prop="dataPermissionName"><el-input v-model="temp.dataPermissionName"/></el-form-item>
+                <el-form-item label="方法Id" prop="methodId"><el-input v-model="temp.methodId"/></el-form-item>
                 <el-form-item label="实体类型" prop="entityType"><el-select v-model="temp.entityType" placeholder="实体类型"><el-option v-for="(item, index) in dicts.entityType" :key="index" :label="item.content" :value="item.value"></el-option></el-select></el-form-item>
                 <el-form-item label="实体ID" prop="entityId"><el-input v-model="temp.entityId"/></el-form-item>
                 <el-form-item label="业务表名" prop="tableName"><el-input v-model="temp.tableName"/></el-form-item>
@@ -89,11 +92,11 @@
                 records: null,
                 selectedRecords: [],
                 total: 0,
-                listLoading: false,
                 listQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     dataPermissionName: undefined,
+                    methodId: undefined,
                     entityType: undefined,
                     entityId: undefined,
                     tableName: undefined,
@@ -105,6 +108,7 @@
                 temp: {
                     dataPermissionId: undefined,
                     dataPermissionName: '',
+                    methodId: '',
                     entityType: '',
                     entityId: '',
                     tableName: '',
@@ -130,23 +134,22 @@
         },
         methods: {
             list() {
-                this.listLoading = true
                 getAction('/sys/dataPermission/list', this.listQuery).then(res => {
                     const {data} = res
                     this.records = data.records;
                     this.total = data.total
-                    this.listLoading = false
                 })
             },
             btnQuery() {
-                this.listQuery.pageNo = 1
+                this.listQuery.current = 1
                 this.list()
             },
             btnReset() {
                 this.listQuery = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     dataPermissionName: undefined,
+                    methodId: undefined,
                     entityType: undefined,
                     entityId: undefined,
                     tableName: undefined,
@@ -159,6 +162,7 @@
                 this.temp = {
                     dataPermissionId: undefined,
                     dataPermissionName: '',
+                    methodId: '',
                     entityType: '',
                     entityId: '',
                     tableName: '',
@@ -193,7 +197,7 @@
                         postAction('/sys/dataPermission/save', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -212,7 +216,7 @@
                         putAction('/sys/dataPermission/update', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -227,7 +231,7 @@
                 }
                 deleteAction('/sys/dataPermission/delete', {ids: ids.toString()}).then(({msg}) => {
                     Message.success(msg)
-                    this.list(this.listQuery);
+                    this.list()
                 })
             },
             selectionChange(selectedRecords) {

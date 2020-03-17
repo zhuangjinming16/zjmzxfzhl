@@ -60,8 +60,8 @@
                             </template>
                         </el-table-column>
                     </el-table>
-                    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo"
-                                :limit.sync="listQuery.pageSize"
+                    <pagination v-show="total>0" :total="total" :current.sync="listQuery.current"
+                                :size.sync="listQuery.size"
                                 @pagination="listFuncs"/>
                 </div>
             </el-col>
@@ -109,10 +109,9 @@
                 funcRecords: null,
                 selectedRecords: [],
                 total: 0,
-                listLoading: false,
                 listQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     menuId: undefined
                 },
                 currMenuId : undefined,
@@ -168,13 +167,11 @@
                 this.listFuncs()
             },
             listFuncs() {
-                this.listLoading = true
                 this.listQuery.menuId = this.currMenuId
                 getAction('/sys/func/list', this.listQuery).then(res => {
                     const {data} = res
                     this.funcRecords = data.records;
                     this.total = data.total
-                    this.listLoading = false
                 })
             },
             resetTemp() {

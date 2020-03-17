@@ -58,7 +58,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize"
+        <pagination v-show="total>0" :total="total" :current.sync="listQuery.current" :size.sync="listQuery.size"
                     @pagination="list"/>
 
         <el-dialog title="开发示例" :visible.sync="dialogFormVisible">
@@ -105,10 +105,9 @@
                 records: null,
                 selectedRecords: [],
                 total: 0,
-                listLoading: false,
                 listQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     zjmzxfzhlName: undefined,
                     zjmzxfzhlCodeInfo: undefined,
                     filterOperatorEq: undefined,
@@ -160,22 +159,20 @@
         },
         methods: {
             list() {
-                this.listLoading = true
                 getAction('/demo/zjmzxfzhl/list', this.listQuery).then(res => {
                     const {data} = res
                     this.records = data.records;
                     this.total = data.total
-                    this.listLoading = false
                 })
             },
             btnQuery() {
-                this.listQuery.pageNo = 1
+                this.listQuery.current = 1
                 this.list()
             },
             btnReset() {
                 this.listQuery = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     zjmzxfzhlName: undefined,
                     zjmzxfzhlCodeInfo: undefined,
                     filterOperatorEq: undefined,
@@ -237,7 +234,7 @@
                         postAction('/demo/zjmzxfzhl/save', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -256,7 +253,7 @@
                         putAction('/demo/zjmzxfzhl/update', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -271,7 +268,7 @@
                 }
                 deleteAction('/demo/zjmzxfzhl/delete', {ids: ids.toString()}).then(({msg}) => {
                     Message.success(msg)
-                    this.list(this.listQuery);
+                    this.list()
                 })
             },
             selectionChange(selectedRecords) {

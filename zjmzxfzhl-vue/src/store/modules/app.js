@@ -5,7 +5,7 @@ const state = {
         opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
         withoutAnimation: false
     },
-    size: Cookies.get('size') || 'medium',
+    size: Cookies.get('size') || 'mini',
     device: 'desktop'
 }
 

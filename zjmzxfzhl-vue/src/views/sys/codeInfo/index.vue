@@ -37,8 +37,8 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo"
-                            :limit.sync="listQuery.pageSize"
+                <pagination v-show="total>0" :total="total" :current.sync="listQuery.current"
+                            :size.sync="listQuery.size"
                             @pagination="list"/>
             </el-col>
             <el-col :span="14">
@@ -103,8 +103,8 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <pagination v-show="totalCodeInfo>0" :total="totalCodeInfo" :page.sync="listCodeInfoQuery.pageNo"
-                            :limit.sync="listCodeInfoQuery.pageSize" @pagination="listCodeInfo"/>
+                <pagination v-show="totalCodeInfo>0" :total="totalCodeInfo" :current.sync="listCodeInfoQuery.current"
+                            :size.sync="listCodeInfoQuery.size" @pagination="listCodeInfo"/>
             </el-col>
         </el-row>
         <el-dialog title="代码信息" :visible.sync="dialogFormVisible">
@@ -159,10 +159,9 @@
                 dicts : [],
                 records: null,
                 total: 0,
-                listLoading: false,
                 listQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     codeTypeId: undefined,
                     codeTypeName: undefined
                 },
@@ -171,8 +170,8 @@
                 totalCodeInfo: 0,
                 listCodeInfoLoading: false,
                 listCodeInfoQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     codeTypeId: undefined,
                     value: undefined,
                     content: undefined
@@ -207,22 +206,20 @@
         },
         methods: {
             list() {
-                this.listLoading = true
                 getAction('/sys/codeType/list', this.listQuery).then(res => {
                     const {data} = res
                     this.records = data.records;
                     this.total = data.total
-                    this.listLoading = false
                 })
             },
             btnQuery() {
-                this.listQuery.pageNo = 1
+                this.listQuery.current = 1
                 this.list()
             },
             btnReset() {
                 this.listQuery = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     codeTypeId: undefined,
                     codeTypeName: undefined
                 }
@@ -247,13 +244,13 @@
                 })
             },
             btnCodeInfoQuery() {
-                this.listCodeInfoQuery.pageNo = 1
+                this.listCodeInfoQuery.current = 1
                 this.listCodeInfo()
             },
             btnCodeInfoReset() {
                 this.listCodeInfoQuery = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     codeInfoId: undefined,
                     content: undefined
                 }

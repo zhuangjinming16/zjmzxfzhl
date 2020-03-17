@@ -97,8 +97,8 @@ div:focus {
 }
 
 aside {
-  background: #eef1f6;
-  padding: 8px 24px;
+  //background: #eef1f6;
+  //padding: 8px 24px;
   margin-bottom: 20px;
   border-radius: 2px;
   display: block;
@@ -201,6 +201,7 @@ aside {
   display: flex;
   flex-direction: column;
   .el-dialog__body {
+    padding: 5px 20px;
     overflow: auto;
   }
   .el-dialog-body-custom-height{

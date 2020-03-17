@@ -67,8 +67,8 @@
                                 </template>
                             </el-table-column>
                         </el-table>
-                        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo"
-                                    :limit.sync="listQuery.pageSize" @pagination="listSysUsers"/>
+                        <pagination v-show="total>0" :total="total" :current.sync="listQuery.current"
+                                    :size.sync="listQuery.size" @pagination="listSysUsers"/>
                     </div>
                 </el-col>
             </el-row>
@@ -121,8 +121,8 @@
                 selectedRecords: [],
                 selectedRecord: {},
                 listQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     userId: undefined,
                     userName: undefined,
                     orgId: undefined
@@ -172,14 +172,14 @@
                 })
             },
             btnQuery() {
-                this.listQuery.pageNo = 1
+                this.listQuery.current = 1
                 this.listSysUsers()
             },
             btnReset() {
                 this.currOrgId = ''
                 this.listQuery = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     userId: undefined,
                     userName: undefined,
                     orgId: undefined

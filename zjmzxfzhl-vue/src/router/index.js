@@ -27,6 +27,18 @@ export const constantRoutes = [
         hidden: true
     },
     {
+        path: '/flowableFormEdit',
+        component: Layout,
+        hidden: true,
+        children: [{
+            path: '/',
+            name:'flowableFormEdit',
+            component: () => import('@/views/flowable/form/edit'),
+            meta: {title: '修改表单'}
+        }]
+
+    },
+    {
         path: '/404',
         component: () => import('@/views/exception/404'),
         hidden: true

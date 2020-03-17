@@ -29,7 +29,7 @@ service.interceptors.response.use(
         Loading.service().close();
         const res = response.data
 
-        if (res.code !== 200) {
+        if (res && res.code && res.code !== 200) {
             if (res.code === 801 || res.code === 802 || res.code === 803) {
                 MessageBox.confirm('登录超时，请重新登录', '提示', {
                     confirmButtonText: '重新登录',

@@ -19,10 +19,9 @@
         data() {
             return {
                 sizeOptions: [
-                    {label: '默认', value: 'default'},
-                    {label: '大号', value: 'medium'},
+                    {label: '超小', value: 'mini'},
                     {label: '小号', value: 'small'},
-                    {label: '超小', value: 'mini'}
+                    {label: '大号', value: 'medium'}
                 ]
             }
         },

@@ -75,7 +75,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize"
+        <pagination v-show="total>0" :total="total" :current.sync="listQuery.current" :size.sync="listQuery.size"
                     @pagination="list"/>
 
         <el-dialog title="用户" :visible.sync="dialogFormVisible">
@@ -95,7 +95,7 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="性别" prop="sex">
-                            <el-select v-model="temp.sex" placeholder="用户性别">
+                            <el-select v-model="temp.sex" placeholder="性别">
                                 <el-option v-for="item in dicts.userSex" :key="item.value" :label="item.content" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
@@ -194,8 +194,8 @@
                 selectedRecords: [],
                 total: 0,
                 listQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     userId: undefined,
                     userName: undefined
                 },
@@ -250,13 +250,13 @@
                 })
             },
             btnQuery() {
-                this.listQuery.pageNo = 1
+                this.listQuery.current = 1
                 this.list()
             },
             btnReset() {
                 this.listQuery = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     userId: undefined,
                     userName: undefined
                 }
@@ -300,7 +300,7 @@
                         postAction('/sys/user/save', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -319,7 +319,7 @@
                         putAction('/sys/user/update', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -334,7 +334,7 @@
                 }
                 deleteAction('/sys/user/delete', {ids: ids.toString()}).then(({msg}) => {
                     Message.success(msg)
-                    this.list(this.listQuery);
+                    this.list()
                 })
             },
             selectionChange(selectedRecords) {

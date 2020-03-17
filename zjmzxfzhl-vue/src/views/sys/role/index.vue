@@ -53,16 +53,22 @@
                         <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:role:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:role:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.roleId)">删除</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:role:getRolePermissions'" icon="el-icon-setting" divided @click.native="btnPermission(row.roleId)">角色授权</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:role:getRoleUser'" icon="el-icon-setting" divided @click.native="btnRoleUser(row.roleId)">分配用户</el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:role:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">
+                                修改</el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:role:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.roleId)">
+                                删除</el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:role:getRolePermissions'" icon="el-icon-setting"
+                                              divided @click.native="btnPermission(row.roleId)">
+                                角色授权</el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:role:getRoleUser'" icon="el-icon-setting"
+                                              divided @click.native="btnRoleUser(row.roleId)">
+                                分配用户</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize"
+        <pagination v-show="total>0" :total="total" :current.sync="listQuery.current" :size.sync="listQuery.size"
                     @pagination="list"/>
 
         <el-dialog title="角色" :visible.sync="dialogFormVisible">
@@ -157,8 +163,8 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="totalRoleUser>0" :total="totalRoleUser" :page.sync="listQueryRoleUser.pageNo"
-                        :limit.sync="listQueryRoleUser.pageSize"
+            <pagination v-show="totalRoleUser>0" :total="totalRoleUser" :current.sync="listQueryRoleUser.current"
+                        :size.sync="listQueryRoleUser.size"
                         @pagination="getRoleUser"/>
         </el-dialog>
         <select-user ref="selectUser" :visible.sync="selectUserVisible" :appendToBody="true" :multipleSelect="true"
@@ -181,8 +187,8 @@
                 selectedRecords: [],
                 total: 0,
                 listQuery: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     roleId: undefined,
                     roleName: undefined
                 },
@@ -213,8 +219,8 @@
                 selectedRecordsRoleUser: [],
                 totalRoleUser: 0,
                 listQueryRoleUser: {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     roleId: undefined,
                     userId: undefined,
                     userName: undefined
@@ -234,13 +240,13 @@
                 })
             },
             btnQuery() {
-                this.listQuery.pageNo = 1
+                this.listQuery.current = 1
                 this.list()
             },
             btnReset() {
                 this.listQuery = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     roleId: undefined,
                     roleName: undefined
                 }
@@ -276,7 +282,7 @@
                         postAction('/sys/role/save', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -295,7 +301,7 @@
                         putAction('/sys/role/update', this.temp).then(({msg}) => {
                             this.dialogFormVisible = false
                             Message.success(msg)
-                            this.list(this.listQuery);
+                            this.list()
                         })
                     }
                 })
@@ -310,7 +316,7 @@
                 }
                 deleteAction('/sys/role/delete', {ids: ids.toString()}).then(({msg}) => {
                     Message.success(msg)
-                    this.list(this.listQuery);
+                    this.list()
                 })
             },
             selectionChange(selectedRecords) {
@@ -363,13 +369,13 @@
                 })
             },
             btnRoleUserQuery(){
-                this.listQueryRoleUser.pageNo = 1
+                this.listQueryRoleUser.current = 1
                 this.getRoleUser()
             },
             btnRoleUserReset() {
                 this.listQueryRoleUser = {
-                    pageNo: 1,
-                    pageSize: 10,
+                    current: 1,
+                    size: 10,
                     roleId: undefined,
                     userId: undefined,
                     userName: undefined

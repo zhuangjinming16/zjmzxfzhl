@@ -1,4 +1,6 @@
+import ErrorPlugin from './errorPlugin'
 import Vue from 'vue'
+Vue.use(ErrorPlugin)
 
 import Cookies from 'js-cookie'
 
@@ -9,6 +11,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 
 import '@/styles/index.scss' // global css
+
+import FormMaking from 'form-making'
+import 'form-making/dist/FormMaking.css'
+// import FormMaking from 'form-making-advanced'
+// import 'form-making-advanced/dist/FormMaking.css'
 
 import App from './App'
 import store from './store'
@@ -26,9 +33,9 @@ if (process.env.NODE_ENV === 'development') {
     // mockXHR()
 }
 
-let size = Cookies.get('size') || 'medium';
+let size = Cookies.get('size') || 'mini';
 Vue.use(ElementUI, {locale,size})
-
+Vue.use(FormMaking)
 Vue.directive('permission', permission)
 
 Vue.config.productionTip = false
