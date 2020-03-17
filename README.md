@@ -4,28 +4,29 @@
 zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代码生成器 的快速开发平台，采用前后端分离架构。
 ## 技术架构
 ### 后端技术
-	1. Maven、Jdk8
- 	2. Mysql8.0,oracle,db2
- 	3. Spring-boot2.1.3
- 	4. Shiro1.4.0-RC2
- 	5. Flowable6.4.1
- 	6. Java-jwt3.4.1
- 	7. Mybatis-Plus3.3.1.tmp
- 	8. Druid1.1.10数据源
- 	9. Redis3.0
- 	10. P6spy3.8.0 sql打印，生产应关闭
- 	11. Kaptcha0.0.9验证码
- 	12. Jsoup1.12.1防XSS攻击
- 	13. Swagger2-2.9.2接口文档生成
- 	14. Redisson3.11.1-redlock分布式锁
- 	15. Lombok1.18.4代码简化
+
+	1.  Maven、Jdk8
+ 	2.  Mysql8.0,oracle,db2
+ 	3.  Spring-boot2.1.3
+ 	4.  Shiro1.4.0-RC2
+ 	5.  Flowable6.4.1
+ 	6.  Java-jwt3.4.1
+ 	7.  Mybatis-Plus3.3.1.tmp
+ 	8.  Druid1.1.10数据源
+ 	9.  Redis3.0
+ 	10.  P6spy3.8.0 sql打印，生产应关闭
+ 	11.  Kaptcha0.0.9验证码
+ 	12.  Jsoup1.12.1防XSS攻击
+ 	13.  Swagger2-2.9.2接口文档生成
+ 	14.  Redisson3.11.1-redlock分布式锁
+ 	15.  Lombok1.18.4代码简化
 
 ### 前端技术
-1. Vue,Vuex,Vue-router
-2. ElementUI
-3. Vue-Element-Admin
-4. FormMaking
-5. Mock
+1.  Vue,Vuex,Vue-router
+2.  ElementUI
+3.  Vue-Element-Admin
+4.  FormMaking
+5.  Mock
 
 ## 主要实现内容
 1.  前后分离开发，前后端可以独立部署，也可以合并部署
