@@ -53,7 +53,8 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	@Autowired
 	private RedisUtil redisUtil;
 
-	@DataPermission(tableNames = { "T_SYS_USER", "T_SYS_ORG" }, aliasNames = { "a", "o" }, providers = { OrgDataPermissionProvider.class, NullDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}", "" })
+	@DataPermission(tableNames = { "T_SYS_USER", "T_SYS_ORG" }, aliasNames = { "a", "o" }, providers = {
+			OrgDataPermissionProvider.class, NullDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}", "" })
 	public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
 		return page.setRecords(baseMapper.list(page, sysUser));
 	}

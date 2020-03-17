@@ -84,7 +84,8 @@ public class CreateVue {
 			// String _CodeTypeId = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), true);
 			String _codeTypeId = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);
 
-			if ("createBy".equals(_codeTypeId) || "createDate".equals(_codeTypeId) || "createTime".equals(_codeTypeId) || "updateBy".equals(_codeTypeId) || "updateDate".equals(_codeTypeId) || "updateTime".equals(_codeTypeId)) {
+			if ("createBy".equals(_codeTypeId) || "createDate".equals(_codeTypeId) || "createTime".equals(_codeTypeId)
+					|| "updateBy".equals(_codeTypeId) || "updateDate".equals(_codeTypeId) || "updateTime".equals(_codeTypeId)) {
 				continue;
 			}
 
@@ -101,18 +102,24 @@ public class CreateVue {
 
 			if (tableObject.getIsSearch()) {// 该字段是查询条件
 				if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
-					_searchConditions += "            <el-select v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" class=\"filter-item\"><el-option v-for=\"(item, index) in dicts."
-							+ tableObject.getCodeTypeId() + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select>" + "\r\n";
+					_searchConditions += "            <el-select v-model=\"listQuery." + _codeTypeId + "\" placeholder=\""
+							+ tableObject.getColumnNameCn() + "\" class=\"filter-item\"><el-option v-for=\"(item, index) in dicts."
+							+ tableObject.getCodeTypeId() + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select>"
+							+ "\r\n";
 				} else {
 					if ("日期型".equals(tableObject.getDataType())) {
-						_searchConditions += "            <el-date-picker v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" type=\"date\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>"
+						_searchConditions += "            <el-date-picker v-model=\"listQuery." + _codeTypeId + "\" placeholder=\""
+								+ tableObject.getColumnNameCn() + "\" type=\"date\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>"
 								+ "\r\n";
 					} else if ("时间型".equals(tableObject.getDataType())) {
-						_searchConditions += "            <el-date-picker v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn()
-								+ "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>" + "\r\n";
-					} else {
-						_searchConditions += "            <el-input v-model=\"listQuery." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" style=\"width: 200px;\" class=\"filter-item\" @keyup.enter.native=\"btnQuery\"/>"
+						_searchConditions += "            <el-date-picker v-model=\"listQuery." + _codeTypeId + "\" placeholder=\""
+								+ tableObject.getColumnNameCn()
+								+ "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>"
 								+ "\r\n";
+					} else {
+						_searchConditions += "            <el-input v-model=\"listQuery." + _codeTypeId + "\" placeholder=\""
+								+ tableObject.getColumnNameCn()
+								+ "\" style=\"width: 200px;\" class=\"filter-item\" @keyup.enter.native=\"btnQuery\"/>" + "\r\n";
 					}
 
 				}
@@ -121,27 +128,33 @@ public class CreateVue {
 
 			if (tableObject.getIsList()) {// 该字段是列表字段
 				if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
-					_searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\" align=\"center\"><template slot-scope=\"scope\"><span v-html=\"formatDictText(dicts."
-							+ tableObject.getCodeTypeId() + ",scope.row." + _codeTypeId + ")\"></span></template></el-table-column>" + "\r\n";
+					_searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId
+							+ "\" align=\"center\"><template slot-scope=\"scope\"><span v-html=\"formatDictText(dicts." + tableObject.getCodeTypeId()
+							+ ",scope.row." + _codeTypeId + ")\"></span></template></el-table-column>" + "\r\n";
 				} else {
-					_searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\" align=\"center\"><template slot-scope=\"scope\"><span>{{ scope.row." + _codeTypeId
+					_searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId
+							+ "\" align=\"center\"><template slot-scope=\"scope\"><span>{{ scope.row." + _codeTypeId
 							+ " }}</span></template></el-table-column>" + "\r\n";
 				}
 			}
 
 			if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
-				_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-select v-model=\"temp." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn()
-						+ "\"><el-option v-for=\"(item, index) in dicts." + tableObject.getCodeTypeId() + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select></el-form-item>" + "\r\n";
+				_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId
+						+ "\"><el-select v-model=\"temp." + _codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn()
+						+ "\"><el-option v-for=\"(item, index) in dicts." + tableObject.getCodeTypeId()
+						+ "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select></el-form-item>" + "\r\n";
 			} else {
 
 				if ("日期型".equals(tableObject.getDataType())) {
-					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-date-picker v-model=\"temp." + _codeTypeId + "\" type=\"date\"></el-date-picker></el-form-item>"
-							+ "\r\n";
+					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId
+							+ "\"><el-date-picker v-model=\"temp." + _codeTypeId + "\" type=\"date\"></el-date-picker></el-form-item>" + "\r\n";
 				} else if ("时间型".equals(tableObject.getDataType())) {
-					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-date-picker v-model=\"temp." + _codeTypeId
+					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId
+							+ "\"><el-date-picker v-model=\"temp." + _codeTypeId
 							+ "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\"></el-date-picker></el-form-item>" + "\r\n";
 				} else {
-					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId + "\"><el-input v-model=\"temp." + _codeTypeId + "\"" + readOnlyStr + "/></el-form-item>" + "\r\n";
+					_allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + _codeTypeId
+							+ "\"><el-input v-model=\"temp." + _codeTypeId + "\"" + readOnlyStr + "/></el-form-item>" + "\r\n";
 				}
 			}
 

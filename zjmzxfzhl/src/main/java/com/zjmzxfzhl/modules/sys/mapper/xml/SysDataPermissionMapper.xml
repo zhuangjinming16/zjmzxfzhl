@@ -8,6 +8,7 @@
 		select
 			a.DATA_PERMISSION_ID as dataPermissionId,
 			a.DATA_PERMISSION_NAME as dataPermissionName,
+			a.METHOD_ID as methodId,
 			a.ENTITY_TYPE as entityType,
 			a.ENTITY_ID as entityId,
 			a.TABLE_NAME as tableName,
@@ -23,6 +24,9 @@
 		where 1=1 
 		<if test="entity.dataPermissionName != null and entity.dataPermissionName !=''">
 			<![CDATA[	AND a.DATA_PERMISSION_NAME = #{entity.dataPermissionName}	]]>
+		</if>
+		<if test="entity.methodId != null and entity.methodId !=''">
+			<![CDATA[	AND a.METHOD_ID = #{entity.methodId}	]]>
 		</if>
 		<if test="entity.entityType != null and entity.entityType !=''">
 			<![CDATA[	AND a.ENTITY_TYPE = #{entity.entityType}	]]>

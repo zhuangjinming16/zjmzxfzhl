@@ -32,3 +32,6 @@ info:
   blog-url: http://www.test.com
   author: zjm
   version: 1.0
+flowable:
+  async-executor-activate: false
+flowableFontName: 宋体

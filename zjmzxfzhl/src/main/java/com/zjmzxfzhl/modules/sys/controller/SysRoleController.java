@@ -3,7 +3,6 @@ package com.zjmzxfzhl.modules.sys.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,7 +22,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.R;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.entity.SysRolePermission;
@@ -46,50 +44,20 @@ public class SysRoleController extends BaseController {
 	 * 自定义查询列表
 	 * 
 	 * @param sysRole
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
+	 * @param current
+	 * @param size
 	 * @return
 	 */
 	@RequiresPermissions("sys:role:list")
 	@GetMapping(value = "/list")
-	public R list(SysRole sysRole, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		IPage<SysRole> pageList = sysRoleService.list(new Page<SysRole>(pageNo, pageSize), sysRole);
-		return R.ok(pageList);
-	}
-
-	/**
-	 * 使用QueryWrapper查询列表
-	 * 
-	 * @param sysRole
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
-	 * @return
-	 */
-	@RequiresPermissions("sys:role:listByQw")
-	@GetMapping(value = "/listByQw")
-	public R listByQw(SysRole sysRole, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		// 1.最简查询条件封装，输入参数不为空则默认全部eq匹配
-		QueryWrapper<SysRole> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysRole);
-
-		// 2.自定义查询规则，默认按照主键升序排序
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysRole> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysRole, searchObjRule);
-
-		// 3.自定义查询规则，自定义排序规则
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysRole> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysRole, searchObjRule, "columnName1|asc,columnName2|desc");
-
-		IPage<SysRole> pageList = sysRoleService.page(new Page<SysRole>(pageNo, pageSize), queryWrapper);
+	public R list(SysRole sysRole, @RequestParam Integer current, @RequestParam Integer size) {
+		IPage<SysRole> pageList = sysRoleService.list(new Page<SysRole>(current, size), sysRole);
 		return R.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:role:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam(name = "id", required = true) String id) {
+	public R queryById(@RequestParam String id) {
 		SysRole sysRole = sysRoleService.getById(id);
 		return R.ok(sysRole);
 	}
@@ -128,7 +96,7 @@ public class SysRoleController extends BaseController {
 	@SysLogAuto(value = "删除角色")
 	@RequiresPermissions("sys:role:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam(name = "ids", required = true) String ids) {
+	public R delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
 			return R.error("ids can't be empty");
 		}
@@ -164,7 +132,8 @@ public class SysRoleController extends BaseController {
 	@RequiresPermissions("sys:role:saveRolePermissions")
 	@PostMapping(value = "/saveRolePermissions")
 	public R saveRolePermissions(@RequestBody SysRolePermission sysRolePermission) {
-		this.sysRoleService.saveRolePermissions(sysRolePermission.getRoleId(), sysRolePermission.getMenuOrFuncId(), sysRolePermission.getPermissionType());
+		this.sysRoleService.saveRolePermissions(sysRolePermission.getRoleId(), sysRolePermission.getMenuOrFuncId(),
+				sysRolePermission.getPermissionType());
 		return R.ok();
 	}
 
@@ -176,8 +145,8 @@ public class SysRoleController extends BaseController {
 	 */
 	@RequiresPermissions("sys:role:getRoleUser")
 	@GetMapping(value = "/getRoleUser")
-	public R getRoleUser(SysRoleUser sysRoleUser, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-		IPage<SysUser> pageList = this.sysRoleService.getRoleUser(new Page<SysUser>(pageNo, pageSize), sysRoleUser);
+	public R getRoleUser(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
+		IPage<SysUser> pageList = this.sysRoleService.getRoleUser(new Page<SysUser>(current, size), sysRoleUser);
 		return R.ok(pageList);
 	}
 

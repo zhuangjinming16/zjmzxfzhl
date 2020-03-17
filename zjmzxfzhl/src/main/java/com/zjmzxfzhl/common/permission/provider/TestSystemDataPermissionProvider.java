@@ -19,11 +19,9 @@ import lombok.Setter;
 @Component
 public class TestSystemDataPermissionProvider extends AbstractDataPermissionProvider {
 
-	// @DataPermission注解过来的参数
+	// 数据库配置参数，特别注意，如果数据库传入的参数有作为查询条件，应使用SQLFilter.sqlInject(param)防止sql注入
 	private String alias;// 别名
 	private String columnName; // 属性名
-
-	// 数据库配置参数，特别注意，如果数据库传入的参数有作为查询条件，应使用SQLFilter.sqlInject(param)防止从数据库权限配置中sql注入
 	private String dbParam1;
 	private int dbParam2;
 

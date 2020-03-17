@@ -78,6 +78,13 @@ public class SysCodeInfoService extends BaseService<SysCodeInfoMapper, SysCodeIn
 			List<SysCodeInfo> subList = null;
 			if (!codeInfoMap.containsKey(sysCodeInfo.getCodeTypeId())) {
 				subList = new ArrayList<SysCodeInfo>();
+				SysCodeInfo emptySysCodeInfo = new SysCodeInfo();
+				emptySysCodeInfo.setCodeInfoId("");
+				emptySysCodeInfo.setCodeTypeId(sysCodeInfo.getCodeTypeId());
+				emptySysCodeInfo.setContent("");
+				emptySysCodeInfo.setValue("");
+				emptySysCodeInfo.setSortNo(-999);
+				subList.add(emptySysCodeInfo);
 			} else {
 				subList = codeInfoMap.get(sysCodeInfo.getCodeTypeId());
 			}

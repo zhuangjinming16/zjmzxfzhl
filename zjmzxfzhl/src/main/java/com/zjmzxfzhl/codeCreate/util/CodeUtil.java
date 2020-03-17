@@ -24,9 +24,9 @@ public class CodeUtil {
 	public static String projectPath = System.getProperty("user.dir") + "\\";// 开发工程所在系统绝对路径
 
 	public static String createSqlPath = projectPath + "db\\tables\\";// 自动生成的建表语句的输出路径
-	public static String excelDesignPath = projectPath + "db\\数据库设计【DEMO_示例管理】.xlsx";
+	public static String excelDesignPath = projectPath + "db\\数据库设计【SYS_系统管理】.xlsx";
 
-	public static String createTableName = "T_DEMO_ZJMZXFZHL";// 必须大写
+	public static String createTableName = "T_SYS_LOG";// 必须大写
 
 	/**
 	 * 返回驼峰命名法结果.

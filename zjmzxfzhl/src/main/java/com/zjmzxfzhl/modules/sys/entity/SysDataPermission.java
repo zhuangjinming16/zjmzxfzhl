@@ -2,6 +2,7 @@ package com.zjmzxfzhl.modules.sys.entity;
 
 import javax.validation.constraints.NotNull;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
@@ -22,14 +23,16 @@ public class SysDataPermission extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@TableId
-	@NotNull
+	@TableId(type = IdType.ASSIGN_UUID)
 	@LengthForUTF8(max = 32)
 	private String dataPermissionId;// 数据权限ID
 
 	@NotNull
 	@LengthForUTF8(max = 100)
 	private String dataPermissionName;// 数据权限名称
+
+	@LengthForUTF8(max = 100)
+	private String methodId;// 方法Id(DataPermission.methodId)
 
 	@LengthForUTF8(max = 1)
 	private String entityType;// 实体类型(1-角色2-用户)

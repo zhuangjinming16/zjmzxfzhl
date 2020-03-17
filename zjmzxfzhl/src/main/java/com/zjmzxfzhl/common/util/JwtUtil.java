@@ -88,6 +88,7 @@ public class JwtUtil {
 	 * 根据request中的token获取用户账号
 	 * 
 	 * @param request
+	 * @param name
 	 * @return
 	 * @throws SysException
 	 */

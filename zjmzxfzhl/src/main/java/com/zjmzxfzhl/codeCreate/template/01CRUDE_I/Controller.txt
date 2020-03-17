@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.{_sys}.controller;
 
 import java.util.Arrays;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,12 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.R;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType};
 import com.zjmzxfzhl.modules.{_sys}.service.{_Sys}{_CodeType}Service;
 
@@ -40,50 +37,20 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
 	 * 自定义查询列表
 	 * 
 	 * @param {_sys}{_CodeType}
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
+	 * @param current
+	 * @param size
 	 * @return
 	 */
 	@RequiresPermissions("{_sys}:{_codeType}:list")
 	@GetMapping(value = "/list")
-	public R list({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<{_Sys}{_CodeType}>(pageNo, pageSize), {_sys}{_CodeType});
-		return R.ok(pageList);
-	}
-
-	/**
-	 * 使用QueryWrapper查询列表
-	 * 
-	 * @param {_sys}{_CodeType}
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
-	 * @return
-	 */
-	@RequiresPermissions("{_sys}:{_codeType}:listByQw")
-	@GetMapping(value = "/listByQw")
-	public R listByQw({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		// 1.最简查询条件封装，输入参数不为空则默认全部eq匹配
-		QueryWrapper<{_Sys}{_CodeType}> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple({_sys}{_CodeType});
-
-		// 2.自定义查询规则，默认按照主键升序排序
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<{_Sys}{_CodeType}> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple({_sys}{_CodeType}, searchObjRule);
-
-		// 3.自定义查询规则，自定义排序规则
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<{_Sys}{_CodeType}> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple({_sys}{_CodeType}, searchObjRule, "columnName1|asc,columnName2|desc");
-
-		IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.page(new Page<{_Sys}{_CodeType}>(pageNo, pageSize), queryWrapper);
+	public R list({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam Integer current, @RequestParam Integer size) {
+		IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<{_Sys}{_CodeType}>(current, size), {_sys}{_CodeType});
 		return R.ok(pageList);
 	}
 
 	@RequiresPermissions("{_sys}:{_codeType}:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam(name = "id", required = true) String id) {
+	public R queryById(@RequestParam String id) {
 		{_Sys}{_CodeType} {_sys}{_CodeType} = {_sys}{_CodeType}Service.getById(id);
 		return R.ok({_sys}{_CodeType});
 	}
@@ -119,7 +86,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
 	 */
 	@RequiresPermissions("{_sys}:{_codeType}:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam(name = "ids", required = true) String ids) {
+	public R delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
 			return R.error("ids can't be empty");
 		}

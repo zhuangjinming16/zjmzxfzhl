@@ -24,7 +24,7 @@ public class SysRolePermission extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@TableId(type = IdType.UUID)
+	@TableId(type = IdType.ASSIGN_UUID)
 	@NotNull
 	@LengthForUTF8(max = 32)
 	private String rolePermissionId;// 操作权限ID

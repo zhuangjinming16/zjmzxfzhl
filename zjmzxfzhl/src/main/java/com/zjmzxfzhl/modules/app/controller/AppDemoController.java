@@ -59,7 +59,7 @@ public class AppDemoController extends BaseController {
 	@RepeatRequest(lockIndexs = { 0, 1 })
 	@WithoutLogin // 未登陆也可以访问
 	@GetMapping(value = "/repeatRequest2")
-	public R repeatRequest2(@RequestParam(required = true) String deviceSN, @RequestParam(required = true) String deviceIMEI) throws Exception {
+	public R repeatRequest2(@RequestParam String deviceSN, @RequestParam String deviceIMEI) throws Exception {
 		Thread.sleep(1000);
 		log.info("请求接入repeatRequest2");
 		return R.ok();
@@ -79,7 +79,7 @@ public class AppDemoController extends BaseController {
 	 */
 	@RepeatRequest(isExistAndOnlyUserId = false, lockIndexs = 0)
 	@GetMapping(value = "/repeatRequest3")
-	public R repeatRequest3(@RequestParam(required = true) String param) throws Exception {
+	public R repeatRequest3(@RequestParam String param) throws Exception {
 		Thread.sleep(1000);
 		log.info("请求接入repeatRequest3");
 		return R.ok();

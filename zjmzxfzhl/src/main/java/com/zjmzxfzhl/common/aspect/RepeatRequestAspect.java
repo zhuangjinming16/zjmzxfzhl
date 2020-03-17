@@ -43,7 +43,7 @@ public class RepeatRequestAspect {
 	// @Pointcut("execution(* com.*..*.sys.controller.*.*(..)) || execution(* com.*..*.othermodule.controller.*.*(..))")
 	// 或者使用拦截全部controller，然后排除个别非管理端的controller，如下
 	// @Pointcut("execution(* com.*..*.controller.*.*(..)) && !execution(* com.*..*.app.controller.*.*(..))")
-	@Pointcut("execution(* com.*..*.sys.controller.*.*(..)) || execution(* com.*..*.demo.controller.*.*(..))")
+	@Pointcut("execution(* com.*..*.sys.controller.*.*(..)) || execution(* com.*..*.demo.controller.*.*(..)) || execution(* com.*..*.flowable.controller.*.*(..))")
 	private void controllerAspect() {
 	}
 
@@ -63,7 +63,8 @@ public class RepeatRequestAspect {
 
 	@Around("controllerAspectForApp()")
 	public Object controllerAspectForAppAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes().getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
+		AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes()
+				.getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
 		String userId = "";
 		if (appSessionObject != null && appSessionObject.getUserId() != null && appSessionObject.getUserId().length() != 0) {
 			userId = appSessionObject.getUserId();
@@ -82,7 +83,8 @@ public class RepeatRequestAspect {
 	 * @throws NoSuchMethodException
 	 * @throws Throwable
 	 */
-	private Object exec(ProceedingJoinPoint joinPoint, String userId) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, Throwable {
+	private Object exec(ProceedingJoinPoint joinPoint, String userId)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, Throwable {
 		int waitTime = 0, leaseTime = 30; // 默认不等待、且30秒后释放锁
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		RepeatRequest repeatRequest = signature.getMethod().getAnnotation((RepeatRequest.class));

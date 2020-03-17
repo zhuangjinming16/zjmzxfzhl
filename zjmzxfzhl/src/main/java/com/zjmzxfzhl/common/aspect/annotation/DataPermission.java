@@ -22,6 +22,15 @@ import com.zjmzxfzhl.common.permission.provider.AbstractDataPermissionProvider;
 @Repeatable(DataPermissions.class)
 public @interface DataPermission {
 	/**
+	 * 对应t_sys_data_permission表中的 METHOD_ID,
+	 * 
+	 * 若未指定methodId，则以t_sys_data_permission表中METHOD_ID为空的配置项为准
+	 * 
+	 * @return
+	 */
+	String methodId() default "";
+
+	/**
 	 * 需要做过滤的表清单，例如 "T_SYS_USER","T_SYS_ORG"
 	 * 
 	 * @return

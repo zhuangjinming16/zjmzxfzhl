@@ -21,7 +21,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<mybatis.version>1.3.0</mybatis.version>
-		<mysql.version>5.1.45</mysql.version>
+		<mysql.version>8.0.19</mysql.version>
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<poi.version>3.15</poi.version>
@@ -29,7 +29,7 @@
 		<aspectjweaver.version>1.8.14</aspectjweaver.version>
 		<weixin-java-mp.version>3.3.0</weixin-java-mp.version>
 		<druid.version>1.1.10</druid.version>
-		<mybatis-plus.version>3.0.7.1</mybatis-plus.version>
+		<mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
 		<mybatis-plus-dynamic-datasource.version>2.5.4</mybatis-plus-dynamic-datasource.version>
 		<p6spy.version>3.8.0</p6spy.version>
 		<commons.version>2.6</commons.version>
@@ -38,6 +38,7 @@
 		<jsoup.version>1.12.1</jsoup.version>
 		<swagger.version>2.9.2</swagger.version>
 		<redisson.version>3.11.1</redisson.version>
+		<flowable.version>6.4.1</flowable.version>
 	</properties>
 
 	<dependencies>
@@ -205,6 +206,59 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
+		
+		<!--flowable工作流依赖-->
+		<!-- 暂不需要全部载入
+		<dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter</artifactId>
+            <version>${flowable.version}</version>
+            <exclusions>
+	        	<exclusion>
+	        		<groupId>org.mybatis</groupId>
+	        		<artifactId>mybatis</artifactId>
+	        	</exclusion>
+	        </exclusions>
+        </dependency>
+        -->
+		<dependency>
+	        <groupId>org.flowable</groupId>
+	        <artifactId>flowable-spring-boot-starter-basic</artifactId>
+	        <version>${flowable.version}</version>
+	        <exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
+	        	<exclusion>
+	        		<groupId>org.mybatis</groupId>
+	        		<artifactId>mybatis</artifactId>
+	        	</exclusion>
+	        </exclusions>
+	    </dependency>
+	    <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-idm-spring</artifactId>
+            <version>${flowable.version}</version>
+            <exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
+	        	<exclusion>
+	        		<groupId>org.mybatis</groupId>
+	        		<artifactId>mybatis</artifactId>
+	        	</exclusion>
+	        </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-idm-spring-configurator</artifactId>
+            <version>${flowable.version}</version>
+            <exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
+	        	<exclusion>
+	        		<groupId>org.mybatis</groupId>
+	        		<artifactId>mybatis</artifactId>
+	        	</exclusion>
+	        </exclusions>
+        </dependency>
+	    <dependency>
+	        <groupId>org.flowable</groupId>
+	        <artifactId>flowable-json-converter</artifactId>
+	        <version>${flowable.version}</version>
+	    </dependency> 
 		
 	</dependencies>
 

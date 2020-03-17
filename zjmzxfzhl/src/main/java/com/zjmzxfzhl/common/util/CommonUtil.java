@@ -12,6 +12,10 @@ import com.zjmzxfzhl.common.exception.BaseException;
 
 public class CommonUtil {
 
+	public static String trimToEmptyStr(String str) {
+		return StringUtils.trimToEmpty(str);
+	}
+
 	public static boolean isEmptyObject(Object object) {
 		return ObjectUtils.isEmpty(object);
 	}
@@ -81,20 +85,6 @@ public class CommonUtil {
 				return true;
 		}
 		return false;
-	}
-
-	/**
-	 * 判断一个是是否是Boolean值(数据库中可能存成string了)
-	 * 
-	 * @param value
-	 * @param defaultValue
-	 * @return
-	 */
-	public static boolean getBooleanValue(String value, boolean defaultValue) {
-		if (isNotEmptyStr(value))
-			return Boolean.valueOf(value);
-
-		return defaultValue;
 	}
 
 	/**
@@ -333,8 +323,5 @@ public class CommonUtil {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
 	}
 }

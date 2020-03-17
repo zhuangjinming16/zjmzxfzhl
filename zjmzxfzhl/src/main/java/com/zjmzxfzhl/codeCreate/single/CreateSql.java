@@ -89,16 +89,19 @@ public class CreateSql {
 					else {
 						// 创建这张表的主键
 						if (!CommonUtil.isEmptyStr(pkColumn))
-							stringBufferFoot.insert(4, "ALTER TABLE " + tableObject.getTableName() + " ADD CONSTRAINT PK_" + tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn + ");" + "\r\n");
+							stringBufferFoot.insert(4, "ALTER TABLE " + tableObject.getTableName() + " ADD CONSTRAINT PK_"
+									+ tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn + ");" + "\r\n");
 					}
 
 					// 表的注释,第一行才有
 					if (i == 0) {
-						stringBufferFoot.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
+						stringBufferFoot
+								.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
 					}
 
 					// 字段注释
-					stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "." + tableObject.getColumnNameEn() + " IS '" + tableObject.getColumnNameCn() + "';" + "\r\n");
+					stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "." + tableObject.getColumnNameEn() + " IS '"
+							+ tableObject.getColumnNameCn() + "';" + "\r\n");
 				}
 
 				// 输出插入菜单的insert语句
@@ -106,13 +109,19 @@ public class CreateSql {
 				// stringBufferFoot.append("/**【" + tableName + "】结束**/" + "\r\n");// 注释--结束
 
 				if (CodeUtil.isPringInsertMenuSql) {// 打印插入菜单的语句
-					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999', null);\r\n");
-					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" + _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
-							+ "/" + _codeType + "/index', NULL, '0', '1', '" + _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-3', '删除', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999',
+					// null);\r\n");
+					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" +
+					// _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType
+							+ "', '" + _sys + ":" + _codeType + ":list', 'views/" + _sys + "/" + _codeType + "/index', NULL, '0', '1', '"
+							+ _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-3', '删除', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 				}
 
 				stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot).append("\r\n");// 每张表建表语句累加
@@ -199,7 +208,8 @@ public class CreateSql {
 						}
 
 						if (isNumberPk) {// mysql，主键为整数型，数据库自增长
-							stringBufferFoot.append(") ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 COMMENT='" + tableObject.getTableNameCn() + "';\r\n");
+							stringBufferFoot.append(
+									") ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 COMMENT='" + tableObject.getTableNameCn() + "';\r\n");
 						} else {
 							// 建表语句结束
 							stringBufferFoot.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='" + tableObject.getTableNameCn() + "';\r\n");
@@ -212,13 +222,19 @@ public class CreateSql {
 				stringBufferFoot.append("/**【" + tableName + "】结束**/" + "\r\n");// 注释--结束
 
 				if (CodeUtil.isPringInsertMenuSql) {// 打印插入菜单的语句
-					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999', null);\r\n");
-					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" + _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
-							+ "/" + _codeType + "/index', NULL, '0', '1', '" + _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-3', '删除', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999',
+					// null);\r\n");
+					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" +
+					// _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType
+							+ "', '" + _sys + ":" + _codeType + ":list', 'views/" + _sys + "/" + _codeType + "/index', NULL, '0', '1', '"
+							+ _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-3', '删除', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 				}
 
 				stringBufferAll.append(stringBufferHead).append(stringBufferMid).append(stringBufferFoot).append("\r\n");// 每张表建表语句累加
@@ -289,16 +305,19 @@ public class CreateSql {
 					else {
 						// 创建这张表的主键
 						if (!CommonUtil.isEmptyStr(pkColumn))
-							stringBufferFoot.insert(3, "IN IBRCH_DATA4K INDEX IN IBRCH_INDEX4K; \r\n ALTER TABLE " + tableObject.getTableName() + " ADD CONSTRAINT PK_" + tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn + ");" + "\r\n");
+							stringBufferFoot.insert(3, "IN IBRCH_DATA4K INDEX IN IBRCH_INDEX4K; \r\n ALTER TABLE " + tableObject.getTableName()
+									+ " ADD CONSTRAINT PK_" + tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn + ");" + "\r\n");
 					}
 
 					// 表的注释,第一行才有
 					if (i == 0) {
-						stringBufferFoot.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
+						stringBufferFoot
+								.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
 					}
 
 					// 字段注释
-					stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "." + tableObject.getColumnNameEn() + " IS '" + tableObject.getColumnNameCn() + "';" + "\r\n");
+					stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "." + tableObject.getColumnNameEn() + " IS '"
+							+ tableObject.getColumnNameCn() + "';" + "\r\n");
 				}
 
 				// 输出插入菜单的insert语句
@@ -306,13 +325,19 @@ public class CreateSql {
 				stringBufferFoot.append("/**【" + tableName + "】结束**/" + "\r\n");// 注释--结束
 
 				if (CodeUtil.isPringInsertMenuSql) {// 打印插入菜单的语句
-					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999', null);\r\n");
-					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" + _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType + "', '" + _sys + ":" + _codeType + ":list," + _sys + ":" + _codeType + ":listByQw', 'views/" + _sys
-							+ "/" + _codeType + "/index', NULL, '0', '1', '" + _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-3', '删除', '" + _sysCodeType + "', '" + _sys + ":" + _codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null, '1', '999',
+					// null);\r\n");
+					// stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', '/" + _sys + "/" +
+					// _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "', 'list', '" + _codeType
+							+ "', '" + _sys + ":" + _codeType + ":list', 'views/" + _sys + "/" + _codeType + "/index', NULL, '0', '1', '"
+							+ _SysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-1', '新增', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-2', '修改', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+					stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + _sysCodeType + "-3', '删除', '" + _sysCodeType + "', '" + _sys + ":"
+							+ _codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
 				}
 
 				stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot).append("\r\n");// 每张表建表语句累加

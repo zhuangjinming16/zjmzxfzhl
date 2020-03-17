@@ -46,9 +46,11 @@ public class CreateEntity {
 			TreeMap<String, String> importHashMap = new TreeMap<String, String>();
 			importHashMap.put("import javax.validation.constraints.NotNull;\r\n", "import javax.validation.constraints.NotNull;\r\n");
 			importHashMap.put("import com.baomidou.mybatisplus.annotation.TableId;\r\n", "import com.baomidou.mybatisplus.annotation.TableId;\r\n");
-			importHashMap.put("import com.baomidou.mybatisplus.annotation.TableName;\r\n", "import com.baomidou.mybatisplus.annotation.TableName;\r\n");
+			importHashMap.put("import com.baomidou.mybatisplus.annotation.TableName;\r\n",
+					"import com.baomidou.mybatisplus.annotation.TableName;\r\n");
 			importHashMap.put("import com.zjmzxfzhl.common.base.BaseEntity;\r\n", "import com.zjmzxfzhl.common.base.BaseEntity;\\r\\n");
-			importHashMap.put("import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;\r\n", "import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;\r\n");
+			importHashMap.put("import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;\r\n",
+					"import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;\r\n");
 			importHashMap.put("import lombok.Getter;\r\n", "import lombok.Getter;\r\n");
 			importHashMap.put("import lombok.Setter;\r\n", "import lombok.Setter;\r\n");
 
@@ -76,13 +78,15 @@ public class CreateEntity {
 				String _CodeTypeId = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), true);
 				String _codeTypeId = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);
 
-				if ("createBy".equals(_codeTypeId) || "createDate".equals(_codeTypeId) || "createTime".equals(_codeTypeId) || "updateBy".equals(_codeTypeId) || "updateDate".equals(_codeTypeId) || "updateTime".equals(_codeTypeId)) {
+				if ("createBy".equals(_codeTypeId) || "createDate".equals(_codeTypeId) || "createTime".equals(_codeTypeId)
+						|| "updateBy".equals(_codeTypeId) || "updateDate".equals(_codeTypeId) || "updateTime".equals(_codeTypeId)) {
 					continue;
 				}
 
 				if (CommonUtil.isExist("UUID主键", tableObject.getIsNull(), ",")) {
-					stringBufferMid.append("\t" + "@TableId(type = IdType.UUID)" + "\r\n");
-					importHashMap.put("import com.baomidou.mybatisplus.annotation.IdType;\r\n", "import com.baomidou.mybatisplus.annotation.IdType;\r\n");
+					stringBufferMid.append("\t" + "@TableId(type = IdType.ASSIGN_UUID)" + "\r\n");
+					importHashMap.put("import com.baomidou.mybatisplus.annotation.IdType;\r\n",
+							"import com.baomidou.mybatisplus.annotation.IdType;\r\n");
 				} else if (CommonUtil.isExist("数据库生成主键,前台输入主键", tableObject.getIsNull(), ",")) {
 					stringBufferMid.append("\t" + "@TableId" + "\r\n");
 				}
@@ -127,7 +131,8 @@ public class CreateEntity {
 						stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
 					}
 				} else if ("浮点型".equals(tableObject.getDataType())) {
-					stringBufferMid.append("\t" + "@DecimalMax(\"" + getMax(tableObject.getDataLength(), tableObject.getDataPrecision()) + "\")" + "\r\n");
+					stringBufferMid
+							.append("\t" + "@DecimalMax(\"" + getMax(tableObject.getDataLength(), tableObject.getDataPrecision()) + "\")" + "\r\n");
 					importHashMap.put("import javax.validation.constraints.DecimalMax;\r\n", "import javax.validation.constraints.DecimalMax;\r\n");
 					importHashMap.put("import java.math.BigDecimal;\r\n", "import java.math.BigDecimal;\r\n");
 
@@ -155,8 +160,10 @@ public class CreateEntity {
 					stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
 
 					importHashMap.put("import java.util.Date;\r\n", "import java.util.Date;\r\n");
-					importHashMap.put("import com.fasterxml.jackson.annotation.JsonFormat;\r\n", "import com.fasterxml.jackson.annotation.JsonFormat;\r\n");
-					importHashMap.put("import org.springframework.format.annotation.DateTimeFormat;\r\n", "org.springframework.format.annotation.DateTimeFormat;\r\n");
+					importHashMap.put("import com.fasterxml.jackson.annotation.JsonFormat;\r\n",
+							"import com.fasterxml.jackson.annotation.JsonFormat;\r\n");
+					importHashMap.put("import org.springframework.format.annotation.DateTimeFormat;\r\n",
+							"org.springframework.format.annotation.DateTimeFormat;\r\n");
 				} else if ("时间型".equals(tableObject.getDataType())) {
 					stringBufferMid.append("\t" + "@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\", timezone = \"GMT+8\")" + "\r\n");
 					stringBufferMid.append("\t" + "@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")" + "\r\n");
@@ -172,8 +179,10 @@ public class CreateEntity {
 					stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
 
 					importHashMap.put("import java.util.Date;\r\n", "import java.util.Date;\r\n");
-					importHashMap.put("import com.fasterxml.jackson.annotation.JsonFormat;\r\n", "import com.fasterxml.jackson.annotation.JsonFormat;\r\n");
-					importHashMap.put("import org.springframework.format.annotation.DateTimeFormat;\r\n", "org.springframework.format.annotation.DateTimeFormat;\r\n");
+					importHashMap.put("import com.fasterxml.jackson.annotation.JsonFormat;\r\n",
+							"import com.fasterxml.jackson.annotation.JsonFormat;\r\n");
+					importHashMap.put("import org.springframework.format.annotation.DateTimeFormat;\r\n",
+							"org.springframework.format.annotation.DateTimeFormat;\r\n");
 				}
 			}
 

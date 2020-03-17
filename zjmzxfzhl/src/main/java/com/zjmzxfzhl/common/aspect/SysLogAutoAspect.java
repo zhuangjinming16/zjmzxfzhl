@@ -15,7 +15,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.zjmzxfzhl.common.R;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
-import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.IPUtils;
 import com.zjmzxfzhl.common.util.JacksonUtil;
 import com.zjmzxfzhl.common.util.ShiroUtils;
@@ -97,9 +96,6 @@ public class SysLogAutoAspect {
 			operateResult = ex.getMessage();
 		}
 
-		if (operateResult != null && operateResult.getBytes("UTF-8").length > 1024) {
-			operateResult = CommonUtil.cutString(operateResult, 1024, "UTF-8");
-		}
 		sysLog.setOperateResult(operateResult);
 		// 保存系统日志
 		sysLogService.save(sysLog);

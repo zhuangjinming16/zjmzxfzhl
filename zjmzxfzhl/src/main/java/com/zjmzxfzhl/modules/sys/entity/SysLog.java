@@ -23,7 +23,7 @@ public class SysLog extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@TableId(type = IdType.UUID)
+	@TableId(type = IdType.ASSIGN_UUID)
 	@NotNull
 	@LengthForUTF8(max = 32)
 	private String logId;// UUID
@@ -52,13 +52,11 @@ public class SysLog extends BaseEntity {
 	@LengthForUTF8(max = 255)
 	private String requestUrl;// 请求路径
 
-	@LengthForUTF8(max = 2048)
 	private String requestParam;// 请求参数
 
 	@LengthForUTF8(max = 10)
 	private String requestType;// 请求类型
 
-	@LengthForUTF8(max = 1024)
 	private String operateResult;// 操作结果
 
 	private Long costTime;// 耗时

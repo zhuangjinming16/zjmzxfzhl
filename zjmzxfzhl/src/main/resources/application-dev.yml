@@ -35,10 +35,11 @@ spring:
         connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       datasource:
         master:
-          url: jdbc:mysql://localhost:3306/zjmzxfzhl?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+          url: jdbc:mysql://localhost:3306/zjmzxfzhl?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=GMT
           username: root
           password: root
-          driver-class-name: com.mysql.jdbc.Driver
+          #password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
           #druid: #以下参数针对每个库可以重新设置druid参数
         #slave: #多数据源可开启
         #  url: jdbc:mysql://localhost:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false

@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.sys.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.R;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
 import com.zjmzxfzhl.modules.sys.entity.vo.ElTree;
 import com.zjmzxfzhl.modules.sys.service.SysMenuService;
@@ -42,50 +39,20 @@ public class SysMenuController extends BaseController {
 	 * 自定义查询列表
 	 * 
 	 * @param sysMenu
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
+	 * @param current
+	 * @param size
 	 * @return
 	 */
 	@RequiresPermissions("sys:menu:list")
 	@GetMapping(value = "/list")
-	public R list(SysMenu sysMenu, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		IPage<SysMenu> pageList = sysMenuService.list(new Page<SysMenu>(pageNo, pageSize), sysMenu);
-		return R.ok(pageList);
-	}
-
-	/**
-	 * 使用QueryWrapper查询列表
-	 * 
-	 * @param sysMenu
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
-	 * @return
-	 */
-	@RequiresPermissions("sys:menu:listByQw")
-	@GetMapping(value = "/listByQw")
-	public R listByQw(SysMenu sysMenu, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		// 1.最简查询条件封装，输入参数不为空则默认全部eq匹配
-		QueryWrapper<SysMenu> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysMenu);
-
-		// 2.自定义查询规则，默认按照主键升序排序
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysMenu> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysMenu, searchObjRule);
-
-		// 3.自定义查询规则，自定义排序规则
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysMenu> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysMenu, searchObjRule, "columnName1|asc,columnName2|desc");
-
-		IPage<SysMenu> pageList = sysMenuService.page(new Page<SysMenu>(pageNo, pageSize), queryWrapper);
+	public R list(SysMenu sysMenu, @RequestParam Integer current, @RequestParam Integer size) {
+		IPage<SysMenu> pageList = sysMenuService.list(new Page<SysMenu>(current, size), sysMenu);
 		return R.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:menu:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam(name = "id", required = true) String id) {
+	public R queryById(@RequestParam String id) {
 		SysMenu sysMenu = sysMenuService.getById(id);
 		return R.ok(sysMenu);
 	}
@@ -124,7 +91,7 @@ public class SysMenuController extends BaseController {
 	@SysLogAuto(value = "删除功能菜单")
 	@RequiresPermissions("sys:menu:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam(name = "id", required = true) String id) {
+	public R delete(@RequestParam String id) {
 		sysMenuService.delete(id);
 		return R.ok();
 	}

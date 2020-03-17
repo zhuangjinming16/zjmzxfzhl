@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.sys.controller;
 
 import java.util.Arrays;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,12 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.R;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
 import com.zjmzxfzhl.modules.sys.service.SysLogService;
 
@@ -40,50 +37,20 @@ public class SysLogController extends BaseController {
 	 * 自定义查询列表
 	 * 
 	 * @param sysLog
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
+	 * @param current
+	 * @param size
 	 * @return
 	 */
 	@RequiresPermissions("sys:log:list")
 	@GetMapping(value = "/list")
-	public R list(SysLog sysLog, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		IPage<SysLog> pageList = sysLogService.list(new Page<SysLog>(pageNo, pageSize), sysLog);
-		return R.ok(pageList);
-	}
-
-	/**
-	 * 使用QueryWrapper查询列表
-	 * 
-	 * @param sysLog
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
-	 * @return
-	 */
-	@RequiresPermissions("sys:log:listByQw")
-	@GetMapping(value = "/listByQw")
-	public R listByQw(SysLog sysLog, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		// 1.最简查询条件封装，输入参数不为空则默认全部eq匹配
-		QueryWrapper<SysLog> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysLog);
-
-		// 2.自定义查询规则，默认按照主键升序排序
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysLog> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysLog, searchObjRule);
-
-		// 3.自定义查询规则，自定义排序规则
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysLog> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysLog, searchObjRule, "columnName1|asc,columnName2|desc");
-
-		IPage<SysLog> pageList = sysLogService.page(new Page<SysLog>(pageNo, pageSize), queryWrapper);
+	public R list(SysLog sysLog, @RequestParam Integer current, @RequestParam Integer size) {
+		IPage<SysLog> pageList = sysLogService.list(new Page<SysLog>(current, size), sysLog);
 		return R.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:log:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam(name = "id", required = true) String id) {
+	public R queryById(@RequestParam String id) {
 		SysLog sysLog = sysLogService.getById(id);
 		return R.ok(sysLog);
 	}
@@ -119,7 +86,7 @@ public class SysLogController extends BaseController {
 	 */
 	@RequiresPermissions("sys:log:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam(name = "ids", required = true) String ids) {
+	public R delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
 			return R.error("ids can't be empty");
 		}

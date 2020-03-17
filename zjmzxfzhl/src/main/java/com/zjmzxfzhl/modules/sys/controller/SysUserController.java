@@ -14,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.Constants;
 import com.zjmzxfzhl.common.R;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.common.util.DateUtil;
 import com.zjmzxfzhl.common.util.IPUtils;
 import com.zjmzxfzhl.common.util.JwtUtil;
@@ -50,15 +48,14 @@ public class SysUserController extends BaseController {
 	 * 自定义查询列表
 	 * 
 	 * @param sysUser
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
+	 * @param current
+	 * @param size
 	 * @return
 	 */
 	@RequiresPermissions("sys:user:list")
 	@GetMapping(value = "/list")
-	public R list(SysUser sysUser, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		IPage<SysUser> pageList = sysUserService.list(new Page<SysUser>(pageNo, pageSize), sysUser);
+	public R list(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
+		IPage<SysUser> pageList = sysUserService.list(new Page<SysUser>(current, size), sysUser);
 		return R.ok(pageList);
 	}
 
@@ -66,49 +63,19 @@ public class SysUserController extends BaseController {
 	 * 公共选人查询
 	 * 
 	 * @param sysUser
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
+	 * @param current
+	 * @param size
 	 * @return
 	 */
 	@GetMapping(value = "/listSelectUser")
-	public R listSelectUser(SysUser sysUser, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		IPage<SysUser> pageList = sysUserService.listSelectUser(new Page<SysUser>(pageNo, pageSize), sysUser);
-		return R.ok(pageList);
-	}
-
-	/**
-	 * 使用QueryWrapper查询列表
-	 * 
-	 * @param sysUser
-	 * @param pageNo
-	 * @param pageSize
-	 * @param request
-	 * @return
-	 */
-	@RequiresPermissions("sys:user:listByQw")
-	@GetMapping(value = "/listByQw")
-	public R listByQw(SysUser sysUser, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
-		// 1.最简查询条件封装，输入参数不为空则默认全部eq匹配
-		QueryWrapper<SysUser> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysUser);
-
-		// 2.自定义查询规则，默认按照主键升序排序
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysUser> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysUser, searchObjRule);
-
-		// 3.自定义查询规则，自定义排序规则
-		// Map<String, FilterOperate> searchObjRule = new HashMap<>();
-		// searchObjRule.put("columnName", FilterOperate.LIKE);
-		// QueryWrapper<SysUser> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysUser, searchObjRule, "columnName1|asc,columnName2|desc");
-
-		IPage<SysUser> pageList = sysUserService.page(new Page<SysUser>(pageNo, pageSize), queryWrapper);
+	public R listSelectUser(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
+		IPage<SysUser> pageList = sysUserService.listSelectUser(new Page<SysUser>(current, size), sysUser);
 		return R.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:user:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam(name = "id", required = true) String id) {
+	public R queryById(@RequestParam String id) {
 		SysUser sysUser = sysUserService.getById(id);
 		return R.ok(sysUser);
 	}
@@ -147,14 +114,14 @@ public class SysUserController extends BaseController {
 	@SysLogAuto(value = "删除用户")
 	@RequiresPermissions("sys:user:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam(name = "ids", required = true) String ids) {
+	public R delete(@RequestParam String ids) {
 		sysUserService.delete(ids);
 		return R.ok();
 	}
 
 	@SysLogAuto(value = "获取用户信息")
 	@GetMapping(value = "/getUserInfo")
-	public R getUserInfo(@RequestParam(name = "roleId", defaultValue = "") String roleId, HttpServletRequest request) {
+	public R getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
 		SysUser sysUser = ShiroUtils.getSysUser();
 		SessionObject sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
 		sessionObject.setLoginTime(DateUtil.getNow());

@@ -139,7 +139,8 @@ public class CreateMybatisMapperXml {
 					// <if test="userId != null and userId !=''">
 					// <![CDATA[ a.USER_ID = #{userId} AND ]]>
 					stringBuffer.append("\t\t" + "<if test=\"entity." + columnNameEn + " != null and entity." + columnNameEn + " !=''\">" + "\r\n");
-					stringBuffer.append("\t\t\t" + "<![CDATA[\tAND a." + tableObject.getColumnNameEn() + " = #{entity." + columnNameEn + "}\t]]>" + "\r\n");
+					stringBuffer.append(
+							"\t\t\t" + "<![CDATA[\tAND a." + tableObject.getColumnNameEn() + " = #{entity." + columnNameEn + "}\t]]>" + "\r\n");
 					stringBuffer.append("\t\t" + "</if>" + "\r\n");
 				}
 
