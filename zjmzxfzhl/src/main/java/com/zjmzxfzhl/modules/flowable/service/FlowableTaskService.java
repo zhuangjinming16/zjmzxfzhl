@@ -253,22 +253,21 @@ public class FlowableTaskService {
 	@Transactional
 	public void completeTask(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
-		String userId = ShiroUtils.getUserId();
+		String currUserId = ShiroUtils.getUserId();
 		Task task = getTaskNotNull(taskId);
-		if (!permissionService.isTaskOwnerOrAssignee(userId, task)) {
-			if (StringUtils.isEmpty(task.getScopeType()) && !permissionService.validateIfUserIsInitiatorAndCanCompleteTask(userId, task)) {
+		if (!permissionService.isTaskOwnerOrAssignee(currUserId, task)) {
+			if (StringUtils.isEmpty(task.getScopeType()) && !permissionService.validateIfUserIsInitiatorAndCanCompleteTask(currUserId, task)) {
 				throw new FlowableNoPermissionException("User does not have permission");
 			}
 		}
 
-		this.addComment(taskId, task.getProcessInstanceId(), userId, taskRequest.isInitiator() ? CommentTypeEnum.CXTJ : CommentTypeEnum.WC,
+		this.addComment(taskId, task.getProcessInstanceId(), currUserId, taskRequest.isInitiator() ? CommentTypeEnum.CXTJ : CommentTypeEnum.WC,
 				taskRequest.getMessage());
 
 		Map<String, Object> completeVariables = null;
 		if (taskRequest.getValues() != null && !taskRequest.getValues().isEmpty()) {
 			completeVariables = taskRequest.getValues();
 		}
-		String currUserId = ShiroUtils.getUserId();
 		if (task.getAssignee() == null || !task.getAssignee().equals(currUserId)) {
 			taskService.setAssignee(taskId, currUserId);
 		}
