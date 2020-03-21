@@ -35,7 +35,7 @@ spring:
         connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       datasource:
         master:
-          url: jdbc:mysql://localhost:3306/zjmzxfzhl?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=GMT
+          url: jdbc:mysql://localhost:3306/zjmzxfzhl?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=GMT%2B8
           username: root
           password: root
           #password: root
