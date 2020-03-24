@@ -14,14 +14,39 @@ import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
  * @author 庄金明
  */
 public interface DemoZjmzxfzhlMapper extends BaseMapper<DemoZjmzxfzhl> {
+	/**
+	 * 查询开发示例列表
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<DemoZjmzxfzhl> list(IPage<DemoZjmzxfzhl> page, @Param("entity") DemoZjmzxfzhl entity);
 
-	// 数据权限示例使用
+	/**
+	 * 数据权限示例使用
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<DemoZjmzxfzhl> list1(IPage<DemoZjmzxfzhl> page, @Param("entity") DemoZjmzxfzhl entity);
 
-	// 数据权限示例使用
+	/**
+	 * 数据权限示例使用
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<DemoZjmzxfzhl> list2(IPage<DemoZjmzxfzhl> page, @Param("entity") DemoZjmzxfzhl entity);
 
-	// 数据权限示例使用
+	/**
+	 * 数据权限示例使用
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<DemoZjmzxfzhl> list3(IPage<DemoZjmzxfzhl> page, @Param("entity") DemoZjmzxfzhl entity);
 }

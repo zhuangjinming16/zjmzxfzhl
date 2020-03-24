@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.Constants;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.common.util.DateUtil;
-import com.zjmzxfzhl.common.util.IPUtils;
+import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.common.util.ShiroUtils;
@@ -54,9 +54,9 @@ public class SysUserController extends BaseController {
 	 */
 	@RequiresPermissions("sys:user:list")
 	@GetMapping(value = "/list")
-	public R list(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysUser> pageList = sysUserService.list(new Page<SysUser>(current, size), sysUser);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	/**
@@ -68,16 +68,16 @@ public class SysUserController extends BaseController {
 	 * @return
 	 */
 	@GetMapping(value = "/listSelectUser")
-	public R listSelectUser(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result listSelectUser(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysUser> pageList = sysUserService.listSelectUser(new Page<SysUser>(current, size), sysUser);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:user:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysUser sysUser = sysUserService.getById(id);
-		return R.ok(sysUser);
+		return Result.ok(sysUser);
 	}
 
 	/**
@@ -88,9 +88,9 @@ public class SysUserController extends BaseController {
 	@SysLogAuto(value = "新增用户")
 	@RequiresPermissions("sys:user:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody SysUser sysUser) {
+	public Result save(@Valid @RequestBody SysUser sysUser) {
 		sysUserService.saveSysUser(sysUser);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -101,9 +101,9 @@ public class SysUserController extends BaseController {
 	@SysLogAuto(value = "修改用户")
 	@RequiresPermissions("sys:user:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysUser sysUser) {
+	public Result update(@Valid @RequestBody SysUser sysUser) {
 		sysUserService.updateSysUser(sysUser);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -114,30 +114,29 @@ public class SysUserController extends BaseController {
 	@SysLogAuto(value = "删除用户")
 	@RequiresPermissions("sys:user:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		sysUserService.delete(ids);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "获取用户信息")
 	@GetMapping(value = "/getUserInfo")
-	public R getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
+	public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
 		SysUser sysUser = ShiroUtils.getSysUser();
 		SessionObject sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
 		sessionObject.setLoginTime(DateUtil.getNow());
-		sessionObject.setIpAddr(IPUtils.getIpAddr(request));
+		sessionObject.setIpAddr(IpUtils.getIpAddr(request));
 		sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + sysUser.getUserId()));
 		redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId(), sessionObject, JwtUtil.EXPIRE_TIME);
-		return R.ok(sessionObject);
+		return Result.ok(sessionObject);
 	}
 
-	// @SysLogAuto(value = "修改密码") //修改密码暂时不做日志登记
 	@PostMapping(value = "/updatePassword")
-	public R updatePassword(@RequestBody SysPasswordForm sysPasswordForm) {
+	public Result updatePassword(@RequestBody SysPasswordForm sysPasswordForm) {
 		boolean success = sysUserService.updatePassword(sysPasswordForm);
 		if (!success) {
-			return R.error("原密码错误");
+			return Result.error("原密码错误");
 		}
-		return R.ok();
+		return Result.ok();
 	}
 }

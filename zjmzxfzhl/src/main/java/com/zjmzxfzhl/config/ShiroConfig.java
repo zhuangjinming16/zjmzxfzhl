@@ -21,6 +21,10 @@ import org.springframework.context.annotation.DependsOn;
 import com.zjmzxfzhl.modules.shiro.auth.AuthRealm;
 import com.zjmzxfzhl.modules.shiro.auth.JwtFilter;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 public class ShiroConfig {
 
@@ -37,9 +41,12 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/demo/redlock/*", "anon");
 
 		// 配置不会被拦截的链接 顺序判断
-		filterChainDefinitionMap.put("/sys/login", "anon"); // 登录接口
-		filterChainDefinitionMap.put("/sys/captcha.jpg", "anon");// 登录验证码
-		filterChainDefinitionMap.put("/test/**", "anon");// 开放测试URL，生产应关闭
+		// 登录接口
+		filterChainDefinitionMap.put("/sys/login", "anon");
+		// 登录验证码
+		filterChainDefinitionMap.put("/sys/captcha.jpg", "anon");
+		// 开放测试URL，生产应关闭
+		filterChainDefinitionMap.put("/test/**", "anon");
 
 		// app访问路径shiro不拦截，应自定义拦截器拦截app用户登陆情况
 		filterChainDefinitionMap.put("/app/**", "anon");
@@ -66,8 +73,6 @@ public class ShiroConfig {
 		// swagger相关end
 
 		// 性能监控
-		// filterChainDefinitionMap.put("/actuator/metrics/**", "anon");
-		// filterChainDefinitionMap.put("/actuator/httptrace/**", "anon");
 		filterChainDefinitionMap.put("/actuator/**", "anon");
 
 		// 添加自己的过滤器并且取名为jwt

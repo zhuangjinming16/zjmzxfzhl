@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,44 +24,44 @@ public class SysDataPermission extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@TableId(type = IdType.ASSIGN_UUID)
-	@LengthForUTF8(max = 32)
-	private String dataPermissionId;// 数据权限ID
+	@LengthForUtf8(max = 32)
+	private String dataPermissionId;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String dataPermissionName;// 数据权限名称
+	@LengthForUtf8(max = 100)
+	private String dataPermissionName;
 
-	@LengthForUTF8(max = 100)
-	private String methodId;// 方法Id(DataPermission.methodId)
+	@LengthForUtf8(max = 100)
+	private String methodId;
 
-	@LengthForUTF8(max = 1)
-	private String entityType;// 实体类型(1-角色2-用户)
+	@LengthForUtf8(max = 1)
+	private String entityType;
 
-	@LengthForUTF8(max = 32)
-	private String entityId;// 实体ID(用户ID或角色ID)
+	@LengthForUtf8(max = 32)
+	private String entityId;
 
-	@LengthForUTF8(max = 100)
-	private String tableName;// 业务表名
+	@LengthForUtf8(max = 100)
+	private String tableName;
 
-	@LengthForUTF8(max = 255)
-	private String className;// 类名
+	@LengthForUtf8(max = 255)
+	private String className;
 
-	@LengthForUTF8(max = 100)
-	private String columnName;// 属性名
+	@LengthForUtf8(max = 100)
+	private String columnName;
 
-	@LengthForUTF8(max = 1)
-	private String sourceStrategy;// 数据源策略(1-用户录入2-系统提供算法)
+	@LengthForUtf8(max = 1)
+	private String sourceStrategy;
 
-	@LengthForUTF8(max = 100)
-	private String operate;// 查询表达式
+	@LengthForUtf8(max = 100)
+	private String operate;
 
-	@LengthForUTF8(max = 255)
-	private String value;// 查询条件
+	@LengthForUtf8(max = 255)
+	private String value;
 
-	@LengthForUTF8(max = 255)
-	private String sourceProvider;// 系统提供的数据源class类
+	@LengthForUtf8(max = 255)
+	private String sourceProvider;
 
-	@LengthForUTF8(max = 255)
-	private String sourceProviderParams;// 系统提供的数据源class类参数注入JSON格式
+	@LengthForUtf8(max = 255)
+	private String sourceProviderParams;
 
 }

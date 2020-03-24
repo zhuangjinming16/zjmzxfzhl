@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 public class RedissonConfig {
 	@Value("${spring.redis.sentinel.nodes:}")
@@ -24,7 +28,6 @@ public class RedissonConfig {
 		} else {
 			config = Config.fromYAML(new ClassPathResource("redisson-single.yml").getInputStream());
 		}
-		// System.out.println(config.toJSON().toString());
 		return Redisson.create(config);
 	}
 }

@@ -16,6 +16,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Getter
 @Setter
 public class TaskResponse {
@@ -141,7 +145,6 @@ public class TaskResponse {
 		this.taskDefinitionKey = taskInfo.getTaskDefinitionKey();
 		this.owner = taskInfo.getOwner();
 		this.assignee = taskInfo.getAssignee();
-		// this.formKey = taskInfo.getFormKey();
 		if (taskInfo instanceof HistoricTaskInstance) {
 			this.endTime = ((HistoricTaskInstance) taskInfo).getEndTime();
 			this.durationInMillis = ((HistoricTaskInstance) taskInfo).getDurationInMillis();

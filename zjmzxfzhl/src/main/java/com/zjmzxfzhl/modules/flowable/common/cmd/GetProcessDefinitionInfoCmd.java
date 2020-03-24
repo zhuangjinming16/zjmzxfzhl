@@ -7,12 +7,17 @@ import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
-import org.flowable.engine.ProcessEngineConfiguration;
 import org.flowable.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityManager;
 import org.flowable.engine.impl.util.CommandContextUtil;
 import org.flowable.engine.repository.ProcessDefinition;
 
+import com.zjmzxfzhl.common.util.CommonUtil;
+
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class GetProcessDefinitionInfoCmd implements Command<ProcessDefinition>, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -39,13 +44,13 @@ public class GetProcessDefinitionInfoCmd implements Command<ProcessDefinition>, 
 				throw new FlowableObjectNotFoundException("No process definition found for id = '" + processDefinitionId + "'",
 						ProcessDefinition.class);
 			}
-		} else if (processDefinitionKey != null && (tenantId == null || ProcessEngineConfiguration.NO_TENANT_ID.equals(tenantId))) {
+		} else if (processDefinitionKey != null && CommonUtil.isEmptyStr(tenantId)) {
 			processDefinition = processDefinitionEntityManager.findLatestProcessDefinitionByKey(processDefinitionKey);
 			if (processDefinition == null) {
 				throw new FlowableObjectNotFoundException("No process definition found for key '" + processDefinitionKey + "'",
 						ProcessDefinition.class);
 			}
-		} else if (processDefinitionKey != null && tenantId != null && !ProcessEngineConfiguration.NO_TENANT_ID.equals(tenantId)) {
+		} else if (processDefinitionKey != null && CommonUtil.isNotEmptyStr(tenantId)) {
 			processDefinition = processDefinitionEntityManager.findLatestProcessDefinitionByKeyAndTenantId(processDefinitionKey, tenantId);
 			if (processDefinition == null) {
 				if (processEngineConfiguration.isFallbackToDefaultTenant()) {

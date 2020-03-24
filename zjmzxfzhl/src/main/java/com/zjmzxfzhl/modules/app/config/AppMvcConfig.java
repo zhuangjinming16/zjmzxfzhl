@@ -7,6 +7,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 public class AppMvcConfig implements WebMvcConfigurer {
 	@Autowired

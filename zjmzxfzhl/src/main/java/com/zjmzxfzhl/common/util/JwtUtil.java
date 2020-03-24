@@ -11,8 +11,15 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zjmzxfzhl.common.exception.SysException;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 public class JwtUtil {
-	public static final long EXPIRE_TIME = 15 * 60; // 单位秒s
+	/**
+	 * 过期时间，单位秒s
+	 */
+	public static final long EXPIRE_TIME = 15 * 60;
 
 	/**
 	 * 校验token是否正确
@@ -64,9 +71,12 @@ public class JwtUtil {
 	 */
 	public static String sign(String userId, String secret, Date date) {
 		Algorithm algorithm = Algorithm.HMAC256(secret);
-		if (date != null) { // 如果有传过期时间，则加入过期时间
+		// 如果有传过期时间，则加入过期时间
+		if (date != null) {
 			return JWT.create().withClaim("userId", userId).withExpiresAt(date).sign(algorithm);
-		} else {// 不设置过期时间，可以使用redis等缓存来管理过期时间
+		}
+		// 不设置过期时间，可以使用redis等缓存来管理过期时间
+		else {
 			return JWT.create().withClaim("userId", userId).withClaim("date", DateUtil.getNow()).sign(algorithm);
 		}
 	}

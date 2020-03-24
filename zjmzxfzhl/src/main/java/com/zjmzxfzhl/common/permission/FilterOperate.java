@@ -19,44 +19,21 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum FilterOperate {
-
-	AND("and", "and", "并且"),
-
-	OR("or", "or", "或者"),
-
-	EQ("=", "=", "等于"),
-
-	NE("!=", "!=", "不等于"),
-
-	LT("<", "<", "小于"),
-
-	LE("<=", "<=", "小于等于"),
-
-	GT(">", ">", "大于"),
-
-	GE(">=", ">=", "大于等于"),
-
-	IN("in", "in", "包含"),
-
-	BETWEEN("between", "between", "在X区间"),
-
-	LIKE("like", "like", "全模糊"),
-
-	LIKE_LEFT("like_left", "like", "左模糊"),
-
-	LIKE_RIGHT("like_right", "like", "右模糊");
-
+	// 表达式
+	AND("and", "and", "并且"), OR("or", "or", "或者"), EQ("=", "=", "等于"), NE("!=", "!=", "不等于"), LT("<", "<", "小于"), LE("<=", "<=", "小于等于"), GT(">", ">",
+			"大于"), GE(">=", ">=", "大于等于"), IN("in", "in", "包含"), BETWEEN("between", "between",
+					"在X区间"), LIKE("like", "like", "全模糊"), LIKE_LEFT("like_left", "like", "左模糊"), LIKE_RIGHT("like_right", "like", "右模糊");
 	private final String value;
 
 	private final String dbValue;
 
 	private final String message;
 
-	private static final Map<String, FilterOperate> mappings = new HashMap<>(16);
+	private static final Map<String, FilterOperate> MAPPINGS = new HashMap<>(16);
 
 	static {
 		for (FilterOperate operate : values()) {
-			mappings.put(operate.getValue(), operate);
+			MAPPINGS.put(operate.getValue(), operate);
 		}
 	}
 
@@ -69,7 +46,7 @@ public enum FilterOperate {
 	 */
 	@Nullable
 	public static FilterOperate resolve(@Nullable String value) {
-		return (value != null ? mappings.get(value.toLowerCase()) : null);
+		return (value != null ? MAPPINGS.get(value.toLowerCase()) : null);
 	}
 
 	/**
@@ -83,9 +60,10 @@ public enum FilterOperate {
 	 */
 	@Nullable
 	public static FilterOperate resolveOrDefault(@Nullable String value, FilterOperate defaultOperate) {
-		if (value == null)
+		if (value == null) {
 			return defaultOperate;
-		return mappings.getOrDefault(value.toLowerCase(), defaultOperate);
+		}
+		return MAPPINGS.getOrDefault(value.toLowerCase(), defaultOperate);
 	}
 
 	/**
@@ -96,8 +74,9 @@ public enum FilterOperate {
 	 * @return true or false
 	 */
 	public static Boolean containsValue(String value) {
-		if (CommonUtil.isEmptyStr(value))
+		if (CommonUtil.isEmptyStr(value)) {
 			return false;
-		return mappings.keySet().contains(value);
+		}
+		return MAPPINGS.keySet().contains(value);
 	}
 }

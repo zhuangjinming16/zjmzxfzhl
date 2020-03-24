@@ -56,7 +56,10 @@ public class DateUtil {
 		}
 	}
 
-	private static final Object lockObj = new Object(); // 锁对象
+	/**
+	 * 锁对象
+	 */
+	private static final Object LOCK_OBJ = new Object();
 	/**
 	 * 存放不同的日期模板格式的sdf的Map
 	 */
@@ -72,7 +75,7 @@ public class DateUtil {
 		ThreadLocal<SimpleDateFormat> threadLocalSimpleDateFormat = simpleDateFormatMap.get(pattern);
 		// 此处的双重判断和同步是为了防止simpleDateFormatMap这个单例被多次put重复的sdf
 		if (threadLocalSimpleDateFormat == null) {
-			synchronized (lockObj) {
+			synchronized (LOCK_OBJ) {
 				threadLocalSimpleDateFormat = simpleDateFormatMap.get(pattern);
 				if (threadLocalSimpleDateFormat == null) {
 					// 只有Map中还没有这个pattern的sdf才会生成新的sdf并放入map
@@ -100,10 +103,12 @@ public class DateUtil {
 	 * @return
 	 */
 	public static String dateToStr(Date date, String pattern) {
-		if (date == null)
+		if (date == null) {
 			return "";
-		if (pattern == null)
+		}
+		if (pattern == null) {
 			return "";
+		}
 		SimpleDateFormat simpleDateFormat = getSimpleDateFormat(pattern);
 		return (simpleDateFormat.format(date));
 	}
@@ -114,7 +119,7 @@ public class DateUtil {
 	 * @param date
 	 * @return
 	 */
-	public static String dateToStringYYYYMMDD(Date date) {
+	public static String dateToStringYyyymmdd(Date date) {
 		return (dateToStr(date, DATE_FORMAT_NOT_ALL));
 	}
 
@@ -148,8 +153,9 @@ public class DateUtil {
 	 */
 	public static int compare(Date firstDate, Date secondDate, String pattern) {
 
-		if (pattern == null)
+		if (pattern == null) {
 			pattern = DATE_FORMAT_DEFAULT;
+		}
 		SimpleDateFormat simpleDateFormat = getSimpleDateFormat(pattern);
 		firstDate = strToDate(simpleDateFormat.format(firstDate), pattern);
 		secondDate = strToDate(simpleDateFormat.format(secondDate), pattern);
@@ -190,14 +196,15 @@ public class DateUtil {
 	 * @return
 	 */
 	public static String objToStr(Object obj) {
-		if (obj.getClass() == String.class)
+		if (obj.getClass() == String.class) {
 			return (String) obj;
-		else if (obj.getClass() == Date.class)
+		} else if (obj.getClass() == Date.class) {
 			return dateToStrTime((Date) obj);
-		else if (obj.getClass() == Timestamp.class) {
+		} else if (obj.getClass() == Timestamp.class) {
 			return dateToStrTime(new Date(((Timestamp) obj).getTime()));
-		} else
+		} else {
 			return obj.toString();
+		}
 	}
 
 	/**
@@ -215,8 +222,9 @@ public class DateUtil {
 				return null;
 			}
 
-			if (pattern == null)
+			if (pattern == null) {
 				pattern = DATE_FORMAT_DEFAULT;
+			}
 
 			SimpleDateFormat simpleDateFormat = getSimpleDateFormat(pattern);
 			return simpleDateFormat.parse(dateStr);
@@ -299,40 +307,11 @@ public class DateUtil {
 	 * @return
 	 */
 	public static int getDateDeff(Date startDate, Date endDate) {
-
 		int intValue = 0;
 		String df = DATE_FORMAT_DEFAULT;
 		startDate = DateUtil.strToDate(DateUtil.dateToStr(startDate, df), df);
 		endDate = DateUtil.strToDate(DateUtil.dateToStr(endDate, df), df);
 		intValue = (int) ((startDate.getTime() - endDate.getTime()) / 86400000);
 		return intValue;
-
-	}
-
-	public static void main(String[] args) throws InterruptedException {
-		System.out.println(dateToStr(new Date()));
-		System.out.println(dateToStr(new Date(), DATETIME_FORMAT_DEFAULT));
-		System.out.println(dateToStr(new Date(), DATETIME_FORMAT_NOT_ALL));
-
-		System.out.println(objToStr("2014-09-01"));
-		System.out.println(dateToStringYYYYMMDD(new Date()));
-
-		System.out.println(getDateDeff(new Date(), strToDate("2015-1-20", DATE_FORMAT_DEFAULT)));
-
-		String kb = "非高峰年卡次";
-		if (kb.contains("次")) {
-			System.out.println("222");
-		}
-
-		System.out.println(new Date());
-		Thread.sleep(1000);
-		System.out.println(DateUtil.getNow());
-		Thread.sleep(1000);
-		System.out.println(DateUtil.getNow());
-		System.out.println(DateUtil.getNow());
-		Thread.sleep(1000);
-		System.out.println(DateUtil.getNow());
-		System.out.println(DateUtil.getNow());
-		System.out.println(DateUtil.getNow());
 	}
 }

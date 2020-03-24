@@ -14,5 +14,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysCodeInfo;
  * @author 庄金明
  */
 public interface SysCodeInfoMapper extends BaseMapper<SysCodeInfo> {
+	/**
+	 * 查询代码信息列表
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<SysCodeInfo> list(IPage<SysCodeInfo> page, @Param("entity") SysCodeInfo entity);
 }

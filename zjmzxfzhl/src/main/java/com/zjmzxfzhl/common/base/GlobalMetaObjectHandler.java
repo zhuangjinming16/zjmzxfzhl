@@ -15,6 +15,10 @@ import com.zjmzxfzhl.modules.app.common.AppBaseEntity;
 import com.zjmzxfzhl.modules.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Component
 public class GlobalMetaObjectHandler implements MetaObjectHandler {
 	private static final String CREATE_BY = "createBy";
@@ -43,17 +47,20 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
 	}
 
 	private boolean isBaseEntity(MetaObject metaObject) {
-		return metaObject.getOriginalObject() instanceof BaseEntity || (metaObject.hasGetter(Constants.ENTITY) && metaObject.getValue(Constants.ENTITY) != null && metaObject.getValue(Constants.ENTITY) instanceof BaseEntity);
+		return metaObject.getOriginalObject() instanceof BaseEntity || (metaObject.hasGetter(Constants.ENTITY)
+				&& metaObject.getValue(Constants.ENTITY) != null && metaObject.getValue(Constants.ENTITY) instanceof BaseEntity);
 	}
 
 	private boolean isAppBaseEntity(MetaObject metaObject) {
-		return metaObject.getOriginalObject() instanceof AppBaseEntity || (metaObject.hasGetter(Constants.ENTITY) && metaObject.getValue(Constants.ENTITY) != null && metaObject.getValue(Constants.ENTITY) instanceof AppBaseEntity);
+		return metaObject.getOriginalObject() instanceof AppBaseEntity || (metaObject.hasGetter(Constants.ENTITY)
+				&& metaObject.getValue(Constants.ENTITY) != null && metaObject.getValue(Constants.ENTITY) instanceof AppBaseEntity);
 	}
 
 	private void setAppBaseEntityInsertFill(MetaObject metaObject) {
 		Object createBy = getFieldValByName(CREATE_BY, metaObject);
 		if (createBy == null) {
-			AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes().getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
+			AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes()
+					.getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
 			if (appSessionObject != null) {
 				String currUser = appSessionObject.getUserId();
 				setFieldValByName(CREATE_BY, currUser, metaObject);
@@ -90,7 +97,8 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
 	private void setAppBaseEntityUpdateFill(MetaObject metaObject) {
 		Object updateBy = getFieldValByName(UPDATE_BY, metaObject);
 		if (updateBy == null) {
-			AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes().getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
+			AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes()
+					.getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
 			if (appSessionObject != null) {
 				String currUser = appSessionObject.getUserId();
 				setFieldValByName(UPDATE_BY, currUser, metaObject);

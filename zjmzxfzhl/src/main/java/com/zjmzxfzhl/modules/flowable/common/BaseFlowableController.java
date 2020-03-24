@@ -19,15 +19,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.zjmzxfzhl.common.Constants;
 import com.zjmzxfzhl.common.util.ObjectUtils;
 import com.zjmzxfzhl.common.util.SpringContextUtils;
-import com.zjmzxfzhl.common.xss.SQLFilter;
+import com.zjmzxfzhl.common.xss.SqlFilter;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage.Direction;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage.Order;
 import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
 import com.zjmzxfzhl.modules.flowable.service.PermissionService;
 import com.zjmzxfzhl.modules.flowable.wapper.IListWrapper;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @SuppressWarnings({ "rawtypes" })
 public abstract class BaseFlowableController {
 	@Autowired
@@ -53,21 +58,21 @@ public abstract class BaseFlowableController {
 
 	protected FlowablePage getFlowablePage(Map<String, String> requestParams) {
 		int current = -1;
-		if (ObjectUtils.isNotEmpty(requestParams.get("current"))) {
-			current = ObjectUtils.convertToInteger(requestParams.get("current"), 1);
+		if (ObjectUtils.isNotEmpty(requestParams.get(Constants.CURRENT))) {
+			current = ObjectUtils.convertToInteger(requestParams.get(Constants.CURRENT), 1);
 		}
 		int size = 10;
-		if (ObjectUtils.isNotEmpty(requestParams.containsKey("size"))) {
-			size = ObjectUtils.convertToInteger(requestParams.get("size"), 10);
+		if (ObjectUtils.isNotEmpty(requestParams.containsKey(Constants.SIZE))) {
+			size = ObjectUtils.convertToInteger(requestParams.get(Constants.SIZE), 10);
 		}
 		if (current < 0) {
 			return null;
 		}
 		List<Order> orders = null;
-		if (ObjectUtils.isNotEmpty(requestParams.get("orderRule"))) {
+		if (ObjectUtils.isNotEmpty(requestParams.get(Constants.ORDER_RULE))) {
 			// orderRule=column1|asc,column2|desc
 			orders = new ArrayList<>();
-			String orderRule = requestParams.get("orderRule");
+			String orderRule = requestParams.get(Constants.ORDER_RULE);
 			// 处理排序
 			if (orderRule != null && orderRule.length() > 0) {
 				String[] orderColumnRules = orderRule.split(",");
@@ -77,7 +82,7 @@ public abstract class BaseFlowableController {
 					}
 					String[] rule = orderColumnRule.split("\\|");
 					String orderColumn = rule[0];
-					orderColumn = SQLFilter.sqlInject(orderColumn);
+					orderColumn = SqlFilter.sqlInject(orderColumn);
 					Order orderTmp = null;
 					if (rule.length == 2 && "DESC".equals(rule[1].toUpperCase())) {
 						orderTmp = new Order(orderColumn, Direction.DESC);
@@ -136,7 +141,8 @@ public abstract class BaseFlowableController {
 	}
 
 	protected void setQueryOrder(List<Order> orders, Query query, Map<String, QueryProperty> properties, QueryProperty defaultDescSortProperty) {
-		if ((orders == null || orders.size() == 0 || properties.isEmpty()) && defaultDescSortProperty != null) {
+		boolean orderByDefaultDescSortProperty = (orders == null || orders.size() == 0 || properties.isEmpty()) && defaultDescSortProperty != null;
+		if (orderByDefaultDescSortProperty) {
 			query.orderBy(defaultDescSortProperty).desc();
 		} else {
 			if (orders != null && orders.size() > 0) {

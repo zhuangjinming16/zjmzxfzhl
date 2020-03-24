@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.sys.entity.SysCodeInfo;
@@ -45,16 +45,16 @@ public class SysCodeInfoController extends BaseController {
 	 */
 	@RequiresPermissions("sys:codeInfo:list")
 	@GetMapping(value = "/list")
-	public R list(SysCodeInfo sysCodeInfo, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysCodeInfo sysCodeInfo, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysCodeInfo> pageList = sysCodeInfoService.list(new Page<SysCodeInfo>(current, size), sysCodeInfo);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:codeInfo:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysCodeInfo sysCodeInfo = sysCodeInfoService.getById(id);
-		return R.ok(sysCodeInfo);
+		return Result.ok(sysCodeInfo);
 	}
 
 	/**
@@ -65,9 +65,9 @@ public class SysCodeInfoController extends BaseController {
 	@SysLogAuto(value = "新增代码信息")
 	@RequiresPermissions("sys:codeInfo:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
+	public Result save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
 		sysCodeInfoService.saveSysCodeInfo(sysCodeInfo);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -78,9 +78,9 @@ public class SysCodeInfoController extends BaseController {
 	@SysLogAuto(value = "修改代码信息")
 	@RequiresPermissions("sys:codeInfo:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
+	public Result update(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
 		sysCodeInfoService.updateSysCodeInfo(sysCodeInfo);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -91,9 +91,9 @@ public class SysCodeInfoController extends BaseController {
 	@SysLogAuto(value = "删除代码信息")
 	@RequiresPermissions("sys:codeInfo:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		sysCodeInfoService.deleteSysCodeInfo(ids);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -103,11 +103,11 @@ public class SysCodeInfoController extends BaseController {
 	 * @return
 	 */
 	@GetMapping(value = "/getSysCodeInfos")
-	public R getSysCodeInfos(String codeTypeIds) {
+	public Result getSysCodeInfos(String codeTypeIds) {
 		Map<String, List<SysCodeInfo>> sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromRedis(codeTypeIds);
 		if (sysCodeInfosMap == null) {
 			sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromDb(codeTypeIds);
 		}
-		return R.ok(sysCodeInfosMap);
+		return Result.ok(sysCodeInfosMap);
 	}
 }

@@ -3,6 +3,10 @@ package com.zjmzxfzhl.modules.monitor.vo;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class RedisInfo {
 
 	private static Map<String, String> map = new HashMap<>();

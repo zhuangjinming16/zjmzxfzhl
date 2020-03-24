@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,32 +25,32 @@ public class SysCodeInfo extends BaseEntity {
 
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String codeInfoId;// 代码信息ID
+	@LengthForUtf8(max = 32)
+	private String codeInfoId;
 
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String codeTypeId;// 代码类别ID
+	@LengthForUtf8(max = 32)
+	private String codeTypeId;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String value;// 下拉框值
+	@LengthForUtf8(max = 100)
+	private String value;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String content;// 下拉框内容
+	@LengthForUtf8(max = 100)
+	private String content;
 
-	@LengthForUTF8(max = 100)
-	private String parentValue;// 上级联动下拉框值
+	@LengthForUtf8(max = 100)
+	private String parentValue;
 
 	@NotNull
 	@Max(9999)
-	private Integer sortNo;// 排序号
+	private Integer sortNo;
 
-	@LengthForUTF8(max = 255)
-	private String remark;// 备注
+	@LengthForUtf8(max = 255)
+	private String remark;
 
-	@LengthForUTF8(max = 1)
-	private String isOk;// 是否显示
+	@LengthForUtf8(max = 1)
+	private String isOk;
 
 }

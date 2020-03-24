@@ -14,5 +14,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysOrg;
  * @author 庄金明
  */
 public interface SysOrgMapper extends BaseMapper<SysOrg> {
+	/**
+	 * 查询机构列表
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<SysOrg> list(IPage<SysOrg> page, @Param("entity") SysOrg entity);
 }

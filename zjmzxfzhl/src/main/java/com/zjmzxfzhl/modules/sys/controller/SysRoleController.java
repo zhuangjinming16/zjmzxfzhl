@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.common.util.ShiroUtils;
@@ -50,16 +50,16 @@ public class SysRoleController extends BaseController {
 	 */
 	@RequiresPermissions("sys:role:list")
 	@GetMapping(value = "/list")
-	public R list(SysRole sysRole, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysRole sysRole, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysRole> pageList = sysRoleService.list(new Page<SysRole>(current, size), sysRole);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:role:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysRole sysRole = sysRoleService.getById(id);
-		return R.ok(sysRole);
+		return Result.ok(sysRole);
 	}
 
 	/**
@@ -70,9 +70,9 @@ public class SysRoleController extends BaseController {
 	@SysLogAuto(value = "新增角色")
 	@RequiresPermissions("sys:role:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody SysRole sysRole) {
+	public Result save(@Valid @RequestBody SysRole sysRole) {
 		sysRoleService.save(sysRole);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -83,9 +83,9 @@ public class SysRoleController extends BaseController {
 	@SysLogAuto(value = "修改角色")
 	@RequiresPermissions("sys:role:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysRole sysRole) {
+	public Result update(@Valid @RequestBody SysRole sysRole) {
 		sysRoleService.updateById(sysRole);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -96,12 +96,12 @@ public class SysRoleController extends BaseController {
 	@SysLogAuto(value = "删除角色")
 	@RequiresPermissions("sys:role:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
-			return R.error("ids can't be empty");
+			return Result.error("ids can't be empty");
 		}
 		this.sysRoleService.delete(ids);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -112,10 +112,10 @@ public class SysRoleController extends BaseController {
 	 */
 	@RequiresPermissions("sys:role:getRolePermissions")
 	@GetMapping(value = "/getRolePermissions")
-	public R getRolePermissions(String roleId) {
+	public Result getRolePermissions(String roleId) {
 		SysUser sysUser = ShiroUtils.getSysUser();
 		Map<String, Object> data = this.sysRoleService.getRolePermissions(sysUser, roleId);
-		return R.ok(data);
+		return Result.ok(data);
 	}
 
 	/**
@@ -131,10 +131,10 @@ public class SysRoleController extends BaseController {
 	@SysLogAuto(value = "保存角色权限")
 	@RequiresPermissions("sys:role:saveRolePermissions")
 	@PostMapping(value = "/saveRolePermissions")
-	public R saveRolePermissions(@RequestBody SysRolePermission sysRolePermission) {
+	public Result saveRolePermissions(@RequestBody SysRolePermission sysRolePermission) {
 		this.sysRoleService.saveRolePermissions(sysRolePermission.getRoleId(), sysRolePermission.getMenuOrFuncId(),
 				sysRolePermission.getPermissionType());
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -145,9 +145,9 @@ public class SysRoleController extends BaseController {
 	 */
 	@RequiresPermissions("sys:role:getRoleUser")
 	@GetMapping(value = "/getRoleUser")
-	public R getRoleUser(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result getRoleUser(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysUser> pageList = this.sysRoleService.getRoleUser(new Page<SysUser>(current, size), sysRoleUser);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	/**
@@ -159,9 +159,9 @@ public class SysRoleController extends BaseController {
 	@SysLogAuto(value = "保存角色用户")
 	@RequiresPermissions("sys:role:saveRoleUsers")
 	@PostMapping(value = "/saveRoleUsers")
-	public R saveRoleUsers(@RequestBody SysRoleUser sysRoleUser) {
+	public Result saveRoleUsers(@RequestBody SysRoleUser sysRoleUser) {
 		this.sysRoleService.saveRoleUsers(sysRoleUser.getRoleId(), sysRoleUser.getUserId());
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -173,9 +173,9 @@ public class SysRoleController extends BaseController {
 	@SysLogAuto(value = "删除角色用户")
 	@RequiresPermissions("sys:role:deleteRoleUsers")
 	@DeleteMapping(value = "/deleteRoleUsers")
-	public R deleteRoleUsers(String roleId, String userIds) {
+	public Result deleteRoleUsers(String roleId, String userIds) {
 		this.sysRoleService.deleteRoleUsers(roleId, userIds);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -185,9 +185,9 @@ public class SysRoleController extends BaseController {
 	 */
 	@RequiresPermissions("sys:role:listAll")
 	@GetMapping(value = "/listAll")
-	public R listAll() {
+	public Result listAll() {
 		QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
 		List<SysRole> roles = sysRoleService.list(queryWrapper.orderByAsc("sort_no"));
-		return R.ok(roles);
+		return Result.ok(roles);
 	}
 }

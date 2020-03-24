@@ -1,5 +1,11 @@
 package com.zjmzxfzhl.common.util;
 
+import com.zjmzxfzhl.common.Constants;
+
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 public class ColumnUtils {
 	/**
 	 * 将下划线大写方式命名的字符串转换为驼峰式。 如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。</br>
@@ -15,12 +21,12 @@ public class ColumnUtils {
 		if (name == null || name.isEmpty()) {
 			// 没必要转换
 			return "";
-		} else if (!name.contains("_")) {
+		} else if (!name.contains(Constants.UNDERSCORE)) {
 			// 不含下划线，仅将首字母小写
 			return name.substring(0, 1).toLowerCase() + name.substring(1).toLowerCase();
 		}
 		// 用下划线将原始字符串分割
-		String camels[] = name.split("_");
+		String[] camels = name.split(Constants.UNDERSCORE);
 		for (String camel : camels) {
 			// 跳过原始字符串中开头、结尾的下换线或双重下划线
 			if (camel.isEmpty()) {
@@ -75,12 +81,12 @@ public class ColumnUtils {
 		if (name == null || name.isEmpty()) {
 			// 没必要转换
 			return "";
-		} else if (!name.contains("_")) {
+		} else if (!name.contains(Constants.UNDERSCORE)) {
 			// 不含下划线，仅将首字母小写
 			return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 		}
 		// 用下划线将原始字符串分割
-		String camels[] = name.split("_");
+		String[] camels = name.split("_");
 		for (String camel : camels) {
 			// 跳过原始字符串中开头、结尾的下换线或双重下划线
 			if (camel.isEmpty()) {
@@ -101,7 +107,7 @@ public class ColumnUtils {
 	 */
 	public static String camelToUnderline(String para) {
 		StringBuilder sb = new StringBuilder(para);
-		int temp = 0;// 定位
+		int temp = 0;
 		for (int i = 0; i < para.length(); i++) {
 			if (Character.isUpperCase(para.charAt(i))) {
 				sb.insert(i + temp, "_");

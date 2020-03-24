@@ -106,7 +106,7 @@ public class FilterGroup implements Serializable {
 	 * 
 	 * @return sql
 	 */
-	public String formatSQL() {
+	public String formatSql() {
 		String where = formatRules(this.rules);
 		boolean isStart = true;
 		FilterOperate groupOperate = FilterOperate.resolveOrDefault(this.operate, FilterOperate.AND);
@@ -116,9 +116,10 @@ public class FilterGroup implements Serializable {
 		StringBuilder groupBuilder = new StringBuilder();
 		if (CollectionUtils.isNotEmpty(this.groups)) {
 			for (FilterGroup innerGroup : this.groups) {
-				if (innerGroup == null)
+				if (innerGroup == null) {
 					continue;
-				String innerWhere = innerGroup.formatSQL();
+				}
+				String innerWhere = innerGroup.formatSql();
 				if (CommonUtil.isNotEmptyAfterTrim(innerWhere)) {
 					if (!isStart) {
 						groupBuilder.append(" ").append(groupOperate.getDbValue()).append(" ");
@@ -132,7 +133,8 @@ public class FilterGroup implements Serializable {
 
 		int rulesSize = this.rules == null ? 0 : this.rules.size();
 		int groupsSize = this.groups == null ? 0 : this.groups.size();
-		boolean isNeedBrackets = rulesSize + groupsSize > 1;// 大于一个表达式用括号包起来
+		// 大于一个表达式用括号包起来
+		boolean isNeedBrackets = rulesSize + groupsSize > 1;
 
 		String result = "";
 		if (CommonUtil.isEmptyAfterTrim(groupWhere)) {
@@ -148,20 +150,23 @@ public class FilterGroup implements Serializable {
 	}
 
 	private String formatRules(List<FilterRule> rules) {
-		if (CollectionUtils.isEmpty(rules))
+		if (CollectionUtils.isEmpty(rules)) {
 			return "";
+		}
 
 		StringBuilder sb = new StringBuilder();
 
 		boolean isStart = true;
 		for (FilterRule rule : rules) {
-			if (rule == null)
+			if (rule == null) {
 				continue;
+			}
 
 			String field = StringUtils.strip(rule.getField());
 			String value = rule.getValue();
-			if (CommonUtil.isEmptyAfterTrim(field) || CommonUtil.isEmptyStr(value))
+			if (CommonUtil.isEmptyAfterTrim(field) || CommonUtil.isEmptyStr(value)) {
 				continue;
+			}
 
 			String alias = "";
 			if (CommonUtil.isNotEmptyAfterTrim(rule.getAlias())) {
@@ -185,9 +190,6 @@ public class FilterGroup implements Serializable {
 				if (valueArr.length != 2) {
 					throw new SysException("数据权限between参数设置错误");
 				}
-				// 使用min<=date<=max组拼sql
-				// sb.append("(").append(alias).append(field).append(" ").append(">=").append(" ").append(valueArr[0]).append(" and ").append(alias).append(field).append(" ").append("<=").append(" ").append(valueArr[1]).append(")");
-				// 使用between and组拼sql
 				sb.append(alias).append(field).append(" ").append("between").append(" ").append(valueArr[0]).append(" and ").append(valueArr[1]);
 			} else {
 				sb.append(alias).append(field).append(" ").append(ruleOperate.getDbValue()).append(" ").append(value);
@@ -229,7 +231,7 @@ public class FilterGroup implements Serializable {
 		parent.andGroup(group4);
 		parent.andGroup(group3);
 
-		String result = parent.formatSQL();
+		String result = parent.formatSql();
 		System.out.println(result);
 	}
 }

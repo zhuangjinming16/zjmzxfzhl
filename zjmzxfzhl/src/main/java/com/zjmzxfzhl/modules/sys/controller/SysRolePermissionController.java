@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.sys.entity.SysRolePermission;
 import com.zjmzxfzhl.modules.sys.service.SysRolePermissionService;
@@ -43,16 +43,16 @@ public class SysRolePermissionController extends BaseController {
 	 */
 	@RequiresPermissions("sys:rolePermission:list")
 	@GetMapping(value = "/list")
-	public R list(SysRolePermission sysRolePermission, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysRolePermission sysRolePermission, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysRolePermission> pageList = sysRolePermissionService.list(new Page<SysRolePermission>(current, size), sysRolePermission);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:rolePermission:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysRolePermission sysRolePermission = sysRolePermissionService.getById(id);
-		return R.ok(sysRolePermission);
+		return Result.ok(sysRolePermission);
 	}
 
 	/**
@@ -62,9 +62,9 @@ public class SysRolePermissionController extends BaseController {
 	 */
 	@RequiresPermissions("sys:rolePermission:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody SysRolePermission sysRolePermission) {
+	public Result save(@Valid @RequestBody SysRolePermission sysRolePermission) {
 		sysRolePermissionService.save(sysRolePermission);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -74,9 +74,9 @@ public class SysRolePermissionController extends BaseController {
 	 */
 	@RequiresPermissions("sys:rolePermission:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysRolePermission sysRolePermission) {
+	public Result update(@Valid @RequestBody SysRolePermission sysRolePermission) {
 		sysRolePermissionService.updateById(sysRolePermission);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -86,9 +86,9 @@ public class SysRolePermissionController extends BaseController {
 	 */
 	@RequiresPermissions("sys:rolePermission:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
-			return R.error("ids can't be empty");
+			return Result.error("ids can't be empty");
 		}
 		String[] idsArr = ids.split(",");
 		if (idsArr.length > 1) {
@@ -96,6 +96,6 @@ public class SysRolePermissionController extends BaseController {
 		} else {
 			sysRolePermissionService.removeById(idsArr[0]);
 		}
-		return R.ok();
+		return Result.ok();
 	}
 }

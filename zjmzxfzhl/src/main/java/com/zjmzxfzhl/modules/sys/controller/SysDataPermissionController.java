@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.sys.entity.SysDataPermission;
@@ -44,16 +44,16 @@ public class SysDataPermissionController extends BaseController {
 	 */
 	@RequiresPermissions("sys:dataPermission:list")
 	@GetMapping(value = "/list")
-	public R list(SysDataPermission sysDataPermission, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysDataPermission sysDataPermission, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysDataPermission> pageList = sysDataPermissionService.list(new Page<SysDataPermission>(current, size), sysDataPermission);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:dataPermission:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysDataPermission sysDataPermission = sysDataPermissionService.getById(id);
-		return R.ok(sysDataPermission);
+		return Result.ok(sysDataPermission);
 	}
 
 	/**
@@ -64,9 +64,9 @@ public class SysDataPermissionController extends BaseController {
 	@SysLogAuto(value = "新增数据权限")
 	@RequiresPermissions("sys:dataPermission:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody SysDataPermission sysDataPermission) {
+	public Result save(@Valid @RequestBody SysDataPermission sysDataPermission) {
 		sysDataPermissionService.save(sysDataPermission);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -77,9 +77,9 @@ public class SysDataPermissionController extends BaseController {
 	@SysLogAuto(value = "修改数据权限")
 	@RequiresPermissions("sys:dataPermission:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysDataPermission sysDataPermission) {
+	public Result update(@Valid @RequestBody SysDataPermission sysDataPermission) {
 		sysDataPermissionService.updateById(sysDataPermission);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -90,9 +90,9 @@ public class SysDataPermissionController extends BaseController {
 	@SysLogAuto(value = "删除数据权限")
 	@RequiresPermissions("sys:dataPermission:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
-			return R.error("ids can't be empty");
+			return Result.error("ids can't be empty");
 		}
 		String[] idsArr = ids.split(",");
 		if (idsArr.length > 1) {
@@ -100,6 +100,6 @@ public class SysDataPermissionController extends BaseController {
 		} else {
 			sysDataPermissionService.removeById(idsArr[0]);
 		}
-		return R.ok();
+		return Result.ok();
 	}
 }

@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,48 +27,48 @@ public class SysUser extends BaseEntity {
 
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String userId;// 用户ID
+	@LengthForUtf8(max = 32)
+	private String userId;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String userName;// 用户姓名
+	@LengthForUtf8(max = 100)
+	private String userName;
 
 	@JsonIgnore
-	private String password;// 密码
+	private String password;
 
 	@JsonIgnore
-	private String salt;// 密码盐
+	private String salt;
 
-	@LengthForUTF8(max = 1)
-	private String sex;// 性别
+	@LengthForUtf8(max = 1)
+	private String sex;
 
-	@LengthForUTF8(max = 32)
-	private String roleId;// 所属角色ID
+	@LengthForUtf8(max = 32)
+	private String roleId;
 
-	@LengthForUTF8(max = 32)
-	private String orgId;// 所属机构ID
+	@LengthForUtf8(max = 32)
+	private String orgId;
 
-	@LengthForUTF8(max = 20)
-	private String mobile;// 手机号码
+	@LengthForUtf8(max = 20)
+	private String mobile;
 
-	@LengthForUTF8(max = 20)
-	private String idCardNo;// 身份证号码
+	@LengthForUtf8(max = 20)
+	private String idCardNo;
 
-	@LengthForUTF8(max = 100)
-	private String email;// 邮箱
+	@LengthForUtf8(max = 100)
+	private String email;
 
-	@LengthForUTF8(max = 1)
-	private String status;// 用户状态
+	@LengthForUtf8(max = 1)
+	private String status;
 
 	@Max(999999)
-	private Integer sortNo;// 排序号
+	private Integer sortNo;
 
-	@LengthForUTF8(max = 255)
-	private String remark;// 备注
+	@LengthForUtf8(max = 255)
+	private String remark;
 
 	@TableField(exist = false)
-	private String orgName;// 所属机构名称
+	private String orgName;
 
 	@TableField(exist = false)
 	private String authFilterSql;

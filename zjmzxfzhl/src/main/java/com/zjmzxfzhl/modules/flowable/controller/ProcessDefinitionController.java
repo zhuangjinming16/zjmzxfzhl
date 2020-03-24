@@ -31,107 +31,111 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.ImmutableMap;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.ObjectUtils;
 import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.ProcessDefinitionService;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionRequest;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionResponse;
 import com.zjmzxfzhl.modules.flowable.wapper.ProcDefListWrapper;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @RestController
 @RequestMapping("/flowable/processDefinition")
 public class ProcessDefinitionController extends BaseFlowableController {
-	private static final Map<String, QueryProperty> allowedSortProperties = new HashMap<>();
+	private static final Map<String, QueryProperty> ALLOWED_SORT_PROPERTIES = new HashMap<>();
 	@Autowired
 	private ProcessDefinitionService processDefinitionService;
 	static {
-		allowedSortProperties.put("id", ProcessDefinitionQueryProperty.PROCESS_DEFINITION_ID);
-		allowedSortProperties.put("key", ProcessDefinitionQueryProperty.PROCESS_DEFINITION_KEY);
-		allowedSortProperties.put("category", ProcessDefinitionQueryProperty.PROCESS_DEFINITION_CATEGORY);
-		allowedSortProperties.put("name", ProcessDefinitionQueryProperty.PROCESS_DEFINITION_NAME);
-		allowedSortProperties.put("version", ProcessDefinitionQueryProperty.PROCESS_DEFINITION_VERSION);
-		allowedSortProperties.put("tenantId", ProcessDefinitionQueryProperty.PROCESS_DEFINITION_TENANT_ID);
+		ALLOWED_SORT_PROPERTIES.put(FlowableConstant.ID, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_ID);
+		ALLOWED_SORT_PROPERTIES.put(FlowableConstant.KEY, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_KEY);
+		ALLOWED_SORT_PROPERTIES.put(FlowableConstant.CATEGORY, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_CATEGORY);
+		ALLOWED_SORT_PROPERTIES.put(FlowableConstant.NAME, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_NAME);
+		ALLOWED_SORT_PROPERTIES.put(FlowableConstant.VERSION, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_VERSION);
+		ALLOWED_SORT_PROPERTIES.put(FlowableConstant.TENANT_ID, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_TENANT_ID);
 	}
 
 	@RequiresPermissions("flowable:processDefinition:list")
 	@GetMapping(value = "/list")
-	public R list(@RequestParam Map<String, String> requestParams) {
+	public Result list(@RequestParam Map<String, String> requestParams) {
 		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery();
-		if (ObjectUtils.isNotEmpty(requestParams.get("id"))) {
-			processDefinitionQuery.processDefinitionId(requestParams.get("id"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.ID))) {
+			processDefinitionQuery.processDefinitionId(requestParams.get(FlowableConstant.ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("category"))) {
-			processDefinitionQuery.processDefinitionCategoryLike(ObjectUtils.convertToLike(requestParams.get("category")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.CATEGORY))) {
+			processDefinitionQuery.processDefinitionCategoryLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.CATEGORY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("key"))) {
-			processDefinitionQuery.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get("key")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.KEY))) {
+			processDefinitionQuery.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.KEY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("name"))) {
-			processDefinitionQuery.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get("name")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.NAME))) {
+			processDefinitionQuery.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.NAME)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("version"))) {
-			processDefinitionQuery.processDefinitionVersion(ObjectUtils.convertToInteger(requestParams.get("version")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.VERSION))) {
+			processDefinitionQuery.processDefinitionVersion(ObjectUtils.convertToInteger(requestParams.get(FlowableConstant.VERSION)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("suspended"))) {
-			boolean suspended = ObjectUtils.convertToBoolean(requestParams.get("suspended"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.SUSPENDED))) {
+			boolean suspended = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.SUSPENDED));
 			if (suspended) {
 				processDefinitionQuery.suspended();
 			} else {
 				processDefinitionQuery.active();
 			}
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("latestVersion"))) {
-			boolean latest = ObjectUtils.convertToBoolean(requestParams.get("latestVersion"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.LATEST_VERSION))) {
+			boolean latest = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.LATEST_VERSION));
 			if (latest) {
 				processDefinitionQuery.latestVersion();
 			}
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("startableByUser"))) {
-			processDefinitionQuery.startableByUser(requestParams.get("startableByUser"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.STARTABLE_BY_USER))) {
+			processDefinitionQuery.startableByUser(requestParams.get(FlowableConstant.STARTABLE_BY_USER));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("tenantId"))) {
-			processDefinitionQuery.processDefinitionTenantId(requestParams.get("tenantId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TENANT_ID))) {
+			processDefinitionQuery.processDefinitionTenantId(requestParams.get(FlowableConstant.TENANT_ID));
 		}
-		FlowablePage page = this.pageList(requestParams, processDefinitionQuery, ProcDefListWrapper.class, allowedSortProperties);
-		return R.ok(page);
+		FlowablePage page = this.pageList(requestParams, processDefinitionQuery, ProcDefListWrapper.class, ALLOWED_SORT_PROPERTIES);
+		return Result.ok(page);
 	}
 
 	@RequiresPermissions("flowable:processDefinition:listMyself")
 	@GetMapping(value = "/listMyself")
-	public R listMyself(@RequestParam Map<String, String> requestParams) {
+	public Result listMyself(@RequestParam Map<String, String> requestParams) {
 		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery();
-		if (ObjectUtils.isNotEmpty(requestParams.get("name"))) {
-			processDefinitionQuery.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get("name")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.NAME))) {
+			processDefinitionQuery.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.NAME)));
 		}
 		processDefinitionQuery.latestVersion().active().startableByUser(ShiroUtils.getUserId());
-		FlowablePage page = this.pageList(requestParams, processDefinitionQuery, ProcDefListWrapper.class, allowedSortProperties);
-		return R.ok(page);
+		FlowablePage page = this.pageList(requestParams, processDefinitionQuery, ProcDefListWrapper.class, ALLOWED_SORT_PROPERTIES);
+		return Result.ok(page);
 	}
 
 	@RequiresPermissions(value = { "flowable:processDefinition:list", "flowable:processDefinition:listMyself" }, logical = Logical.OR)
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String processDefinitionId) {
+	public Result queryById(@RequestParam String processDefinitionId) {
 		permissionService.validateReadPermissionOnProcessDefinition(ShiroUtils.getUserId(), processDefinitionId);
 		ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
 		String formKey = null;
 		if (processDefinition.hasStartFormKey()) {
 			formKey = formService.getStartFormKey(processDefinitionId);
-			// Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
 		}
 		ProcessDefinitionResponse processDefinitionResponse = responseFactory.createProcessDefinitionResponse(processDefinition, formKey);
-		return R.ok(processDefinitionResponse);
+		return Result.ok(processDefinitionResponse);
 	}
 
 	@GetMapping(value = "/renderedStartForm")
-	public R renderedStartForm(@RequestParam String processDefinitionId) {
+	public Result renderedStartForm(@RequestParam String processDefinitionId) {
 		permissionService.validateReadPermissionOnProcessDefinition(ShiroUtils.getUserId(), processDefinitionId);
 		Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
 		boolean showBusinessKey = this.isShowBusinessKey(processDefinitionId);
-		return R.ok(ImmutableMap.of("renderedStartForm", renderedStartForm, "showBusinessKey", showBusinessKey));
+		return Result.ok(ImmutableMap.of("renderedStartForm", renderedStartForm, "showBusinessKey", showBusinessKey));
 	}
 
 	@GetMapping(value = "/image")
@@ -188,34 +192,38 @@ public class ProcessDefinitionController extends BaseFlowableController {
 	@SysLogAuto(value = "删除流程定义")
 	@RequiresPermissions("flowable:processDefinition:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String processDefinitionId, @RequestParam(required = false, defaultValue = "false") Boolean cascade) {
+	public Result delete(@RequestParam String processDefinitionId, @RequestParam(required = false, defaultValue = "false") Boolean cascade) {
 		processDefinitionService.delete(processDefinitionId, cascade);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "激活流程定义")
 	@RequiresPermissions("flowable:processDefinition:suspendOrActivate")
 	@PutMapping(value = "/activate")
-	public R activate(@RequestBody ProcessDefinitionRequest actionRequest) {
+	public Result activate(@RequestBody ProcessDefinitionRequest actionRequest) {
 		processDefinitionService.activate(actionRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "挂起流程定义")
 	@RequiresPermissions("flowable:processDefinition:suspendOrActivate")
 	@PutMapping(value = "/suspend")
-	public R suspend(@RequestBody ProcessDefinitionRequest actionRequest) {
+	public Result suspend(@RequestBody ProcessDefinitionRequest actionRequest) {
 		processDefinitionService.suspend(actionRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
+	/**
+	 * 导入流程定义
+	 * 
+	 * @param request
+	 * @return
+	 */
 	@SysLogAuto(value = "导入流程定义")
 	@RequiresPermissions("flowable:processDefinition:import")
 	@PostMapping(value = "/import")
-	// public R doImport(@RequestParam(required = false) String tenantId, HttpServletRequest request) {
-	public R doImport(HttpServletRequest request) {
-		// processDefinitionService.doImport(tenantId, request);
-		processDefinitionService.doImport(request);
-		return R.ok();
+	public Result doImport(@RequestParam(required = false) String tenantId, HttpServletRequest request) {
+		processDefinitionService.doImport(tenantId, request);
+		return Result.ok();
 	}
 }

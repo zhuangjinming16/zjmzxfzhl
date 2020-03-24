@@ -16,6 +16,10 @@ import com.zjmzxfzhl.modules.monitor.vo.RedisInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Service
 @Slf4j
 public class RedisService {
@@ -40,7 +44,7 @@ public class RedisService {
 
 	public Map<String, Object> getKeysSize() {
 		Long dbSize = redisConnectionFactory.getConnection().dbSize();
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(2);
 		map.put("time", System.currentTimeMillis());
 		map.put("dbSize", dbSize);
 
@@ -54,7 +58,7 @@ public class RedisService {
 		for (Map.Entry<Object, Object> entry : info.entrySet()) {
 			String key = (String) entry.getKey();
 			if ("used_memory".equals(key)) {
-				map = new HashMap<>();
+				map = new HashMap<>(2);
 				map.put("used_memory", entry.getValue());
 				map.put("time", System.currentTimeMillis());
 			}

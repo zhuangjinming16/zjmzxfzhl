@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Configuration;
 
 import com.zjmzxfzhl.common.xss.XssFilter;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 public class FilterConfig {
 	@SuppressWarnings({ "rawtypes", "unchecked" })

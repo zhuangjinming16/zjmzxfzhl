@@ -16,6 +16,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class CustomUserEntityManager extends UserEntityManagerImpl {
 	@Autowired
 	private SysUserService sysUserService;

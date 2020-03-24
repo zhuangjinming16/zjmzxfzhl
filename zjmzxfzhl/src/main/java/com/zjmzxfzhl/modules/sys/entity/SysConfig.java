@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,22 +25,22 @@ public class SysConfig extends BaseEntity {
 
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String configId;// 系统参数ID
+	@LengthForUtf8(max = 32)
+	private String configId;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String configName;// 系统参数名称
+	@LengthForUtf8(max = 100)
+	private String configName;
 
 	@NotNull
-	@LengthForUTF8(max = 255)
-	private String configValue;// 系统参数值
+	@LengthForUtf8(max = 255)
+	private String configValue;
 
 	@NotNull
 	@Max(9999)
-	private Integer sortNo;// 排序号
+	private Integer sortNo;
 
-	@LengthForUTF8(max = 255)
-	private String remark;// 备注
+	@LengthForUtf8(max = 255)
+	private String remark;
 
 }

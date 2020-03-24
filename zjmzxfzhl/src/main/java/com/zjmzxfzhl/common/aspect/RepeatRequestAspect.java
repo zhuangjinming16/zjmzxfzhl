@@ -26,14 +26,14 @@ import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 登录用户请求防重发处理
+ * 登录用户请求防重发处理,Order=0优先于RedissonLockAspect
  * 
  * @author 庄金明
- *
+ * @date 2020年3月24日
  */
 @Aspect
 @Component
-@Order(0) // 优先于RedissonLockAspect
+@Order(0)
 @Slf4j
 public class RepeatRequestAspect {
 	@Autowired
@@ -43,11 +43,16 @@ public class RepeatRequestAspect {
 	// @Pointcut("execution(* com.*..*.sys.controller.*.*(..)) || execution(* com.*..*.othermodule.controller.*.*(..))")
 	// 或者使用拦截全部controller，然后排除个别非管理端的controller，如下
 	// @Pointcut("execution(* com.*..*.controller.*.*(..)) && !execution(* com.*..*.app.controller.*.*(..))")
+	/**
+	 * 后台管理请求切面
+	 */
 	@Pointcut("execution(* com.*..*.sys.controller.*.*(..)) || execution(* com.*..*.demo.controller.*.*(..)) || execution(* com.*..*.flowable.controller.*.*(..))")
 	private void controllerAspect() {
 	}
 
-	// APP端请求
+	/**
+	 * APP端请求切面
+	 */
 	@Pointcut("execution(* com.*..*.app.controller.*.*(..))")
 	private void controllerAspectForApp() {
 	}
@@ -85,18 +90,21 @@ public class RepeatRequestAspect {
 	 */
 	private Object exec(ProceedingJoinPoint joinPoint, String userId)
 			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, Throwable {
-		int waitTime = 0, leaseTime = 30; // 默认不等待、且30秒后释放锁
+		// 默认不等待、且30秒后释放锁
+		int waitTime = 0, leaseTime = 30;
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		RepeatRequest repeatRequest = signature.getMethod().getAnnotation((RepeatRequest.class));
-		if (repeatRequest == null && userId.length() == 0) {// 未设置注解，且未登录
+		// 未设置注解，且未登录
+		if (repeatRequest == null && userId.length() == 0) {
 			return joinPoint.proceed();
 		}
 		String lockParams = "";
-		if (repeatRequest != null) {// 如果controller包含该注解，则解析注解并封装参数lockParams
-
-			waitTime = repeatRequest.waitTime();// 设置注解带过来的等待时间
-			leaseTime = repeatRequest.leaseTime();// 设置注解带过来的释放时间
-
+		// 如果controller包含该注解，则解析注解并封装参数lockParams
+		if (repeatRequest != null) {
+			// 设置注解带过来的等待时间
+			waitTime = repeatRequest.waitTime();
+			// 设置注解带过来的释放时间
+			leaseTime = repeatRequest.leaseTime();
 			/**
 			 * repeatRequest.isExistAndOnlyUserId()
 			 * 
@@ -127,7 +135,8 @@ public class RepeatRequestAspect {
 			}
 		}
 
-		if (userId.length() == 0 && lockParams.length() == 0) { // 防止锁整个方法
+		// 防止锁整个方法
+		if (userId.length() == 0 && lockParams.length() == 0) {
 			return joinPoint.proceed();
 		}
 

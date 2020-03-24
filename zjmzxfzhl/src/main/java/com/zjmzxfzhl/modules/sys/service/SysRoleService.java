@@ -109,7 +109,7 @@ public class SysRoleService extends BaseService<SysRoleMapper, SysRole> {
 			}
 		});
 
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<>(2);
 		result.put("permissionTree", permissionTree);
 		List<String> permissions = baseMapper.listMenuOrFuncIdsByRoleId(roleId);
 		result.put("permissions", permissions);
@@ -137,7 +137,7 @@ public class SysRoleService extends BaseService<SysRoleMapper, SysRole> {
 			throw new AppException("系统错误,参数长度不一致,请联系管理员!");
 		}
 		// 【1】先删除此角色的已有操作权限
-		Map<String, Object> columnMap = new HashMap<>();
+		Map<String, Object> columnMap = new HashMap<>(1);
 		columnMap.put("ROLE_ID", roleId);
 		this.sysRolePermissionService.removeByMap(columnMap);
 		// 【2】保存新的操作权限
@@ -205,7 +205,7 @@ public class SysRoleService extends BaseService<SysRoleMapper, SysRole> {
 		String[] idsArr = ids.split(",");
 
 		for (int i = 0; i < idsArr.length; i++) {
-			if (idsArr[i].equals("admin")) {
+			if ("admin".equals(idsArr[i])) {
 				throw new SysException("不允许删除[admin]角色");
 			}
 		}

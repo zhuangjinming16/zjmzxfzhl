@@ -74,7 +74,7 @@ public class JacksonUtil {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 
-			return (T) objectMapper.readValue(str, clazz);
+			return objectMapper.readValue(str, clazz);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -100,7 +100,8 @@ public class JacksonUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> T strToObj(String str, TypeReference<T> typeReference) {
 		try {
-			if (StringUtils.isEmpty(str)) {// 空值返回null
+			// 空值返回null
+			if (StringUtils.isEmpty(str)) {
 				return null;
 			}
 			ObjectMapper objectMapper = new ObjectMapper();

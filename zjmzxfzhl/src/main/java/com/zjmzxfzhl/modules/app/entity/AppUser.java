@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 import com.zjmzxfzhl.modules.app.common.AppBaseEntity;
 
 import lombok.Getter;
@@ -23,32 +23,56 @@ public class AppUser extends AppBaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 用户ID
+	 */
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String userId;// 用户ID
+	@LengthForUtf8(max = 32)
+	private String userId;
 
+	/**
+	 * 用户姓名
+	 */
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String userName;// 用户姓名
+	@LengthForUtf8(max = 100)
+	private String userName;
 
-	@LengthForUTF8(max = 20)
-	private String mobile;// 手机号码
+	/**
+	 * 手机号码
+	 */
+	@LengthForUtf8(max = 20)
+	private String mobile;
 
+	/**
+	 * 密码
+	 */
 	@NotNull
-	@LengthForUTF8(max = 100)
+	@LengthForUtf8(max = 100)
 	@JsonIgnore
-	private String password;// 密码
+	private String password;
 
+	/**
+	 * 密码盐
+	 */
 	@JsonIgnore
-	private String salt;// 密码盐
+	private String salt;
 
-	@LengthForUTF8(max = 1)
-	private String sex;// 性别
+	/**
+	 * 性别
+	 */
+	@LengthForUtf8(max = 1)
+	private String sex;
 
-	@LengthForUTF8(max = 20)
-	private String idCardNo;// 身份证号码
+	/**
+	 * 身份证号码
+	 */
+	@LengthForUtf8(max = 20)
+	private String idCardNo;
 
-	@LengthForUTF8(max = 100)
-	private String email;// 邮箱
+	/**
+	 * 邮箱
+	 */
+	@LengthForUtf8(max = 100)
+	private String email;
 }

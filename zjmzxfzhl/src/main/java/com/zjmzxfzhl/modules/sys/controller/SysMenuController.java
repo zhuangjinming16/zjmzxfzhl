@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
@@ -45,16 +45,16 @@ public class SysMenuController extends BaseController {
 	 */
 	@RequiresPermissions("sys:menu:list")
 	@GetMapping(value = "/list")
-	public R list(SysMenu sysMenu, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysMenu sysMenu, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysMenu> pageList = sysMenuService.list(new Page<SysMenu>(current, size), sysMenu);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:menu:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysMenu sysMenu = sysMenuService.getById(id);
-		return R.ok(sysMenu);
+		return Result.ok(sysMenu);
 	}
 
 	/**
@@ -65,9 +65,9 @@ public class SysMenuController extends BaseController {
 	@SysLogAuto(value = "新增功能菜单")
 	@RequiresPermissions("sys:menu:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody SysMenu sysMenu) {
+	public Result save(@Valid @RequestBody SysMenu sysMenu) {
 		sysMenuService.saveSysMenu(sysMenu);
-		return R.ok(sysMenu);
+		return Result.ok(sysMenu);
 	}
 
 	/**
@@ -78,9 +78,9 @@ public class SysMenuController extends BaseController {
 	@SysLogAuto(value = "修改功能菜单")
 	@RequiresPermissions("sys:menu:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysMenu sysMenu) {
+	public Result update(@Valid @RequestBody SysMenu sysMenu) {
 		sysMenuService.updateSysMenu(sysMenu);
-		return R.ok(sysMenu);
+		return Result.ok(sysMenu);
 	}
 
 	/**
@@ -91,9 +91,9 @@ public class SysMenuController extends BaseController {
 	@SysLogAuto(value = "删除功能菜单")
 	@RequiresPermissions("sys:menu:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String id) {
+	public Result delete(@RequestParam String id) {
 		sysMenuService.delete(id);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -103,8 +103,8 @@ public class SysMenuController extends BaseController {
 	 */
 	@RequiresPermissions("sys:menu:getTreeData")
 	@GetMapping(value = "/getTreeData")
-	public R getTreeData() {
+	public Result getTreeData() {
 		List<ElTree> treeData = sysMenuService.getTreeData();
-		return R.ok(treeData);
+		return Result.ok(treeData);
 	}
 }

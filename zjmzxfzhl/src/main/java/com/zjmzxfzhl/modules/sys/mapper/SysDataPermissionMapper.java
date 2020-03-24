@@ -14,5 +14,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysDataPermission;
  * @author 庄金明
  */
 public interface SysDataPermissionMapper extends BaseMapper<SysDataPermission> {
+	/**
+	 * 查询数据权限列表
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<SysDataPermission> list(IPage<SysDataPermission> page, @Param("entity") SysDataPermission entity);
 }

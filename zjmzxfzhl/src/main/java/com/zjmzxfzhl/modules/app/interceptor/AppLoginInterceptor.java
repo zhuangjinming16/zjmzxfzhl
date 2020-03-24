@@ -18,6 +18,10 @@ import com.zjmzxfzhl.modules.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @Component
 public class AppLoginInterceptor extends HandlerInterceptorAdapter {
 	public static final String APP_SESSION_OBJECT = "appSessionObject";
@@ -28,6 +32,12 @@ public class AppLoginInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private RedisUtil redisUtil;
 
+	/**
+	 * 向request注入appSessionObject对象，可以在任何地方使用如下代码获取
+	 * 
+	 * AppSessionObject appSessionObject = (AppSessionObject)
+	 * RequestContextHolder.getRequestAttributes().getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
+	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if (!(handler instanceof HandlerMethod)) {
@@ -35,8 +45,10 @@ public class AppLoginInterceptor extends HandlerInterceptorAdapter {
 		}
 
 		String token = request.getHeader(AppConstants.X_ACCESS_TOKEN);
-		if (CommonUtil.isEmptyStr(token)) { // 用户未送token，需要验证是否是免登接口
-			if (((HandlerMethod) handler).getMethodAnnotation(WithoutLogin.class) == null) {// 非免登接口提示用户登录
+		// 用户未送token，需要验证是否是免登接口
+		if (CommonUtil.isEmptyStr(token)) {
+			// 非免登接口提示用户登录
+			if (((HandlerMethod) handler).getMethodAnnotation(WithoutLogin.class) == null) {
 				throw new AppException(AppConstants.X_ACCESS_TOKEN + "不能为空");
 			}
 			return true;
@@ -56,8 +68,6 @@ public class AppLoginInterceptor extends HandlerInterceptorAdapter {
 			}
 
 			redisUtil.expire(appSessionObjectKey, JwtUtil.EXPIRE_TIME);
-			// 向request注入appSessionObject对象，可以在任何地方使用如下代码获取
-			// AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes().getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
 			request.setAttribute(APP_SESSION_OBJECT, appSessionObject);
 		}
 

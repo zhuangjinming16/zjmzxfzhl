@@ -9,7 +9,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.code.kaptcha.Producer;
 import com.zjmzxfzhl.common.Constants;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.JwtUtil;
@@ -38,6 +37,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @RestController
 @RequestMapping("/sys")
 @Slf4j
@@ -52,7 +55,6 @@ public class SysLoginController {
 	@Autowired
 	private Producer producer;
 
-	@SuppressWarnings("deprecation")
 	@GetMapping("/captcha.jpg")
 	public void captcha(HttpServletResponse response, String uuid) throws IOException {
 		response.setHeader("Cache-Control", "no-store, no-cache");
@@ -63,17 +65,22 @@ public class SysLoginController {
 		redisUtil.set(Constants.PREFIX_USER_CAPTCHA + uuid, text, 60);
 		// 获取图片验证码
 		BufferedImage image = producer.createImage(text);
-
-		ServletOutputStream out = response.getOutputStream();
-		ImageIO.write(image, "jpg", out);
-		IOUtils.closeQuietly(out);
+		ServletOutputStream out = null;
+		try {
+			out = response.getOutputStream();
+			ImageIO.write(image, "jpg", out);
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
 	}
 
 	@SysLogAuto(value = "用户登录", logType = "1")
 	@PostMapping(value = "/login")
 	@ApiOperation("用户登录")
 	@ApiResponses({ @ApiResponse(code = 200, message = "登录成功，返回数据data包含token:\ndata={\"token\":\"xxx\"}") })
-	public R login(@RequestBody SysLoginForm sysLoginForm) {
+	public Result login(@RequestBody SysLoginForm sysLoginForm) {
 		CommonUtil.isEmptyStr(sysLoginForm.getUserId(), "用户名不能为空");
 		CommonUtil.isEmptyStr(sysLoginForm.getPassword(), "密码不能为空");
 		CommonUtil.isEmptyStr(sysLoginForm.getUuid(), "验证码uuid不能为空");
@@ -81,7 +88,7 @@ public class SysLoginController {
 
 		String cacheCaptcha = (String) redisUtil.get(Constants.PREFIX_USER_CAPTCHA + sysLoginForm.getUuid());
 		if (!sysLoginForm.getCaptcha().equals(cacheCaptcha)) {
-			return R.error("验证码错误或已失效");
+			return Result.error("验证码错误或已失效");
 		}
 		// 验证码验证通过后，应立即删除缓存，防止恶意暴力破解密码
 		redisUtil.del(Constants.PREFIX_USER_CAPTCHA + sysLoginForm.getUuid());
@@ -92,15 +99,15 @@ public class SysLoginController {
 
 		String password = PasswordUtil.encrypt(sysLoginForm.getPassword(), sysUser.getSalt());
 		if (!password.equals(sysUser.getPassword())) {
-			return R.error("用户名或密码错误");
+			return Result.error("用户名或密码错误");
 		}
 		// 生成token,不传入token过期时间，在使用JwtUtil.verify时不会校验过期时间
 		String token = JwtUtil.sign(userId, password);
 		// 使用redis管理token过期时间
 		redisUtil.set(Constants.PREFIX_USER_TOKEN + userId, token, JwtUtil.EXPIRE_TIME);
-		HashMap<String, String> obj = new HashMap<>();
+		HashMap<String, String> obj = new HashMap<>(1);
 		obj.put("token", token);
-		return R.ok(obj);
+		return Result.ok(obj);
 	}
 
 	/**
@@ -111,12 +118,12 @@ public class SysLoginController {
 	 */
 	@SysLogAuto(value = "用户注销")
 	@RequestMapping(value = "/logout")
-	public R logout(HttpServletRequest request, HttpServletResponse response) {
+	public Result logout(HttpServletRequest request, HttpServletResponse response) {
 		// 用户注销逻辑
 		Subject subject = ShiroUtils.getSubject();
 		SessionObject sessionObject = (SessionObject) subject.getPrincipal();
 		if (sessionObject == null) {
-			return R.ok("注销成功！");
+			return Result.ok("注销成功！");
 		}
 		SysUser sysUser = sessionObject.getSysUser();
 		log.info("用户名:" + sysUser.getUserName() + ",注销成功！ ");
@@ -125,6 +132,6 @@ public class SysLoginController {
 		redisUtil.del(Constants.PREFIX_USER_TOKEN + sysUser.getUserId());
 		// 清空用户sessionObject缓存
 		redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId());
-		return R.ok("注销成功！");
+		return Result.ok("注销成功！");
 	}
 }

@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
 import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @RestController
 @RequestMapping("/flowable/taskIdentityLink")
 public class TaskIdentityLinkController extends BaseFlowableController {
@@ -28,25 +32,25 @@ public class TaskIdentityLinkController extends BaseFlowableController {
 
 	@RequiresPermissions("flowable:taskIdentityLink:list")
 	@GetMapping(value = "/list")
-	public R list(@RequestParam String taskId) {
+	public Result list(@RequestParam String taskId) {
 		HistoricTaskInstance task = flowableTaskService.getHistoricTaskInstanceNotNull(taskId);
 		List<HistoricIdentityLink> historicIdentityLinks = historyService.getHistoricIdentityLinksForTask(task.getId());
-		return R.ok(responseFactory.createTaskIdentityResponseList(historicIdentityLinks));
+		return Result.ok(responseFactory.createTaskIdentityResponseList(historicIdentityLinks));
 	}
 
 	@SysLogAuto(value = "新增任务授权")
 	@RequiresPermissions("flowable:taskIdentityLink:save")
 	@PostMapping(value = "/save")
-	public R save(@RequestBody IdentityRequest taskIdentityRequest) {
+	public Result save(@RequestBody IdentityRequest taskIdentityRequest) {
 		flowableTaskService.saveTaskIdentityLink(taskIdentityRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "删除任务授权")
 	@RequiresPermissions("flowable:taskIdentityLink:delete")
 	@DeleteMapping(value = "/delete")
-	public R deleteIdentityLink(@RequestParam String taskId, @RequestParam String identityId, @RequestParam String identityType) {
+	public Result deleteIdentityLink(@RequestParam String taskId, @RequestParam String identityId, @RequestParam String identityType) {
 		flowableTaskService.deleteTaskIdentityLink(taskId, identityId, identityType);
-		return R.ok();
+		return Result.ok();
 	}
 }

@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.service.SysRoleService;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class CustomGroupEntityManager extends GroupEntityManagerImpl {
 	@Autowired
 	private SysRoleService sysRoleService;

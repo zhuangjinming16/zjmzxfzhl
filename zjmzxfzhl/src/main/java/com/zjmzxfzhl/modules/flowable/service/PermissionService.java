@@ -36,8 +36,12 @@ import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
 import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PermissionService {
 	@Autowired
 	private IdentityService identityService;
@@ -299,32 +303,6 @@ public class PermissionService {
 	 * 
 	 * 2.任务执行人可以转办，但要求任务非委派状态
 	 * 
-	 * 3.被转办人不能是任务所有人和当前任务执行人
-	 * 
-	 * @param loginUser
-	 * @param task
-	 * @param assignee
-	 * @return
-	 */
-	// public boolean canAssignTask(String loginUserId, Task task, String assignee) {
-	// String owner = task.getOwner();
-	// String oldAssignee = task.getAssignee();
-	// if (loginUserId.equals(owner) || (loginUserId.equals(oldAssignee) && !isTaskPending(task))) {
-	// if (assignee == null || assignee.length() == 0 || assignee.equals(owner) || assignee.equals(oldAssignee)) {
-	// return false;
-	// }
-	// return true;
-	// }
-	// return false;
-	// }
-
-	/**
-	 * 是否可以转办任务
-	 * 
-	 * 1.任务所有人可以转办
-	 * 
-	 * 2.任务执行人可以转办，但要求任务非委派状态
-	 * 
 	 * 3.被转办人不能是当前任务执行人
 	 * 
 	 * @param taskId
@@ -339,7 +317,8 @@ public class PermissionService {
 		}
 		String owner = task.getOwner();
 		String oldAssignee = task.getAssignee();
-		if (isAdmin(userId) || userId.equals(owner) || (userId.equals(oldAssignee) && !isTaskPending(task))) {
+		boolean canAssignFlag = isAdmin(userId) || userId.equals(owner) || (userId.equals(oldAssignee) && !isTaskPending(task));
+		if (canAssignFlag) {
 			if (assignee == null || assignee.length() == 0) {
 				throw new FlowableException("Assignee cannot be empty");
 			} else if (assignee.equals(oldAssignee)) {
@@ -404,7 +383,8 @@ public class PermissionService {
 		if (processInstance == null) {
 			throw new FlowableObjectNotFoundException("ProcessInstance with id: " + task.getProcessInstanceId() + " does not exist");
 		}
-		if (isAdmin(userId) || (userId != null && userId.length() > 0 && userId.equals(processInstance.getStartUserId()))) {
+		boolean canStopFlag = isAdmin(userId) || (userId != null && userId.length() > 0 && userId.equals(processInstance.getStartUserId()));
+		if (canStopFlag) {
 			return processInstance;
 		}
 		throw new FlowableNoPermissionException("User does not have permission");

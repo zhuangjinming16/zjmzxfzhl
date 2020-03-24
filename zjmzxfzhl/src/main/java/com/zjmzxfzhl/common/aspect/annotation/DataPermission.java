@@ -14,6 +14,8 @@ import com.zjmzxfzhl.common.permission.provider.AbstractDataPermissionProvider;
  * 
  * 使用例子：
  * 
+ * @author 庄金明
+ * @date 2020年3月23日
  * @DataPermission(tableNames = "T_SYS_USER", providers = NullDataRuleProvider.class)
  * @DataPermission(tableNames = { "T_SYS_USER", "T_SYS_ORG" }, providers = { TestDataRuleProvider.class, NullDataRuleProvider.class })
  */

@@ -36,6 +36,10 @@ import com.google.common.collect.Sets;
 import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class FlowableUtils {
 
 	public static User getFlowableUser() {
@@ -58,7 +62,7 @@ public class FlowableUtils {
 
 	public static Map<String, FlowNode> getCanReachTo(FlowNode toFlowNode, Map<String, FlowNode> canReachToNodes) {
 		if (canReachToNodes == null) {
-			canReachToNodes = new HashMap<>();
+			canReachToNodes = new HashMap<>(16);
 		}
 		List<SequenceFlow> flows = toFlowNode.getIncomingFlows();
 		if (flows != null && flows.size() > 0) {
@@ -90,7 +94,7 @@ public class FlowableUtils {
 
 	public static Map<String, FlowNode> getCanReachFrom(FlowNode fromFlowNode, Map<String, FlowNode> canReachFromNodes) {
 		if (canReachFromNodes == null) {
-			canReachFromNodes = new HashMap<>();
+			canReachFromNodes = new HashMap<>(16);
 		}
 		List<SequenceFlow> flows = fromFlowNode.getOutgoingFlows();
 		if (flows != null && flows.size() > 0) {
@@ -123,12 +127,13 @@ public class FlowableUtils {
 	public static Map<String, Set<String>> getSpecialGatewayElements(FlowElementsContainer container,
 			Map<String, Set<String>> specialGatewayElements) {
 		if (specialGatewayElements == null) {
-			specialGatewayElements = new HashMap<>();
+			specialGatewayElements = new HashMap<>(16);
 		}
 		Collection<FlowElement> flowelements = container.getFlowElements();
 		for (FlowElement flowElement : flowelements) {
-			if (flowElement.getId().endsWith("_begin")
-					&& (flowElement instanceof ParallelGateway || flowElement instanceof InclusiveGateway || flowElement instanceof ComplexGateway)) {
+			boolean isBeginSpecialGateway = flowElement.getId().endsWith("_begin")
+					&& (flowElement instanceof ParallelGateway || flowElement instanceof InclusiveGateway || flowElement instanceof ComplexGateway);
+			if (isBeginSpecialGateway) {
 				String gatewayBeginRealId = flowElement.getId();
 				String gatewayId = gatewayBeginRealId.substring(0, gatewayBeginRealId.length() - 6);
 				Set<String> gatewayIdContainFlowelements = specialGatewayElements.computeIfAbsent(gatewayId, k -> new HashSet<>());
@@ -280,7 +285,8 @@ public class FlowableUtils {
 				flowElementsContainer = null;
 			}
 		}
-		Collections.reverse(result);// 第一层Process为第0个
+		// 第一层Process为第0个
+		Collections.reverse(result);
 		return result;
 	}
 
@@ -291,12 +297,13 @@ public class FlowableUtils {
 	 * @param targetList
 	 * @return 返回不同的层级，如果其中一个层级较深，则返回层级小的+1，从第0层开始，请注意判断是否会出现下标越界异常；返回 -1 表示在同一层
 	 */
-	public static int getDiffLevel(List<String> sourceList, List<String> targetList) {
+	public static Integer getDiffLevel(List<String> sourceList, List<String> targetList) {
 		if (sourceList == null || sourceList.isEmpty() || targetList == null || targetList.isEmpty()) {
 			throw new FlowableException("sourceList and targetList cannot be empty");
 		}
 		if (sourceList.size() == 1 && targetList.size() == 1) {
-			if (!sourceList.get(0).equals(targetList.get(0))) {// 都在第0层且不相等
+			// 都在第0层且不相等
+			if (!sourceList.get(0).equals(targetList.get(0))) {
 				return 0;
 			} else {// 都在第0层且相等
 				return -1;
@@ -330,13 +337,13 @@ public class FlowableUtils {
 		// check for a multi instance root execution
 		ExecutionEntity miExecution = null;
 		boolean isInsideMultiInstance = false;
-		for (ExecutionEntity possibleMIExecution : activityIdExecutions) {
-			if (possibleMIExecution.isMultiInstanceRoot()) {
-				miExecution = possibleMIExecution;
+		for (ExecutionEntity possibleMiExecution : activityIdExecutions) {
+			if (possibleMiExecution.isMultiInstanceRoot()) {
+				miExecution = possibleMiExecution;
 				isInsideMultiInstance = true;
 				break;
 			}
-			if (isExecutionInsideMultiInstance(possibleMIExecution)) {
+			if (isExecutionInsideMultiInstance(possibleMiExecution)) {
 				isInsideMultiInstance = true;
 			}
 		}
@@ -395,8 +402,10 @@ public class FlowableUtils {
 	}
 
 	public static String[] getSourceAndTargetRealActivityId(FlowNode sourceFlowElement, FlowNode targetFlowElement) {
-		String sourceRealActivityId = sourceFlowElement.getId(); // 实际应操作的当前节点ID
-		String targetRealActivityId = targetFlowElement.getId(); // 实际应操作的目标节点ID
+		// 实际应操作的当前节点ID
+		String sourceRealActivityId = sourceFlowElement.getId();
+		// 实际应操作的目标节点ID
+		String targetRealActivityId = targetFlowElement.getId();
 		List<String> sourceParentProcesss = FlowableUtils.getParentProcessIds(sourceFlowElement);
 		List<String> targetParentProcesss = FlowableUtils.getParentProcessIds(targetFlowElement);
 		int diffParentLevel = getDiffLevel(sourceParentProcesss, targetParentProcesss);

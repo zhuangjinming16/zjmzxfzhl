@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.util.ObjectUtils;
 import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -39,6 +39,10 @@ import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
 import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionRequest;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Service
 public class ProcessDefinitionService {
 	@Autowired
@@ -54,7 +58,7 @@ public class ProcessDefinitionService {
 		return managementService.executeCommand(new GetProcessDefinitionInfoCmd(processDefinitionId, null, null));
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void delete(String processDefinitionId, Boolean cascade) {
 		ProcessDefinition processDefinition = getProcessDefinitionById(processDefinitionId);
 		if (processDefinition.getDeploymentId() == null) {
@@ -79,7 +83,7 @@ public class ProcessDefinitionService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void activate(ProcessDefinitionRequest actionRequest) {
 		String processDefinitionId = actionRequest.getProcessDefinitionId();
 		ProcessDefinition processDefinition = getProcessDefinitionById(processDefinitionId);
@@ -89,7 +93,7 @@ public class ProcessDefinitionService {
 		repositoryService.activateProcessDefinitionById(processDefinitionId, actionRequest.isIncludeProcessInstances(), actionRequest.getDate());
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void suspend(@RequestBody ProcessDefinitionRequest actionRequest) {
 		String processDefinitionId = actionRequest.getProcessDefinitionId();
 		ProcessDefinition processDefinition = getProcessDefinitionById(processDefinitionId);
@@ -99,9 +103,8 @@ public class ProcessDefinitionService {
 		repositoryService.suspendProcessDefinitionById(processDefinition.getId(), actionRequest.isIncludeProcessInstances(), actionRequest.getDate());
 	}
 
-	@Transactional
-	// public void doImport(String tenantId, HttpServletRequest request) {
-	public void doImport(HttpServletRequest request) {
+	@Transactional(rollbackFor = Exception.class)
+	public void doImport(String tenantId, HttpServletRequest request) {
 		if (!(request instanceof MultipartHttpServletRequest)) {
 			throw new IllegalArgumentException("request must instance of MultipartHttpServletRequest");
 		}
@@ -111,20 +114,22 @@ public class ProcessDefinitionService {
 		}
 		MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
 		String fileName = file.getOriginalFilename();
-		if (ObjectUtils.isEmpty(fileName) || !(fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn")
-				|| fileName.toLowerCase().endsWith(".bar") || fileName.toLowerCase().endsWith(".zip"))) {
+		boolean isFileNameInValid = ObjectUtils.isEmpty(fileName) || !(fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn")
+				|| fileName.toLowerCase().endsWith(".bar") || fileName.toLowerCase().endsWith(".zip"));
+		if (isFileNameInValid) {
 			throw new IllegalArgumentException("Request file must end with .bpmn20.xml,.bpmn|,.bar,.zip");
 		}
 		try {
 			DeploymentBuilder deploymentBuilder = repositoryService.createDeployment();
-			if (fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn")) {
+			boolean isBpmnFile = fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn");
+			if (isBpmnFile) {
 				deploymentBuilder.addInputStream(fileName, file.getInputStream());
 				StreamSource xmlSource = new InputStreamSource(file.getInputStream());
 				BpmnModel bpmnModel = new BpmnXMLConverter().convertToBpmnModel(xmlSource, false, false, "UTF-8");
 
 				org.flowable.bpmn.model.Process process = bpmnModel.getMainProcess();
 				Collection<FlowElement> flowElements = process.getFlowElements();
-				Map<String, String> formKeyMap = new HashMap<String, String>();
+				Map<String, String> formKeyMap = new HashMap<String, String>(16);
 				for (FlowElement flowElement : flowElements) {
 					String formKey = null;
 					if (flowElement instanceof StartEvent) {
@@ -155,7 +160,8 @@ public class ProcessDefinitionService {
 						}
 					}
 				}
-			} else if (fileName.toLowerCase().endsWith(".bar") || fileName.toLowerCase().endsWith(".zip")) {
+			} else if (fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_BAR)
+					|| fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_ZIP)) {
 				deploymentBuilder.addZipInputStream(new ZipInputStream(file.getInputStream()));
 			}
 			deploymentBuilder.name(fileName);
@@ -170,7 +176,7 @@ public class ProcessDefinitionService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void saveProcessDefinitionIdentityLink(IdentityRequest identityRequest) {
 		ProcessDefinition processDefinition = getProcessDefinitionById(identityRequest.getProcessDefinitionId());
 		validateIdentityArguments(identityRequest.getIdentityId(), identityRequest.getIdentityType());
@@ -181,8 +187,8 @@ public class ProcessDefinitionService {
 		}
 	}
 
-	@Transactional
-	public R deleteProcessDefinitionIdentityLink(String processDefinitionId, String identityId, String type) {
+	@Transactional(rollbackFor = Exception.class)
+	public Result deleteProcessDefinitionIdentityLink(String processDefinitionId, String identityId, String type) {
 		validateIdentityArguments(identityId, type);
 		ProcessDefinition processDefinition = getProcessDefinitionById(processDefinitionId);
 		if (FlowableConstant.IDENTITY_GROUP.equals(type)) {
@@ -190,7 +196,7 @@ public class ProcessDefinitionService {
 		} else if (FlowableConstant.IDENTITY_USER.equals(type)) {
 			repositoryService.deleteCandidateStarterUser(processDefinition.getId(), identityId);
 		}
-		return R.ok();
+		return Result.ok();
 	}
 
 	private void validateIdentityArguments(String identityId, String type) {

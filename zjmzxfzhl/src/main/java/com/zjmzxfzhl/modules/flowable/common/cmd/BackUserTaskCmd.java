@@ -26,6 +26,10 @@ import org.flowable.task.service.impl.persistence.entity.TaskEntity;
 import com.google.common.collect.Sets;
 import com.zjmzxfzhl.modules.flowable.util.FlowableUtils;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 public class BackUserTaskCmd implements Command<String>, Serializable {
 
 	public static final long serialVersionUID = 1L;
@@ -56,22 +60,28 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 		Process process = ProcessDefinitionUtil.getProcess(processDefinitionId);
 
 		FlowNode sourceFlowElement = (FlowNode) process.getFlowElement(sourceActivityId, true);
-		if (!(sourceFlowElement instanceof UserTask)) { // 只支持从用户任务退回
+		// 只支持从用户任务退回
+		if (!(sourceFlowElement instanceof UserTask)) {
 			throw new FlowableException("Task with id:" + taskId + " is not a UserTask");
 		}
 
 		FlowNode targetFlowElement = (FlowNode) process.getFlowElement(targetActivityId, true);
-		if (!FlowableUtils.isReachable(process, targetFlowElement, sourceFlowElement)) {// 退回节点到当前节点不可达到，不允许退回
+		// 退回节点到当前节点不可达到，不允许退回
+		if (!FlowableUtils.isReachable(process, targetFlowElement, sourceFlowElement)) {
 			throw new FlowableException("Cannot back to [" + targetActivityId + "]");
 		}
 
 		String[] sourceAndTargetRealActivityId = FlowableUtils.getSourceAndTargetRealActivityId(sourceFlowElement, targetFlowElement);
-		String sourceRealActivityId = sourceAndTargetRealActivityId[0]; // 实际应操作的当前节点ID
-		String targetRealActivityId = sourceAndTargetRealActivityId[1]; // 实际应操作的目标节点ID
+		// 实际应操作的当前节点ID
+		String sourceRealActivityId = sourceAndTargetRealActivityId[0];
+		// 实际应操作的目标节点ID
+		String targetRealActivityId = sourceAndTargetRealActivityId[1];
 
 		Map<String, Set<String>> specialGatewayNodes = FlowableUtils.getSpecialGatewayElements(process);
-		List<String> sourceInSpecialGatewayList = new ArrayList<>();// 当前节点处在的并行网关list
-		List<String> targetInSpecialGatewayList = new ArrayList<>();// 目标节点处在的并行网关list
+		// 当前节点处在的并行网关list
+		List<String> sourceInSpecialGatewayList = new ArrayList<>();
+		// 目标节点处在的并行网关list
+		List<String> targetInSpecialGatewayList = new ArrayList<>();
 		setSpecialGatewayList(sourceRealActivityId, targetRealActivityId, specialGatewayNodes, sourceInSpecialGatewayList,
 				targetInSpecialGatewayList);
 
@@ -96,7 +106,8 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 		// 4.目标节点和当前节点都在并行网关中
 		else {
 			int diffSpecialGatewayLevel = FlowableUtils.getDiffLevel(sourceInSpecialGatewayList, targetInSpecialGatewayList);
-			if (diffSpecialGatewayLevel == -1) { // 在并行网关同一层且在同一分支
+			// 在并行网关同一层且在同一分支
+			if (diffSpecialGatewayLevel == -1) {
 				sourceRealAcitivtyIds = Sets.newHashSet(sourceRealActivityId);
 			} else {
 				// 当前节点最内层并行网关不被目标节点最内层并行网关包含
@@ -124,7 +135,8 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 		// 筛选需要处理的execution
 		List<ExecutionEntity> realExecutions = this.getRealExecutions(commandContext, processInstanceId, task.getExecutionId(), sourceRealActivityId,
 				sourceRealAcitivtyIds);
-		if (targetRealSpecialGateway == null) { // 不需要跳转到并行网关begin节点，直接跳转到实际的 targetRealActivityId
+		// 不需要跳转到并行网关begin节点，直接跳转到实际的 targetRealActivityId
+		if (targetRealSpecialGateway == null) {
 			List<String> realExecutionIds = realExecutions.stream().map(ExecutionEntity::getId).collect(Collectors.toList());
 			runtimeService.createChangeActivityStateBuilder().processInstanceId(processInstanceId)
 					.moveExecutionsToSingleActivityId(realExecutionIds, targetRealActivityId).changeState();

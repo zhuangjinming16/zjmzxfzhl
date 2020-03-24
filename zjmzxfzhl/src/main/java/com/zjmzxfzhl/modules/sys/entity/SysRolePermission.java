@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,20 +26,20 @@ public class SysRolePermission extends BaseEntity {
 
 	@TableId(type = IdType.ASSIGN_UUID)
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String rolePermissionId;// 操作权限ID
+	@LengthForUtf8(max = 32)
+	private String rolePermissionId;
 
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String roleId;// 角色ID
+	@LengthForUtf8(max = 32)
+	private String roleId;
 
 	@NotNull
-	@LengthForUTF8(max = 1)
-	private String permissionType;// 权限类型
+	@LengthForUtf8(max = 1)
+	private String permissionType;
 
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String menuOrFuncId;// 菜单或功能ID
+	@LengthForUtf8(max = 32)
+	private String menuOrFuncId;
 
 	@TableField(exist = false)
 	private String menuOrFuncName;

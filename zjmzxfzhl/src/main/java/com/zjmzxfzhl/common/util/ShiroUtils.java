@@ -7,6 +7,10 @@ import org.apache.shiro.subject.Subject;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class ShiroUtils {
 
 	public static Session getSession() {

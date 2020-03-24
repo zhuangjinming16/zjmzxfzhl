@@ -7,6 +7,10 @@ import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Service
 @Slf4j
 public class DemoRedlockService {
@@ -53,7 +57,8 @@ public class DemoRedlockService {
 	@RedissonLock(lockIndexs = { 0, 1, 2, 3 }, fieldNames = { "", "", "zjmzxfzhlId", "zjmzxfzhlId" })
 	public void redlock5(String someId, int someInt, DemoZjmzxfzhl demoZjmzxfzhl1, DemoZjmzxfzhl demoZjmzxfzhl2) throws Exception {
 		Thread.sleep(2000);
-		log.info("锁第一个参数、第二个参数、第三个参数的zjmzxfzhlId属性、第四个参数的zjmzxfzhlId属性组合：" + someId + "," + someInt + "," + demoZjmzxfzhl1.getZjmzxfzhlId() + "," + demoZjmzxfzhl2.getZjmzxfzhlId());
+		log.info("锁第一个参数、第二个参数、第三个参数的zjmzxfzhlId属性、第四个参数的zjmzxfzhlId属性组合：" + someId + "," + someInt + "," + demoZjmzxfzhl1.getZjmzxfzhlId() + ","
+				+ demoZjmzxfzhl2.getZjmzxfzhlId());
 	}
 
 	/**
@@ -66,6 +71,7 @@ public class DemoRedlockService {
 	@RedissonLock(lockIndexs = { 0, 1, 2, 2 }, fieldNames = { "", "", "zjmzxfzhlId", "zjmzxfzhlName" })
 	public void redlock6(String someId, int someInt, DemoZjmzxfzhl demoZjmzxfzhl1) throws Exception {
 		Thread.sleep(2000);
-		log.info("锁第一个参数、第二个参数、第三个参数的zjmzxfzhlId属性、第三个参数的zjmzxfzhlName属性组合：" + someId + "," + someInt + "," + demoZjmzxfzhl1.getZjmzxfzhlId() + "," + demoZjmzxfzhl1.getZjmzxfzhlName());
+		log.info("锁第一个参数、第二个参数、第三个参数的zjmzxfzhlId属性、第三个参数的zjmzxfzhlName属性组合：" + someId + "," + someInt + "," + demoZjmzxfzhl1.getZjmzxfzhlId() + ","
+				+ demoZjmzxfzhl1.getZjmzxfzhlName());
 	}
 }

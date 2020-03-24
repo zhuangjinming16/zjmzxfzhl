@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.modules.monitor.service.RedisService;
 import com.zjmzxfzhl.modules.monitor.vo.RedisInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Slf4j
 @RestController
 @RequestMapping("/actuator")
@@ -28,10 +32,10 @@ public class MonitorController {
 	private RedisService redisService;
 
 	@GetMapping("/redis/info")
-	public R getRedisInfo() throws Exception {
+	public Result getRedisInfo() throws Exception {
 		List<RedisInfo> infoList = this.redisService.getInfo();
 		log.info(infoList.toString());
-		return R.ok(infoList);
+		return Result.ok(infoList);
 	}
 
 	@GetMapping("/redis/keysSize")
@@ -45,7 +49,7 @@ public class MonitorController {
 	}
 
 	@GetMapping("/queryDiskInfo")
-	public R queryDiskInfo() {
+	public Result queryDiskInfo() {
 		try {
 			// 当前文件系统类
 			FileSystemView fsv = FileSystemView.getFileSystemView();
@@ -65,10 +69,10 @@ public class MonitorController {
 				data.add(map);
 				log.info(map.toString());
 			}
-			return R.ok(data);
+			return Result.ok(data);
 		} catch (Exception e) {
 			log.error("查询失败：", e);
-			return R.error("查询失败");
+			return Result.error("查询失败");
 		}
 	}
 }

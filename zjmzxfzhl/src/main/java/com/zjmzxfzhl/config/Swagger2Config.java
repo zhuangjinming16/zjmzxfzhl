@@ -23,6 +23,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 @EnableSwagger2
 @ConditionalOnExpression("${swagger-enable: true}")
@@ -50,7 +54,8 @@ public class Swagger2Config implements WebMvcConfigurer {
 				// 此包路径下的类，才生成接口文档
 				.apis(RequestHandlerSelectors.basePackage("com.zjmzxfzhl.modules"))
 				// 加了ApiOperation注解的类，才生成接口文档
-				.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).paths(PathSelectors.any()).build().globalOperationParameters(setHeaderToken());
+				.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).paths(PathSelectors.any()).build()
+				.globalOperationParameters(setHeaderToken());
 	}
 
 	private List<Parameter> setHeaderToken() {

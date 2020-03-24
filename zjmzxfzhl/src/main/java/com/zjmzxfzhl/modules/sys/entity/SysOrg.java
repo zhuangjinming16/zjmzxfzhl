@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,35 +25,35 @@ public class SysOrg extends BaseEntity {
 
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String orgId;// 机构ID
+	@LengthForUtf8(max = 32)
+	private String orgId;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String orgName;// 机构名称
+	@LengthForUtf8(max = 100)
+	private String orgName;
 
-	@LengthForUTF8(max = 32)
-	private String parentOrgId;// 上级机构ID
+	@LengthForUtf8(max = 32)
+	private String parentOrgId;
 
-	@LengthForUTF8(max = 100)
-	private String shortName;// 机构简称
+	@LengthForUtf8(max = 100)
+	private String shortName;
 
-	@LengthForUTF8(max = 4)
-	private String orgType;// 机构类型
-
-	@NotNull
-	@LengthForUTF8(max = 2)
-	private String orgLevel;// 机构级次
+	@LengthForUtf8(max = 4)
+	private String orgType;
 
 	@NotNull
-	@LengthForUTF8(max = 200)
-	private String orgLevelCode;// 组织机构路径
+	@LengthForUtf8(max = 2)
+	private String orgLevel;
 
-	@LengthForUTF8(max = 255)
-	private String remark;// 备注
+	@NotNull
+	@LengthForUtf8(max = 200)
+	private String orgLevelCode;
 
-	@LengthForUTF8(max = 1)
-	private String isLeaf;// 是否叶子节点
+	@LengthForUtf8(max = 255)
+	private String remark;
+
+	@LengthForUtf8(max = 1)
+	private String isLeaf;
 
 	@TableField(exist = false)
 	private String parentOrgName;

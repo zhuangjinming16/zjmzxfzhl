@@ -8,10 +8,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CyclicBarrier;
 
 import javax.net.ssl.SSLContext;
 
@@ -34,8 +32,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.TrustStrategy;
 
-import com.zjmzxfzhl.modules.app.common.AppConstants;
-
+/**
+ * @author 庄金明
+ * @date 2020年3月22日
+ */
 public class HttpUtils {
 
 	/**
@@ -71,7 +71,8 @@ public class HttpUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys, Map<String, String> bodys) throws Exception {
+	public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys, Map<String, String> bodys)
+			throws Exception {
 		HttpClient httpClient = wrapClient(host);
 
 		HttpPost request = new HttpPost(buildUrl(host, path, querys));
@@ -107,7 +108,8 @@ public class HttpUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys, String body) throws Exception {
+	public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys, String body)
+			throws Exception {
 		HttpClient httpClient = wrapClient(host);
 
 		HttpPost request = new HttpPost(buildUrl(host, path, querys));
@@ -135,7 +137,8 @@ public class HttpUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys, byte[] body) throws Exception {
+	public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys, byte[] body)
+			throws Exception {
 		HttpClient httpClient = wrapClient(host);
 
 		HttpPost request = new HttpPost(buildUrl(host, path, querys));
@@ -163,7 +166,8 @@ public class HttpUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HttpResponse doPut(String host, String path, Map<String, String> headers, Map<String, String> querys, String body) throws Exception {
+	public static HttpResponse doPut(String host, String path, Map<String, String> headers, Map<String, String> querys, String body)
+			throws Exception {
 		HttpClient httpClient = wrapClient(host);
 
 		HttpPut request = new HttpPut(buildUrl(host, path, querys));
@@ -190,7 +194,8 @@ public class HttpUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HttpResponse doPut(String host, String path, Map<String, String> headers, Map<String, String> querys, byte[] body) throws Exception {
+	public static HttpResponse doPut(String host, String path, Map<String, String> headers, Map<String, String> querys, byte[] body)
+			throws Exception {
 		HttpClient httpClient = wrapClient(host);
 
 		HttpPut request = new HttpPut(buildUrl(host, path, querys));
@@ -259,20 +264,22 @@ public class HttpUtils {
 		return sbUrl.toString();
 	}
 
-	private static HttpClient wrapClient(String host) {
+	private final static String HTTPS = "https://";
 
+	private static HttpClient wrapClient(String host) {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		// HttpClient httpClient = new DefaultHttpClient();
-		if (host.startsWith("https://")) {
-			return createSSLClient(httpClient);
+		if (host.startsWith(HTTPS)) {
+			return createSslClient(httpClient);
 		}
 		return httpClient;
 	}
 
-	private static HttpClient createSSLClient(HttpClient httpClient) {
+	private static HttpClient createSslClient(HttpClient httpClient) {
 		try {
 			SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
 				// 信任所有
+				@Override
 				public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 					return true;
 				}
@@ -300,21 +307,22 @@ public class HttpUtils {
 		// String url = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest2?deviceSN=someDeviceSN&deviceIMEI=someDeviceIMEI";
 		// String url = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest3?param=someParam";
 		// String url2 = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest3?param=someParam2";
-		String url = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest4?transId=t0001";
-		String url2 = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest4?transId=t0002";
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(AppConstants.X_ACCESS_TOKEN, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoxNTcxODA3NjQwLCJ1c2VySWQiOiIxODg4ODg4ODg4OCJ9.L_57nyEmmUrnOV8ds64Q5jpElG0TYPTdyzXAchnoPW8");
-		CyclicBarrier cyclicBarrier = new CyclicBarrier(10);
-		for (int i = 0; i < 10; i++) {
-			new Thread(() -> {
-				try {
-					cyclicBarrier.await();
-					HttpUtils.doGet(url, "", headers, null);
-					HttpUtils.doGet(url2, "", headers, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}).start();
-		}
+		// String url = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest4?transId=t0001";
+		// String url2 = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest4?transId=t0002";
+		// Map<String, String> headers = new HashMap<String, String>(16);
+		// headers.put(AppConstants.X_ACCESS_TOKEN,
+		// "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoxNTcxODA3NjQwLCJ1c2VySWQiOiIxODg4ODg4ODg4OCJ9.L_57nyEmmUrnOV8ds64Q5jpElG0TYPTdyzXAchnoPW8");
+		// CyclicBarrier cyclicBarrier = new CyclicBarrier(10);
+		// for (int i = 0; i < 10; i++) {
+		// new Thread(() -> {
+		// try {
+		// cyclicBarrier.await();
+		// HttpUtils.doGet(url, "", headers, null);
+		// HttpUtils.doGet(url2, "", headers, null);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }).start();
+		// }
 	}
 }

@@ -10,13 +10,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Component
 public class RedisUtil {
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
-	// @Autowired
-	// private StringRedisTemplate stringRedisTemplate;
 
 	/**
 	 * 指定缓存失效时间

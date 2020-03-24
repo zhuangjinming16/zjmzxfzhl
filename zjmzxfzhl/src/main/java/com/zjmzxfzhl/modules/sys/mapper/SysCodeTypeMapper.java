@@ -14,5 +14,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysCodeType;
  * @author 庄金明
  */
 public interface SysCodeTypeMapper extends BaseMapper<SysCodeType> {
+	/**
+	 * 查询代码类别列表
+	 * 
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
 	public List<SysCodeType> list(IPage<SysCodeType> page, @Param("entity") SysCodeType entity);
 }

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.util.DateUtil;
-import com.zjmzxfzhl.common.util.IPUtils;
+import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.modules.app.common.AppConstants;
@@ -23,6 +23,10 @@ import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.form.AppLoginForm;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @RestController
 @RequestMapping("/app")
 public class AppLoginController {
@@ -34,24 +38,26 @@ public class AppLoginController {
 	private RedisUtil redisUtil;
 
 	@PostMapping("/login")
-	public R login(@Valid @RequestBody AppLoginForm form, HttpServletRequest request) {
+	public Result login(@Valid @RequestBody AppLoginForm form, HttpServletRequest request) {
 		AppUser appUser = appUserService.login(form);
 		String userId = appUser.getUserId();
 		String token = JwtUtil.sign(userId, appUser.getPassword());
 
 		AppSessionObject appSessionObject = new AppSessionObject();
-		appUser.setPassword(null);// password不存缓存
-		appUser.setSalt(null);// 密码盐不缓存
+		// password不存缓存
+		appUser.setPassword(null);
+		// 密码盐不缓存
+		appUser.setSalt(null);
 		appSessionObject.setAppUser(appUser);
 		appSessionObject.setUserId(userId);
 		appSessionObject.setLoginTime(DateUtil.getNow());
-		appSessionObject.setIpAddr(IPUtils.getIpAddr(request));
+		appSessionObject.setIpAddr(IpUtils.getIpAddr(request));
 		appSessionObject.setToken(token);
 		redisUtil.set(AppConstants.PREFIX_USER_APP_SESSION_OBJECT + userId, appSessionObject, JwtUtil.EXPIRE_TIME);
 
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(1);
 		map.put("token", token);
-		return R.ok(map);
+		return Result.ok(map);
 	}
 
 }

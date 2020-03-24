@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,19 +26,19 @@ public class SysRoleUser extends BaseEntity {
 
 	@TableId(type = IdType.ASSIGN_UUID)
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String roleUserId;// UUID
+	@LengthForUtf8(max = 32)
+	private String roleUserId;
 
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String roleId;// 角色ID
+	@LengthForUtf8(max = 32)
+	private String roleId;
 
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String userId;// 用户ID
+	@LengthForUtf8(max = 32)
+	private String userId;
 
 	@TableField(exist = false)
-	private String userName;// 用户姓名
+	private String userName;
 
 	@TableField(exist = false)
 	private String authFilterSql;

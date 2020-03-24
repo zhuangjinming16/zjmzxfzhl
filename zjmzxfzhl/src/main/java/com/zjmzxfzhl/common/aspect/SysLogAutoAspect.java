@@ -13,9 +13,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
-import com.zjmzxfzhl.common.util.IPUtils;
+import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JacksonUtil;
 import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
@@ -33,6 +33,19 @@ import com.zjmzxfzhl.modules.sys.service.SysUserService;
 @Aspect
 @Component
 public class SysLogAutoAspect {
+	/**
+	 * 1-用户登录
+	 */
+	private static final String LOG_TYPE_1 = "1";
+	/**
+	 * 2-用户操作
+	 */
+	private static final String LOG_TYPE_2 = "2";
+	/**
+	 * 3-定时任务
+	 */
+	private static final String LOG_TYPE_3 = "3";
+
 	@Autowired
 	private SysLogService sysLogService;
 	@Autowired
@@ -51,20 +64,21 @@ public class SysLogAutoAspect {
 		sysLog.setMethod(className + "." + methodName + "()");
 		// 获取request并设置IP地址
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		sysLog.setIp(IPUtils.getIpAddr(request));
+		sysLog.setIp(IpUtils.getIpAddr(request));
 		sysLog.setRequestUrl(request.getRequestURI());
 		SysUser sysUser = null;
-		if ("1".equals(sysLogAuto.logType())) {// 1-用户登录
+		// 1-用户登录
+		if (LOG_TYPE_1.equals(sysLogAuto.logType())) {
 			SysLoginForm aSysLoginForm = (SysLoginForm) args[0];
 			sysUser = sysUserService.getById(aSysLoginForm.getUserId());
 			if (sysUser == null) {
 				sysUser = new SysUser();
 				sysUser.setUserId(aSysLoginForm.getUserId());
 			}
-		} else if ("2".equals(sysLogAuto.logType())) {
+		} else if (LOG_TYPE_2.equals(sysLogAuto.logType())) {
 			sysUser = ShiroUtils.getSysUser();
 			sysLog.setRequestParam(paramsToJson(args));
-		} else if ("3".equals(sysLogAuto.logType())) {
+		} else if (LOG_TYPE_3.equals(sysLogAuto.logType())) {
 			sysLog.setRequestParam(paramsToJson(args));
 			sysLog.setCreateBy("admin");
 		}
@@ -89,8 +103,8 @@ public class SysLogAutoAspect {
 		sysLog.setCostTime(time);
 
 		String operateResult = "";
-		if (result instanceof R) {
-			R r = (R) result;
+		if (result instanceof Result) {
+			Result r = (Result) result;
 			operateResult = r.getMsg();
 		} else if (ex != null) {
 			operateResult = ex.getMessage();
@@ -121,7 +135,8 @@ public class SysLogAutoAspect {
 		for (int i = 0; i < args.length; i++) {
 			String param = null;
 			if (!(args[i] instanceof HttpServletRequest || args[i] instanceof HttpServletResponse)) {
-				param = JacksonUtil.objToStr(args[i], Include.NON_NULL);// 序列化忽略null值，写入数据库长度可以缩短
+				// 序列化忽略null值，写入数据库长度可以缩短
+				param = JacksonUtil.objToStr(args[i], Include.NON_NULL);
 			}
 			if (param == null) {
 				param = "{}";

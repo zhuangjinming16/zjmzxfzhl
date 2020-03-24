@@ -35,6 +35,10 @@ import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceResponse;
 import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Component
 public class ResponseFactory {
 	private final IdentityService identityService;
@@ -148,7 +152,7 @@ public class ResponseFactory {
 	}
 
 	public List<TaskResponse> createTaskResponseList(List<TaskInfo> tasks) {
-		Map<String, String> processInstanceNames = new HashMap<>();
+		Map<String, String> processInstanceNames = new HashMap<>(16);
 		Set<String> processInstanceIds = new HashSet<>();
 		for (TaskInfo task : tasks) {
 			if (task.getProcessInstanceId() != null) {

@@ -7,14 +7,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 统一结果返回类
- * 
  * @author 庄金明
- *
+ * @date 2020年3月23日
  */
 @Data
 @ApiModel(value = "返回说明")
-public class R implements Serializable {
+public class Result implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static Integer SC_INTERNAL_SERVER_ERROR = 500;
@@ -28,65 +26,65 @@ public class R implements Serializable {
 	@ApiModelProperty(value = "返回数据")
 	private Object data;
 
-	public R() {
+	public Result() {
 	}
 
-	public R(Integer code, String msg) {
+	public Result(Integer code, String msg) {
 		this.code = code;
 		this.msg = msg;
 	}
 
-	public R(String msg) {
+	public Result(String msg) {
 		this.code = SC_OK;
 		this.msg = msg;
 	}
 
-	public R(Integer code, String msg, Object data) {
+	public Result(Integer code, String msg, Object data) {
 		this.code = code;
 		this.msg = msg;
 		this.data = data;
 	}
 
-	public static R error(String msg) {
+	public static Result error(String msg) {
 		return error(SC_INTERNAL_SERVER_ERROR, msg);
 	}
 
-	public static R error(int code, String msg) {
+	public static Result error(int code, String msg) {
 		if (msg == null || msg.length() == 0) {
 			msg = "交易执行失败";
 		}
-		R r = new R(code, msg);
+		Result r = new Result(code, msg);
 		return r;
 	}
 
-	public static R error(int code, String msg, Object data) {
+	public static Result error(int code, String msg, Object data) {
 		if (msg == null || msg.length() == 0) {
 			msg = "交易执行失败";
 		}
-		R r = new R(code, msg, data);
+		Result r = new Result(code, msg, data);
 		return r;
 	}
 
-	public static R ok() {
-		R r = new R();
+	public static Result ok() {
+		Result r = new Result();
 		r.setCode(SC_OK);
 		return r;
 	}
 
-	public static R ok(String msg) {
-		R r = new R(msg);
+	public static Result ok(String msg) {
+		Result r = new Result(msg);
 		return r;
 	}
 
-	public static R ok(Object data) {
-		R r = new R();
+	public static Result ok(Object data) {
+		Result r = new Result();
 		r.setCode(SC_OK);
 		r.setData(data);
 		return r;
 	}
 
-	public static R ok(String msg, Object data) {
-		R r = new R();
+	public static Result ok(String msg, Object data) {
+		Result r = new Result();
 		r.setCode(SC_OK);
 		if (msg != null && msg.length() != 0) {
 			r.setMsg(msg);

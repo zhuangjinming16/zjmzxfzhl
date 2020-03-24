@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
@@ -44,16 +44,16 @@ public class FlowableFormController extends BaseController {
 	 */
 	@RequiresPermissions("flowable:form:list")
 	@GetMapping(value = "/list")
-	public R list(FlowableForm flowableForm, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(FlowableForm flowableForm, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<FlowableForm> pageList = flowableFormService.list(new Page<FlowableForm>(current, size), flowableForm);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("flowable:form:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		FlowableForm flowableForm = flowableFormService.getById(id);
-		return R.ok(flowableForm);
+		return Result.ok(flowableForm);
 	}
 
 	/**
@@ -64,9 +64,9 @@ public class FlowableFormController extends BaseController {
 	@SysLogAuto(value = "新增流程表单")
 	@RequiresPermissions("flowable:form:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody FlowableForm flowableForm) {
+	public Result save(@Valid @RequestBody FlowableForm flowableForm) {
 		flowableFormService.save(flowableForm);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -77,9 +77,9 @@ public class FlowableFormController extends BaseController {
 	@SysLogAuto(value = "修改流程表单")
 	@RequiresPermissions("flowable:form:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody FlowableForm flowableForm) {
+	public Result update(@Valid @RequestBody FlowableForm flowableForm) {
 		flowableFormService.updateById(flowableForm);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -90,9 +90,9 @@ public class FlowableFormController extends BaseController {
 	@SysLogAuto(value = "删除流程表单")
 	@RequiresPermissions("flowable:form:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
-			return R.error("ids can't be empty");
+			return Result.error("ids can't be empty");
 		}
 		String[] idsArr = ids.split(",");
 		if (idsArr.length > 1) {
@@ -100,6 +100,6 @@ public class FlowableFormController extends BaseController {
 		} else {
 			flowableFormService.removeById(idsArr[0]);
 		}
-		return R.ok();
+		return Result.ok();
 	}
 }

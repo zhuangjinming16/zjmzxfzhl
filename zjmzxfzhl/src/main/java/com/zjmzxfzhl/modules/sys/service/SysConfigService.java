@@ -36,10 +36,12 @@ public class SysConfigService extends BaseService<SysConfigMapper, SysConfig> {
 		if (CommonUtil.isNotEmptyAfterTrim(configIds)) {
 			configIdsArr = configIds.split(",");
 			for (String configId : configIdsArr) {
-				redisUtil.del(Constants.PREFIX_SYS_CONFIG + configId);// 先清除
+				// 先清除
+				redisUtil.del(Constants.PREFIX_SYS_CONFIG + configId);
 			}
 		} else {
-			redisUtil.delPattern(Constants.PREFIX_SYS_CONFIG + "*");// 先清除
+			// 先清除
+			redisUtil.delPattern(Constants.PREFIX_SYS_CONFIG + "*");
 		}
 		QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
 		if (configIdsArr != null && configIdsArr.length > 0) {

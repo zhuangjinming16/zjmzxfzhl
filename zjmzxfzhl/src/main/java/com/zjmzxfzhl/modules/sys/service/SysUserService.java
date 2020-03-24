@@ -53,8 +53,8 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	@Autowired
 	private RedisUtil redisUtil;
 
-	@DataPermission(tableNames = { "T_SYS_USER", "T_SYS_ORG" }, aliasNames = { "a", "o" }, providers = {
-			OrgDataPermissionProvider.class, NullDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}", "" })
+	@DataPermission(tableNames = { "T_SYS_USER", "T_SYS_ORG" }, aliasNames = { "a", "o" }, providers = { OrgDataPermissionProvider.class,
+			NullDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}", "" })
 	public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
 		return page.setRecords(baseMapper.list(page, sysUser));
 	}
@@ -66,7 +66,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	 * @param sysUser
 	 * @return
 	 */
-	@DataPermission(providers = OrgDataPermissionProvider.class) // 默认别名为o,type=1
+	@DataPermission(providers = OrgDataPermissionProvider.class)
 	public IPage<SysUser> listSelectUser(IPage<SysUser> page, SysUser sysUser) {
 		return page.setRecords(baseMapper.list(page, sysUser));
 	}
@@ -88,7 +88,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 		sessionObject.setSysUser(sysUser);
 		List<SysRole> sysRoles = getRoleByUserId(sysUser.getUserId());
 		if (sysRoles == null || sysRoles.size() == 0) {
-			if (!"admin".equals(sysUser.getUserId())) {
+			if (!Constants.ADMIN.equals(sysUser.getUserId())) {
 				throw new SysException("用户未配置角色权限，请联系管理员授权!");
 			}
 			SysRole sysRoleAdmin = sysRoleService.getById("admin");
@@ -98,7 +98,8 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 			sysRoles.add(sysRoleAdmin);
 		}
 		sessionObject.setSysRoles(sysRoles);
-		if (CommonUtil.isEmptyStr(roleId)) {// 默认以T_SYS_USER表中的角色登录
+		// 默认以T_SYS_USER表中的角色登录
+		if (CommonUtil.isEmptyStr(roleId)) {
 			roleId = sysUser.getRoleId();
 		}
 
@@ -145,18 +146,19 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	public SessionObject loadFuncIdsAndPermissions(SysUser sysUser, String roleId, SessionObject data) {
 		String userId = sysUser.getUserId();
 		List<SysRolePermissionVO> authList = null;
-		if ("admin".equals(userId)) {
+		if (Constants.ADMIN.equals(userId)) {
 			authList = baseMapper.getAdminPermissions();
 		} else {
 			authList = baseMapper.getRolePermissions(roleId);
 		}
 		List<String> funcs = new ArrayList<>();
-		Map<String, String> authPathMap = new HashMap<String, String>();
+		Map<String, String> authPathMap = new HashMap<String, String>(16);
 		for (SysRolePermissionVO sysAuthOperVO : authList) {
 			if ("1".equals(sysAuthOperVO.getPermissionType())) {
 				if (CommonUtil.isNotEmptyStr(sysAuthOperVO.getMenuUrl())) {
 					if (CommonUtil.isNotEmptyStr(sysAuthOperVO.getMenuPermissions())) {
-						String[] menuPermissions = sysAuthOperVO.getMenuPermissions().split(",");// 以逗号分隔
+						// 以逗号分隔
+						String[] menuPermissions = sysAuthOperVO.getMenuPermissions().split(",");
 						for (String permission : menuPermissions) {
 							if (!authPathMap.containsKey(permission)) {
 								authPathMap.put(permission, permission);
@@ -167,7 +169,8 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 			} else if ("2".equals(sysAuthOperVO.getPermissionType())) {
 				funcs.add(sysAuthOperVO.getMenuOrFuncId());
 				if (CommonUtil.isNotEmptyStr(sysAuthOperVO.getFuncPermissions())) {
-					String[] funcPermissions = sysAuthOperVO.getFuncPermissions().split(",");// 以逗号分隔
+					// 以逗号分隔
+					String[] funcPermissions = sysAuthOperVO.getFuncPermissions().split(",");
 					for (String permission : funcPermissions) {
 						if (!authPathMap.containsKey(permission)) {
 							authPathMap.put(permission, permission);
@@ -191,7 +194,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	public List<Route> loadRoutes(SysUser sysUser, String roleId) {
 		String userId = sysUser.getUserId();
 		List<SysMenu> menuList = null;
-		if ("admin".equals(userId)) {
+		if (Constants.ADMIN.equals(userId)) {
 			menuList = baseMapper.getRoleMenus("");
 		} else {
 			menuList = baseMapper.getRoleMenus(roleId);
@@ -247,10 +250,10 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	 */
 	private String urlToRouteName(String url) {
 		if (CommonUtil.isNotEmptyStr(url)) {
-			if (url.startsWith("/")) {
+			if (url.startsWith(Constants.FORWARD_SLASH)) {
 				url = url.substring(1);
 			}
-			url = url.replace("/", "-");
+			url = url.replace(Constants.FORWARD_SLASH, Constants.CROSSBAR);
 			return url;
 		} else {
 			return null;
@@ -265,7 +268,8 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	public boolean saveSysUser(SysUser sysUser) {
 		String salt = PasswordUtil.randomGen(8);
 		String defaultPassword = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + "defaultPassword", "1");
-		String password = PasswordUtil.encrypt(defaultPassword, salt);// 默认密码
+		// 默认密码
+		String password = PasswordUtil.encrypt(defaultPassword, salt);
 		sysUser.setSalt(salt);
 		sysUser.setPassword(password);
 		SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
@@ -288,8 +292,10 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 			SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
 			sysRoleUserService.saveOrUpdate(sysRoleUser);
 		}
-		sysUser.setPassword(null);// 密码设置为空，防止密码被恶意修改
-		sysUser.setSalt(null);// 密码盐设置为空，防止密码被恶意修改
+		// 密码设置为空，防止密码被恶意修改
+		sysUser.setPassword(null);
+		// 密码盐设置为空，防止密码被恶意修改
+		sysUser.setSalt(null);
 		boolean result = this.updateById(sysUser);
 		return result;
 	}

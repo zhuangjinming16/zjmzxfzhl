@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @RestController
 @RequestMapping("/flowable/processDefinitionJob")
 public class ProcessDefinitionJobController extends BaseFlowableController {
@@ -28,9 +32,9 @@ public class ProcessDefinitionJobController extends BaseFlowableController {
 	@SysLogAuto(value = "新增流程定义定时任务")
 	@RequiresPermissions("flowable:processDefinitionJob:delete")
 	@DeleteMapping(value = "/delete")
-	@Transactional
-	public R deleteJob(@RequestParam String jobId) {
+	@Transactional(rollbackFor = Exception.class)
+	public Result deleteJob(@RequestParam String jobId) {
 		managementService.deleteTimerJob(jobId);
-		return R.ok();
+		return Result.ok();
 	}
 }

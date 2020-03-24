@@ -2,6 +2,7 @@ package com.zjmzxfzhl.config.flowable;
 
 import java.awt.Color;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.flowable.bpmn.model.Activity;
@@ -21,6 +22,10 @@ import org.flowable.bpmn.model.SequenceFlow;
 import org.flowable.bpmn.model.SubProcess;
 import org.flowable.image.impl.DefaultProcessDiagramGenerator;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerator {
 
 	public CustomProcessDiagramGenerator() {
@@ -29,14 +34,14 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 
 	public InputStream generateCustomDiagram(BpmnModel bpmnModel, String imageType, List<String> highLightedActivities, List<String> highLightedFlows,
 			List<String> runningActivitiIdList, String activityFontName, String labelFontName, String annotationFontName,
-			ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDI) {
+			ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDi) {
 		return generateCustomProcessDiagram(bpmnModel, imageType, highLightedActivities, highLightedFlows, runningActivitiIdList, activityFontName,
-				labelFontName, annotationFontName, customClassLoader, scaleFactor, drawSequenceFlowNameWithNoLabelDI).generateImage(imageType);
+				labelFontName, annotationFontName, customClassLoader, scaleFactor, drawSequenceFlowNameWithNoLabelDi).generateImage(imageType);
 	}
 
 	protected CustomProcessDiagramCanvas generateCustomProcessDiagram(BpmnModel bpmnModel, String imageType, List<String> highLightedActivities,
 			List<String> runningActivitiIdList, List<String> highLightedFlows, String activityFontName, String labelFontName,
-			String annotationFontName, ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDI) {
+			String annotationFontName, ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDi) {
 
 		prepareBpmnModel(bpmnModel);
 		CustomProcessDiagramCanvas processDiagramCanvas = initCustomProcessDiagramCanvas(bpmnModel, imageType, activityFontName, labelFontName,
@@ -61,7 +66,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 			for (FlowNode flowNode : process.findFlowElementsOfType(FlowNode.class)) {
 				if (!isPartOfCollapsedSubProcess(flowNode, bpmnModel)) {
 					drawCustomActivity(processDiagramCanvas, bpmnModel, flowNode, highLightedActivities, runningActivitiIdList, highLightedFlows,
-							scaleFactor, drawSequenceFlowNameWithNoLabelDI);
+							scaleFactor, drawSequenceFlowNameWithNoLabelDi);
 				}
 			}
 		}
@@ -234,54 +239,9 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 
 	protected void drawCustomActivity(CustomProcessDiagramCanvas processDiagramCanvas, BpmnModel bpmnModel, FlowNode flowNode,
 			List<String> highLightedActivities, List<String> runningActivitiIdList, List<String> highLightedFlows, double scaleFactor,
-			boolean drawSequenceFlowNameWithNoLabelDI) {
+			boolean drawSequenceFlowNameWithNoLabelDi) {
 
-		ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
-		if (drawInstruction != null) {
-
-			drawInstruction.draw(processDiagramCanvas, bpmnModel, flowNode);
-
-			// Gather info on the multi instance marker
-			boolean multiInstanceSequential = false;
-			boolean multiInstanceParallel = false;
-			boolean collapsed = false;
-			if (flowNode instanceof Activity) {
-				Activity activity = (Activity) flowNode;
-				MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = activity.getLoopCharacteristics();
-				if (multiInstanceLoopCharacteristics != null) {
-					multiInstanceSequential = multiInstanceLoopCharacteristics.isSequential();
-					multiInstanceParallel = !multiInstanceSequential;
-				}
-			}
-
-			// Gather info on the collapsed marker
-			GraphicInfo graphicInfo = bpmnModel.getGraphicInfo(flowNode.getId());
-			if (flowNode instanceof SubProcess) {
-				collapsed = graphicInfo.getExpanded() != null && !graphicInfo.getExpanded();
-			} else if (flowNode instanceof CallActivity) {
-				collapsed = true;
-			}
-
-			if (scaleFactor == 1.0) {
-				// Actually draw the markers
-				processDiagramCanvas.drawActivityMarkers((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(),
-						(int) graphicInfo.getHeight(), multiInstanceSequential, multiInstanceParallel, collapsed);
-			}
-
-			// Draw highlighted activities
-			// if (highLightedActivities.contains(flowNode.getId())) {
-			// drawHighLight(processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
-			// }
-			if (runningActivitiIdList.contains(flowNode.getId())) {
-				processDiagramCanvas.drawCustomHighLight((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(),
-						(int) graphicInfo.getHeight(), Color.GREEN);
-			} else if (highLightedActivities.contains(flowNode.getId())) {
-				processDiagramCanvas.drawHighLight((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(),
-						(int) graphicInfo.getHeight());
-
-			}
-
-		}
+		drawInstruction(processDiagramCanvas, bpmnModel, flowNode, highLightedActivities, runningActivitiIdList, scaleFactor);
 
 		// Outgoing transitions of activity
 		for (SequenceFlow sequenceFlow : flowNode.getOutgoingFlows()) {
@@ -329,7 +289,7 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 				if (labelGraphicInfo != null) {
 					processDiagramCanvas.drawLabel(sequenceFlow.getName(), labelGraphicInfo, false);
 				} else {
-					if (drawSequenceFlowNameWithNoLabelDI) {
+					if (drawSequenceFlowNameWithNoLabelDi) {
 						GraphicInfo lineCenter = getLineCenter(graphicInfoList);
 						processDiagramCanvas.drawLabel(sequenceFlow.getName(), lineCenter, false);
 					}
@@ -343,8 +303,60 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 			for (FlowElement nestedFlowElement : ((FlowElementsContainer) flowNode).getFlowElements()) {
 				if (nestedFlowElement instanceof FlowNode && !isPartOfCollapsedSubProcess(nestedFlowElement, bpmnModel)) {
 					drawCustomActivity(processDiagramCanvas, bpmnModel, (FlowNode) nestedFlowElement, highLightedActivities, highLightedFlows,
-							runningActivitiIdList, scaleFactor, drawSequenceFlowNameWithNoLabelDI);
+							runningActivitiIdList, scaleFactor, drawSequenceFlowNameWithNoLabelDi);
 				}
+			}
+		}
+	}
+
+	private void drawInstruction(CustomProcessDiagramCanvas processDiagramCanvas, BpmnModel bpmnModel, FlowNode flowNode,
+			List<String> highLightedActivities, List<String> runningActivitiIdList, double scaleFactor) {
+		ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
+		if (drawInstruction != null) {
+
+			drawInstruction.draw(processDiagramCanvas, bpmnModel, flowNode);
+
+			// Gather info on the multi instance marker
+			boolean multiInstanceSequential = false;
+			boolean multiInstanceParallel = false;
+			boolean collapsed = false;
+			if (flowNode instanceof Activity) {
+				Activity activity = (Activity) flowNode;
+				MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = activity.getLoopCharacteristics();
+				if (multiInstanceLoopCharacteristics != null) {
+					multiInstanceSequential = multiInstanceLoopCharacteristics.isSequential();
+					multiInstanceParallel = !multiInstanceSequential;
+				}
+			}
+
+			// Gather info on the collapsed marker
+			GraphicInfo graphicInfo = bpmnModel.getGraphicInfo(flowNode.getId());
+			if (flowNode instanceof SubProcess) {
+				collapsed = graphicInfo.getExpanded() != null && !graphicInfo.getExpanded();
+			} else if (flowNode instanceof CallActivity) {
+				collapsed = true;
+			}
+
+			BigDecimal bigDecimal1 = BigDecimal.valueOf(1.0);
+			BigDecimal scaleFactorBigDecimal = BigDecimal.valueOf(scaleFactor);
+
+			if (bigDecimal1.equals(scaleFactorBigDecimal)) {
+				// Actually draw the markers
+				processDiagramCanvas.drawActivityMarkers((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(),
+						(int) graphicInfo.getHeight(), multiInstanceSequential, multiInstanceParallel, collapsed);
+			}
+
+			// Draw highlighted activities
+			// if (highLightedActivities.contains(flowNode.getId())) {
+			// drawHighLight(processDiagramCanvas, bpmnModel.getGraphicInfo(flowNode.getId()));
+			// }
+			if (runningActivitiIdList.contains(flowNode.getId())) {
+				processDiagramCanvas.drawCustomHighLight((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(),
+						(int) graphicInfo.getHeight(), Color.GREEN);
+			} else if (highLightedActivities.contains(flowNode.getId())) {
+				processDiagramCanvas.drawHighLight((int) graphicInfo.getX(), (int) graphicInfo.getY(), (int) graphicInfo.getWidth(),
+						(int) graphicInfo.getHeight());
+
 			}
 		}
 	}

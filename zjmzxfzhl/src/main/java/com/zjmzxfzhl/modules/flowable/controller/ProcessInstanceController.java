@@ -25,19 +25,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.ObjectUtils;
 import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import com.zjmzxfzhl.modules.flowable.wapper.CommentListWrapper;
 import com.zjmzxfzhl.modules.flowable.wapper.ProcInsListWrapper;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @RestController
 @RequestMapping("/flowable/processInstance")
 public class ProcessInstanceController extends BaseFlowableController {
@@ -48,95 +53,96 @@ public class ProcessInstanceController extends BaseFlowableController {
 	private ProcessInstanceService processInstanceService;
 
 	static {
-		allowedSortProperties.put("id", HistoricProcessInstanceQueryProperty.PROCESS_INSTANCE_ID_);
-		allowedSortProperties.put("processDefinitionId", HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_ID);
-		allowedSortProperties.put("processDefinitionKey", HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY);
-		allowedSortProperties.put("businessKey", HistoricProcessInstanceQueryProperty.BUSINESS_KEY);
+		allowedSortProperties.put(FlowableConstant.ID, HistoricProcessInstanceQueryProperty.PROCESS_INSTANCE_ID_);
+		allowedSortProperties.put(FlowableConstant.PROCESS_DEFINITION_ID, HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_ID);
+		allowedSortProperties.put(FlowableConstant.PROCESS_DEFINITION_KEY, HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY);
+		allowedSortProperties.put(FlowableConstant.BUSINESS_KEY, HistoricProcessInstanceQueryProperty.BUSINESS_KEY);
 		allowedSortProperties.put("startTime", HistoricProcessInstanceQueryProperty.START_TIME);
 		allowedSortProperties.put("endTime", HistoricProcessInstanceQueryProperty.END_TIME);
 		allowedSortProperties.put("duration", HistoricProcessInstanceQueryProperty.DURATION);
-		allowedSortProperties.put("tenantId", HistoricProcessInstanceQueryProperty.TENANT_ID);
+		allowedSortProperties.put(FlowableConstant.TENANT_ID, HistoricProcessInstanceQueryProperty.TENANT_ID);
 	}
 
 	@RequiresPermissions("flowable:processInstance:list")
 	@GetMapping(value = "/list")
-	public R list(@RequestParam Map<String, String> requestParams) {
+	public Result list(@RequestParam Map<String, String> requestParams) {
 		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
 
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("processInstanceId"))) {
-			query.processInstanceId(requestParams.get("processInstanceId"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID))) {
+			query.processInstanceId(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("processInstanceName"))) {
-			query.processInstanceNameLike(requestParams.get("processInstanceName"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_INSTANCE_NAME))) {
+			query.processInstanceNameLike(requestParams.get(FlowableConstant.PROCESS_INSTANCE_NAME));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("processDefinitionName"))) {
-			query.processDefinitionName(requestParams.get("processDefinitionName"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME))) {
+			query.processDefinitionName(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("processDefinitionKey"))) {
-			query.processDefinitionKey(requestParams.get("processDefinitionKey"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY))) {
+			query.processDefinitionKey(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("processDefinitionId"))) {
-			query.processDefinitionId(requestParams.get("processDefinitionId"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID))) {
+			query.processDefinitionId(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("businessKey"))) {
-			query.processInstanceBusinessKey(requestParams.get("businessKey"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.BUSINESS_KEY))) {
+			query.processInstanceBusinessKey(requestParams.get(FlowableConstant.BUSINESS_KEY));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("involvedUser"))) {
-			query.involvedUser(requestParams.get("involvedUser"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.INVOLVED_USER))) {
+			query.involvedUser(requestParams.get(FlowableConstant.INVOLVED_USER));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("finished"))) {
-			boolean isFinished = ObjectUtils.convertToBoolean(requestParams.get("finished"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.FINISHED))) {
+			boolean isFinished = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.FINISHED));
 			if (isFinished) {
 				query.finished();
 			} else {
 				query.unfinished();
 			}
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("superProcessInstanceId"))) {
-			query.superProcessInstanceId(requestParams.get("superProcessInstanceId"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.SUPER_PROCESS_INSTANCE_ID))) {
+			query.superProcessInstanceId(requestParams.get(FlowableConstant.SUPER_PROCESS_INSTANCE_ID));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("excludeSubprocesses"))) {
-			query.excludeSubprocesses(ObjectUtils.convertToBoolean(requestParams.get("excludeSubprocesses")));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.EXCLUDE_SUBPROCESSES))) {
+			query.excludeSubprocesses(ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.EXCLUDE_SUBPROCESSES)));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("finishedAfter"))) {
-			query.finishedAfter(ObjectUtils.convertToDatetime(requestParams.get("finishedAfter")));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.FINISHED_AFTER))) {
+			query.finishedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.FINISHED_AFTER)));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("finishedBefore"))) {
-			query.finishedBefore(ObjectUtils.convertToDatetime(requestParams.get("finishedBefore")));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.FINISHED_BEFORE))) {
+			query.finishedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.FINISHED_BEFORE)));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("startedAfter"))) {
-			query.startedAfter(ObjectUtils.convertToDatetime(requestParams.get("startedAfter")));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.STARTED_AFTER))) {
+			query.startedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.STARTED_AFTER)));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("startedBefore"))) {
-			query.startedBefore(ObjectUtils.convertToDatetime(requestParams.get("startedBefore")));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.STARTED_BEFORE))) {
+			query.startedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.STARTED_BEFORE)));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("startedBy"))) {
-			query.startedBy(requestParams.get("startedBy"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.STARTED_BY))) {
+			query.startedBy(requestParams.get(FlowableConstant.STARTED_BY));
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("startByMe"))) {// startByMe 覆盖 startedBy
-			boolean isStartByMe = ObjectUtils.convertToBoolean(requestParams.get("startByMe"));
+		// startByMe 覆盖 startedBy
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.START_BY_ME))) {
+			boolean isStartByMe = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.START_BY_ME));
 			if (isStartByMe) {
 				query.startedBy(ShiroUtils.getUserId());
 			}
 		}
-		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get("tenantId"))) {
-			query.processInstanceTenantIdLike(requestParams.get("tenantId"));
+		if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.TENANT_ID))) {
+			query.processInstanceTenantIdLike(requestParams.get(FlowableConstant.TENANT_ID));
 		}
 
 		FlowablePage page = this.pageList(requestParams, query, ProcInsListWrapper.class, allowedSortProperties);
-		return R.ok(page);
+		return Result.ok(page);
 	}
 
 	@RequiresPermissions("flowable:processInstance:listMyInvolved")
 	@GetMapping(value = "/listMyInvolved")
-	public R listMyInvolved(@RequestParam Map<String, String> requestParams) {
-		requestParams.put("involvedUser", ShiroUtils.getUserId());
+	public Result listMyInvolved(@RequestParam Map<String, String> requestParams) {
+		requestParams.put(FlowableConstant.INVOLVED_USER, ShiroUtils.getUserId());
 		return list(requestParams);
 	}
 
 	@RequiresPermissions(value = { "flowable:processInstance:list", "flowable:processInstance:listMyInvolved" }, logical = Logical.OR)
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String processInstanceId) {
+	public Result queryById(@RequestParam String processInstanceId) {
 		permissionService.validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
 		ProcessInstance processInstance = null;
 		HistoricProcessInstance historicProcessInstance = processInstanceService.getHistoricProcessInstanceById(processInstanceId);
@@ -144,52 +150,52 @@ public class ProcessInstanceController extends BaseFlowableController {
 			processInstance = processInstanceService.getProcessInstanceById(processInstanceId);
 		}
 		ProcessInstanceDetailResponse pidr = responseFactory.createProcessInstanceDetailResponse(historicProcessInstance, processInstance);
-		return R.ok(pidr);
+		return Result.ok(pidr);
 	}
 
 	@SysLogAuto(value = "启动流程实例")
 	@PostMapping(value = "/start")
-	@Transactional
-	public R start(@RequestBody ProcessInstanceRequest processInstanceRequest) {
+	@Transactional(rollbackFor = Exception.class)
+	public Result start(@RequestBody ProcessInstanceRequest processInstanceRequest) {
 		processInstanceService.start(processInstanceRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "删除流程实例")
 	@RequiresPermissions("flowable:processInstance:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String processInstanceId, @RequestParam(required = false) boolean cascade,
+	public Result delete(@RequestParam String processInstanceId, @RequestParam(required = false) boolean cascade,
 			@RequestParam(required = false) String deleteReason) {
 		processInstanceService.delete(processInstanceId, cascade, deleteReason);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "挂起流程实例")
 	@RequiresPermissions("flowable:processInstance:suspendOrActivate")
 	@PutMapping(value = "/suspend")
-	public R suspend(@RequestBody ProcessInstanceRequest processInstanceRequest) {
+	public Result suspend(@RequestBody ProcessInstanceRequest processInstanceRequest) {
 		processInstanceService.suspend(processInstanceRequest.getProcessInstanceId());
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "激活流程实例")
 	@RequiresPermissions("flowable:processInstance:suspendOrActivate")
 	@PutMapping(value = "/activate")
-	public R activate(@RequestBody ProcessInstanceRequest processInstanceRequest) {
+	public Result activate(@RequestBody ProcessInstanceRequest processInstanceRequest) {
 		processInstanceService.activate(processInstanceRequest.getProcessInstanceId());
-		return R.ok();
+		return Result.ok();
 	}
 
 	@GetMapping(value = "/comments")
-	public R comments(@RequestParam String processInstanceId) {
+	public Result comments(@RequestParam String processInstanceId) {
 		permissionService.validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
 		List<Comment> datas = taskService.getProcessInstanceComments(processInstanceId);
 		Collections.reverse(datas);
-		return R.ok(this.listWrapper(CommentListWrapper.class, datas));
+		return Result.ok(this.listWrapper(CommentListWrapper.class, datas));
 	}
 
 	@GetMapping(value = "/formData")
-	public R formData(@RequestParam String processInstanceId) {
+	public Result formData(@RequestParam String processInstanceId) {
 		HistoricProcessInstance processInstance = permissionService.validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(),
 				processInstanceId);
 		Object renderedStartForm = formService.getRenderedStartForm(processInstance.getProcessDefinitionId());
@@ -198,17 +204,17 @@ public class ProcessInstanceController extends BaseFlowableController {
 			variables = runtimeService.getVariables(processInstanceId);
 		} else {
 			List<HistoricVariableInstance> hisVals = historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).list();
-			variables = new HashMap<>();
+			variables = new HashMap<>(16);
 			for (HistoricVariableInstance variableInstance : hisVals) {
 				variables.put(variableInstance.getVariableName(), variableInstance.getValue());
 			}
 		}
-		Map<String, Object> ret = new HashMap<String, Object>();
+		Map<String, Object> ret = new HashMap<String, Object>(4);
 		boolean showBusinessKey = isShowBusinessKey(processInstance.getProcessDefinitionId());
 		ret.put("showBusinessKey", showBusinessKey);
-		ret.put("businessKey", processInstance.getBusinessKey());
+		ret.put(FlowableConstant.BUSINESS_KEY, processInstance.getBusinessKey());
 		ret.put("renderedStartForm", renderedStartForm);
 		ret.put("variables", variables);
-		return R.ok(ret);
+		return Result.ok(ret);
 	}
 }

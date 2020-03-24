@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,43 +27,43 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BaseException.class)
-	public R handleBaseException(BaseException e) {
+	public Result handleBaseException(BaseException e) {
 		log.error(e.getMessage(), e);
-		return R.error(e.getMessage());
+		return Result.error(e.getMessage());
 	}
 
 	@ExceptionHandler(SysException.class)
-	public R handleSysException(SysException e) {
+	public Result handleSysException(SysException e) {
 		log.error(e.getMessage(), e);
-		return R.error(e.getMessage());
+		return Result.error(e.getMessage());
 	}
 
 	@ExceptionHandler(AppException.class)
-	public R handleAppException(AppException e) {
+	public Result handleAppException(AppException e) {
 		log.error(e.getMessage(), e);
-		return R.error(e.getMessage());
+		return Result.error(e.getMessage());
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
-	public R handlerNoFoundException(NoHandlerFoundException e) {
+	public Result handlerNoFoundException(NoHandlerFoundException e) {
 		log.error(e.getMessage(), e);
-		return R.error(404, "路径不存在，请检查路径是否正确");
+		return Result.error(404, "路径不存在，请检查路径是否正确");
 	}
 
 	@ExceptionHandler(DuplicateKeyException.class)
-	public R handleDuplicateKeyException(DuplicateKeyException e) {
+	public Result handleDuplicateKeyException(DuplicateKeyException e) {
 		log.error(e.getMessage(), e);
-		return R.error("数据库中已存在该记录");
+		return Result.error("数据库中已存在该记录");
 	}
 
 	@ExceptionHandler(AuthorizationException.class)
-	public R handleAuthorizationException(AuthorizationException e) {
+	public Result handleAuthorizationException(AuthorizationException e) {
 		log.error(e.getMessage(), e);
-		return R.error("没有权限，请联系管理员授权");
+		return Result.error("没有权限，请联系管理员授权");
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public R handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+	public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		log.error(e.getMessage(), e);
 		StringBuffer errorMsg = new StringBuffer();
 		BindingResult bindingResult = e.getBindingResult();
@@ -77,16 +77,16 @@ public class GlobalExceptionHandler {
 					errorMsg.append(objectError.getDefaultMessage()).append(";");
 				}
 			}
-			return R.error(errorMsg.toString());
+			return Result.error(errorMsg.toString());
 		} else {
-			return R.error(e.getMessage());
+			return Result.error(e.getMessage());
 		}
 	}
 
 	@ExceptionHandler(Exception.class)
-	public R handleException(Exception e) {
+	public Result handleException(Exception e) {
 		log.error(e.getMessage(), e);
-		return R.error(e.getMessage());
+		return Result.error(e.getMessage());
 	}
 
 }

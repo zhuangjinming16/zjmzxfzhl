@@ -13,6 +13,7 @@ import com.zjmzxfzhl.common.base.BaseService;
 import com.zjmzxfzhl.common.exception.SysException;
 import com.zjmzxfzhl.common.permission.provider.OrgDataPermissionProvider;
 import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.modules.sys.common.SysConstants;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
 import com.zjmzxfzhl.modules.sys.entity.vo.ElTree;
 import com.zjmzxfzhl.modules.sys.mapper.SysOrgMapper;
@@ -78,14 +79,15 @@ public class SysOrgService extends BaseService<SysOrgMapper, SysOrg> {
 		if (CommonUtil.isEmptyStr(sysOrg.getParentOrgId())) {
 			throw new SysException("保存失败,请先选择上级机构!");
 		}
-		SysOrg parentSysOrg = this.getById(sysOrg.getParentOrgId()); // 父节点
+		// 父节点
+		SysOrg parentSysOrg = this.getById(sysOrg.getParentOrgId());
 		if (parentSysOrg == null) {
 			throw new SysException("保存失败,上级机构ID【" + sysOrg.getParentOrgId() + "】不存在!");
 		}
 		// 【2】计算机构级次,机构级次码
 		// 【2-a】设置新增机构的父机构是否叶子为否
-		if (!"0".equals(parentSysOrg.getIsLeaf())) {
-			parentSysOrg.setIsLeaf("0");
+		if (!SysConstants.IS_LEAF_0.equals(parentSysOrg.getIsLeaf())) {
+			parentSysOrg.setIsLeaf(SysConstants.IS_LEAF_0);
 			this.updateById(parentSysOrg);
 		}
 		Integer orgLevel = Integer.valueOf(parentSysOrg.getOrgLevel()) + 1;
@@ -109,14 +111,15 @@ public class SysOrgService extends BaseService<SysOrgMapper, SysOrg> {
 			sysOrg.setOrgLevelCode(sysOrg.getOrgId());
 			return this.updateById(sysOrg);
 		}
-		SysOrg parentSysOrg = this.getById(sysOrg.getParentOrgId()); // 父节点
+		// 父节点
+		SysOrg parentSysOrg = this.getById(sysOrg.getParentOrgId());
 		if (parentSysOrg == null) {
 			throw new SysException("保存失败,上级机构ID【" + sysOrg.getParentOrgId() + "】不存在!");
 		}
 		// 【2】计算机构级次,机构级次码
 		// 【2-a】设置新增机构的父机构是否叶子为否
-		if (!"0".equals(parentSysOrg.getIsLeaf())) {
-			parentSysOrg.setIsLeaf("0");
+		if (!SysConstants.IS_LEAF_0.equals(parentSysOrg.getIsLeaf())) {
+			parentSysOrg.setIsLeaf(SysConstants.IS_LEAF_0);
 			this.updateById(parentSysOrg);
 		}
 		Integer orgLevel = Integer.valueOf(parentSysOrg.getOrgLevel()) + 1;

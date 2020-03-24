@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,70 +33,70 @@ public class DemoZjmzxfzhl extends BaseEntity {
 
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String zjmzxfzhlId;// ID
+	@LengthForUtf8(max = 32)
+	private String zjmzxfzhlId;
 
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String zjmzxfzhlName;// 名称
+	@LengthForUtf8(max = 32)
+	private String zjmzxfzhlName;
 
-	@LengthForUTF8(max = 1)
-	private String zjmzxfzhlCodeInfo;// 代码信息
+	@LengthForUtf8(max = 1)
+	private String zjmzxfzhlCodeInfo;
 
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date zjmzxfzhlDate;// 日期格式
+	private Date zjmzxfzhlDate;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date zjmzxfzhlDatetime;// 时间格式
+	private Date zjmzxfzhlDatetime;
 
-	@LengthForUTF8(max = 32)
-	private String orgId;// 所属机构ID
+	@LengthForUtf8(max = 32)
+	private String orgId;
 
-	@LengthForUTF8(max = 3)
-	private String zjmzxfzhlDbparam1;// 参数1
-
-	@Max(999)
-	private Integer zjmzxfzhlDbparam2;// 参数2
-
-	@LengthForUTF8(max = 3)
-	private String filterOperatorEq;// 等于
+	@LengthForUtf8(max = 3)
+	private String zjmzxfzhlDbparam1;
 
 	@Max(999)
-	private Integer filterOperatorNe;// 不等于
+	private Integer zjmzxfzhlDbparam2;
+
+	@LengthForUtf8(max = 3)
+	private String filterOperatorEq;
+
+	@Max(999)
+	private Integer filterOperatorNe;
 
 	@DecimalMax("99.99")
-	private BigDecimal filterOperatorLt;// 小于
+	private BigDecimal filterOperatorLt;
 
 	@Max(999)
-	private Integer filterOperatorLe;// 小于等于
+	private Integer filterOperatorLe;
 
 	@Max(999)
-	private Integer filterOperatorGt;// 大于
+	private Integer filterOperatorGt;
 
 	@DecimalMax("99.99")
-	private BigDecimal filterOperatorGe;// 大于等于
+	private BigDecimal filterOperatorGe;
 
-	@LengthForUTF8(max = 3)
-	private String filterOperatorIn;// IN
+	@LengthForUtf8(max = 3)
+	private String filterOperatorIn;
 
 	@Max(999)
-	private Integer filterOperatorBetween;// BETWEEN
+	private Integer filterOperatorBetween;
 
-	@LengthForUTF8(max = 32)
-	private String filterOperatorLike;// 模糊
+	@LengthForUtf8(max = 32)
+	private String filterOperatorLike;
 
-	@LengthForUTF8(max = 32)
-	private String filterOperatorLikeLeft;// 左模糊
+	@LengthForUtf8(max = 32)
+	private String filterOperatorLikeLeft;
 
-	@LengthForUTF8(max = 32)
-	private String filterOperatorLikeRight;// 右模糊
-
-	@TableField(exist = false)
-	private String authFilterSql; // 数据权限示例使用
+	@LengthForUtf8(max = 32)
+	private String filterOperatorLikeRight;
 
 	@TableField(exist = false)
-	private String otherAuthFilterSql; // 数据权限示例使用
+	private String authFilterSql; 
+
+	@TableField(exist = false)
+	private String otherAuthFilterSql; 
 
 }

@@ -14,10 +14,10 @@ public class PasswordUtil {
 	/**
 	 * 定义加密次数
 	 */
-	private static final int hashIterations = 1000;
+	private static final int HASH_ITERATIONS = 1000;
 
 	public static String encrypt(String password, String salt) {
-		return new Sha256Hash(password, salt, hashIterations).toHex();
+		return new Sha256Hash(password, salt, HASH_ITERATIONS).toHex();
 	}
 
 	public static String randomGen(int place) {
@@ -35,7 +35,7 @@ public class PasswordUtil {
 		String salt = randomGen(8);
 		Sha256Hash sha256Hash1 = new Sha256Hash(password);
 		Sha256Hash sha256Hash2 = new Sha256Hash(password, salt);
-		Sha256Hash sha256Hash3 = new Sha256Hash(password, salt, hashIterations);
+		Sha256Hash sha256Hash3 = new Sha256Hash(password, salt, HASH_ITERATIONS);
 		System.out.println(salt);
 		System.out.println("Sha256Hash加密--不加盐：" + sha256Hash1.toHex());
 		System.out.println("Sha256Hash加密--加盐：" + sha256Hash2.toHex());

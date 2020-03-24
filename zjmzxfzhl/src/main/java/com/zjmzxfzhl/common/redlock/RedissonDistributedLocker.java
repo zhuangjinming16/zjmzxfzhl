@@ -7,6 +7,10 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Component
 public class RedissonDistributedLocker implements DistributedLocker {
 
@@ -17,7 +21,7 @@ public class RedissonDistributedLocker implements DistributedLocker {
 
 	@Override
 	public RLock getLock(String lockKey) {
-		return redissonClient.getLock(getRLockKey(lockKey));
+		return redissonClient.getLock(getRlockKey(lockKey));
 	}
 
 	@Override
@@ -78,7 +82,7 @@ public class RedissonDistributedLocker implements DistributedLocker {
 		}
 	}
 
-	public String getRLockKey(String lockKey) {
+	public String getRlockKey(String lockKey) {
 		return LOCKER_PREFIX + lockKey;
 	}
 }

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.RepeatRequest;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.app.annotation.WithoutLogin;
@@ -21,14 +21,14 @@ import lombok.extern.slf4j.Slf4j;
  * @author 庄金明
  */
 @RestController
-@RequestMapping("/app/demo") // 拦截APP请求
+@RequestMapping("/app/demo")
 @Slf4j
 public class AppDemoController extends BaseController {
 
 	@WithoutLogin
 	@GetMapping("/withoutLogin")
-	public R withoutLogin() {
-		return R.ok("不需要登陆，访问的交易，在Controller的Mapping方法使用@WithoutLogin");
+	public Result withoutLogin() {
+		return Result.ok("不需要登陆，访问的交易，在Controller的Mapping方法使用@WithoutLogin");
 	}
 
 	/**
@@ -36,33 +36,35 @@ public class AppDemoController extends BaseController {
 	 * 
 	 * 未登陆用户直接访问，未设置防重发
 	 * 
+	 * @WithoutLogin 未登陆也可以访问，该项注释掉，则未登录用户无法访问
 	 * @return
 	 */
 	@RepeatRequest(waitTime = 2, leaseTime = 5, msg = "等待2秒且5秒后释放")
-	@WithoutLogin // 未登陆也可以访问，该项注释掉，则未登录用户无法访问
+	@WithoutLogin
 	@GetMapping(value = "/repeatRequest1")
-	public R repeatRequest1() throws Exception {
+	public Result repeatRequest1() throws Exception {
 		Thread.sleep(3000);
 		log.info("请求接入repeatRequest1");
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
 	 * 登陆用户请求防重发，忽略 lockIndexs 设置
 	 * 
-	 * 未登陆用户根据设备序列号 deviceSN 和 设备IMEI号 deviceIMEI 组合防重发
+	 * 未登陆用户根据设备序列号 deviceSn 和 设备IMEI号 deviceImei 组合防重发
 	 * 
-	 * @param deviceSN
-	 * @param deviceIMEI
+	 * @WithoutLogin 未登陆也可以访问
+	 * @param deviceSn
+	 * @param deviceImei
 	 * @return
 	 */
 	@RepeatRequest(lockIndexs = { 0, 1 })
-	@WithoutLogin // 未登陆也可以访问
+	@WithoutLogin
 	@GetMapping(value = "/repeatRequest2")
-	public R repeatRequest2(@RequestParam String deviceSN, @RequestParam String deviceIMEI) throws Exception {
+	public Result repeatRequest2(@RequestParam String deviceSn, @RequestParam String deviceImei) throws Exception {
 		Thread.sleep(1000);
 		log.info("请求接入repeatRequest2");
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -79,10 +81,10 @@ public class AppDemoController extends BaseController {
 	 */
 	@RepeatRequest(isExistAndOnlyUserId = false, lockIndexs = 0)
 	@GetMapping(value = "/repeatRequest3")
-	public R repeatRequest3(@RequestParam String param) throws Exception {
+	public Result repeatRequest3(@RequestParam String param) throws Exception {
 		Thread.sleep(1000);
 		log.info("请求接入repeatRequest3");
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class AppDemoController extends BaseController {
 	 */
 	@RepeatRequest(isExistAndOnlyUserId = false, lockIndexs = 0, fieldNames = "transId")
 	@GetMapping(value = "/repeatRequest4")
-	public R repeatRequest4(AppDemo appDemo) throws Exception {
+	public Result repeatRequest4(AppDemo appDemo) throws Exception {
 		Thread.sleep(1000);
 		log.info("请求接入repeatRequest4");
 
@@ -111,6 +113,6 @@ public class AppDemoController extends BaseController {
 		// someBaseService.exec(data);
 		// 具体业务逻辑处理end
 
-		return R.ok();
+		return Result.ok();
 	}
 }

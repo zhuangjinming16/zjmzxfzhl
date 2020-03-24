@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,52 +26,52 @@ public class SysMenu extends BaseEntity {
 
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 32)
-	private String menuId;// 菜单ID
+	@LengthForUtf8(max = 32)
+	private String menuId;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String menuName;// 菜单名称
+	@LengthForUtf8(max = 100)
+	private String menuName;
 
-	@LengthForUTF8(max = 32)
-	private String parentMenuId;// 上级菜单ID
+	@LengthForUtf8(max = 32)
+	private String parentMenuId;
 
-	@LengthForUTF8(max = 100)
-	private String menuIcon;// 图标
+	@LengthForUtf8(max = 100)
+	private String menuIcon;
 
-	@LengthForUTF8(max = 255)
-	private String menuUrl;// 菜单URL
+	@LengthForUtf8(max = 255)
+	private String menuUrl;
 
-	@LengthForUTF8(max = 255)
-	private String menuPermissions;// 授权
+	@LengthForUtf8(max = 255)
+	private String menuPermissions;
 
-	@LengthForUTF8(max = 255)
-	private String component;// 组件
+	@LengthForUtf8(max = 255)
+	private String component;
 
-	@LengthForUTF8(max = 255)
-	private String redirect;// 重定向URL
+	@LengthForUtf8(max = 255)
+	private String redirect;
 
-	@LengthForUTF8(max = 1)
-	private String hidden;// 是否隐藏
+	@LengthForUtf8(max = 1)
+	private String hidden;
 
-	@LengthForUTF8(max = 1)
-	private String isRoute;// 是否路由
+	@LengthForUtf8(max = 1)
+	private String isRoute;
 
-	@LengthForUTF8(max = 255)
-	private String routeName;// 路由名称
+	@LengthForUtf8(max = 255)
+	private String routeName;
 
-	@LengthForUTF8(max = 1)
-	private String isCache;// tagsView是否缓存 1-缓存 0-不缓存
+	@LengthForUtf8(max = 1)
+	private String isCache;
 
-	@LengthForUTF8(max = 1)
-	private String affix;// 是否常驻菜单1-是0-否
+	@LengthForUtf8(max = 1)
+	private String affix;
 
-	@LengthForUTF8(max = 1)
-	private String isLeaf;// 是否叶子节点
+	@LengthForUtf8(max = 1)
+	private String isLeaf;
 
 	@Max(99999)
-	private Integer sortNo;// 排序号
+	private Integer sortNo;
 
 	@TableField(exist = false)
-	private String parentMenuName;// 上级菜单名称
+	private String parentMenuName;
 }

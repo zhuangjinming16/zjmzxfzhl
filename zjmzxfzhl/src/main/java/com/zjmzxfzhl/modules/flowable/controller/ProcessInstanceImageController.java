@@ -27,6 +27,10 @@ import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.config.flowable.CustomProcessDiagramGenerator;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @RestController
 public class ProcessInstanceImageController extends BaseFlowableController {
 	@Autowired
@@ -55,7 +59,8 @@ public class ProcessInstanceImageController extends BaseFlowableController {
 		});
 
 		List<String> runningActivitiIdList = null;
-		if (processInstance != null && processInstance.getEndTime() != null) {// 流程已结束
+		// 流程已结束
+		if (processInstance != null && processInstance.getEndTime() != null) {
 			runningActivitiIdList = Arrays.asList();
 		} else {
 			runningActivitiIdList = runtimeService.getActiveActivityIds(processInstanceId);

@@ -9,16 +9,28 @@ import lombok.Setter;
  * 条件过滤规则
  * 
  * @author 庄金明
- *
+ * @date 2020年3月23日
  */
 @Getter
 @Setter
 public class FilterRule implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String alias;// 查询sql别名
-	private String field;// 查询sql属性名
-	private String operate;// 查询表达式
-	private String value;// 值
+	/**
+	 * 查询sql别名
+	 */
+	private String alias;
+	/**
+	 * 查询sql属性名
+	 */
+	private String field;
+	/**
+	 * 查询表达式
+	 */
+	private String operate;
+	/**
+	 * 值
+	 */
+	private String value;
 
 	public FilterRule() {
 	}

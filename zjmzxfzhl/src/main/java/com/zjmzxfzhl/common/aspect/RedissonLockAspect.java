@@ -18,19 +18,27 @@ import com.zjmzxfzhl.common.redlock.RedissonDistributedLocker;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 分布式锁处理,一般限定RedissonLock注解只用于service，请注意若用于controller会与交易防重发一起触发
+ * order设置的小一点，若注解用于service类，让该切面优先于Transactional注解
  * 
  * @author 庄金明
- *
+ * @date 2020年3月23日
  */
 @Aspect
 @Component
-@Order(1) // order设置的小一点，若注解用于service类，让该切面优先于Transactional注解
+@Order(1)
 @Slf4j
 public class RedissonLockAspect {
 	@Autowired
 	private RedissonDistributedLocker redissonDistributedLocker;
 
+	/**
+	 * 处理锁
+	 * 
+	 * @param joinPoint
+	 * @param redissonLock
+	 * @return
+	 * @throws Throwable
+	 */
 	@Around("@annotation(redissonLock)")
 	public Object around(ProceedingJoinPoint joinPoint, RedissonLock redissonLock) throws Throwable {
 		Object obj = null;

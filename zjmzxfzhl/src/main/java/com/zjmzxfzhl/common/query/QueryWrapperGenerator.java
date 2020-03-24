@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zjmzxfzhl.common.permission.FilterOperate;
 import com.zjmzxfzhl.common.util.ColumnUtils;
-import com.zjmzxfzhl.common.xss.SQLFilter;
+import com.zjmzxfzhl.common.xss.SqlFilter;
 
 /**
  * MyBatis Plus 查询条件生成器
@@ -70,8 +70,9 @@ public class QueryWrapperGenerator {
 	 * 正确示例:QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<SysConfig>(); <br>
 	 * 3.也可以通过该类中的 initQueryWrapperSimple 方法调用到该方法
 	 */
-	public static void installMplusSimple(QueryWrapper<?> queryWrapper, Object searchObj, Map<String, FilterOperate> searchObjRule, String orderRule) {
-		PropertyDescriptor origDescriptors[] = PropertyUtils.getPropertyDescriptors(searchObj);
+	public static void installMplusSimple(QueryWrapper<?> queryWrapper, Object searchObj, Map<String, FilterOperate> searchObjRule,
+			String orderRule) {
+		PropertyDescriptor[] origDescriptors = PropertyUtils.getPropertyDescriptors(searchObj);
 		for (int i = 0; i < origDescriptors.length; i++) {
 			String name = origDescriptors[i].getName();
 			try {
@@ -98,7 +99,7 @@ public class QueryWrapperGenerator {
 				}
 				String[] rule = orderColumnRule.split("\\|");
 				String orderColumn = ColumnUtils.camelToUnderline(rule[0]);
-				orderColumn = SQLFilter.sqlInject(orderColumn);
+				orderColumn = SqlFilter.sqlInject(orderColumn);
 				if (rule.length == 1) {
 					queryWrapper.orderByAsc(orderColumn);
 				} else if (rule.length == 2) {
@@ -170,7 +171,6 @@ public class QueryWrapperGenerator {
 			return;
 		}
 		name = ColumnUtils.camelToUnderline(name);
-		// log.info("--查询规则-->" + name + " " + rule.getValue() + " " + value);
 		switch (rule) {
 		case GT:
 			queryWrapper.gt(name, value);
@@ -209,7 +209,6 @@ public class QueryWrapperGenerator {
 			queryWrapper.likeRight(name, value);
 			break;
 		default:
-			// log.info("--查询规则未匹配到---");
 			break;
 		}
 	}
@@ -221,7 +220,8 @@ public class QueryWrapperGenerator {
 	 * @return
 	 */
 	public static boolean judgedIsUselessField(String name) {
-		return "class".equals(name) || "ids".equals(name) || "page".equals(name) || "rows".equals(name) || "sort".equals(name) || "order".equals(name);
+		return "class".equals(name) || "ids".equals(name) || "page".equals(name) || "rows".equals(name) || "sort".equals(name)
+				|| "order".equals(name);
 	}
 
 }

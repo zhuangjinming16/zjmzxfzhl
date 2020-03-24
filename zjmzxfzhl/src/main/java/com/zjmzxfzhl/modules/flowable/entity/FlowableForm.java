@@ -5,15 +5,14 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUTF8;
+import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 【流程】实体类
- * 
  * @author 庄金明
+ * @date 2020年3月23日
  */
 @Getter
 @Setter
@@ -24,12 +23,12 @@ public class FlowableForm extends BaseEntity {
 
 	@TableId
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String formKey;// 表单key
+	@LengthForUtf8(max = 100)
+	private String formKey;
 
 	@NotNull
-	@LengthForUTF8(max = 100)
-	private String formName;// 表单名称
+	@LengthForUtf8(max = 100)
+	private String formName;
 
-	private String formJson; // 表单内容
+	private String formJson;
 }

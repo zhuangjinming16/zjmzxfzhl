@@ -20,17 +20,25 @@ import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
+import com.zjmzxfzhl.modules.sys.common.SysConstants;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Component
 @Slf4j
 public class AuthRealm extends AuthorizingRealm {
 
+	/**
+	 * @Lazy 加此标签，防止 sysUserService 事务无效
+	 */
 	@Autowired
-	@Lazy // 加此标签，防止 sysUserService 事务无效
+	@Lazy
 	private SysUserService sysUserService;
 	@Autowired
 	private RedisUtil redisUtil;
@@ -93,7 +101,7 @@ public class AuthRealm extends AuthorizingRealm {
 			throw new AuthenticationException("token已失效，请重新登录!");
 		}
 		// 判断用户状态
-		if (!"1".equals(sysUser.getStatus())) {
+		if (!SysConstants.USER_STATUS_1.equals(sysUser.getStatus())) {
 			throw new AuthenticationException("账号已被锁定,请联系管理员!");
 		}
 

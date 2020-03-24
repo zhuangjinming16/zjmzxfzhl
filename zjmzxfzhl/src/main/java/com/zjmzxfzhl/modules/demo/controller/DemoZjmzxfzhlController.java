@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.demo.service.DemoZjmzxfzhlService;
@@ -43,7 +43,7 @@ public class DemoZjmzxfzhlController extends BaseController {
 	 */
 	@RequiresPermissions("demo:zjmzxfzhl:list")
 	@GetMapping(value = "/list")
-	public R list(DemoZjmzxfzhl demoZjmzxfzhl, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(DemoZjmzxfzhl demoZjmzxfzhl, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<DemoZjmzxfzhl> pageList = demoZjmzxfzhlService.list(new Page<DemoZjmzxfzhl>(current, size), demoZjmzxfzhl);
 		// IPage<DemoZjmzxfzhl> pageList = demoZjmzxfzhlService.listDataPermission1(new Page<DemoZjmzxfzhl>(current, size), demoZjmzxfzhl);
 		// IPage<DemoZjmzxfzhl> pageList = demoZjmzxfzhlService.listDataPermission2(new Page<DemoZjmzxfzhl>(current, size), demoZjmzxfzhl);
@@ -56,14 +56,14 @@ public class DemoZjmzxfzhlController extends BaseController {
 
 		// IPage<DemoZjmzxfzhl> pageList = demoZjmzxfzhlService.listDataPermission5(new Page<DemoZjmzxfzhl>(current, size), demoZjmzxfzhl);
 
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("demo:zjmzxfzhl:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		DemoZjmzxfzhl demoZjmzxfzhl = demoZjmzxfzhlService.getById(id);
-		return R.ok(demoZjmzxfzhl);
+		return Result.ok(demoZjmzxfzhl);
 	}
 
 	/**
@@ -73,9 +73,9 @@ public class DemoZjmzxfzhlController extends BaseController {
 	 */
 	@RequiresPermissions("demo:zjmzxfzhl:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
+	public Result save(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
 		demoZjmzxfzhlService.save(demoZjmzxfzhl);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -85,9 +85,9 @@ public class DemoZjmzxfzhlController extends BaseController {
 	 */
 	@RequiresPermissions("demo:zjmzxfzhl:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
+	public Result update(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
 		demoZjmzxfzhlService.updateById(demoZjmzxfzhl);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -97,9 +97,9 @@ public class DemoZjmzxfzhlController extends BaseController {
 	 */
 	@RequiresPermissions("demo:zjmzxfzhl:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		if (ids == null || ids.trim().length() == 0) {
-			return R.error("ids can't be empty");
+			return Result.error("ids can't be empty");
 		}
 		String[] idsArr = ids.split(",");
 		if (idsArr.length > 1) {
@@ -107,6 +107,6 @@ public class DemoZjmzxfzhlController extends BaseController {
 		} else {
 			demoZjmzxfzhlService.removeById(idsArr[0]);
 		}
-		return R.ok();
+		return Result.ok();
 	}
 }

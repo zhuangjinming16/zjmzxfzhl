@@ -8,6 +8,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class ObjectUtils {
 
 	public static boolean isGtZero(Object pObj) {

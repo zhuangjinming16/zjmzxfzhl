@@ -6,12 +6,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.util.PasswordUtil;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.form.AppRegisterForm;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @RestController
 @RequestMapping("/app")
 public class AppRegisterController {
@@ -19,9 +23,10 @@ public class AppRegisterController {
 	private AppUserService appUserService;
 
 	@PostMapping("/register")
-	public R register(@RequestBody AppRegisterForm form) {
+	public Result register(@RequestBody AppRegisterForm form) {
 		String salt = PasswordUtil.randomGen(8);
-		String password = PasswordUtil.encrypt(form.getPassword(), salt);// 默认密码
+		// 默认密码
+		String password = PasswordUtil.encrypt(form.getPassword(), salt);
 		AppUser appUser = new AppUser();
 		appUser.setUserId(form.getMobile());
 		appUser.setMobile(form.getMobile());
@@ -30,6 +35,6 @@ public class AppRegisterController {
 		appUser.setPassword(password);
 		appUser.setCreateBy(form.getMobile());
 		appUserService.save(appUser);
-		return R.ok();
+		return Result.ok();
 	}
 }

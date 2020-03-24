@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.ObjectUtils;
 import com.zjmzxfzhl.common.util.ShiroUtils;
@@ -30,6 +30,10 @@ import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @Service
 public class ProcessInstanceService {
 	@Autowired
@@ -64,8 +68,8 @@ public class ProcessInstanceService {
 		return historicProcessInstance;
 	}
 
-	@Transactional
-	public R start(ProcessInstanceRequest processInstanceRequest) {
+	@Transactional(rollbackFor = Exception.class)
+	public Result start(ProcessInstanceRequest processInstanceRequest) {
 		String processDefinitionId = CommonUtil.trimToEmptyStr(processInstanceRequest.getProcessDefinitionId());
 		String processDefinitionKey = CommonUtil.trimToEmptyStr(processInstanceRequest.getProcessDefinitionKey());
 		if (processDefinitionId.length() == 0 && processDefinitionKey.length() == 0) {
@@ -87,15 +91,18 @@ public class ProcessInstanceService {
 
 		ProcessInstanceBuilder processInstanceBuilder = runtimeService.createProcessInstanceBuilder();
 		processInstanceBuilder.processDefinitionId(definition.getId());
-		processInstanceBuilder.name(user.getUserName() + definition.getName()); // 流程实例标题
-		processInstanceBuilder.businessKey(processInstanceRequest.getBusinessKey()); // 业务key
+		// 流程实例标题
+		processInstanceBuilder.name(user.getUserName() + definition.getName());
+		// 业务key
+		processInstanceBuilder.businessKey(processInstanceRequest.getBusinessKey());
 		processInstanceBuilder.variables(startVariables);
 
 		ProcessInstance instance = processInstanceBuilder.start();
 		String processInstanceId = instance.getProcessInstanceId();
 		List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
 		for (Task task : tasks) {
-			if (FlowableConstant.__INITIATOR__.equals(task.getTaskDefinitionKey())) {// 约定：发起者节点为 __initiator__ ,则自动完成任务
+			// 约定：发起者节点为 __initiator__ ,则自动完成任务
+			if (FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey())) {
 				flowableTaskService.addComment(task.getId(), processInstanceId, userId, CommentTypeEnum.TJ, null);
 				if (ObjectUtils.isEmpty(task.getAssignee())) {
 					taskService.setAssignee(task.getId(), userId);
@@ -103,10 +110,10 @@ public class ProcessInstanceService {
 				taskService.complete(task.getId());
 			}
 		}
-		return R.ok();
+		return Result.ok();
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void delete(String processInstanceId, boolean cascade, String deleteReason) {
 		HistoricProcessInstance historicProcessInstance = getHistoricProcessInstanceById(processInstanceId);
 		if (historicProcessInstance.getEndTime() != null) {
@@ -123,7 +130,7 @@ public class ProcessInstanceService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void activate(String processInstanceId) {
 		ProcessInstance processInstance = getProcessInstanceById(processInstanceId);
 		if (!processInstance.isSuspended()) {
@@ -132,7 +139,7 @@ public class ProcessInstanceService {
 		runtimeService.activateProcessInstanceById(processInstance.getId());
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void suspend(String processInstanceId) {
 		ProcessInstance processInstance = getProcessInstanceById(processInstanceId);
 		if (processInstance.isSuspended()) {

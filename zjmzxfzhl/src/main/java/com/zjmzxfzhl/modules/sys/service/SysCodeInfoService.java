@@ -48,10 +48,12 @@ public class SysCodeInfoService extends BaseService<SysCodeInfoMapper, SysCodeIn
 		if (CommonUtil.isNotEmptyAfterTrim(codeTypeIds)) {
 			String[] codeTypeIdsArr = codeTypeIds.split(",");
 			for (String codeTypeId : codeTypeIdsArr) {
-				redisUtil.del(Constants.PREFIX_SYS_CODE_TYPE + codeTypeId);// 先清除
+				// 先清除
+				redisUtil.del(Constants.PREFIX_SYS_CODE_TYPE + codeTypeId);
 			}
 		} else {
-			redisUtil.delPattern(Constants.PREFIX_SYS_CODE_TYPE + "*");// 先清除
+			// 先清除
+			redisUtil.delPattern(Constants.PREFIX_SYS_CODE_TYPE + "*");
 		}
 		Map<String, List<SysCodeInfo>> codeInfoMap = getSysCodeInfosFromDb(codeTypeIds);
 		for (String codeInfoMapKey : codeInfoMap.keySet()) {
@@ -67,7 +69,7 @@ public class SysCodeInfoService extends BaseService<SysCodeInfoMapper, SysCodeIn
 	 * @return
 	 */
 	public Map<String, List<SysCodeInfo>> getSysCodeInfosFromDb(String codeTypeIds) {
-		Map<String, List<SysCodeInfo>> codeInfoMap = new HashMap<String, List<SysCodeInfo>>();
+		Map<String, List<SysCodeInfo>> codeInfoMap = new HashMap<String, List<SysCodeInfo>>(16);
 		QueryWrapper<SysCodeInfo> queryWrapper = new QueryWrapper<>();
 		if (CommonUtil.isNotEmptyAfterTrim(codeTypeIds)) {
 			QueryWrapperGenerator.addEasyQuery(queryWrapper, "codeTypeId", FilterOperate.IN, codeTypeIds);
@@ -115,7 +117,7 @@ public class SysCodeInfoService extends BaseService<SysCodeInfoMapper, SysCodeIn
 		}
 		Map<String, List<SysCodeInfo>> codeInfoMap = null;
 		if (keys != null && keys.size() > 0) {
-			codeInfoMap = new HashMap<String, List<SysCodeInfo>>();
+			codeInfoMap = new HashMap<String, List<SysCodeInfo>>(16);
 			for (String key : keys) {
 				codeInfoMap.put(key.replace(Constants.PREFIX_SYS_CODE_TYPE, ""), (List<SysCodeInfo>) redisUtil.get(key));
 			}

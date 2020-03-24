@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.zjmzxfzhl.common.util.DateUtil;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class XssFilter implements Filter {
 
 	@Override

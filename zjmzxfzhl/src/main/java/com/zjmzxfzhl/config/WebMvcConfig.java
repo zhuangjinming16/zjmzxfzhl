@@ -18,6 +18,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 	@Value("${spring.resource.static-locations}")
@@ -54,7 +58,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry viewControllerRegistry) {
-		viewControllerRegistry.addViewController("/").setViewName("/index.html");// 首页跳转页面
+		// 首页跳转页面
+		viewControllerRegistry.addViewController("/").setViewName("/index.html");
 	}
 
 	@Bean

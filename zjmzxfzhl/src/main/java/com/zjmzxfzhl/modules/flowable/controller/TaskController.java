@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.ObjectUtils;
 import com.zjmzxfzhl.common.util.ShiroUtils;
@@ -38,6 +38,10 @@ import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
 import com.zjmzxfzhl.modules.flowable.wapper.TaskListWrapper;
 import com.zjmzxfzhl.modules.flowable.wapper.TaskTodoListWrapper;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @RestController
 @RequestMapping("/flowable/task")
 public class TaskController extends BaseFlowableController {
@@ -51,83 +55,83 @@ public class TaskController extends BaseFlowableController {
 		allowedSortProperties.put("deleteReason", HistoricTaskInstanceQueryProperty.DELETE_REASON);
 		allowedSortProperties.put("duration", HistoricTaskInstanceQueryProperty.DURATION);
 		allowedSortProperties.put("endTime", HistoricTaskInstanceQueryProperty.END);
-		allowedSortProperties.put("executionId", HistoricTaskInstanceQueryProperty.EXECUTION_ID);
+		allowedSortProperties.put(FlowableConstant.EXECUTION_ID, HistoricTaskInstanceQueryProperty.EXECUTION_ID);
 		allowedSortProperties.put("taskInstanceId", HistoricTaskInstanceQueryProperty.HISTORIC_TASK_INSTANCE_ID);
-		allowedSortProperties.put("processDefinitionId", HistoricTaskInstanceQueryProperty.PROCESS_DEFINITION_ID);
-		allowedSortProperties.put("processInstanceId", HistoricTaskInstanceQueryProperty.PROCESS_INSTANCE_ID);
+		allowedSortProperties.put(FlowableConstant.PROCESS_DEFINITION_ID, HistoricTaskInstanceQueryProperty.PROCESS_DEFINITION_ID);
+		allowedSortProperties.put(FlowableConstant.PROCESS_INSTANCE_ID, HistoricTaskInstanceQueryProperty.PROCESS_INSTANCE_ID);
 		allowedSortProperties.put("assignee", HistoricTaskInstanceQueryProperty.TASK_ASSIGNEE);
-		allowedSortProperties.put("taskDefinitionKey", HistoricTaskInstanceQueryProperty.TASK_DEFINITION_KEY);
+		allowedSortProperties.put(FlowableConstant.TASK_DEFINITION_KEY, HistoricTaskInstanceQueryProperty.TASK_DEFINITION_KEY);
 		allowedSortProperties.put("description", HistoricTaskInstanceQueryProperty.TASK_DESCRIPTION);
 		allowedSortProperties.put("dueDate", HistoricTaskInstanceQueryProperty.TASK_DUE_DATE);
-		allowedSortProperties.put("name", HistoricTaskInstanceQueryProperty.TASK_NAME);
+		allowedSortProperties.put(FlowableConstant.NAME, HistoricTaskInstanceQueryProperty.TASK_NAME);
 		allowedSortProperties.put("owner", HistoricTaskInstanceQueryProperty.TASK_OWNER);
 		allowedSortProperties.put("priority", HistoricTaskInstanceQueryProperty.TASK_PRIORITY);
-		allowedSortProperties.put("tenantId", HistoricTaskInstanceQueryProperty.TENANT_ID_);
+		allowedSortProperties.put(FlowableConstant.TENANT_ID, HistoricTaskInstanceQueryProperty.TENANT_ID_);
 		allowedSortProperties.put("startTime", HistoricTaskInstanceQueryProperty.START);
 
-		allowedSortPropertiesTodo.put("processDefinitionId", TaskQueryProperty.PROCESS_DEFINITION_ID);
-		allowedSortPropertiesTodo.put("processInstanceId", TaskQueryProperty.PROCESS_INSTANCE_ID);
-		allowedSortPropertiesTodo.put("taskDefinitionKey", TaskQueryProperty.TASK_DEFINITION_KEY);
+		allowedSortPropertiesTodo.put(FlowableConstant.PROCESS_DEFINITION_ID, TaskQueryProperty.PROCESS_DEFINITION_ID);
+		allowedSortPropertiesTodo.put(FlowableConstant.PROCESS_INSTANCE_ID, TaskQueryProperty.PROCESS_INSTANCE_ID);
+		allowedSortPropertiesTodo.put(FlowableConstant.TASK_DEFINITION_KEY, TaskQueryProperty.TASK_DEFINITION_KEY);
 		allowedSortPropertiesTodo.put("dueDate", TaskQueryProperty.DUE_DATE);
-		allowedSortPropertiesTodo.put("name", TaskQueryProperty.NAME);
+		allowedSortPropertiesTodo.put(FlowableConstant.NAME, TaskQueryProperty.NAME);
 		allowedSortPropertiesTodo.put("priority", TaskQueryProperty.PRIORITY);
-		allowedSortPropertiesTodo.put("tenantId", TaskQueryProperty.TENANT_ID);
+		allowedSortPropertiesTodo.put(FlowableConstant.TENANT_ID, TaskQueryProperty.TENANT_ID);
 		allowedSortPropertiesTodo.put("createTime", TaskQueryProperty.CREATE_TIME);
 	}
 
 	protected HistoricTaskInstanceQuery createHistoricTaskInstanceQuery(Map<String, String> requestParams) {
 		HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery();
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskId"))) {
-			query.taskId(requestParams.get("taskId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_ID))) {
+			query.taskId(requestParams.get(FlowableConstant.TASK_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processInstanceId"))) {
-			query.processInstanceId(requestParams.get("processInstanceId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID))) {
+			query.processInstanceId(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processInstanceBusinessKey"))) {
-			query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(requestParams.get("processInstanceBusinessKey")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY))) {
+			query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processDefinitionKey"))) {
-			query.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get("processDefinitionKey")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY))) {
+			query.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processDefinitionId"))) {
-			query.processDefinitionId(requestParams.get("processDefinitionId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID))) {
+			query.processDefinitionId(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processDefinitionName"))) {
-			query.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get("processDefinitionName")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME))) {
+			query.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("executionId"))) {
-			query.executionId(requestParams.get("executionId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.EXECUTION_ID))) {
+			query.executionId(requestParams.get(FlowableConstant.EXECUTION_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskName"))) {
-			query.taskNameLike(ObjectUtils.convertToLike(requestParams.get("taskName")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_NAME))) {
+			query.taskNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.TASK_NAME)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskDescription"))) {
-			query.taskDescriptionLike(ObjectUtils.convertToLike(requestParams.get("taskDescription")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_DESCRIPTION))) {
+			query.taskDescriptionLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.TASK_DESCRIPTION)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskDefinitionKey"))) {
-			query.taskDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get("taskDefinitionKey")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_DEFINITION_KEY))) {
+			query.taskDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.TASK_DEFINITION_KEY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskAssignee"))) {
-			query.taskAssignee(requestParams.get("taskAssignee"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_ASSIGNEE))) {
+			query.taskAssignee(requestParams.get(FlowableConstant.TASK_ASSIGNEE));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskOwner"))) {
-			query.taskOwner(requestParams.get("taskOwner"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_OWNER))) {
+			query.taskOwner(requestParams.get(FlowableConstant.TASK_OWNER));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskInvolvedUser"))) {
-			query.taskInvolvedUser(requestParams.get("taskInvolvedUser"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_INVOLVED_USER))) {
+			query.taskInvolvedUser(requestParams.get(FlowableConstant.TASK_INVOLVED_USER));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskPriority"))) {
-			query.taskPriority(ObjectUtils.convertToInteger(requestParams.get("taskPriority")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_PRIORITY))) {
+			query.taskPriority(ObjectUtils.convertToInteger(requestParams.get(FlowableConstant.TASK_PRIORITY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("finished"))) {
-			boolean isFinished = ObjectUtils.convertToBoolean(requestParams.get("finished"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.FINISHED))) {
+			boolean isFinished = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.FINISHED));
 			if (isFinished) {
 				query.finished();
 			} else {
 				query.unfinished();
 			}
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processFinished"))) {
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_FINISHED))) {
 			boolean isProcessFinished = ObjectUtils.convertToBoolean(requestParams.get("processFinished"));
 			if (isProcessFinished) {
 				query.processFinished();
@@ -135,81 +139,83 @@ public class TaskController extends BaseFlowableController {
 				query.processUnfinished();
 			}
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("parentTaskId"))) {
-			query.taskParentTaskId(requestParams.get("parentTaskId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PARENT_TASK_ID))) {
+			query.taskParentTaskId(requestParams.get(FlowableConstant.PARENT_TASK_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("dueDateAfter"))) {
-			query.taskDueAfter(ObjectUtils.convertToDate(requestParams.get("dueDateAfter")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TENANT_ID))) {
+			query.taskTenantId(requestParams.get(FlowableConstant.TENANT_ID));
 		}
-
-		if (ObjectUtils.isNotEmpty(requestParams.get("dueDateBefore"))) {
-			query.taskDueBefore(ObjectUtils.convertToDate(requestParams.get("dueDateBefore")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CANDIDATE_USER))) {
+			query.taskCandidateUser(requestParams.get(FlowableConstant.TASK_CANDIDATE_USER));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCreatedBefore"))) {
-			query.taskCreatedBefore(ObjectUtils.convertToDatetime(requestParams.get("taskCreatedBefore")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUP))) {
+			query.taskCandidateGroup(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUP));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCreatedAfter"))) {
-			query.taskCreatedAfter(ObjectUtils.convertToDatetime(requestParams.get("taskCreatedAfter")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUPS))) {
+			query.taskCandidateGroupIn(Arrays.asList(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUPS).split(",")));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCompletedBefore"))) {
-			query.taskCompletedBefore(ObjectUtils.convertToDatetime(requestParams.get("taskCompletedBefore")));
-		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCompletedAfter"))) {
-			query.taskCompletedAfter(ObjectUtils.convertToDatetime(requestParams.get("taskCompletedAfter")));
-		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("tenantId"))) {
-			query.taskTenantId(requestParams.get("tenantId"));
-		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCandidateUser"))) {
-			query.taskCandidateUser(requestParams.get("taskCandidateUser"));
-		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCandidateGroup"))) {
-			query.taskCandidateGroup(requestParams.get("taskCandidateGroup"));
-		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCandidateGroups"))) {
-			String[] candidateGroups = requestParams.get("taskCandidateGroups").split(",");
-			query.taskCandidateGroupIn(Arrays.asList(candidateGroups));
-		}
+		setTaskQueryDate(requestParams, query);
 		return query;
+	}
+
+	private void setTaskQueryDate(Map<String, String> requestParams, HistoricTaskInstanceQuery query) {
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_AFTER))) {
+			query.taskDueAfter(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_AFTER)));
+		}
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_BEFORE))) {
+			query.taskDueBefore(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_BEFORE)));
+		}
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE))) {
+			query.taskCreatedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE)));
+		}
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_AFTER))) {
+			query.taskCreatedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_AFTER)));
+		}
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_COMPLETED_BEFORE))) {
+			query.taskCompletedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_COMPLETED_BEFORE)));
+		}
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_COMPLETED_AFTER))) {
+			query.taskCompletedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_COMPLETED_AFTER)));
+		}
 	}
 
 	protected TaskQuery createTaskQuery(Map<String, String> requestParams) {
 		TaskQuery query = taskService.createTaskQuery();
-		if (ObjectUtils.isNotEmpty(requestParams.get("processInstanceId"))) {
-			query.processInstanceId(requestParams.get("processInstanceId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID))) {
+			query.processInstanceId(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskName"))) {
-			query.taskNameLike(requestParams.get("taskName"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_NAME))) {
+			query.taskNameLike(requestParams.get(FlowableConstant.TASK_NAME));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processInstanceBusinessKey"))) {
-			query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(requestParams.get("processInstanceBusinessKey")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY))) {
+			query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processDefinitionKey"))) {
-			query.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get("processDefinitionKey")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY))) {
+			query.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processDefinitionId"))) {
-			query.processDefinitionId(requestParams.get("processDefinitionId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID))) {
+			query.processDefinitionId(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("processDefinitionName"))) {
-			query.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get("processDefinitionName")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME))) {
+			query.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("dueDateAfter"))) {
-			query.taskDueAfter(ObjectUtils.convertToDate(requestParams.get("dueDateAfter")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_AFTER))) {
+			query.taskDueAfter(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_AFTER)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("dueDateBefore"))) {
-			query.taskDueBefore(ObjectUtils.convertToDate(requestParams.get("dueDateBefore")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_BEFORE))) {
+			query.taskDueBefore(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_BEFORE)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCreatedBefore"))) {
-			query.taskCreatedBefore(ObjectUtils.convertToDatetime(requestParams.get("taskCreatedBefore")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE))) {
+			query.taskCreatedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("taskCreatedAfter"))) {
-			query.taskCreatedAfter(ObjectUtils.convertToDatetime(requestParams.get("taskCreatedAfter")));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_AFTER))) {
+			query.taskCreatedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_AFTER)));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("tenantId"))) {
-			query.taskTenantId(requestParams.get("tenantId"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TENANT_ID))) {
+			query.taskTenantId(requestParams.get(FlowableConstant.TENANT_ID));
 		}
-		if (ObjectUtils.isNotEmpty(requestParams.get("suspended"))) {
-			boolean isSuspended = ObjectUtils.convertToBoolean(requestParams.get("suspended"));
+		if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.SUSPENDED))) {
+			boolean isSuspended = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.SUSPENDED));
 			if (isSuspended) {
 				query.suspended();
 			} else {
@@ -221,138 +227,138 @@ public class TaskController extends BaseFlowableController {
 
 	@RequiresPermissions("flowable:task:list")
 	@GetMapping(value = "/list")
-	public R list(@RequestParam Map<String, String> requestParams) {
+	public Result list(@RequestParam Map<String, String> requestParams) {
 		HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(requestParams);
 		FlowablePage page = this.pageList(requestParams, query, TaskListWrapper.class, allowedSortProperties,
 				HistoricTaskInstanceQueryProperty.START);
-		return R.ok(page);
+		return Result.ok(page);
 	}
 
 	@RequiresPermissions("flowable:task:listDone")
 	@GetMapping(value = "/listDone")
-	public R listDone(@RequestParam Map<String, String> requestParams) {
+	public Result listDone(@RequestParam Map<String, String> requestParams) {
 		HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(requestParams);
 		query.finished().or().taskAssignee(ShiroUtils.getUserId()).taskOwner(ShiroUtils.getUserId()).endOr();
 		FlowablePage page = this.pageList(requestParams, query, TaskListWrapper.class, allowedSortProperties,
 				HistoricTaskInstanceQueryProperty.START);
-		return R.ok(page);
+		return Result.ok(page);
 	}
 
 	@RequiresPermissions("flowable:task:listTodo")
 	@GetMapping(value = "/listTodo")
-	public R listTodo(@RequestParam Map<String, String> requestParams) {
+	public Result listTodo(@RequestParam Map<String, String> requestParams) {
 		String userId = ShiroUtils.getUserId();
 		TaskQuery query = createTaskQuery(requestParams);
 		query.or().taskCandidateOrAssigned(userId).taskOwner(userId).endOr();
-		// query.taskCandidateOrAssigned(ShiroUtils.getUserId());
 		FlowablePage page = this.pageList(requestParams, query, TaskTodoListWrapper.class, allowedSortProperties, TaskQueryProperty.CREATE_TIME);
-		return R.ok(page);
+		return Result.ok(page);
 	}
 
 	@RequiresPermissions(value = { "flowable:task:list", "flowable:task:listTodo", "flowable:task:listDone" }, logical = Logical.OR)
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String taskId) {
+	public Result queryById(@RequestParam String taskId) {
 		TaskResponse task = flowableTaskService.getTask(taskId);
-		return R.ok(task);
+		return Result.ok(task);
 	}
 
 	@SysLogAuto(value = "修改任务")
 	@RequiresPermissions("flowable:task:update")
 	@PutMapping(value = "/update")
-	public R update(@RequestBody TaskUpdateRequest taskUpdateRequest) {
+	public Result update(@RequestBody TaskUpdateRequest taskUpdateRequest) {
 		TaskResponse task = flowableTaskService.updateTask(taskUpdateRequest);
-		return R.ok(task);
+		return Result.ok(task);
 	}
 
 	@SysLogAuto(value = "删除任务")
 	@RequiresPermissions("flowable:task:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String taskId) {
+	public Result delete(@RequestParam String taskId) {
 		flowableTaskService.deleteTask(taskId);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "转办任务")
 	@PutMapping(value = "/assign")
-	public R assign(@RequestBody TaskRequest taskRequest) {
+	public Result assign(@RequestBody TaskRequest taskRequest) {
 		flowableTaskService.assignTask(taskRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "委派任务")
 	@PutMapping(value = "/delegate")
-	public R delegate(@RequestBody TaskRequest taskRequest) {
+	public Result delegate(@RequestBody TaskRequest taskRequest) {
 		flowableTaskService.delegateTask(taskRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "认领任务")
 	@PutMapping(value = "/claim")
-	public R claim(@RequestBody TaskRequest taskRequest) {
+	public Result claim(@RequestBody TaskRequest taskRequest) {
 		flowableTaskService.claimTask(taskRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "取消认领任务")
 	@PutMapping(value = "/unclaim")
-	public R unclaim(@RequestBody TaskRequest taskRequest) {
+	public Result unclaim(@RequestBody TaskRequest taskRequest) {
 		flowableTaskService.unclaimTask(taskRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "完成任务")
 	@PutMapping(value = "/complete")
-	public R complete(@RequestBody TaskRequest taskRequest) {
+	public Result complete(@RequestBody TaskRequest taskRequest) {
 		flowableTaskService.completeTask(taskRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@SysLogAuto(value = "结束流程实例")
 	@PutMapping(value = "/stopProcessInstance")
-	public R stopProcessInstance(@RequestBody TaskRequest taskRequest) {
+	public Result stopProcessInstance(@RequestBody TaskRequest taskRequest) {
 		flowableTaskService.stopProcessInstance(taskRequest);
-		return R.ok();
+		return Result.ok();
 	}
 
 	@GetMapping(value = "/renderedTaskForm")
-	public R renderedTaskForm(@RequestParam String taskId) {
+	public Result renderedTaskForm(@RequestParam String taskId) {
 		permissionService.validateReadPermissionOnTask2(taskId, ShiroUtils.getUserId(), true, true);
 		Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
-		return R.ok(renderedTaskForm);
+		return Result.ok(renderedTaskForm);
 	}
 
 	@GetMapping(value = "/executeTaskData")
-	public R executeTaskData(@RequestParam String taskId) {
+	public Result executeTaskData(@RequestParam String taskId) {
 		Task task = permissionService.validateReadPermissionOnTask2(taskId, ShiroUtils.getUserId(), true, true);
 		Object renderedStartForm = formService.getRenderedStartForm(task.getProcessDefinitionId());
 		Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
 		Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
 
 		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
-		Map<String, Object> ret = new HashMap<String, Object>();
+		Map<String, Object> ret = new HashMap<String, Object>(7);
 		ret.put("startUserId", processInstance.getStartUserId());
 		ret.put("renderedStartForm", renderedStartForm);
 		ret.put("renderedTaskForm", renderedTaskForm);
 		ret.put("variables", variables);
 		boolean showBusinessKey = isShowBusinessKey(task.getProcessDefinitionId());
 		ret.put("showBusinessKey", showBusinessKey);
-		ret.put("businessKey", processInstance.getBusinessKey());
-		if (FlowableConstant.__INITIATOR__.equals(task.getTaskDefinitionKey())) {// 当前任务是发起者
+		ret.put(FlowableConstant.BUSINESS_KEY, processInstance.getBusinessKey());
+		// 当前任务是发起者
+		if (FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey())) {
 			ret.put("isInitiator", true);
 		}
-		return R.ok(ret);
+		return Result.ok(ret);
 	}
 
 	@GetMapping(value = "/backNodes")
-	public R backNodes(@RequestParam String taskId) {
+	public Result backNodes(@RequestParam String taskId) {
 		List<FlowNodeResponse> datas = flowableTaskService.getBackNodes(taskId);
-		return R.ok(datas);
+		return Result.ok(datas);
 	}
 
 	@SysLogAuto(value = "退户任务")
 	@PutMapping(value = "/back")
-	public R back(@RequestBody TaskRequest taskRequest) {
+	public Result back(@RequestBody TaskRequest taskRequest) {
 		flowableTaskService.backTask(taskRequest);
-		return R.ok();
+		return Result.ok();
 	}
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.sys.entity.SysConfig;
@@ -40,20 +40,18 @@ public class SysConfigController extends BaseController {
 	 * @param size
 	 * @return
 	 */
-	// @RepeatRequest(lockIndexs = { 0 }, fieldNames = { "configId" })
 	@RequiresPermissions("sys:config:list")
 	@GetMapping(value = "/list")
-	public R list(SysConfig sysConfig, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysConfig sysConfig, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysConfig> pageList = sysConfigService.list(new Page<SysConfig>(current, size), sysConfig);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
-	// @RepeatRequest(lockIndexs = 0)
 	@RequiresPermissions("sys:config:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysConfig sysConfig = sysConfigService.getById(id);
-		return R.ok(sysConfig);
+		return Result.ok(sysConfig);
 	}
 
 	/**
@@ -64,10 +62,9 @@ public class SysConfigController extends BaseController {
 	@SysLogAuto(value = "新增系统参数")
 	@RequiresPermissions("sys:config:save")
 	@PostMapping(value = "/save")
-	// public R save(@Validated({ AddGroup.class, UpdateGroup.class }) @RequestBody SysConfig sysConfig) {
-	public R save(@Valid @RequestBody SysConfig sysConfig) {
+	public Result save(@Valid @RequestBody SysConfig sysConfig) {
 		sysConfigService.saveSysConfig(sysConfig);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -75,13 +72,12 @@ public class SysConfigController extends BaseController {
 	 * @param sysConfig
 	 * @return
 	 */
-	// @RepeatRequest(lockIndexs = { 0 }, fieldNames = { "configId" })
 	@SysLogAuto(value = "修改系统参数")
 	@RequiresPermissions("sys:config:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysConfig sysConfig) {
+	public Result update(@Valid @RequestBody SysConfig sysConfig) {
 		sysConfigService.updateSysConfig(sysConfig);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -92,8 +88,8 @@ public class SysConfigController extends BaseController {
 	@SysLogAuto(value = "删除系统参数")
 	@RequiresPermissions("sys:config:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		sysConfigService.deleteSysConfig(ids);
-		return R.ok();
+		return Result.ok();
 	}
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.modules.sys.entity.SysCodeType;
@@ -42,16 +42,16 @@ public class SysCodeTypeController extends BaseController {
 	 */
 	@RequiresPermissions("sys:codeType:list")
 	@GetMapping(value = "/list")
-	public R list(SysCodeType sysCodeType, @RequestParam Integer current, @RequestParam Integer size) {
+	public Result list(SysCodeType sysCodeType, @RequestParam Integer current, @RequestParam Integer size) {
 		IPage<SysCodeType> pageList = sysCodeTypeService.list(new Page<SysCodeType>(current, size), sysCodeType);
-		return R.ok(pageList);
+		return Result.ok(pageList);
 	}
 
 	@RequiresPermissions("sys:codeType:list")
 	@GetMapping(value = "/queryById")
-	public R queryById(@RequestParam String id) {
+	public Result queryById(@RequestParam String id) {
 		SysCodeType sysCodeType = sysCodeTypeService.getById(id);
-		return R.ok(sysCodeType);
+		return Result.ok(sysCodeType);
 	}
 
 	/**
@@ -62,9 +62,9 @@ public class SysCodeTypeController extends BaseController {
 	@SysLogAuto(value = "新增代码类别")
 	@RequiresPermissions("sys:codeType:save")
 	@PostMapping(value = "/save")
-	public R save(@Valid @RequestBody SysCodeType sysCodeType) {
+	public Result save(@Valid @RequestBody SysCodeType sysCodeType) {
 		sysCodeTypeService.save(sysCodeType);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -75,9 +75,9 @@ public class SysCodeTypeController extends BaseController {
 	@SysLogAuto(value = "修改代码类别")
 	@RequiresPermissions("sys:codeType:update")
 	@PutMapping(value = "/update")
-	public R update(@Valid @RequestBody SysCodeType sysCodeType) {
+	public Result update(@Valid @RequestBody SysCodeType sysCodeType) {
 		sysCodeTypeService.updateById(sysCodeType);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -88,8 +88,8 @@ public class SysCodeTypeController extends BaseController {
 	@SysLogAuto(value = "删除代码类别")
 	@RequiresPermissions("sys:codeType:delete")
 	@DeleteMapping(value = "/delete")
-	public R delete(@RequestParam String ids) {
+	public Result delete(@RequestParam String ids) {
 		sysCodeTypeService.deleteSysCodeType(ids);
-		return R.ok();
+		return Result.ok();
 	}
 }

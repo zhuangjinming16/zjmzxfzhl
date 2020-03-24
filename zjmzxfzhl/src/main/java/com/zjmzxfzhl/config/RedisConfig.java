@@ -17,6 +17,10 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 @EnableAutoConfiguration
 public class RedisConfig {
@@ -49,10 +53,10 @@ public class RedisConfig {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
 		redisTemplate.setConnectionFactory(lettuceConnectionFactory);
 		RedisSerializer<?> stringSerializer = new StringRedisSerializer();
-		redisTemplate.setKeySerializer(stringSerializer);// key序列化
-		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);// value序列化
-		redisTemplate.setHashKeySerializer(stringSerializer);// Hash key序列化
-		redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);// Hash value序列化
+		redisTemplate.setKeySerializer(stringSerializer);
+		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+		redisTemplate.setHashKeySerializer(stringSerializer);
+		redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
 		redisTemplate.afterPropertiesSet();
 		return redisTemplate;
 	}

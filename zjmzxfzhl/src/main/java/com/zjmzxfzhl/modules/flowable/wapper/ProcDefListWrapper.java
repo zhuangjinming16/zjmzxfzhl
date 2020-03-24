@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月22日
+ */
 @Component
 public class ProcDefListWrapper implements IListWrapper {
 
@@ -14,6 +18,7 @@ public class ProcDefListWrapper implements IListWrapper {
 	private ResponseFactory responseFactory;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public List execute(List list) {
 		return responseFactory.createProcessDefinitionResponseList(list);
 	}

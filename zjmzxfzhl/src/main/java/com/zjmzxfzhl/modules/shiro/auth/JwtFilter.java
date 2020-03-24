@@ -12,9 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.zjmzxfzhl.common.Constants;
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.util.JacksonUtil;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 public class JwtFilter extends BasicHttpAuthenticationFilter {
 
 	@Override
@@ -48,7 +52,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
 	protected boolean sendChallenge(ServletRequest request, ServletResponse response) {
 		try {
 			response.setContentType("application/json;charset=utf-8");
-			R r = R.error(801, "token已失效，请重新登录");
+			Result r = Result.error(801, "token已失效，请重新登录");
 			String json = JacksonUtil.objToStr(r);
 			response.getWriter().print(json);
 		} catch (IOException e1) {

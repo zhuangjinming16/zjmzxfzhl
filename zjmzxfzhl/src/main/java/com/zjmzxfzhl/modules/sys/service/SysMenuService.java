@@ -14,6 +14,7 @@ import com.zjmzxfzhl.common.exception.SysException;
 import com.zjmzxfzhl.common.permission.FilterOperate;
 import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.modules.sys.common.SysConstants;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
 import com.zjmzxfzhl.modules.sys.entity.vo.ElTree;
 import com.zjmzxfzhl.modules.sys.mapper.SysMenuMapper;
@@ -38,13 +39,14 @@ public class SysMenuService extends BaseService<SysMenuMapper, SysMenu> {
 	public boolean saveSysMenu(SysMenu sysMenu) {
 		// 【1】 判断是否有上级菜单
 		if (!CommonUtil.isEmptyStr(sysMenu.getParentMenuId())) {
-			SysMenu parentSysMenu = this.getById(sysMenu.getParentMenuId()); // 父节点
+			// 父节点
+			SysMenu parentSysMenu = this.getById(sysMenu.getParentMenuId());
 			if (parentSysMenu == null) {
 				throw new SysException("保存失败,上级菜单ID【" + sysMenu.getParentMenuId() + "】不存在!");
 			}
 			// 【2】设置新增菜单的父菜单是否叶子为否
-			if (!"0".equals(parentSysMenu.getIsLeaf())) {
-				parentSysMenu.setIsLeaf("0");
+			if (!SysConstants.IS_LEAF_0.equals(parentSysMenu.getIsLeaf())) {
+				parentSysMenu.setIsLeaf(SysConstants.IS_LEAF_0);
 				this.updateById(parentSysMenu);
 			}
 		}
@@ -72,13 +74,14 @@ public class SysMenuService extends BaseService<SysMenuMapper, SysMenu> {
 		}
 		// 【1】 判断是否有上级菜单
 		if (!CommonUtil.isEmptyStr(parentMenuId)) {
-			SysMenu parentSysMenu = this.getById(sysMenu.getParentMenuId()); // 父节点
+			// 父节点
+			SysMenu parentSysMenu = this.getById(sysMenu.getParentMenuId());
 			if (parentSysMenu == null) {
 				throw new SysException("保存失败,上级菜单ID【" + sysMenu.getParentMenuId() + "】不存在!");
 			}
 			// 【2】设置新增菜单的父菜单是否叶子为否
-			if (!"0".equals(parentSysMenu.getIsLeaf())) {
-				parentSysMenu.setIsLeaf("0");
+			if (!SysConstants.IS_LEAF_0.equals(parentSysMenu.getIsLeaf())) {
+				parentSysMenu.setIsLeaf(SysConstants.IS_LEAF_0);
 				this.updateById(parentSysMenu);
 			}
 		}

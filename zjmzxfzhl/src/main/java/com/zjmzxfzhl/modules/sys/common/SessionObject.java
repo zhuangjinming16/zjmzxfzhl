@@ -11,6 +11,10 @@ import com.zjmzxfzhl.modules.sys.entity.vo.Route;
 
 import lombok.Data;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Data
 public class SessionObject implements Serializable {
 	public static final String BEAN_ID = "sessionObject";

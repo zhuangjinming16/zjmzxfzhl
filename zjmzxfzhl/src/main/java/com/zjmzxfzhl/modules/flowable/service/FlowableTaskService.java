@@ -60,8 +60,12 @@ import com.zjmzxfzhl.modules.flowable.vo.TaskRequest;
 import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
 import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class FlowableTaskService {
 	@Autowired
 	protected IdentityService identityService;
@@ -135,7 +139,7 @@ public class FlowableTaskService {
 		return subTasksRepresentations;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public TaskResponse updateTask(TaskUpdateRequest taskUpdateRequest) {
 		String userId = ShiroUtils.getUserId();
 		permissionService.validateReadPermissionOnTask(taskUpdateRequest.getId(), userId, false, false);
@@ -151,7 +155,7 @@ public class FlowableTaskService {
 		return new TaskResponse(task);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void assignTask(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
 		String assignee = taskRequest.getUserId();
@@ -167,7 +171,7 @@ public class FlowableTaskService {
 		// addIdentiyLinkForUser(task, userId, IdentityLinkType.PARTICIPANT);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void involveUser(String taskId, String involveUserId) {
 		Task task = getTaskNotNull(taskId);
 		String userId = ShiroUtils.getUserId();
@@ -179,7 +183,7 @@ public class FlowableTaskService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void removeInvolvedUser(String taskId, String involveUserId) {
 		Task task = getTaskNotNull(taskId);
 		String userId = ShiroUtils.getUserId();
@@ -191,7 +195,7 @@ public class FlowableTaskService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void claimTask(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
 		String userId = ShiroUtils.getUserId();
@@ -203,7 +207,7 @@ public class FlowableTaskService {
 		taskService.claim(taskId, userId);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void unclaimTask(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
 		String userId = ShiroUtils.getUserId();
@@ -211,7 +215,7 @@ public class FlowableTaskService {
 		if (!userId.equals(task.getAssignee())) {
 			throw new FlowableNoPermissionException("User does not have permission");
 		}
-		if (FlowableConstant.__INITIATOR__.equals(task.getTaskDefinitionKey())) {
+		if (FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey())) {
 			throw new FlowableNoPermissionException("Initiator cannot unclaim the task");
 		}
 
@@ -219,14 +223,15 @@ public class FlowableTaskService {
 		taskService.unclaim(taskId);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	protected void addIdentiyLinkForUser(Task task, String userId, String linkType) {
 		List<IdentityLink> identityLinks = taskService.getIdentityLinksForTask(task.getId());
 		boolean isOldUserInvolved = false;
 		for (IdentityLink identityLink : identityLinks) {
-			if (userId.equals(identityLink.getUserId())
-					&& (identityLink.getType().equals(IdentityLinkType.PARTICIPANT) || identityLink.getType().equals(IdentityLinkType.CANDIDATE))) {
-				isOldUserInvolved = true;
+			isOldUserInvolved = userId.equals(identityLink.getUserId())
+					&& (identityLink.getType().equals(IdentityLinkType.PARTICIPANT) || identityLink.getType().equals(IdentityLinkType.CANDIDATE));
+			if (isOldUserInvolved) {
+				break;
 			}
 		}
 		if (!isOldUserInvolved) {
@@ -234,7 +239,7 @@ public class FlowableTaskService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void delegateTask(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
 		String delegater = taskRequest.getUserId();
@@ -250,7 +255,7 @@ public class FlowableTaskService {
 		// addIdentiyLinkForUser(task, userId, IdentityLinkType.PARTICIPANT);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void completeTask(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
 		String currUserId = ShiroUtils.getUserId();
@@ -274,7 +279,8 @@ public class FlowableTaskService {
 		// 判断是否是协办完成还是正常流转
 		if (permissionService.isTaskPending(task)) {
 			taskService.resolveTask(taskId, completeVariables);
-			if (currUserId.equals(task.getOwner())) {// 如果当前执行人是任务所有人，直接完成任务
+			// 如果当前执行人是任务所有人，直接完成任务
+			if (currUserId.equals(task.getOwner())) {
 				taskService.complete(taskId, completeVariables);
 			}
 		} else {
@@ -282,7 +288,7 @@ public class FlowableTaskService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteTask(String taskId) {
 		HistoricTaskInstance task = this.getHistoricTaskInstanceNotNull(taskId);
 		if (task.getEndTime() == null) {
@@ -291,7 +297,7 @@ public class FlowableTaskService {
 		historyService.deleteHistoricTaskInstance(task.getId());
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void stopProcessInstance(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
 		String userId = ShiroUtils.getUserId();
@@ -336,7 +342,7 @@ public class FlowableTaskService {
 		return result;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void backTask(TaskRequest taskRequest) {
 		String taskId = taskRequest.getTaskId();
 		String userId = ShiroUtils.getUserId();
@@ -345,15 +351,16 @@ public class FlowableTaskService {
 		this.addComment(taskId, task.getProcessInstanceId(), userId, CommentTypeEnum.TH, backSysMessage + taskRequest.getMessage());
 		String targetRealActivityId = managementService
 				.executeCommand(new BackUserTaskCmd(runtimeService, taskRequest.getTaskId(), taskRequest.getActivityId()));
-		// 退回发起者处理
-		if (FlowableConstant.__INITIATOR__.equals(targetRealActivityId)) {// 退回到发起者,默认设置任务执行人为发起者
-			String __initiator__ = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult()
+		// 退回发起者处理,退回到发起者,默认设置任务执行人为发起者
+		if (FlowableConstant.INITIATOR.equals(targetRealActivityId)) {
+			String initiator = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult()
 					.getStartUserId();
 			List<Task> newTasks = taskService.createTaskQuery().processInstanceId(task.getProcessInstanceId()).list();
 			for (Task newTask : newTasks) {
-				if (FlowableConstant.__INITIATOR__.equals(newTask.getTaskDefinitionKey())) {// 约定：发起者节点为 __initiator__
+				// 约定：发起者节点为 __initiator__
+				if (FlowableConstant.INITIATOR.equals(newTask.getTaskDefinitionKey())) {
 					if (ObjectUtils.isEmpty(newTask.getAssignee())) {
-						taskService.setAssignee(newTask.getId(), __initiator__);
+						taskService.setAssignee(newTask.getId(), initiator);
 					}
 				}
 			}
@@ -476,7 +483,8 @@ public class FlowableTaskService {
 	public List<Comment> getComments(String taskId, String processInstanceId, String type, String userId) {
 		List<Comment> comments = null;
 		if (type == null || type.length() == 0) {
-			if (taskId != null && taskId.length() > 0) { // 以taskId为优先
+			// 以taskId为优先
+			if (taskId != null && taskId.length() > 0) {
 				comments = taskService.getTaskComments(taskId);
 			} else if (processInstanceId != null && processInstanceId.length() > 0) {
 				comments = taskService.getProcessInstanceComments(processInstanceId);
@@ -484,7 +492,8 @@ public class FlowableTaskService {
 				throw new FlowableIllegalArgumentException("taskId processInstanceId type are all empty");
 			}
 		} else {
-			if (taskId != null && taskId.length() > 0) {// 以taskId为优先
+			// 以taskId为优先
+			if (taskId != null && taskId.length() > 0) {
 				comments = taskService.getTaskComments(taskId, type);
 			} else if (processInstanceId != null && processInstanceId.length() > 0) {
 				comments = taskService.getProcessInstanceComments(processInstanceId, type);
@@ -507,7 +516,7 @@ public class FlowableTaskService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void saveTaskIdentityLink(IdentityRequest taskIdentityRequest) {
 		Task task = getTaskNotNull(taskIdentityRequest.getTaskId());
 		validateIdentityLinkArguments(taskIdentityRequest.getIdentityId(), taskIdentityRequest.getIdentityType());
@@ -518,7 +527,7 @@ public class FlowableTaskService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteTaskIdentityLink(String taskId, String identityId, String identityType) {
 		Task task = getTaskNotNull(taskId);
 		validateIdentityLinkArguments(identityId, identityType);

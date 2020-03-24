@@ -9,6 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import com.zjmzxfzhl.modules.flowable.identity.CustomGroupEntityManager;
 import com.zjmzxfzhl.modules.flowable.identity.CustomUserEntityManager;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月24日
+ */
 @Configuration
 public class FlowableIdmConfig implements EngineConfigurationConfigurer<SpringIdmEngineConfiguration> {
 

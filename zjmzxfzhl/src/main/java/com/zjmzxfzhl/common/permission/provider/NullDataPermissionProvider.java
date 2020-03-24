@@ -17,4 +17,4 @@ public class NullDataPermissionProvider extends AbstractDataPermissionProvider {
 	public FilterGroup filter(SessionObject sessionObject) {
 		return null;
 	}
-}
+} 

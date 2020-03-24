@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.R;
+import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.exception.BaseException;
 import com.zjmzxfzhl.common.redlock.RedissonDistributedLocker;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
@@ -16,6 +16,10 @@ import com.zjmzxfzhl.modules.demo.service.DemoRedlockService;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 庄金明
+ * @date 2020年3月23日
+ */
 @RestController
 @RequestMapping("/demo/redlock")
 @Slf4j
@@ -30,9 +34,10 @@ public class DemoRedlockController {
 	 */
 	@GetMapping(value = "/redlock1")
 	@ResponseBody
-	public R redlock1() {
+	public Result redlock1() {
 		log.info("请求接入redlock1");
-		String redlockKey = "redlockKey";// 方法内部写死锁要锁的key，也可以根据一定规则产生要锁的key
+		// 方法内部写死锁要锁的key，也可以根据一定规则产生要锁的key
+		String redlockKey = "redlockKey";
 		boolean isSuccess = redissonDistributedLocker.tryLock(redlockKey, 10, 10, TimeUnit.SECONDS);
 		if (isSuccess) {
 			try {
@@ -48,7 +53,7 @@ public class DemoRedlockController {
 		} else {
 			throw new BaseException("交易超时，请稍后重试");
 		}
-		return R.ok();
+		return Result.ok();
 	}
 
 	@Autowired
@@ -59,10 +64,10 @@ public class DemoRedlockController {
 	 */
 	@GetMapping(value = "/redlock2")
 	@ResponseBody
-	public R redlock2() throws Exception {
+	public Result redlock2() throws Exception {
 		log.info("请求接入redlock2");
 		demoRedlockService.redlock2();
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -73,10 +78,10 @@ public class DemoRedlockController {
 	 */
 	@GetMapping(value = "/redlock3")
 	@ResponseBody
-	public R redlock3(String someId) throws Exception {
+	public Result redlock3(String someId) throws Exception {
 		log.info("请求接入redlock3");
 		demoRedlockService.redlock3(someId);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -88,10 +93,10 @@ public class DemoRedlockController {
 	 */
 	@GetMapping(value = "/redlock4")
 	@ResponseBody
-	public R redlock4(String someId, int someInt) throws Exception {
+	public Result redlock4(String someId, int someInt) throws Exception {
 		log.info("请求接入redlock4");
 		demoRedlockService.redlock4(someId, someInt);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -101,7 +106,7 @@ public class DemoRedlockController {
 	 */
 	@GetMapping(value = "/redlock5")
 	@ResponseBody
-	public R redlock5() throws Exception {
+	public Result redlock5() throws Exception {
 		log.info("请求接入redlock5");
 		DemoZjmzxfzhl demoZjmzxfzhl1 = new DemoZjmzxfzhl();
 		demoZjmzxfzhl1.setZjmzxfzhlId("id1");
@@ -109,7 +114,7 @@ public class DemoRedlockController {
 		DemoZjmzxfzhl demoZjmzxfzhl2 = new DemoZjmzxfzhl();
 		demoZjmzxfzhl2.setZjmzxfzhlId("id2");
 		demoRedlockService.redlock5("2", 3, demoZjmzxfzhl1, demoZjmzxfzhl2);
-		return R.ok();
+		return Result.ok();
 	}
 
 	/**
@@ -119,12 +124,12 @@ public class DemoRedlockController {
 	 */
 	@GetMapping(value = "/redlock6")
 	@ResponseBody
-	public R redlock6() throws Exception {
+	public Result redlock6() throws Exception {
 		log.info("请求接入redlock6");
 		DemoZjmzxfzhl demoZjmzxfzhl = new DemoZjmzxfzhl();
 		demoZjmzxfzhl.setZjmzxfzhlId("id");
 		demoZjmzxfzhl.setZjmzxfzhlName("name");
 		demoRedlockService.redlock6("2", 3, demoZjmzxfzhl);
-		return R.ok();
+		return Result.ok();
 	}
 }
