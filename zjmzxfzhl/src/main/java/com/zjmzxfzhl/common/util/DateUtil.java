@@ -218,7 +218,7 @@ public class DateUtil {
 	 */
 	public static Date strToDate(String dateStr, String pattern) {
 		try {
-			if ((dateStr == null) || (dateStr.equals(""))) {
+			if ((dateStr == null) || (dateStr.length() == 0)) {
 				return null;
 			}
 

@@ -124,7 +124,7 @@ public class DataPermissionAspect {
 			String authFilterSql = parentGroup.formatSql();
 			log.info("数据权限sql:" + authFilterSql);
 
-			if (paramTypes[index].getName().equals("java.util.Map")) {
+			if ("java.util.Map".equals(paramTypes[index].getName())) {
 				Map<String, Object> map = (Map<String, Object>) param;
 				map.put(fieldName, authFilterSql);
 			} else {

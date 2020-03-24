@@ -311,7 +311,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 		}
 		String[] idsArr = ids.split(",");
 		for (int i = 0; i < idsArr.length; i++) {
-			if (idsArr[i].equals("admin")) {
+			if (Constants.ADMIN.equals(idsArr[i])) {
 				throw new SysException("不允许删除[admin]用户");
 			}
 		}

@@ -78,10 +78,10 @@ public class CommonUtil {
 	 * @return
 	 */
 	public static boolean isExist(String str, String substr, String sepatator) {
-		if (str == null || str.trim().equals("")) {
+		if (str == null || str.trim().length() == 0) {
 			return false;
 		}
-		if (substr == null || substr.trim().equals("")) {
+		if (substr == null || substr.trim().length() == 0) {
 			return false;
 		}
 		String[] strArr = str.split(sepatator);
@@ -106,7 +106,7 @@ public class CommonUtil {
 		// 第一个字符是splitchar
 		boolean spBegin = false;
 
-		if (srcIds == null || srcIds.equals("")) {
+		if (srcIds == null || srcIds.length() == 0) {
 			return null;
 		}
 		if (srcIds.indexOf(splitChar) == 0) {

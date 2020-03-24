@@ -54,7 +54,7 @@ public class ColumnUtils {
 	 * @return 转换后的驼峰式命名的字符串
 	 */
 	public static String camelNames(String names) {
-		if (names == null || names.equals("")) {
+		if (names == null || names.length() == 0) {
 			return null;
 		}
 		StringBuffer sf = new StringBuffer();
