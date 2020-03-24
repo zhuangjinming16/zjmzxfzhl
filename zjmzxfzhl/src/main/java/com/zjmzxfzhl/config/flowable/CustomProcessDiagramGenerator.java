@@ -266,8 +266,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
 			List<GraphicInfo> graphicInfoList = bpmnModel.getFlowLocationGraphicInfo(sequenceFlow.getId());
 			if (graphicInfoList != null && graphicInfoList.size() > 0) {
 				graphicInfoList = connectionPerfectionizer(processDiagramCanvas, bpmnModel, sourceElement, targetElement, graphicInfoList);
-				int xPoints[] = new int[graphicInfoList.size()];
-				int yPoints[] = new int[graphicInfoList.size()];
+				int[] xPoints = new int[graphicInfoList.size()];
+				int[] yPoints = new int[graphicInfoList.size()];
 
 				for (int i = 1; i < graphicInfoList.size(); i++) {
 					GraphicInfo graphicInfo = graphicInfoList.get(i);
