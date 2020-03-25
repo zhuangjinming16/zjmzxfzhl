@@ -24,15 +24,24 @@ public class SysRoleUser extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * UUID
+	 */
 	@TableId(type = IdType.ASSIGN_UUID)
 	@NotNull
 	@LengthForUtf8(max = 32)
 	private String roleUserId;
 
+	/**
+	 * 角色ID
+	 */
 	@NotNull
 	@LengthForUtf8(max = 32)
 	private String roleId;
 
+	/**
+	 * 用户ID
+	 */
 	@NotNull
 	@LengthForUtf8(max = 32)
 	private String userId;

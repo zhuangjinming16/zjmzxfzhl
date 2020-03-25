@@ -23,19 +23,31 @@ public class SysCodeType extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 代码类别ID
+	 */
 	@TableId
 	@NotNull
 	@LengthForUtf8(max = 32)
 	private String codeTypeId;
 
+	/**
+	 * 代码类别名称
+	 */
 	@NotNull
 	@LengthForUtf8(max = 100)
 	private String codeTypeName;
 
+	/**
+	 * 排序号
+	 */
 	@NotNull
 	@Max(9999)
 	private Integer sortNo;
 
+	/**
+	 * 备注
+	 */
 	@LengthForUtf8(max = 255)
 	private String remark;
 
