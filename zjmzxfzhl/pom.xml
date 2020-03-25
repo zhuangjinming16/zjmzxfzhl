@@ -24,8 +24,8 @@
 		<mysql.version>8.0.19</mysql.version>
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<dom4j.version>1.6.1</dom4j.version>
-		<poi.version>3.15</poi.version>
-		<poi-ooxml.version>3.15</poi-ooxml.version>
+		<poi.version>4.0.0</poi.version>
+		<poi-ooxml.version>4.0.0</poi-ooxml.version>
 		<aspectjweaver.version>1.8.14</aspectjweaver.version>
 		<weixin-java-mp.version>3.3.0</weixin-java-mp.version>
 		<druid.version>1.1.10</druid.version>
