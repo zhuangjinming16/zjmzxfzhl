@@ -278,7 +278,8 @@
                 <artifactId>maven-war-plugin</artifactId>
             </plugin>
 		</plugins>
-		<resources>
+		<!-- idea环境打开resources配置即可 begin -->
+		<!-- <resources>
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
@@ -286,14 +287,8 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-                <filtering>true</filtering>
-           </resource>
-        </resources>
+        </resources> -->
+        <!-- idea环境打开resources配置即可 end -->
 	</build>
 
 </project>
