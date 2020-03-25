@@ -135,9 +135,9 @@ public class CreateSql {
 			}
 
 			// 判断是否是这张表的最后一个字段
-			if (list.size() != i + 1)
+			if (list.size() != i + 1) {
 				stringBufferMid.append("," + "\r\n");
-			else {
+			} else {
 				// 创建这张表的主键
 				if (!CommonUtil.isEmptyStr(pkColumn)) {
 					stringBufferFoot.insert(3, "IN IBRCH_DATA4K INDEX IN IBRCH_INDEX4K; \r\n ALTER TABLE " + tableObject.getTableName()
@@ -147,8 +147,7 @@ public class CreateSql {
 
 			// 表的注释,第一行才有
 			if (i == 0) {
-				stringBufferFoot
-						.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
+				stringBufferFoot.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
 			}
 
 			// 字段注释
@@ -274,9 +273,9 @@ public class CreateSql {
 			stringBufferMid.append(" COMMENT '" + tableObject.getColumnNameCn() + "'");
 
 			// 判断是否是这张表的最后一个字段
-			if (list.size() != i + 1)
+			if (list.size() != i + 1) {
 				stringBufferMid.append("," + "\r\n");
-			else {
+			} else {
 				// 创建这张表的主键
 				if (!CommonUtil.isEmptyStr(pkColumn)) {
 					stringBufferMid.append("," + "\r\n");
