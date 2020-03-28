@@ -34,6 +34,7 @@ import org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl;
 
 import com.google.common.collect.Sets;
 import com.zjmzxfzhl.common.util.ShiroUtils;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
 /**
@@ -131,13 +132,13 @@ public class FlowableUtils {
 		}
 		Collection<FlowElement> flowelements = container.getFlowElements();
 		for (FlowElement flowElement : flowelements) {
-			boolean isBeginSpecialGateway = flowElement.getId().endsWith("_begin")
+			boolean isBeginSpecialGateway = flowElement.getId().endsWith(FlowableConstant.SPECIAL_GATEWAY_BEGIN_SUFFIX)
 					&& (flowElement instanceof ParallelGateway || flowElement instanceof InclusiveGateway || flowElement instanceof ComplexGateway);
 			if (isBeginSpecialGateway) {
 				String gatewayBeginRealId = flowElement.getId();
 				String gatewayId = gatewayBeginRealId.substring(0, gatewayBeginRealId.length() - 6);
 				Set<String> gatewayIdContainFlowelements = specialGatewayElements.computeIfAbsent(gatewayId, k -> new HashSet<>());
-				findElementsBetweenSpecialGateway(flowElement, gatewayId + "_end", gatewayIdContainFlowelements);
+				findElementsBetweenSpecialGateway(flowElement, gatewayId + FlowableConstant.SPECIAL_GATEWAY_END_SUFFIX, gatewayIdContainFlowelements);
 			} else if (flowElement instanceof SubProcess) {
 				getSpecialGatewayElements((SubProcess) flowElement, specialGatewayElements);
 			}

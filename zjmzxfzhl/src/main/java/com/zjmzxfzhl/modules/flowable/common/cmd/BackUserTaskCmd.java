@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.flowable.common.cmd;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +15,7 @@ import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
 import org.flowable.engine.RuntimeService;
+import org.flowable.engine.impl.delegate.ActivityBehavior;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntity;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntityManager;
 import org.flowable.engine.impl.util.CommandContextUtil;
@@ -24,6 +24,7 @@ import org.flowable.task.api.Task;
 import org.flowable.task.service.impl.persistence.entity.TaskEntity;
 
 import com.google.common.collect.Sets;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.util.FlowableUtils;
 
 /**
@@ -71,6 +72,7 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 			throw new FlowableException("Cannot back to [" + targetActivityId + "]");
 		}
 
+		// ps:目标节点如果相对当前节点是在子流程内部，则无法直接退回，目前处理是只能退回到子流程开始节点
 		String[] sourceAndTargetRealActivityId = FlowableUtils.getSourceAndTargetRealActivityId(sourceFlowElement, targetFlowElement);
 		// 实际应操作的当前节点ID
 		String sourceRealActivityId = sourceAndTargetRealActivityId[0];
@@ -87,7 +89,7 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 
 		// 实际应筛选的节点ID
 		Set<String> sourceRealAcitivtyIds = null;
-		// 若退回目标节点相对当前节点在并行网关中，则应退回到并行网关起点
+		// 若退回目标节点相对当前节点在并行网关中，则要找到相对当前节点最近的这个并行网关，后续做特殊处理
 		String targetRealSpecialGateway = null;
 
 		// 1.目标节点和当前节点都不在并行网关中
@@ -125,7 +127,7 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 				// 不做处理
 				if (targetInSpecialGatewayList.size() == diffSpecialGatewayLevel) {
 				}
-				// 目标节点相对当前节点在并行网关内，则应退回到相对当前节点最近的并行网关的begin节点
+				// 目标节点相对当前节点在并行网关内
 				else {
 					targetRealSpecialGateway = targetInSpecialGatewayList.get(diffSpecialGatewayLevel);
 				}
@@ -135,13 +137,14 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 		// 筛选需要处理的execution
 		List<ExecutionEntity> realExecutions = this.getRealExecutions(commandContext, processInstanceId, task.getExecutionId(), sourceRealActivityId,
 				sourceRealAcitivtyIds);
-		// 不需要跳转到并行网关begin节点，直接跳转到实际的 targetRealActivityId
+		// 目标节点相对当前节点不在并行网关内，直接跳转到实际的 targetRealActivityId
 		if (targetRealSpecialGateway == null) {
 			List<String> realExecutionIds = realExecutions.stream().map(ExecutionEntity::getId).collect(Collectors.toList());
 			runtimeService.createChangeActivityStateBuilder().processInstanceId(processInstanceId)
 					.moveExecutionsToSingleActivityId(realExecutionIds, targetRealActivityId).changeState();
-		} else {// 需要跳转到并行网关begin节点
-			moveToActivityInSpecialGateway(commandContext, processInstanceId, realExecutions, targetRealSpecialGateway);
+		} else {// 目标节点相对当前节点在并行网关内，需要特殊处理
+			moveToActivityInSpecialGateway(commandContext, processInstanceId, realExecutions, process, targetInSpecialGatewayList,
+					targetRealSpecialGateway, targetRealActivityId);
 		}
 
 		return targetRealActivityId;
@@ -160,25 +163,34 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
 	}
 
 	private void moveToActivityInSpecialGateway(CommandContext commandContext, String processInstanceId, List<ExecutionEntity> excutionEntitys,
-			String targetSpecialGateway) {
+			Process process, List<String> targetInSpecialGatewayList, String targetRealSpecialGateway, String targetRealActivityId) {
 		if (excutionEntitys != null && excutionEntitys.size() > 0) {
-			String firstExecutionId = excutionEntitys.iterator().next().getId();
-			// 跳过第一个，手动删除其余多余excution，因为跳到并行网关的起点只需要一个excution，否则多个excution跳回这个发散并行网关节点会出现多条记录
-			// 原因可以查看6.4.1版本源码 AbstractDynamicStateManager.createEmbeddedSubProcessAndExecutions 619行
-			// 对网关做了特殊处理，但貌似是为了支持跳转到汇聚并行网关而处理的
-			if (excutionEntitys.size() > 1) {
-				excutionEntitys.stream().skip(1).forEach(e -> this.deleteExecution(commandContext, e, targetActivityId));
-			}
+			List<String> realExecutionIds = excutionEntitys.stream().map(ExecutionEntity::getId).collect(Collectors.toList());
+			// 退回到真实的目标节点
 			runtimeService.createChangeActivityStateBuilder().processInstanceId(processInstanceId)
-					.moveExecutionsToSingleActivityId(Arrays.asList(firstExecutionId), targetSpecialGateway + "_begin").changeState();
-		}
-	}
+					.moveExecutionsToSingleActivityId(realExecutionIds, targetRealActivityId).changeState();
 
-	private void deleteExecution(CommandContext commandContext, ExecutionEntity executionEntity, String targetActivityId) {
-		ExecutionEntityManager executionEntityManager = CommandContextUtil.getExecutionEntityManager(commandContext);
-		executionEntityManager.deleteChildExecutions(executionEntity, null, null, "Change activity to " + targetActivityId, true, null);
-		executionEntityManager.deleteExecutionAndRelatedData(executionEntity, "Change activity to " + targetActivityId, false, true,
-				executionEntity.getCurrentFlowElement());
+			// 目标节点相对当前节点处于并行网关，需要手动生成并行网关汇聚节点(_end)的execution数据
+			String parentExecutionId = excutionEntitys.iterator().next().getParentId();
+			ExecutionEntityManager executionEntityManager = CommandContextUtil.getExecutionEntityManager(commandContext);
+			ExecutionEntity parentExecutionEntity = executionEntityManager.findById(parentExecutionId);
+
+			int index = targetInSpecialGatewayList.indexOf(targetRealSpecialGateway);
+			for (; index < targetInSpecialGatewayList.size(); index++) {
+				String targetInSpecialGateway = targetInSpecialGatewayList.get(index);
+				String targetInSpecialGatewayEndId = targetInSpecialGateway + FlowableConstant.SPECIAL_GATEWAY_END_SUFFIX;
+				FlowNode targetInSpecialGatewayEnd = (FlowNode) process.getFlowElement(targetInSpecialGatewayEndId, true);
+				int nbrOfExecutionsToJoin = targetInSpecialGatewayEnd.getIncomingFlows().size();
+				// 处理当前分支以外的分支,即 总分枝数-1 = nbrOfExecutionsToJoin - 1
+				for (int i = 0; i < nbrOfExecutionsToJoin - 1; i++) {
+					ExecutionEntity childExecution = executionEntityManager.createChildExecution(parentExecutionEntity);
+					childExecution.setCurrentFlowElement(targetInSpecialGatewayEnd);
+					ActivityBehavior activityBehavior = (ActivityBehavior) targetInSpecialGatewayEnd.getBehavior();
+					activityBehavior.execute(childExecution);
+				}
+			}
+
+		}
 	}
 
 	private List<ExecutionEntity> getRealExecutions(CommandContext commandContext, String processInstanceId, String taskExecutionId,

@@ -9,6 +9,8 @@ public class FlowableConstant {
 	 * 约定的发起者节点id-taskDefinitionKey
 	 */
 	public final static String INITIATOR = "__initiator__";
+	public final static String SPECIAL_GATEWAY_BEGIN_SUFFIX = "_begin";
+	public final static String SPECIAL_GATEWAY_END_SUFFIX = "_end";
 	public final static String IDENTITY_USER = "1";
 	public final static String IDENTITY_GROUP = "2";
 	public final static String ID = "id";
