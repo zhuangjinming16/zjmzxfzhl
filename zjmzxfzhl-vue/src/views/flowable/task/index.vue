@@ -28,8 +28,6 @@
             </el-select>
             <el-input v-model="listQuery.parentTaskId" placeholder="父任务ID" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.parentTaskName" placeholder="父任务名称" style="width: 200px;" class="filter-item"
-                      @keyup.enter.native="btnQuery"/>
             <el-date-picker v-model="listQuery.dueDateAfter" value-format="yyyy-MM-dd" placeholder="到期日开始"
                             type="date" style="width: 200px;"
                             class="filter-item"></el-date-picker>
