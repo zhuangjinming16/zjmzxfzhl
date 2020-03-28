@@ -165,9 +165,9 @@ public class ProcessDefinitionService {
 				deploymentBuilder.addZipInputStream(new ZipInputStream(file.getInputStream()));
 			}
 			deploymentBuilder.name(fileName);
-			// if (tenantId != null && tenantId.length() > 0) {
-			// deploymentBuilder.tenantId(tenantId);
-			// }
+			if (tenantId != null && tenantId.length() > 0) {
+				deploymentBuilder.tenantId(tenantId);
+			}
 			deploymentBuilder.deploy();
 		} catch (FlowableObjectNotFoundException e) {
 			throw e;
