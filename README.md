@@ -82,7 +82,7 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代�
 
 `zjm`经理角色，可以审批员工的请假流程
 
-`zxf`老板角色，可以审批员工额请假流程
+`zxf`老板角色，可以审批员工的请假流程
 
 请假流程详见`zjmzxfzhl/src/main/resources/processes_test/leave.bpmn20.xml`或者`zjmzxfzhl/src/main/resources/processes_test/leaveShowBusinessKey.bpmn20.xml`
 
