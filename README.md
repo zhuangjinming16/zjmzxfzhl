@@ -41,13 +41,13 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代�
 
 4.  数据权限，注解实现 + 后台配置实现
 
-5.  流程管理，包含自定义表单、流程定义、流程实例、任务管理、发起流程、我的流程、我的待办、我的已办，任务执行包含提交、终止、转办、委派、退回（已实现退回并行网关节点、子流程退回）等
+5. 流程管理，包含自定义表单、流程定义、流程实例、任务管理、发起流程、我的流程、我的待办、我的已办，任务执行包含提交、终止、转办、委派、退回（已实现退回并行网关节点、子流程退回）等
 
    流程设计约定：
 
    - 发起者启动流程后若要自动完成第一个用户任务，则第一个userTask的id要定义为`__INITIATOR__`，若涉及流程表单，则可设置`__INITIATOR__`的任务表单formKey与流程表单相同
 
-   - 如果涉及并行网关，并行网关需成对出现，且开始要以_begin 结尾，结束要以_end 结尾，可以嵌套但不能交叉嵌套，这样就能确保可以退回到并行网关的节点上，但同时会退回到并行网关的所有分支
+   - 如果涉及并行网关，并行网关需成对出现，且发散节点要以 _begin 结尾，汇聚节点要以 _end 结尾，可以嵌套但不能交叉嵌套，这样就能确保可以退回到并行网关的单个节点上（不会退回到并行网关的其他分支）
 
    - 如果流程涉及业务主键key，流程设计时加入流程数据对象即可
 
@@ -58,6 +58,8 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代�
      	</extensionElements>
      </dataObject>
      ```
+
+   - 流程设计可参考工程源代码 `zjmzxfzhl/src/main/resources/processes_test` 下的流程（使用的是flowable的eclipse插件 Flowable Diagram Editor 设计的）
 
    - 自定义表单使用LGPL协议开源的 [FormMaking](http://form.xiaoyaoji.cn/pricing/#/zh-CN/)，若使用的FormMaking安装包（及通过npm引入）的方式，不需要购买授权，但若有使用FormMaking的源代码，需要到官方购买授权
 
@@ -71,6 +73,18 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代�
 文档地址：[https://zjm16.gitee.io/zjmzxfzhl-doc](https://zjm16.gitee.io/zjmzxfzhl-doc)
 
 演示环境：[http://118.190.100.3:8080/zjmzxfzhl](http://118.190.100.3:8080/zjmzxfzhl)
+
+测试用户（默认密码都是1）：
+
+`admin`用户，拥有所有权限，测试通用功能、工作流程连贯性等，可以使用`admin`用户，例如执行工程内的`complex-嵌套并行网关子流程`可以使用`admin`用户
+
+`zjmzxfzhl`普通员工角色，可以发起请假流程
+
+`zjm`经理角色，可以审批员工的请假流程
+
+`zxf`老板角色，可以审批员工额请假流程
+
+请假流程详见`zjmzxfzhl/src/main/resources/processes_test/leave.bpmn20.xml`或者`zjmzxfzhl/src/main/resources/processes_test/leaveShowBusinessKey.bpmn20.xml`
 
 ## 技术交流
 QQ群 : 913659692
