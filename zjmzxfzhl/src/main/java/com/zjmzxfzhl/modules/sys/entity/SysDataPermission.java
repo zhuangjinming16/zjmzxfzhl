@@ -38,6 +38,12 @@ public class SysDataPermission extends BaseEntity {
 	private String dataPermissionName;
 
 	/**
+	 * 方法Id
+	 */
+	@LengthForUtf8(max = 100)
+	private String methodId;
+
+	/**
 	 * 实体类型
 	 */
 	@LengthForUtf8(max = 1)
