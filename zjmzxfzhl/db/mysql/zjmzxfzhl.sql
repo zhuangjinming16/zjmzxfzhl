@@ -2316,8 +2316,8 @@ INSERT INTO `t_sys_code_info` VALUES ('trueOrFalse-1', 'trueOrFalse', 'true', '�
 INSERT INTO `t_sys_code_info` VALUES ('userSex-1', 'userSex', '1', '男', '', '1', '', '1', null, null, null, null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('userSex-2', 'userSex', '2', '女', '', '2', '', '1', null, null, null, null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('userSex-3', 'userSex', '3', '未知', '', '3', '', '1', null, null, null, null, null, null);
-INSERT INTO `t_sys_code_info` VALUES ('userStatus-1', 'userStatus', '1', '在职', '', '1', '', '1', null, null, null, null, null, null);
-INSERT INTO `t_sys_code_info` VALUES ('userStatus-2', 'userStatus', '2', '离职', '', '2', '', '1', null, null, null, null, null, null);
+INSERT INTO `t_sys_code_info` VALUES ('userStatus-1', 'userStatus', '1', '正常', '', '1', '', '1', null, null, null, null, null, null);
+INSERT INTO `t_sys_code_info` VALUES ('userStatus-2', 'userStatus', '2', '锁定', '', '2', '', '1', null, null, null, null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('yesOrNo-0', 'yesOrNo', '0', '否', '', '2', '', '1', 'admin', '2020-01-09', '2020-01-09 23:08:54', null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('yesOrNo-1', 'yesOrNo', '1', '是', '', '1', '', '1', null, null, null, 'admin', '2020-01-09', '2020-01-09 23:08:35');
 
@@ -2352,6 +2352,7 @@ INSERT INTO `t_sys_code_type` VALUES ('suspended', '状态', '9', '', 'admin', '
 INSERT INTO `t_sys_code_type` VALUES ('trueOrFalse', '是否', '8', '', 'admin', '2020-01-06', '2020-01-06 20:28:43', 'admin', '2020-01-06', '2020-01-06 20:31:31');
 INSERT INTO `t_sys_code_type` VALUES ('userSex', '用户性别', '2', '', null, null, null, 'admin', '2019-08-21', '2019-08-21 23:27:09');
 INSERT INTO `t_sys_code_type` VALUES ('yesOrNo', '是否', '1', null, null, null, null, 'admin', '2019-09-08', '2019-09-08 14:34:34');
+INSERT INTO `t_sys_code_type` VALUES ('userStatus', '用户状态', '11', null, null, null, null, 'admin', '2019-09-08', '2019-09-08 14:34:34');
 
 -- ----------------------------
 -- Table structure for t_sys_config
