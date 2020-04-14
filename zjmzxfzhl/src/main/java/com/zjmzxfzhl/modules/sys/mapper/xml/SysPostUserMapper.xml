@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysPostUserMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysPostUser">
+		select
+			a.POST_USER_ID as postUserId,
+			a.POST_ID as postId,
+			a.USER_ID as userId,
+			a.CREATE_BY as createBy,
+			a.CREATE_DATE as createDate,
+			a.CREATE_TIME as createTime,
+			a.UPDATE_BY as updateBy,
+			a.UPDATE_DATE as updateDate,
+			a.UPDATE_TIME as updateTime
+
+		from T_SYS_POST_USER a 
+		where 1=1 
+		order by a.POST_USER_ID
+	</select>
+</mapper>
