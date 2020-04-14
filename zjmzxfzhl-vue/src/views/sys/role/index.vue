@@ -392,7 +392,6 @@
                 }
             },
             selectUserFinished(selectData) {
-                console.log(selectData)
                 if (!selectData || selectData.length == 0) {
                     Message.error('请先选择用户')
                     return
