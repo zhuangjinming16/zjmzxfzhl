@@ -18,17 +18,17 @@ public class FlowableIdmConfig implements EngineConfigurationConfigurer<SpringId
 
 	@Override
 	public void configure(SpringIdmEngineConfiguration configuration) {
-		configuration.setGroupEntityManager(aiaGroupEntityManager(configuration));
-		configuration.setUserEntityManager(aiaUserEntityManager(configuration));
+		configuration.setGroupEntityManager(customGroupEntityManager(configuration));
+		configuration.setUserEntityManager(customUserEntityManager(configuration));
 	}
 
 	@Bean
-	public CustomGroupEntityManager aiaGroupEntityManager(IdmEngineConfiguration configuration) {
+	public CustomGroupEntityManager customGroupEntityManager(IdmEngineConfiguration configuration) {
 		return new CustomGroupEntityManager(configuration, configuration.getGroupDataManager());
 	}
 
 	@Bean
-	public CustomUserEntityManager aiaUserEntityManager(IdmEngineConfiguration configuration) {
+	public CustomUserEntityManager customUserEntityManager(IdmEngineConfiguration configuration) {
 		return new CustomUserEntityManager(configuration, configuration.getUserDataManager());
 	}
 }
