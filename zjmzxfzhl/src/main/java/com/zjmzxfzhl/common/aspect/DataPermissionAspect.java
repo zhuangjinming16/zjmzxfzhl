@@ -94,7 +94,8 @@ public class DataPermissionAspect {
 			String methodId = dataPermission.methodId();
 			String[] tableNames = dataPermission.tableNames();
 			String[] aliasNames = dataPermission.aliasNames();
-			Class<AbstractDataPermissionProvider>[] providers = (Class<AbstractDataPermissionProvider>[]) dataPermission.providers();
+			Class<AbstractDataPermissionProvider>[] providers = (Class<AbstractDataPermissionProvider>[]) dataPermission
+					.providers();
 			String[] providerParams = dataPermission.providerParams();
 			int index = dataPermission.index();
 			if (params.length == 1) {
@@ -135,28 +136,33 @@ public class DataPermissionAspect {
 		return joinPoint.proceed();
 	}
 
-	private void resolveTableNames(String methodId, String[] tableNames, String[] aliasNames, String userId, Object[] roleIdsArr,
-			List<FilterGroup> groups) {
+	private void resolveTableNames(String methodId, String[] tableNames, String[] aliasNames, String userId,
+			Object[] roleIdsArr, List<FilterGroup> groups) {
 		if (tableNames.length > 0) {
 			Map<String, String> aliasNamesMap = new HashMap<>(16);
 			for (int i = 0; i < tableNames.length; i++) {
 				aliasNamesMap.put(tableNames[i], aliasNames[i]);
 			}
 			QueryWrapper<SysDataPermission> queryWrapperByTableName = new QueryWrapper<>();
-			queryWrapperByTableName.in("TABLE_NAME", (Object[]) tableNames).eq("SOURCE_STRATEGY", SourceStrategy.TEXT.getKey());
-			queryWrapperByTableName.and(wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr)).or()
-					.nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
+			queryWrapperByTableName.in("TABLE_NAME", (Object[]) tableNames).eq("SOURCE_STRATEGY",
+					SourceStrategy.TEXT.getKey());
+			queryWrapperByTableName.and(
+					wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr))
+							.or().nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
 			if (methodId.length() == 0) {
 				queryWrapperByTableName.and(wrapper -> wrapper.isNull("METHOD_ID").or().eq("METHOD_ID", ""));
 			} else {
 				queryWrapperByTableName.eq("METHOD_ID", methodId);
 			}
 			queryWrapperByTableName.orderByAsc("TABLE_NAME");
-			List<SysDataPermission> sysDataPermissionsByTableName = this.sysDataPermissionService.list(queryWrapperByTableName);
+			List<SysDataPermission> sysDataPermissionsByTableName = this.sysDataPermissionService
+					.list(queryWrapperByTableName);
 			Map<String, List<SysDataPermission>> tableNameColumnNameMap = new LinkedHashMap<>();
 			for (SysDataPermission sysDataPermission : sysDataPermissionsByTableName) {
-				String key = sysDataPermission.getTableName().toUpperCase() + "-" + sysDataPermission.getColumnName().toUpperCase();
-				List<SysDataPermission> tableNameColumnNameList = tableNameColumnNameMap.computeIfAbsent(key, k -> new ArrayList<>());
+				String key = sysDataPermission.getTableName().toUpperCase() + "-"
+						+ sysDataPermission.getColumnName().toUpperCase();
+				List<SysDataPermission> tableNameColumnNameList = tableNameColumnNameMap.computeIfAbsent(key,
+						k -> new ArrayList<>());
 				tableNameColumnNameList.add(sysDataPermission);
 			}
 
@@ -166,20 +172,20 @@ public class DataPermissionAspect {
 					SysDataPermission sysDataPermission = tableNameColumnList.get(0);
 					FilterGroup group = new FilterGroup();
 					FilterOperate filterOperate = makeFilterOperate(sysDataPermission.getOperate());
-					String realValue = makeRealSqlValue(filterOperate, sysDataPermission.getClassName(), sysDataPermission.getColumnName(),
-							sysDataPermission.getValue());
-					FilterRule rule = new FilterRule(aliasNamesMap.get(sysDataPermission.getTableName()), sysDataPermission.getColumnName(),
-							filterOperate.getValue(), realValue);
+					String realValue = makeRealSqlValue(filterOperate, sysDataPermission.getClassName(),
+							sysDataPermission.getColumnName(), sysDataPermission.getValue());
+					FilterRule rule = new FilterRule(aliasNamesMap.get(sysDataPermission.getTableName()),
+							sysDataPermission.getColumnName(), filterOperate.getValue(), realValue);
 					group.andRule(rule);
 					groups.add(group);
 				} else {
 					FilterGroup group = new FilterGroup();
 					for (SysDataPermission sysDataPermission : tableNameColumnList) {
 						FilterOperate filterOperate = makeFilterOperate(sysDataPermission.getOperate());
-						String realValue = makeRealSqlValue(filterOperate, sysDataPermission.getClassName(), sysDataPermission.getColumnName(),
-								sysDataPermission.getValue());
-						FilterRule rule = new FilterRule(aliasNamesMap.get(sysDataPermission.getTableName()), sysDataPermission.getColumnName(),
-								filterOperate.getValue(), realValue);
+						String realValue = makeRealSqlValue(filterOperate, sysDataPermission.getClassName(),
+								sysDataPermission.getColumnName(), sysDataPermission.getValue());
+						FilterRule rule = new FilterRule(aliasNamesMap.get(sysDataPermission.getTableName()),
+								sysDataPermission.getColumnName(), filterOperate.getValue(), realValue);
 						FilterGroup innerGroup = new FilterGroup(rule);
 						group.orGroup(innerGroup);
 					}
@@ -190,30 +196,58 @@ public class DataPermissionAspect {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resolveProviders(SessionObject sessionObject, String methodId, Class<AbstractDataPermissionProvider>[] providers,
-			String[] providerParams, String userId, Object[] roleIdsArr, List<FilterGroup> groups) throws ClassNotFoundException {
+	private void resolveProviders(SessionObject sessionObject, String methodId,
+			Class<AbstractDataPermissionProvider>[] providers, String[] providerParams, String userId,
+			Object[] roleIdsArr, List<FilterGroup> groups) throws ClassNotFoundException {
+		// 【1】处理注解配置
 		Map<Class<AbstractDataPermissionProvider>, String> providerMap = new HashMap<>(16);
 		for (int i = 0; i < providers.length; i++) {
 			Class<AbstractDataPermissionProvider> providerClass = providers[i];
 			providerMap.put(providerClass, providerParams[i]);
 		}
 
-		QueryWrapper<SysDataPermission> queryWrapperByProvider = new QueryWrapper<>();
-		queryWrapperByProvider.eq("SOURCE_STRATEGY", SourceStrategy.SYSTEM.getKey());
-		queryWrapperByProvider.and(wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr)).or()
-				.nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
-		if (methodId.length() == 0) {
-			queryWrapperByProvider.and(wrapper -> wrapper.isNull("METHOD_ID").or().eq("METHOD_ID", ""));
-		} else {
-			queryWrapperByProvider.eq("METHOD_ID", methodId);
-		}
-		List<SysDataPermission> sysDataPermissionsByProvider = this.sysDataPermissionService.list(queryWrapperByProvider);
-		for (SysDataPermission sysDataPermission : sysDataPermissionsByProvider) {
+		// 【2】处理全局配置(methodId为NULL或空字符串)
+		QueryWrapper<SysDataPermission> qwByProviderAndMethodIdIsNullOrEmpty = new QueryWrapper<>();
+		// 查询全局配置(methodId为NULL或空字符串)的提供器配置，
+		// 若注解有设定提供器且数据库也有全局配置，则以数据库配置覆盖之，
+		// 若注解未配置则忽略数据库配置（即注解要有配置，全局配置才生效）
+		qwByProviderAndMethodIdIsNullOrEmpty.eq("SOURCE_STRATEGY", SourceStrategy.SYSTEM.getKey());
+		qwByProviderAndMethodIdIsNullOrEmpty
+				.and(wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr))
+						.or().nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
+		qwByProviderAndMethodIdIsNullOrEmpty.and(wrapper -> wrapper.isNull("METHOD_ID").or().eq("METHOD_ID", ""));
+		qwByProviderAndMethodIdIsNullOrEmpty.orderByAsc("UPDATE_TIME");
+		List<SysDataPermission> sysDataPermissionsByProviderAndMethodIdIsNullOrEmpty = this.sysDataPermissionService
+				.list(qwByProviderAndMethodIdIsNullOrEmpty);
+		for (SysDataPermission sysDataPermission : sysDataPermissionsByProviderAndMethodIdIsNullOrEmpty) {
 			Class<AbstractDataPermissionProvider> providerClass = (Class<AbstractDataPermissionProvider>) Class
 					.forName(sysDataPermission.getSourceProvider());
-			// 注入数据库设置的参数值，以数据库参数为准
-			providerMap.put(providerClass, sysDataPermission.getSourceProviderParams());
+			// 若注解有配置，注入数据库设置的参数值，以数据库参数为准
+			if (providerMap.containsKey(providerClass)) {
+				providerMap.put(providerClass, sysDataPermission.getSourceProviderParams());
+			}
 		}
+
+		// 【2】处理methodId个性配置
+		// 注解配置的methodId不为空，以methodId的配置为准
+		if (methodId.length() > 0) {
+			QueryWrapper<SysDataPermission> qwByProviderAndMethodIdIsNotNull = new QueryWrapper<>();
+			qwByProviderAndMethodIdIsNotNull.eq("SOURCE_STRATEGY", SourceStrategy.SYSTEM.getKey());
+			qwByProviderAndMethodIdIsNotNull.and(
+					wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr))
+							.or().nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
+			qwByProviderAndMethodIdIsNotNull.eq("METHOD_ID", methodId);
+			qwByProviderAndMethodIdIsNullOrEmpty.orderByAsc("UPDATE_TIME");
+			List<SysDataPermission> sysDataPermissionsByProviderAndMethodIdIsNotNull = this.sysDataPermissionService
+					.list(qwByProviderAndMethodIdIsNotNull);
+			for (SysDataPermission sysDataPermission : sysDataPermissionsByProviderAndMethodIdIsNotNull) {
+				Class<AbstractDataPermissionProvider> providerClass = (Class<AbstractDataPermissionProvider>) Class
+						.forName(sysDataPermission.getSourceProvider());
+				// 直接注入数据库设置的参数值，以methodId配置的数据库参数为准
+				providerMap.put(providerClass, sysDataPermission.getSourceProviderParams());
+			}
+		}
+
 		for (Entry<Class<AbstractDataPermissionProvider>, String> entry : providerMap.entrySet()) {
 			AbstractDataPermissionProvider provider = SpringContextUtils.getBean(entry.getKey());
 			// 注入参数值，若有特殊参数需要特殊处理，可以在实现类中重写该方法

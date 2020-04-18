@@ -16,7 +16,6 @@ import com.zjmzxfzhl.common.Constants;
 import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
 import com.zjmzxfzhl.common.base.BaseService;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.common.permission.provider.NullDataPermissionProvider;
 import com.zjmzxfzhl.common.permission.provider.OrgDataPermissionProvider;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.PasswordUtil;
@@ -53,8 +52,9 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
 	@Autowired
 	private RedisUtil redisUtil;
 
-	@DataPermission(tableNames = { "T_SYS_USER", "T_SYS_ORG" }, aliasNames = { "a", "o" }, providers = { OrgDataPermissionProvider.class,
-			NullDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}", "" })
+	@DataPermission(methodId = "sysUserList", tableNames = { "T_SYS_USER", "T_SYS_ORG" }, aliasNames = { "a",
+			"o" }, providers = {
+					OrgDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}" })
 	public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
 		return page.setRecords(baseMapper.list(page, sysUser));
 	}
