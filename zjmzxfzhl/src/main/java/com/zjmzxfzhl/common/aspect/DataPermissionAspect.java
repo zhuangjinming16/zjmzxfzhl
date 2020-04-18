@@ -112,13 +112,20 @@ public class DataPermissionAspect {
 			String fieldName = dataPermission.fieldName();
 
 			String userId = sysUser.getUserId();
-			List<String> roleIdsList = new ArrayList<>();
-			roles.forEach(r -> roleIdsList.add(r.getRoleId()));
-			Object[] roleIdsArr = roleIdsList.toArray();
+			String roleId = role.getRoleId();
+
+			/// 考虑到用户有多角色情况下说明开始
+			/// 考虑到用户有多角色情况下，假设一个查询菜单功能F，A角色有菜单权限，但B角色没有菜单权限，
+			/// 但B角色的数据权限配置的比较大，若合并2个角色的数据权限，可能会出现越权情况，所以不合并角色的数据权限，只查询当前登录用户所选角色的数据权限
+			/// List<String> roleIdsList = new ArrayList<>();
+			/// roles.forEach(r -> roleIdsList.add(r.getRoleId()));
+			/// Object[] roleIdsArr = roleIdsList.toArray();
+			/// 考虑到用户有多角色情况下说明结束
+
 			List<FilterGroup> groups = new ArrayList<>();
 
-			resolveProviders(sessionObject, methodId, providers, providerParams, userId, roleIdsArr, groups);
-			resolveTableNames(methodId, tableNames, aliasNames, userId, roleIdsArr, groups);
+			resolveProviders(sessionObject, methodId, providers, providerParams, userId, roleId, groups);
+			resolveTableNames(methodId, tableNames, aliasNames, userId, roleId, groups);
 
 			FilterGroup parentGroup = new FilterGroup();
 			parentGroup.andGroups(groups);
@@ -137,7 +144,7 @@ public class DataPermissionAspect {
 	}
 
 	private void resolveTableNames(String methodId, String[] tableNames, String[] aliasNames, String userId,
-			Object[] roleIdsArr, List<FilterGroup> groups) {
+			String roleId, List<FilterGroup> groups) {
 		if (tableNames.length > 0) {
 			Map<String, String> aliasNamesMap = new HashMap<>(16);
 			for (int i = 0; i < tableNames.length; i++) {
@@ -146,8 +153,8 @@ public class DataPermissionAspect {
 			QueryWrapper<SysDataPermission> queryWrapperByTableName = new QueryWrapper<>();
 			queryWrapperByTableName.in("TABLE_NAME", (Object[]) tableNames).eq("SOURCE_STRATEGY",
 					SourceStrategy.TEXT.getKey());
-			queryWrapperByTableName.and(
-					wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr))
+			queryWrapperByTableName
+					.and(wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").eq("ENTITY_ID", roleId))
 							.or().nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
 			if (methodId.length() == 0) {
 				queryWrapperByTableName.and(wrapper -> wrapper.isNull("METHOD_ID").or().eq("METHOD_ID", ""));
@@ -197,8 +204,8 @@ public class DataPermissionAspect {
 
 	@SuppressWarnings("unchecked")
 	private void resolveProviders(SessionObject sessionObject, String methodId,
-			Class<AbstractDataPermissionProvider>[] providers, String[] providerParams, String userId,
-			Object[] roleIdsArr, List<FilterGroup> groups) throws ClassNotFoundException {
+			Class<AbstractDataPermissionProvider>[] providers, String[] providerParams, String userId, String roleId,
+			List<FilterGroup> groups) throws ClassNotFoundException {
 		// 【1】处理注解配置
 		Map<Class<AbstractDataPermissionProvider>, String> providerMap = new HashMap<>(16);
 		for (int i = 0; i < providers.length; i++) {
@@ -213,8 +220,8 @@ public class DataPermissionAspect {
 		// 若注解未配置则忽略数据库配置（即注解要有配置，全局配置才生效）
 		qwByProviderAndMethodIdIsNullOrEmpty.eq("SOURCE_STRATEGY", SourceStrategy.SYSTEM.getKey());
 		qwByProviderAndMethodIdIsNullOrEmpty
-				.and(wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr))
-						.or().nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
+				.and(wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").eq("ENTITY_ID", roleId)).or()
+						.nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
 		qwByProviderAndMethodIdIsNullOrEmpty.and(wrapper -> wrapper.isNull("METHOD_ID").or().eq("METHOD_ID", ""));
 		qwByProviderAndMethodIdIsNullOrEmpty.orderByAsc("UPDATE_TIME");
 		List<SysDataPermission> sysDataPermissionsByProviderAndMethodIdIsNullOrEmpty = this.sysDataPermissionService
@@ -233,8 +240,8 @@ public class DataPermissionAspect {
 		if (methodId.length() > 0) {
 			QueryWrapper<SysDataPermission> qwByProviderAndMethodIdIsNotNull = new QueryWrapper<>();
 			qwByProviderAndMethodIdIsNotNull.eq("SOURCE_STRATEGY", SourceStrategy.SYSTEM.getKey());
-			qwByProviderAndMethodIdIsNotNull.and(
-					wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").in("ENTITY_ID", roleIdsArr))
+			qwByProviderAndMethodIdIsNotNull
+					.and(wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq("ENTITY_TYPE", "1").eq("ENTITY_ID", roleId))
 							.or().nested(wrapper3 -> wrapper3.eq("ENTITY_TYPE", "2").eq("ENTITY_ID", userId)));
 			qwByProviderAndMethodIdIsNotNull.eq("METHOD_ID", methodId);
 			qwByProviderAndMethodIdIsNullOrEmpty.orderByAsc("UPDATE_TIME");

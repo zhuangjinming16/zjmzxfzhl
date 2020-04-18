@@ -122,7 +122,7 @@ public class SysUserController extends BaseController {
 	@SysLogAuto(value = "获取用户信息")
 	@GetMapping(value = "/getUserInfo")
 	public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
-		SysUser sysUser = ShiroUtils.getSysUser();
+		SysUser sysUser = sysUserService.getById(ShiroUtils.getUserId());
 		SessionObject sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
 		sessionObject.setLoginTime(DateUtil.getNow());
 		sessionObject.setIpAddr(IpUtils.getIpAddr(request));
