@@ -52,4 +52,44 @@
 			<![CDATA[	AND ${entity.authFilterSql}	]]>
 		</if>
 	</select>
+	
+	<!-- flowable查询用户角色使用 -->
+	<select id="getPostsByFlowableGroupQueryImpl" resultType="com.zjmzxfzhl.modules.sys.entity.SysPost">
+		select r.POST_ID   as postId,
+		       r.POST_NAME as postName,
+		       r.SORT_NO   as sortNo,
+		       r.REMARK    as remark
+		  from t_sys_post r
+		<where>
+	      <if test="id != null">
+	        r.post_id = #{id}
+	      </if>
+	      <if test="ids != null &amp;&amp; ids.size() &gt; 0">
+	        and r.post_id IN
+	        <foreach item="id" index="index" collection="ids" 
+	                 open="(" separator="," close=")">
+	          #{id}
+	        </foreach>
+	      </if>
+	      <if test="name != null">
+	        and r.post_name = #{name}
+	      </if>
+	      <if test="nameLike != null">
+	        and r.post_name like #{nameLike}${wildcardEscapeClause}
+	      </if>
+	      <if test="nameLikeIgnoreCase != null">
+	        and lower(r.post_name) like #{nameLikeIgnoreCase}${wildcardEscapeClause}
+	      </if>
+	      <!-- <if test="type != null">
+	        and RES.TYPE_ = #{type}
+	      </if> -->
+	      <if test="userId != null">
+	        and exists(select 1 from T_SYS_POST_USER m where m.post_id = r.post_id and M.USER_ID = #{userId})
+	      </if>
+	      <if test="userIds != null &amp;&amp; userIds.size() &gt; 0">
+	        and exists(select 1 from T_SYS_POST_USER m where m.post_id = r.post_id and M.USER_ID = in  
+	            <foreach item="userId" index="index" collection="userIds" open="(" separator="," close=")">#{userId}</foreach>)
+	      </if>
+	    </where>
+	</select>
 </mapper>

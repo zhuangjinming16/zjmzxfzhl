@@ -3,6 +3,7 @@ package com.zjmzxfzhl.modules.sys.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.flowable.idm.engine.impl.GroupQueryImpl;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -33,4 +34,12 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
 	 * @return
 	 */
 	public List<SysUser> getPostUser(IPage<SysUser> page, @Param("entity") SysPostUser entity);
+
+	/**
+	 * 根据Flowable GroupQueryImpl查询岗位列表
+	 * 
+	 * @param query
+	 * @return
+	 */
+	public List<SysPost> getPostsByFlowableGroupQueryImpl(GroupQueryImpl query);
 }

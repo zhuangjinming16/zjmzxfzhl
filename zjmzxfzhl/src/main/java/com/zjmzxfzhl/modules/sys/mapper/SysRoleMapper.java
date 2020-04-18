@@ -3,7 +3,6 @@ package com.zjmzxfzhl.modules.sys.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.flowable.idm.engine.impl.GroupQueryImpl;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -42,12 +41,4 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 	 * @return
 	 */
 	public List<SysUser> getRoleUser(IPage<SysUser> page, @Param("entity") SysRoleUser entity);
-
-	/**
-	 * 根据Flowable GroupQueryImpl查询角色列表
-	 * 
-	 * @param query
-	 * @return
-	 */
-	public List<SysRole> getRolesByFlowableGroupQueryImpl(GroupQueryImpl query);
 }
