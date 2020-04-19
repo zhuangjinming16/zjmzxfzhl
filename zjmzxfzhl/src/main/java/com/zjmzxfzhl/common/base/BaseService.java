@@ -1,14 +1,10 @@
 package com.zjmzxfzhl.common.base;
 
-import org.springframework.stereotype.Service;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author 庄金明
  * @date 2020年3月24日
  */
-@Service
-public class BaseService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> {
+public interface BaseService<T> extends IService<T> {
 }

@@ -28,51 +28,50 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/actuator")
 public class MonitorController {
 
-	@Autowired
-	private RedisService redisService;
+    @Autowired
+    private RedisService redisService;
 
-	@GetMapping("/redis/info")
-	public Result getRedisInfo() throws Exception {
-		List<RedisInfo> infoList = this.redisService.getInfo();
-		log.info(infoList.toString());
-		return Result.ok(infoList);
-	}
+    @GetMapping("/redis/info")
+    public Result getRedisInfo() throws Exception {
+        List<RedisInfo> infoList = this.redisService.getInfo();
+        return Result.ok(infoList);
+    }
 
-	@GetMapping("/redis/keysSize")
-	public Map<String, Object> getKeysSize() throws Exception {
-		return redisService.getKeysSize();
-	}
+    @GetMapping("/redis/keysSize")
+    public Map<String, Object> getKeysSize() throws Exception {
+        return redisService.getKeysSize();
+    }
 
-	@GetMapping("/redis/memoryInfo")
-	public Map<String, Object> getMemoryInfo() throws Exception {
-		return redisService.getMemoryInfo();
-	}
+    @GetMapping("/redis/memoryInfo")
+    public Map<String, Object> getMemoryInfo() throws Exception {
+        return redisService.getMemoryInfo();
+    }
 
-	@GetMapping("/queryDiskInfo")
-	public Result queryDiskInfo() {
-		try {
-			// 当前文件系统类
-			FileSystemView fsv = FileSystemView.getFileSystemView();
-			// 列出所有windows 磁盘
-			File[] fs = File.listRoots();
-			log.info("查询磁盘信息:" + fs.length + "个");
-			List<Map<String, Object>> data = new ArrayList<>();
-			for (int i = 0; i < fs.length; i++) {
-				if (fs[i].getTotalSpace() == 0) {
-					continue;
-				}
-				Map<String, Object> map = new LinkedHashMap<>();
-				map.put("name", fsv.getSystemDisplayName(fs[i]));
-				map.put("totalSpace", fs[i].getTotalSpace());
-				map.put("freeSpace", fs[i].getFreeSpace());
-				map.put("used", (fs[i].getTotalSpace() - fs[i].getFreeSpace()) * 100 / fs[i].getTotalSpace() + "%");
-				data.add(map);
-				log.info(map.toString());
-			}
-			return Result.ok(data);
-		} catch (Exception e) {
-			log.error("查询失败：", e);
-			return Result.error("查询失败");
-		}
-	}
+    @GetMapping("/queryDiskInfo")
+    public Result queryDiskInfo() {
+        try {
+            // 当前文件系统类
+            FileSystemView fsv = FileSystemView.getFileSystemView();
+            // 列出所有windows 磁盘
+            File[] fs = File.listRoots();
+            log.info("查询磁盘信息:" + fs.length + "个");
+            List<Map<String, Object>> data = new ArrayList<>();
+            for (int i = 0; i < fs.length; i++) {
+                if (fs[i].getTotalSpace() == 0) {
+                    continue;
+                }
+                Map<String, Object> map = new LinkedHashMap<>();
+                map.put("name", fsv.getSystemDisplayName(fs[i]));
+                map.put("totalSpace", fs[i].getTotalSpace());
+                map.put("freeSpace", fs[i].getFreeSpace());
+                map.put("used", (fs[i].getTotalSpace() - fs[i].getFreeSpace()) * 100 / fs[i].getTotalSpace() + "%");
+                data.add(map);
+                log.info(map.toString());
+            }
+            return Result.ok(data);
+        } catch (Exception e) {
+            log.error("查询失败：", e);
+            return Result.error("查询失败");
+        }
+    }
 }
