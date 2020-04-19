@@ -1,9 +1,9 @@
-package com.zjmzxfzhl.modules.{_sys}.service;
+package com.zjmzxfzhl.modules.{_sys}.service.impl;
 
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.base.BaseService;
+import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType};
 import com.zjmzxfzhl.modules.{_sys}.mapper.{_Sys}{_CodeType}Mapper;
 import com.zjmzxfzhl.modules.{_sys}.service.{_Sys}{_CodeType}Service;
