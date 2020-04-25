@@ -52,7 +52,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="授权id" prop="identityId">
-                    <el-input v-model="temp.identityId"/>
+                    <el-input v-model="temp.identityId" :placeholder="placeholderIdentityId"/>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -108,6 +108,17 @@
             title: {
                 get() {
                     return '流程授权【' + this.processDefinitionName + '】'
+                }
+            },
+            placeholderIdentityId: {
+                get() {
+                    if(this.temp.identityType == '1'){
+                        return  '请输入用户id'
+                    }else if(this.temp.identityType == '2'){
+                        return  '请输入岗位id'
+                    }else{
+                        return  '请先选择授权类型'
+                    }
                 }
             }
         },
