@@ -99,7 +99,7 @@ public class QueryWrapperGenerator {
 				}
 				String[] rule = orderColumnRule.split("\\|");
 				String orderColumn = ColumnUtils.camelToUnderline(rule[0]);
-				orderColumn = SqlFilter.sqlInject(orderColumn);
+				SqlFilter.sqlInject(orderColumn);
 				if (rule.length == 1) {
 					queryWrapper.orderByAsc(orderColumn);
 				} else if (rule.length == 2) {

@@ -1,45 +1,38 @@
 package com.zjmzxfzhl.common.xss;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.zjmzxfzhl.common.exception.SysException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * SQL过滤
  * 
  * @author 庄金明
  */
+@Slf4j
 public class SqlFilter {
+    final static String[] SQL_FILTER_STRINGS = { "'", "and ", "exec ", "insert ", "select ", "delete ", "update ",
+            "drop ", "count ", "chr ", "mid ", "master ", "truncate ", "char ", "declare ", ";", "or ", "+", "," };
 
-	/**
-	 * SQL注入过滤
-	 * 
-	 * @param str
-	 *            待验证的字符串
-	 */
-	public static String sqlInject(String str) {
-		if (StringUtils.isBlank(str)) {
-			return null;
-		}
-		// 去掉'|"|;|\字符
-		str = StringUtils.replace(str, "'", "");
-		str = StringUtils.replace(str, "\"", "");
-		str = StringUtils.replace(str, ";", "");
-		str = StringUtils.replace(str, "\\", "");
-
-		// 转换成小写
-		str = str.toLowerCase();
-
-		// 非法字符
-		String[] keywords = { "master", "truncate", "insert", "select", "delete", "update", "declare", "alter", "drop" };
-
-		// 判断是否包含非法字符
-		for (String keyword : keywords) {
-			if (str.indexOf(keyword) != -1) {
-				throw new SysException("SQL包含非法字符，请联系管理员");
-			}
-		}
-
-		return str;
-	}
+    /**
+     * SQL注入过滤
+     * 
+     * @param str
+     *            待验证的字符串
+     */
+    public static void sqlInject(String str) {
+        if (str == null || str.length() == 0) {
+            return;
+        }
+        // 转换成小写
+        String strLower = str.toLowerCase();
+        // 判断是否包含非法字符
+        for (String keyword : SQL_FILTER_STRINGS) {
+            if (strLower.indexOf(keyword) != -1) {
+                log.error("存在SQL注入关键字--->{}", keyword);
+                log.error("值存在SQL注入风险!--->{}", str);
+                throw new SysException("SQL包含非法字符，请联系管理员");
+            }
+        }
+    }
 }

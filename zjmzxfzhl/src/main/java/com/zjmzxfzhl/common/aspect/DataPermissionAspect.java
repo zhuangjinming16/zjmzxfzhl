@@ -268,7 +268,7 @@ public class DataPermissionAspect {
 
 	private String makeRealSqlValue(FilterOperate filterOperate, String className, String columnName, String value) {
 		// 防止从数据库配置中注入非法sql
-		value = SqlFilter.sqlInject(value);
+		SqlFilter.sqlInject(value);
 		Class<?> clazz = null;
 		Class<?> fieldClazz = null;
 		try {

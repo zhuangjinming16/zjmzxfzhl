@@ -82,7 +82,7 @@ public abstract class BaseFlowableController {
 					}
 					String[] rule = orderColumnRule.split("\\|");
 					String orderColumn = rule[0];
-					orderColumn = SqlFilter.sqlInject(orderColumn);
+					SqlFilter.sqlInject(orderColumn);
 					Order orderTmp = null;
 					if (rule.length == 2 && "DESC".equals(rule[1].toUpperCase())) {
 						orderTmp = new Order(orderColumn, Direction.DESC);

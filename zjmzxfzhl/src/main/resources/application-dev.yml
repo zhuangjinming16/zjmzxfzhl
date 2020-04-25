@@ -69,3 +69,7 @@ spring:
       #nodes: 168.168.168.101:26379,168.168.168.102:26379,168.168.168.103:26379
 debug: true 
 swagger-enable: true #生产可关闭设置成false
+#打印mybatis-plussql，生产应关闭
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
