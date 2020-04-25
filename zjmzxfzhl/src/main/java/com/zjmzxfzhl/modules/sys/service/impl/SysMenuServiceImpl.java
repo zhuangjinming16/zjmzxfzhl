@@ -5,19 +5,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.common.permission.FilterOperate;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.modules.sys.common.SysConstants;
+import com.zjmzxfzhl.modules.sys.entity.SysFunc;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
 import com.zjmzxfzhl.modules.sys.entity.vo.ElTree;
 import com.zjmzxfzhl.modules.sys.mapper.SysMenuMapper;
+import com.zjmzxfzhl.modules.sys.service.SysFuncService;
 import com.zjmzxfzhl.modules.sys.service.SysMenuService;
 
 /**
@@ -27,6 +28,10 @@ import com.zjmzxfzhl.modules.sys.service.SysMenuService;
  */
 @Service
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+
+    @Autowired
+    private SysFuncService sysFuncService;
+
     @Override
     public IPage<SysMenu> list(IPage<SysMenu> page, SysMenu sysMenu) {
         return page.setRecords(baseMapper.list(page, sysMenu));
@@ -99,20 +104,19 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
      */
     @Override
     public boolean delete(String id) {
-        QueryWrapper<SysMenu> queryWrapper = new QueryWrapper<>();
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "parentMenuId", FilterOperate.EQ, id);
-        int count = this.count(queryWrapper);
-        if (count > 0) {
+        int countChildren = this.count(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentMenuId, id));
+        if (countChildren > 0) {
             throw new SysException("请先删除叶子节点");
         }
         SysMenu sysMenu = this.getById(id);
         boolean result = this.removeById(id);
+        // 删除功能
+        sysFuncService.remove(new LambdaQueryWrapper<SysFunc>().eq(SysFunc::getMenuId, id));
         if (!CommonUtil.isEmptyStr(sysMenu.getParentMenuId())) {
-            QueryWrapper<SysMenu> queryWrapper2 = new QueryWrapper<>();
-            QueryWrapperGenerator.addEasyQuery(queryWrapper2, "parentMenuId", FilterOperate.EQ,
-                    sysMenu.getParentMenuId());
-            int count2 = this.count(queryWrapper2);
-            if (count2 == 0) {
+            // 若父菜单的下级菜单为空，则修改为是叶子节点
+            int countParentChildren = this
+                    .count(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentMenuId, sysMenu.getParentMenuId()));
+            if (countParentChildren == 0) {
                 SysMenu parentSysMenu = this.getById(sysMenu.getParentMenuId());
                 parentSysMenu.setIsLeaf("1");
                 this.updateById(parentSysMenu);
