@@ -8,7 +8,6 @@
 		select
 			a.POST_ID as postId,
 			a.POST_NAME as postName,
-			a.POST_STATUS as postStatus,
 			a.SORT_NO as sortNo,
 			a.REMARK as remark,
 			a.CREATE_BY as createBy,
@@ -20,11 +19,11 @@
 
 		from T_SYS_POST a 
 		where 1=1 
+		<if test="entity.postId != null and entity.postId !=''">
+			<![CDATA[	AND a.POST_ID = #{entity.postId}	]]>
+		</if>
 		<if test="entity.postName != null and entity.postName !=''">
 			<![CDATA[	AND a.POST_NAME = #{entity.postName}	]]>
-		</if>
-		<if test="entity.postStatus != null and entity.postStatus !=''">
-			<![CDATA[	AND a.POST_STATUS = #{entity.postStatus}	]]>
 		</if>
 		order by a.SORT_NO
 	</select>
