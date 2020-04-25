@@ -2,7 +2,7 @@
     <div class="app-container">
         <div class="filter-container">
             <el-input v-model="listQuery.zjmzxfzhlName" placeholder="名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.zjmzxfzhlCodeInfo" placeholder="代码信息" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
+            <el-select v-model="listQuery.zjmzxfzhlCodeInfo" placeholder="代码信息" style="width: 200px;" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
             <el-input v-model="listQuery.filterOperatorEq" placeholder="等于" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.filterOperatorNe" placeholder="不等于" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.filterOperatorLt" placeholder="小于" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
