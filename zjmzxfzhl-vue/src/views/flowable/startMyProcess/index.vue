@@ -13,28 +13,26 @@
         </div>
 
         <el-row>
-            <div v-for="row in records">
-                <el-col :span="12">
-                    <div class="filter-container" style="margin-right: 5px;">
-                        <el-card>
-                            <div slot="header" class="clearfix">
-                                <span>{{row.name}}-v{{row.version}}</span>
-                                <div style="float: right;">
-                                    <el-button type="primary" size="mini" @click="btnImage(row.id)">流程图</el-button>
-                                    <el-button type="primary" size="mini" @click="btnStartInstance(row)">发起流程
-                                    </el-button>
-                                </div>
+            <el-col :span="12" v-for="row in records">
+                <div class="filter-container" style="margin-right: 3px;margin-bottom: 3px;">
+                    <el-card>
+                        <div slot="header" class="clearfix">
+                            <span>{{row.name}}-v{{row.version}}</span>
+                            <div style="position: relative;text-align: right;">
+                                <el-button type="primary" size="mini" @click="btnImage(row.id)">流程图</el-button>
+                                <el-button type="primary" size="mini" @click="btnStartInstance(row)">发起流程
+                                </el-button>
                             </div>
-                            <div class="text item">
-                                {{row.description?row.description:'无描述'}}
-                            </div>
-                            <div class="text item">
-                                {{row.category?row.category:'无命名空间'}}
-                            </div>
-                        </el-card>
-                    </div>
-                </el-col>
-            </div>
+                        </div>
+                        <div class="text item">
+                            {{row.description?row.description:'无描述'}}
+                        </div>
+                        <div class="text item">
+                            {{row.category?row.category:'无命名空间'}}
+                        </div>
+                    </el-card>
+                </div>
+            </el-col>
         </el-row>
         <pagination v-show="total>0" :total="total" :current.sync="listQuery.current" :size.sync="listQuery.size"
                     @pagination="list"/>
