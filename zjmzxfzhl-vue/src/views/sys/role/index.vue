@@ -95,7 +95,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="角色授权" :visible.sync="dialogPermissionFormVisible">
+        <el-dialog :title="rolePermissionTitle" :visible.sync="dialogPermissionFormVisible">
             <div class="el-dialog-body-custom-height">
                 <el-tree
                         ref="permissionTree"
@@ -113,7 +113,7 @@
                 <el-button icon="el-icon-check" type="primary" @click="permissionData">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="分配用户" fullscreen :visible.sync="dialogRoleUserFormVisible" custom-class="el-dialog-custom-height">
+        <el-dialog :title="roleUserTitle" fullscreen :visible.sync="dialogRoleUserFormVisible" custom-class="el-dialog-custom-height">
             <div class="filter-container">
                 <el-input v-model="listQueryRoleUser.userId" placeholder="用户ID" style="width: 120px;"
                           class="filter-item" @keyup.enter.native="getRoleUser"/>
@@ -181,6 +181,18 @@
     export default {
         name: 'SysRole',
         components: {Pagination, SelectUser},
+        computed: {
+            rolePermissionTitle: {
+                get() {
+                    return '角色【'+ this.currRoleId +'】授权'
+                }
+            },
+            roleUserTitle: {
+                get() {
+                    return '角色【'+ this.currRoleId +'】分配用户'
+                }
+            }
+        },
         data() {
             return {
                 records: null,

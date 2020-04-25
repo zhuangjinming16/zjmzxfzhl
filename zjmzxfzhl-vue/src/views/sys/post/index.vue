@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
+            <el-input v-model="listQuery.postId" placeholder="岗位ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.postName" placeholder="岗位名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.postStatus" placeholder="状态" class="filter-item"><el-option v-for="(item, index) in dicts.postStatus" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
             	<i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -26,8 +26,8 @@
         >
             <el-table-column type="selection" align="center">
             </el-table-column>
+            <el-table-column label="岗位ID" prop="postId" align="center"><template slot-scope="scope"><span>{{ scope.row.postId }}</span></template></el-table-column>
             <el-table-column label="岗位名称" prop="postName" align="center"><template slot-scope="scope"><span>{{ scope.row.postName }}</span></template></el-table-column>
-            <el-table-column label="状态" prop="postStatus" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.postStatus,scope.row.postStatus)"></span></template></el-table-column>
             <el-table-column label="排序号" prop="sortNo" align="center"><template slot-scope="scope"><span>{{ scope.row.sortNo }}</span></template></el-table-column>
             <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
             <el-table-column label="操作" align="center">
@@ -51,7 +51,6 @@
             <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="110px">
                 <el-form-item label="岗位ID" prop="postId"><el-input v-model="temp.postId" :readonly="dialogStatus==='update'"/></el-form-item>
                 <el-form-item label="岗位名称" prop="postName"><el-input v-model="temp.postName"/></el-form-item>
-                <el-form-item label="状态" prop="postStatus"><el-select v-model="temp.postStatus" placeholder="状态"><el-option v-for="(item, index) in dicts.postStatus" :key="index" :label="item.content" :value="item.value"></el-option></el-select></el-form-item>
                 <el-form-item label="排序号" prop="sortNo"><el-input v-model="temp.sortNo"/></el-form-item>
                 <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark"/></el-form-item>
             </el-form>
@@ -61,7 +60,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="分配用户" fullscreen :visible.sync="dialogPostUserVisible" custom-class="el-dialog-custom-height">
+        <el-dialog :title="postUserTitle" fullscreen :visible.sync="dialogPostUserVisible" custom-class="el-dialog-custom-height">
             <div class="filter-container">
                 <el-input v-model="listQueryPostUser.userId" placeholder="用户ID" style="width: 120px;"
                           class="filter-item" @keyup.enter.native="getPostUser"/>
@@ -129,6 +128,13 @@
     export default {
         name: 'SysPost',
         components: {Pagination,SelectUser},
+        computed: {
+            postUserTitle: {
+                get() {
+                    return '岗位【'+ this.currPostId +'】分配用户'
+                }
+            }
+        },
         data() {
             return {
                 dicts: [],
@@ -138,15 +144,14 @@
                 listQuery: {
                     current: 1,
                     size: 10,
-                    postName: undefined,
-                    postStatus: undefined
+                    postId: undefined,
+                    postName: undefined
                 },
                 dialogFormVisible: false,
                 dialogStatus: '',
                 temp: {
                     postId: undefined,
                     postName: '',
-                    postStatus: '',
                     sortNo: '',
                     remark: ''
                 },
@@ -170,7 +175,7 @@
             }
         },
         beforeCreate(){
-            this.getDicts('postStatus').then(({data}) => {this.dicts = data})
+
         },
         created() {
             this.list()
@@ -191,8 +196,8 @@
                 this.listQuery = {
                     current: 1,
                     size: 10,
-                    postName: undefined,
-                    postStatus: undefined
+                    postId: undefined,
+                    postName: undefined
                 }
                 this.list()
             },
@@ -200,7 +205,6 @@
                 this.temp = {
                     postId: undefined,
                     postName: '',
-                    postStatus: '',
                     sortNo: '',
                     remark: ''
                 }
