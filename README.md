@@ -1,5 +1,5 @@
 # 项目介绍
-当前最新版本: 1.1.0（发布日期: 20200317）
+当前最新版本: 1.1.1（发布日期: 2020-04-25）
 ## 项目介绍
 zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代码生成器 的快速开发平台，采用前后端分离架构。
 ## 技术架构
@@ -70,7 +70,7 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代�
 8. 代码生成器，包含前端和后端
 
 ## 文档及演示环境
-文档地址：[https://zjm16.gitee.io/zjmzxfzhl-doc](https://zjm16.gitee.io/zjmzxfzhl-doc)
+文档地址：[https://zjm16.gitee.io/zjmzxfzhl-doc](https://zjm16.gitee.io/zjmzxfzhl-doc) (文档尚未更新到最新)
 
 演示环境：[http://118.190.100.3:8080/zjmzxfzhl](http://118.190.100.3:8080/zjmzxfzhl)
 
@@ -78,11 +78,11 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代�
 
 `admin`用户，拥有所有权限，测试通用功能、工作流程连贯性等，可以使用`admin`用户，例如执行工程内的`complex-嵌套并行网关子流程`可以使用`admin`用户
 
-`zjmzxfzhl`普通员工角色，可以发起请假流程
+`zjmzxfzhl`普通员工岗位，可以发起请假流程
 
-`zjm`经理角色，可以审批员工的请假流程
+`zjm`经理岗位，可以审批员工的请假流程
 
-`zxf`老板角色，可以审批员工的请假流程
+`zxf`老板岗位，可以审批员工的请假流程
 
 请假流程详见`zjmzxfzhl/src/main/resources/processes_test/leave.bpmn20.xml`或者`zjmzxfzhl/src/main/resources/processes_test/leaveShowBusinessKey.bpmn20.xml`
 
