@@ -45,7 +45,7 @@ zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代�
 
    流程设计约定：
 
-   - 发起者启动流程后若要自动完成第一个用户任务，则第一个userTask的id要定义为`__INITIATOR__`，若涉及流程表单，则可设置`__INITIATOR__`的任务表单formKey与流程表单相同
+   - 发起者启动流程后若要自动完成第一个用户任务，则第一个userTask的id要定义为`__initiator__`，若涉及流程表单，则可设置`__initiator__`的任务表单formKey与流程表单相同
 
    - 如果涉及并行网关，并行网关需成对出现，且发散节点要以 _begin 结尾，汇聚节点要以 _end 结尾，可以嵌套但不能交叉嵌套，这样就能确保可以退回到并行网关的单个节点上（不会退回到并行网关的其他分支）
 
