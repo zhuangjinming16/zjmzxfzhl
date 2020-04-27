@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.modules.{_sys}.controller;
+package com.zjmzxfzhl.modules.sys.controller;
 
 import java.util.Arrays;
 
@@ -19,63 +19,63 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType};
-import com.zjmzxfzhl.modules.{_sys}.service.{_Sys}{_CodeType}Service;
+import com.zjmzxfzhl.modules.sys.entity.SysJobLog;
+import com.zjmzxfzhl.modules.sys.service.SysJobLogService;
 
 /**
- * {tableNameCn}Controller
+ * 定时任务执行日志Controller
  * 
- * @author {author}
+ * @author 庄金明
  */
 @RestController
-@RequestMapping("/{_sys}/{_codeType}")
-public class {_Sys}{_CodeType}Controller extends BaseController {
+@RequestMapping("/sys/jobLog")
+public class SysJobLogController extends BaseController {
     @Autowired
-    private {_Sys}{_CodeType}Service {_sys}{_CodeType}Service;
+    private SysJobLogService sysJobLogService;
 
     /**
      * 自定义查询列表
      * 
-     * @param {_sys}{_CodeType}
+     * @param sysJobLog
      * @param current
      * @param size
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:list")
+    @RequiresPermissions("sys:jobLog:list")
     @GetMapping(value = "/list")
-    public Result list({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<{_Sys}{_CodeType}>(current, size), {_sys}{_CodeType});
+    public Result list(SysJobLog sysJobLog, @RequestParam Integer current, @RequestParam Integer size) {
+        IPage<SysJobLog> pageList = sysJobLogService.list(new Page<SysJobLog>(current, size), sysJobLog);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("{_sys}:{_codeType}:list")
+    @RequiresPermissions("sys:jobLog:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
-        {_Sys}{_CodeType} {_sys}{_CodeType} = {_sys}{_CodeType}Service.getById(id);
-        return Result.ok({_sys}{_CodeType});
+        SysJobLog sysJobLog = sysJobLogService.getById(id);
+        return Result.ok(sysJobLog);
     }
 
     /**
      * @功能：新增
-     * @param {_sys}{_CodeType}
+     * @param sysJobLog
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:save")
+    @RequiresPermissions("sys:jobLog:save")
     @PostMapping(value = "/save")
-    public Result save(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
-        {_sys}{_CodeType}Service.save({_sys}{_CodeType});
+    public Result save(@Valid @RequestBody SysJobLog sysJobLog) {
+        sysJobLogService.save(sysJobLog);
         return Result.ok();
     }
 
     /**
      * @功能：修改
-     * @param {_sys}{_CodeType}
+     * @param sysJobLog
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:update")
+    @RequiresPermissions("sys:jobLog:update")
     @PutMapping(value = "/update")
-    public Result update(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
-        {_sys}{_CodeType}Service.updateById({_sys}{_CodeType});
+    public Result update(@Valid @RequestBody SysJobLog sysJobLog) {
+        sysJobLogService.updateById(sysJobLog);
         return Result.ok();
     }
 
@@ -84,7 +84,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:delete")
+    @RequiresPermissions("sys:jobLog:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
@@ -92,9 +92,9 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
         }
         String[] idsArr = ids.split(",");
         if (idsArr.length > 1) {
-            {_sys}{_CodeType}Service.removeByIds(Arrays.asList(idsArr));
+            sysJobLogService.removeByIds(Arrays.asList(idsArr));
         } else {
-            {_sys}{_CodeType}Service.removeById(idsArr[0]);
+            sysJobLogService.removeById(idsArr[0]);
         }
         return Result.ok();
     }

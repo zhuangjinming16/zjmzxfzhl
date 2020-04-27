@@ -33,121 +33,115 @@ import com.zjmzxfzhl.modules.sys.service.SysUserService;
 @Aspect
 @Component
 public class SysLogAutoAspect {
-	/**
-	 * 1-用户登录
-	 */
-	private static final String LOG_TYPE_1 = "1";
-	/**
-	 * 2-用户操作
-	 */
-	private static final String LOG_TYPE_2 = "2";
-	/**
-	 * 3-定时任务
-	 */
-	private static final String LOG_TYPE_3 = "3";
+    /**
+     * 1-用户登录
+     */
+    private static final String LOG_TYPE_1 = "1";
+    /**
+     * 2-用户操作
+     */
+    private static final String LOG_TYPE_2 = "2";
 
-	@Autowired
-	private SysLogService sysLogService;
-	@Autowired
-	private SysUserService sysUserService;
+    @Autowired
+    private SysLogService sysLogService;
+    @Autowired
+    private SysUserService sysUserService;
 
-	@Around("@annotation(sysLogAuto)")
-	public Object around(ProceedingJoinPoint joinPoint, SysLogAuto sysLogAuto) throws Throwable {
-		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-		// 请求的参数
-		Object[] args = joinPoint.getArgs();
-		SysLog sysLog = new SysLog();
-		sysLog.setLogContent(sysLogAuto.value());
-		sysLog.setLogType(sysLogAuto.logType());
-		String className = joinPoint.getTarget().getClass().getName();
-		String methodName = signature.getName();
-		sysLog.setMethod(className + "." + methodName + "()");
-		// 获取request并设置IP地址
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		sysLog.setIp(IpUtils.getIpAddr(request));
-		sysLog.setRequestUrl(request.getRequestURI());
-		SysUser sysUser = null;
-		// 1-用户登录
-		if (LOG_TYPE_1.equals(sysLogAuto.logType())) {
-			SysLoginForm aSysLoginForm = (SysLoginForm) args[0];
-			sysUser = sysUserService.getById(aSysLoginForm.getUserId());
-			if (sysUser == null) {
-				sysUser = new SysUser();
-				sysUser.setUserId(aSysLoginForm.getUserId());
-			}
-		} else if (LOG_TYPE_2.equals(sysLogAuto.logType())) {
-			sysUser = ShiroUtils.getSysUser();
-			sysLog.setRequestParam(paramsToJson(args));
-		} else if (LOG_TYPE_3.equals(sysLogAuto.logType())) {
-			sysLog.setRequestParam(paramsToJson(args));
-			sysLog.setCreateBy("admin");
-		}
-		if (sysUser != null) {
-			sysLog.setUserId(sysUser.getUserId());
-			sysLog.setUserName(sysUser.getUserName());
-			sysLog.setCreateBy(sysUser.getUserId());
-		}
+    @Around("@annotation(sysLogAuto)")
+    public Object around(ProceedingJoinPoint joinPoint, SysLogAuto sysLogAuto) throws Throwable {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        // 请求的参数
+        Object[] args = joinPoint.getArgs();
+        SysLog sysLog = new SysLog();
+        sysLog.setLogContent(sysLogAuto.value());
+        sysLog.setLogType(sysLogAuto.logType());
+        String className = joinPoint.getTarget().getClass().getName();
+        String methodName = signature.getName();
+        sysLog.setMethod(className + "." + methodName + "()");
+        // 获取request并设置IP地址
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+        sysLog.setIp(IpUtils.getIpAddr(request));
+        sysLog.setRequestUrl(request.getRequestURI());
+        SysUser sysUser = null;
+        // 1-用户登录
+        if (LOG_TYPE_1.equals(sysLogAuto.logType())) {
+            SysLoginForm aSysLoginForm = (SysLoginForm) args[0];
+            sysUser = sysUserService.getById(aSysLoginForm.getUserId());
+            if (sysUser == null) {
+                sysUser = new SysUser();
+                sysUser.setUserId(aSysLoginForm.getUserId());
+            }
+        } else if (LOG_TYPE_2.equals(sysLogAuto.logType())) {
+            sysUser = ShiroUtils.getSysUser();
+            sysLog.setRequestParam(paramsToJson(args));
+        }
+        if (sysUser != null) {
+            sysLog.setUserId(sysUser.getUserId());
+            sysLog.setUserName(sysUser.getUserName());
+            sysLog.setCreateBy(sysUser.getUserId());
+        }
 
-		long beginTime = System.currentTimeMillis();
-		Object result = null;
-		Exception ex = null;
-		try {
-			// 执行方法
-			result = joinPoint.proceed();
-		} catch (Exception e) {
-			ex = e;
-		}
-		// 执行时长(毫秒)
-		long time = System.currentTimeMillis() - beginTime;
-		// 保存日志
-		sysLog.setCostTime(time);
+        long beginTime = System.currentTimeMillis();
+        Object result = null;
+        Exception ex = null;
+        try {
+            // 执行方法
+            result = joinPoint.proceed();
+        } catch (Exception e) {
+            ex = e;
+        }
+        // 执行时长(毫秒)
+        long time = System.currentTimeMillis() - beginTime;
+        // 保存日志
+        sysLog.setCostTime(time);
 
-		String operateResult = "";
-		if (result instanceof Result) {
-			Result r = (Result) result;
-			operateResult = r.getMsg();
-		} else if (ex != null) {
-			operateResult = ex.getMessage();
-		}
+        String operateResult = "";
+        if (result instanceof Result) {
+            Result r = (Result) result;
+            operateResult = r.getMsg();
+        } else if (ex != null) {
+            operateResult = ex.getMessage();
+        }
 
-		sysLog.setOperateResult(operateResult);
-		// 保存系统日志
-		sysLogService.save(sysLog);
+        sysLog.setOperateResult(operateResult);
+        // 保存系统日志
+        sysLogService.save(sysLog);
 
-		if (ex != null) {
-			throw ex;
-		}
+        if (ex != null) {
+            throw ex;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * 将参数转换成json格式字符串，多个参数以逗号隔开
-	 * 
-	 * @param args
-	 * @return
-	 */
-	private String paramsToJson(Object[] args) {
-		if (args == null || args.length == 0) {
-			return "";
-		}
-		StringBuffer params = new StringBuffer();
-		for (int i = 0; i < args.length; i++) {
-			String param = null;
-			if (!(args[i] instanceof HttpServletRequest || args[i] instanceof HttpServletResponse)) {
-				// 序列化忽略null值，写入数据库长度可以缩短
-				param = JacksonUtil.objToStr(args[i], Include.NON_NULL);
-			}
-			if (param == null) {
-				param = "{}";
-			}
-			if (i == args.length - 1) {
-				params.append(param);
-			} else {
-				params.append(param).append(",");
-			}
-		}
-		return params.toString();
-	}
+    /**
+     * 将参数转换成json格式字符串，多个参数以逗号隔开
+     * 
+     * @param args
+     * @return
+     */
+    private String paramsToJson(Object[] args) {
+        if (args == null || args.length == 0) {
+            return "";
+        }
+        StringBuffer params = new StringBuffer();
+        for (int i = 0; i < args.length; i++) {
+            String param = null;
+            if (!(args[i] instanceof HttpServletRequest || args[i] instanceof HttpServletResponse)) {
+                // 序列化忽略null值，写入数据库长度可以缩短
+                param = JacksonUtil.objToStr(args[i], Include.NON_NULL);
+            }
+            if (param == null) {
+                param = "{}";
+            }
+            if (i == args.length - 1) {
+                params.append(param);
+            } else {
+                params.append(param).append(",");
+            }
+        }
+        return params.toString();
+    }
 
 }

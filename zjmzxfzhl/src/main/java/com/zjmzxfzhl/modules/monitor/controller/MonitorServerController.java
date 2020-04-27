@@ -12,16 +12,16 @@ import com.zjmzxfzhl.common.server.Server;
 /**
  * 服务器监控
  * 
- * @author ruoyi
+ * @author 庄金明
  */
 @RestController
 @RequestMapping("/monitor/server")
 public class MonitorServerController extends BaseController {
-	@RequiresPermissions("monitor:server:getServerInfo")
-	@GetMapping(value = "/getServerInfo")
-	public Result getServerInfo() throws Exception {
-		Server server = new Server();
-		server.copyTo();
-		return Result.ok(server);
-	}
+    @RequiresPermissions("monitor:server:getServerInfo")
+    @GetMapping(value = "/getServerInfo")
+    public Result getServerInfo() throws Exception {
+        Server server = new Server();
+        server.copyTo();
+        return Result.ok(server);
+    }
 }

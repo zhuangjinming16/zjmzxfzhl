@@ -14,12 +14,12 @@ import com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType};
  * @author {author}
  */
 public interface {_Sys}{_CodeType}Mapper extends BaseMapper<{_Sys}{_CodeType}> {
-	/**
-	 * 查询{tableNameCn}列表
-	 * 
-	 * @param page
-	 * @param entity
-	 * @return
-	 */
-	public List<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, @Param("entity") {_Sys}{_CodeType} entity);
+    /**
+     * 查询{tableNameCn}列表
+     * 
+     * @param page
+     * @param entity
+     * @return
+     */
+    public List<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, @Param("entity") {_Sys}{_CodeType} entity);
 }

@@ -3,7 +3,7 @@
         <div class="filter-container">
 {_searchConditions}
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
-            	<i class="el-icon-search el-icon--left"></i>查询
+                <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
                 </el-dropdown-menu>
@@ -28,7 +28,7 @@
 {_searchColumnsList}
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                	<el-dropdown>
+                    <el-dropdown>
                         <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>

@@ -40,6 +40,7 @@
 		<redisson.version>3.11.1</redisson.version>
 		<flowable.version>6.4.1</flowable.version>
 		<oshi.version>3.9.1</oshi.version>
+		<quartz.version>2.3.0</quartz.version>
 	</properties>
 
 	<dependencies>
@@ -266,6 +267,19 @@
 			<groupId>com.github.oshi</groupId>
 			<artifactId>oshi-core</artifactId>
 			<version>${oshi.version}</version>
+		</dependency>
+		
+		<!-- 定时任务 -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version><!--$NO-MVN-MAN-VER$-->
+			<exclusions>
+				<exclusion>
+					<groupId>com.mchange</groupId>
+					<artifactId>c3p0</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
