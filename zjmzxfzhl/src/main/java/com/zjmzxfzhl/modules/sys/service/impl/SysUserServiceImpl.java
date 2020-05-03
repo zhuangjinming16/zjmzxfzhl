@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.Constants;
 import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
@@ -58,7 +59,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             "o" }, providers = {
                     OrgDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}" })
     public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
-        return page.setRecords(baseMapper.list(page, sysUser));
+        List<SysUser> records = baseMapper.list(page, sysUser);
+        if (page == null) {
+            page = new Page<SysUser>();
+            page.setTotal(records != null ? records.size() : 0L);
+        }
+        return page.setRecords(records);
     }
 
     /**

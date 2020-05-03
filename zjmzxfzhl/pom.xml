@@ -41,6 +41,7 @@
 		<flowable.version>6.4.1</flowable.version>
 		<oshi.version>3.9.1</oshi.version>
 		<quartz.version>2.3.0</quartz.version>
+		<easyexcel.version>2.2.0-beta1</easyexcel.version>
 	</properties>
 
 	<dependencies>
@@ -280,6 +281,13 @@
 					<artifactId>c3p0</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<!-- easyexcel -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>easyexcel</artifactId>
+			<version>${easyexcel.version}</version>
 		</dependency>
 	</dependencies>
 
