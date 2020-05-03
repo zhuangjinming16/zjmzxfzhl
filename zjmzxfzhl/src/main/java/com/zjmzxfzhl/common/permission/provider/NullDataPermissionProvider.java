@@ -1,7 +1,5 @@
 package com.zjmzxfzhl.common.permission.provider;
 
-import org.springframework.stereotype.Component;
-
 import com.zjmzxfzhl.common.permission.FilterGroup;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 
@@ -11,10 +9,9 @@ import com.zjmzxfzhl.modules.sys.common.SessionObject;
  * @author 庄金明
  *
  */
-@Component
 public class NullDataPermissionProvider extends AbstractDataPermissionProvider {
-	@Override
-	public FilterGroup filter(SessionObject sessionObject) {
-		return null;
-	}
-} 
+    @Override
+    public FilterGroup filter(SessionObject sessionObject) {
+        return null;
+    }
+}
