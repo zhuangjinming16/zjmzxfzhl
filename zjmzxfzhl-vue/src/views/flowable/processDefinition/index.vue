@@ -172,7 +172,7 @@
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {getAction, putAction, postAction, deleteAction, downloadAction} from '@/api/manage'
     import {Message} from 'element-ui'
     import {getToken} from '@/utils/auth'
     import ProcessImage from "../components/ProcessImage";
@@ -313,20 +313,7 @@
                 })
             },
             btnExport(row) {
-                getAction('/flowable/processDefinition/xml', {processDefinitionId: row.id}).then(res => {
-                    this.downloadFile(res, row.name + '-v' + row.version + '.bpmn20.xml')
-                })
-            },
-            downloadFile(res, fileName) {
-                fileName = decodeURI(fileName);
-                var url = URL.createObjectURL(new Blob([res]));
-                var a = document.createElement('a');
-                document.body.appendChild(a);
-                a.href = url;
-                a.download = fileName;
-                a.target = '_blank';
-                a.click();
-                a.remove();
+                downloadAction('/flowable/processDefinition/xml','get', {processDefinitionId: row.id}, row.name + '-v' + row.version + '.bpmn20.xml')
             },
             btnImage(processDefinitionId) {
                 // this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + processDefinitionId + '&token=' + getToken() + '&time=' + new Date()

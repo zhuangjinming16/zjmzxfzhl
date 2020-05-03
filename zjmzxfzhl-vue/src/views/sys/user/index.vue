@@ -13,6 +13,8 @@
                 </el-dropdown-menu>
             </el-dropdown>
             <el-button-group>
+                <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" @click="btnExport" class="filter-item">导出
+                </el-button>
                 <el-button v-permission="'sys:user:save'" icon="el-icon-plus" type="primary" @click="btnCreate" class="filter-item">新增
                 </el-button>
                 <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" @click="btnDelete()" class="filter-item">批量删除</el-button>
@@ -179,7 +181,7 @@
 
 <script>
     import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {getAction, putAction, postAction, deleteAction,downloadAction} from '@/api/manage'
     import {Message} from 'element-ui'
     import SelectOrg from '@/components/select/SelectOrg'
 
@@ -248,6 +250,9 @@
                     this.records = data.records;
                     this.total = data.total
                 })
+            },
+            btnExport() {
+                downloadAction('/sys/user/export', 'get', this.listQuery, 'SysUserExport.xlsx')
             },
             btnQuery() {
                 this.listQuery.current = 1
