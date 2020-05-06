@@ -14,12 +14,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysLog;
  * @author 庄金明
  */
 public interface SysLogMapper extends BaseMapper<SysLog> {
-	/**
-	 * 查询系统日志列表
-	 * 
-	 * @param page
-	 * @param entity
-	 * @return
-	 */
-	public List<SysLog> list(IPage<SysLog> page, @Param("entity") SysLog entity);
+    /**
+     * 查询系统日志列表
+     * 
+     * @param page
+     * @param entity
+     * @return
+     */
+    public List<SysLog> list(IPage<SysLog> page, @Param("entity") SysLog entity);
 }

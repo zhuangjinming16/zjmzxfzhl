@@ -121,7 +121,7 @@ public class CreateEntity {
                 stringBufferHead2
                         .append("public class " + sysCodeTypeFirstUpper + " extends BaseEntity {" + "\r\n\r\n");
 
-                stringBufferHead2.append("\t" + "private static final long serialVersionUID = 1L;" + "\r\n\r\n");
+                stringBufferHead2.append("    " + "private static final long serialVersionUID = 1L;" + "\r\n\r\n");
             }
 
             // 字段名称,定义变量,方便引用,用CODE_TYPE_ID进行举例
@@ -134,23 +134,26 @@ public class CreateEntity {
                 continue;
             }
 
-            stringBufferMid.append("\t/**\r\n");
-            stringBufferMid.append("\t * " + tableObject.getColumnNameCn() + "\r\n");
-            stringBufferMid.append("\t */\r\n");
+            stringBufferMid.append("    /**\r\n");
+            stringBufferMid.append("     * " + tableObject.getColumnNameCn() + "\r\n");
+            stringBufferMid.append("     */\r\n");
 
             if (CommonUtil.isExist("UUID主键", tableObject.getIsNull(), ",")) {
-                stringBufferMid.append("\t" + "@TableId(type = IdType.ASSIGN_UUID)" + "\r\n");
+                stringBufferMid.append("    " + "@TableId(type = IdType.ASSIGN_UUID)" + "\r\n");
                 importHashMap.put("import com.baomidou.mybatisplus.annotation.IdType;\r\n",
                         "import com.baomidou.mybatisplus.annotation.IdType;\r\n");
             } else if (CommonUtil.isExist("数据库生成主键,前台输入主键", tableObject.getIsNull(), ",")) {
-                stringBufferMid.append("\t" + "@TableId" + "\r\n");
+                stringBufferMid.append("    " + "@TableId" + "\r\n");
             }
             if (CommonUtil.isExist("前台输入主键,不空", tableObject.getIsNull(), ",")) {
-                stringBufferMid.append("\t" + "@NotNull" + "\r\n");
+                stringBufferMid.append("    " + "@NotNull" + "\r\n");
             }
             // 处理数据类型
             if ("字符型".equals(tableObject.getDataType())) {
                 processingDataTypeString(stringBufferMid, stringBufferFoot, tableObject, codeTypeIdFirstUpper,
+                        codeTypeIdFirstLower);
+            } else if ("大文本".equals(tableObject.getDataType())) {
+                processingDataTypeClob(stringBufferMid, stringBufferFoot, tableObject, codeTypeIdFirstUpper,
                         codeTypeIdFirstLower);
             } else if ("整数型".equals(tableObject.getDataType())) {
                 processingDataTypeInteger(stringBufferMid, stringBufferFoot, importHashMap, tableObject,
@@ -171,19 +174,20 @@ public class CreateEntity {
     private static void processingDataTypeDateTime(StringBuffer stringBufferMid, StringBuffer stringBufferFoot,
             TreeMap<String, String> importHashMap, TableObject tableObject, String codeTypeIdFirstUpper,
             String codeTypeIdFirstLower) {
-        stringBufferMid.append("\t" + "@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\", timezone = \"GMT+8\")" + "\r\n");
-        stringBufferMid.append("\t" + "@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")" + "\r\n");
+        stringBufferMid
+                .append("    " + "@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\", timezone = \"GMT+8\")" + "\r\n");
+        stringBufferMid.append("    " + "@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")" + "\r\n");
 
-        stringBufferMid.append("\t" + "private Date " + codeTypeIdFirstLower + ";\r\n\r\n");
+        stringBufferMid.append("    " + "private Date " + codeTypeIdFirstLower + ";\r\n\r\n");
 
         // 处理get,set方法
-        stringBufferFoot.append("\t" + "public Date get" + codeTypeIdFirstUpper + "() {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "return this." + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+        stringBufferFoot.append("    " + "public Date get" + codeTypeIdFirstUpper + "() {" + "\r\n");
+        stringBufferFoot.append("        " + "return this." + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
         stringBufferFoot.append(
-                "\t" + "public void set" + codeTypeIdFirstUpper + "(Date " + codeTypeIdFirstLower + ") {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+                "    " + "public void set" + codeTypeIdFirstUpper + "(Date " + codeTypeIdFirstLower + ") {" + "\r\n");
+        stringBufferFoot.append("        " + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
 
         importHashMap.put("import java.util.Date;\r\n", "import java.util.Date;\r\n");
         importHashMap.put("import com.fasterxml.jackson.annotation.JsonFormat;\r\n",
@@ -195,19 +199,19 @@ public class CreateEntity {
     private static void processingDataTypeDate(StringBuffer stringBufferMid, StringBuffer stringBufferFoot,
             TreeMap<String, String> importHashMap, TableObject tableObject, String codeTypeIdFirstUpper,
             String codeTypeIdFirstLower) {
-        stringBufferMid.append("\t" + "@JsonFormat(pattern = \"yyyy-MM-dd\", timezone = \"GMT+8\")" + "\r\n");
-        stringBufferMid.append("\t" + "@DateTimeFormat(pattern = \"yyyy-MM-dd\")" + "\r\n");
+        stringBufferMid.append("    " + "@JsonFormat(pattern = \"yyyy-MM-dd\", timezone = \"GMT+8\")" + "\r\n");
+        stringBufferMid.append("    " + "@DateTimeFormat(pattern = \"yyyy-MM-dd\")" + "\r\n");
 
-        stringBufferMid.append("\t" + "private Date " + codeTypeIdFirstLower + ";\r\n\r\n");
+        stringBufferMid.append("    " + "private Date " + codeTypeIdFirstLower + ";\r\n\r\n");
 
         // 处理get,set方法
-        stringBufferFoot.append("\t" + "public Date get" + codeTypeIdFirstUpper + "() {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "return this." + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+        stringBufferFoot.append("    " + "public Date get" + codeTypeIdFirstUpper + "() {" + "\r\n");
+        stringBufferFoot.append("        " + "return this." + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
         stringBufferFoot.append(
-                "\t" + "public void set" + codeTypeIdFirstUpper + "(Date " + codeTypeIdFirstLower + ") {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+                "    " + "public void set" + codeTypeIdFirstUpper + "(Date " + codeTypeIdFirstLower + ") {" + "\r\n");
+        stringBufferFoot.append("        " + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
 
         importHashMap.put("import java.util.Date;\r\n", "import java.util.Date;\r\n");
         importHashMap.put("import com.fasterxml.jackson.annotation.JsonFormat;\r\n",
@@ -219,22 +223,22 @@ public class CreateEntity {
     private static void processingDataTypeFloat(StringBuffer stringBufferMid, StringBuffer stringBufferFoot,
             TreeMap<String, String> importHashMap, TableObject tableObject, String codeTypeIdFirstUpper,
             String codeTypeIdFirstLower) {
-        stringBufferMid.append("\t" + "@DecimalMax(\""
+        stringBufferMid.append("    " + "@DecimalMax(\""
                 + getMax(tableObject.getDataLength(), tableObject.getDataPrecision()) + "\")" + "\r\n");
         importHashMap.put("import javax.validation.constraints.DecimalMax;\r\n",
                 "import javax.validation.constraints.DecimalMax;\r\n");
         importHashMap.put("import java.math.BigDecimal;\r\n", "import java.math.BigDecimal;\r\n");
 
-        stringBufferMid.append("\t" + "private BigDecimal " + codeTypeIdFirstLower + ";\r\n\r\n");
+        stringBufferMid.append("    " + "private BigDecimal " + codeTypeIdFirstLower + ";\r\n\r\n");
 
         // 处理get,set方法
-        stringBufferFoot.append("\t" + "public BigDecimal get" + codeTypeIdFirstUpper + "() {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "return this." + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
-        stringBufferFoot.append("\t" + "public void set" + codeTypeIdFirstUpper + "(BigDecimal " + codeTypeIdFirstLower
-                + ") {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+        stringBufferFoot.append("    " + "public BigDecimal get" + codeTypeIdFirstUpper + "() {" + "\r\n");
+        stringBufferFoot.append("        " + "return this." + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
+        stringBufferFoot.append("    " + "public void set" + codeTypeIdFirstUpper + "(BigDecimal "
+                + codeTypeIdFirstLower + ") {" + "\r\n");
+        stringBufferFoot.append("        " + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
     }
 
     private static int LENGTH = 11;
@@ -244,47 +248,63 @@ public class CreateEntity {
             String codeTypeIdFirstLower) {
         if (CommonUtil.isEmptyStr(tableObject.getDataLength())
                 || Integer.valueOf(tableObject.getDataLength()) < LENGTH) {
-            stringBufferMid.append("\t" + "@Max(" + getMax(tableObject.getDataLength(), null) + ")" + "\r\n");
+            stringBufferMid.append("    " + "@Max(" + getMax(tableObject.getDataLength(), null) + ")" + "\r\n");
             importHashMap.put("import javax.validation.constraints.Max;\r\n",
                     "import javax.validation.constraints.Max;\r\n");
 
-            stringBufferMid.append("\t" + "private Integer " + codeTypeIdFirstLower + ";\r\n\r\n");
+            stringBufferMid.append("    " + "private Integer " + codeTypeIdFirstLower + ";\r\n\r\n");
 
             // 处理get,set方法
-            stringBufferFoot.append("\t" + "public Integer get" + codeTypeIdFirstUpper + "() {" + "\r\n");
-            stringBufferFoot.append("\t\t" + "return this." + codeTypeIdFirstLower + ";\r\n");
-            stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
-            stringBufferFoot.append("\t" + "public void set" + codeTypeIdFirstUpper + "(Integer " + codeTypeIdFirstLower
-                    + ") {" + "\r\n");
-            stringBufferFoot.append("\t\t" + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
-            stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+            stringBufferFoot.append("    " + "public Integer get" + codeTypeIdFirstUpper + "() {" + "\r\n");
+            stringBufferFoot.append("        " + "return this." + codeTypeIdFirstLower + ";\r\n");
+            stringBufferFoot.append("    " + "}" + "\r\n\r\n");
+            stringBufferFoot.append("    " + "public void set" + codeTypeIdFirstUpper + "(Integer "
+                    + codeTypeIdFirstLower + ") {" + "\r\n");
+            stringBufferFoot
+                    .append("        " + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
+            stringBufferFoot.append("    " + "}" + "\r\n\r\n");
         } else {
-            stringBufferMid.append("\t" + "private Long " + codeTypeIdFirstLower + ";\r\n\r\n");
+            stringBufferMid.append("    " + "private Long " + codeTypeIdFirstLower + ";\r\n\r\n");
 
             // 处理get,set方法
-            stringBufferFoot.append("\t" + "public Long get" + codeTypeIdFirstUpper + "() {" + "\r\n");
-            stringBufferFoot.append("\t\t" + "return this." + codeTypeIdFirstLower + ";\r\n");
-            stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
-            stringBufferFoot.append(
-                    "\t" + "public void set" + codeTypeIdFirstUpper + "(Long " + codeTypeIdFirstLower + ") {" + "\r\n");
-            stringBufferFoot.append("\t\t" + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
-            stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+            stringBufferFoot.append("    " + "public Long get" + codeTypeIdFirstUpper + "() {" + "\r\n");
+            stringBufferFoot.append("        " + "return this." + codeTypeIdFirstLower + ";\r\n");
+            stringBufferFoot.append("    " + "}" + "\r\n\r\n");
+            stringBufferFoot.append("    " + "public void set" + codeTypeIdFirstUpper + "(Long " + codeTypeIdFirstLower
+                    + ") {" + "\r\n");
+            stringBufferFoot
+                    .append("        " + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
+            stringBufferFoot.append("    " + "}" + "\r\n\r\n");
         }
     }
 
     private static void processingDataTypeString(StringBuffer stringBufferMid, StringBuffer stringBufferFoot,
             TableObject tableObject, String codeTypeIdFirstUpper, String codeTypeIdFirstLower) {
-        stringBufferMid.append("\t" + "@LengthForUtf8(max = " + tableObject.getDataLength() + ")" + "\r\n");
-        stringBufferMid.append("\t" + "private String " + codeTypeIdFirstLower + ";\r\n\r\n");
+        stringBufferMid.append("    " + "@LengthForUtf8(max = " + tableObject.getDataLength() + ")" + "\r\n");
+        stringBufferMid.append("    " + "private String " + codeTypeIdFirstLower + ";\r\n\r\n");
 
         // 处理get,set方法
-        stringBufferFoot.append("\t" + "public String get" + codeTypeIdFirstUpper + "() {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "return this." + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+        stringBufferFoot.append("    " + "public String get" + codeTypeIdFirstUpper + "() {" + "\r\n");
+        stringBufferFoot.append("        " + "return this." + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
         stringBufferFoot.append(
-                "\t" + "public void set" + codeTypeIdFirstUpper + "(String " + codeTypeIdFirstLower + ") {" + "\r\n");
-        stringBufferFoot.append("\t\t" + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
-        stringBufferFoot.append("\t" + "}" + "\r\n\r\n");
+                "    " + "public void set" + codeTypeIdFirstUpper + "(String " + codeTypeIdFirstLower + ") {" + "\r\n");
+        stringBufferFoot.append("        " + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
+    }
+
+    private static void processingDataTypeClob(StringBuffer stringBufferMid, StringBuffer stringBufferFoot,
+            TableObject tableObject, String codeTypeIdFirstUpper, String codeTypeIdFirstLower) {
+        stringBufferMid.append("    " + "private String " + codeTypeIdFirstLower + ";\r\n\r\n");
+
+        // 处理get,set方法
+        stringBufferFoot.append("    " + "public String get" + codeTypeIdFirstUpper + "() {" + "\r\n");
+        stringBufferFoot.append("        " + "return this." + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
+        stringBufferFoot.append(
+                "    " + "public void set" + codeTypeIdFirstUpper + "(String " + codeTypeIdFirstLower + ") {" + "\r\n");
+        stringBufferFoot.append("        " + "this." + codeTypeIdFirstLower + " = " + codeTypeIdFirstLower + ";\r\n");
+        stringBufferFoot.append("    " + "}" + "\r\n\r\n");
     }
 
     private static String getMax(String dataLength, String dataPrecision) {

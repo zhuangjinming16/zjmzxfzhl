@@ -57,7 +57,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      *            调度信息 调度信息
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveJob(SysJob job) throws SchedulerException {
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
         boolean result = save(job);
@@ -74,7 +74,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      *            调度信息
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateJob(SysJob job) throws SchedulerException {
         SysJob jobDb = this.getById(job.getJobId());
         boolean result = this.updateById(job);
@@ -110,7 +110,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      *            调度信息
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void pause(SysJob job) throws SchedulerException {
         String jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
@@ -127,7 +127,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      *            调度信息
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void resume(SysJob job) throws SchedulerException {
         String jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
@@ -144,7 +144,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      *            调度信息
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void delete(SysJob job) throws SchedulerException {
         String jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
@@ -161,7 +161,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      * @return 结果
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String ids) throws SchedulerException {
         if (ids == null || ids.trim().length() == 0) {
             throw new SysException("ids can't be empty");
@@ -180,9 +180,12 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      *            调度信息
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void changeStatus(String jobId) throws SchedulerException {
         SysJob sysJob = this.getById(jobId);
+        sysJob.setUpdateBy(null);
+        sysJob.setUpdateDate(null);
+        sysJob.setUpdateTime(null);
         String status = sysJob.getStatus();
         if (ScheduleConstants.Status.NORMAL.getValue().equals(status)) {
             pause(sysJob);
@@ -198,7 +201,7 @@ public class SysJobServiceImpl extends BaseServiceImpl<SysJobMapper, SysJob> imp
      *            调度信息
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void run(String jobId) throws SchedulerException {
         SysJob sysJob = this.getById(jobId);
         String jobGroup = sysJob.getJobGroup();

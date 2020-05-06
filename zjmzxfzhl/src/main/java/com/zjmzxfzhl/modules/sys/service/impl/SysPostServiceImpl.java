@@ -6,6 +6,7 @@ import java.util.List;
 import org.flowable.idm.engine.impl.GroupQueryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -53,6 +54,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
      * @param userIds
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void savePostUsers(String postId, String userIds) {
         String[] userIdArray = userIds.split(",");
         // 【1】先删除岗位用户
@@ -75,6 +77,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
      * @param userIds
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deletePostUsers(String postId, String userIds) {
         String[] userIdArray = userIds.split(",");
         QueryWrapper<SysPostUser> queryWrapper = new QueryWrapper<>();
@@ -89,6 +92,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
      * @param ids
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String ids) {
         String[] idsArr = ids.split(",");
         if (idsArr.length > 1) {

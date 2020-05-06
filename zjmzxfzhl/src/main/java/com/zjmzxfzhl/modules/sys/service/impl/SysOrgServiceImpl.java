@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
@@ -83,6 +84,7 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrgMapper, SysOrg> imp
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveSysOrg(SysOrg sysOrg) {
         // 【1】 校验id是否重复.
         if (CommonUtil.isEmptyStr(sysOrg.getParentOrgId())) {
@@ -115,6 +117,7 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrgMapper, SysOrg> imp
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateSysOrg(SysOrg sysOrg) {
         if (CommonUtil.isEmptyStr(sysOrg.getParentOrgId())) {
             sysOrg.setOrgLevel("1");

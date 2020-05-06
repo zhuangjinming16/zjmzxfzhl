@@ -63,6 +63,7 @@ public class SysLogAutoAspect {
                 .getRequest();
         sysLog.setIp(IpUtils.getIpAddr(request));
         sysLog.setRequestUrl(request.getRequestURI());
+        sysLog.setRequestType(request.getMethod());
         SysUser sysUser = null;
         // 1-用户登录
         if (LOG_TYPE_1.equals(sysLogAuto.logType())) {

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -127,6 +128,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      * @param permissionTypes
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveRolePermissions(String roleId, String menuOrFuncIds, String permissionTypes) {
         String[] menuOrFuncIdArray = null;
         if (CommonUtil.isNotEmptyStr(menuOrFuncIds)) {
@@ -174,6 +176,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      * @param sysRoleUser
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveRoleUsers(String roleId, String userIds) {
         String[] userIdArray = userIds.split(",");
         // 【1】先删除角色用户
@@ -195,6 +198,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      * @param sysRoleUser
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteRoleUsers(String roleId, String userIds) {
         String[] userIdArray = userIds.split(",");
 
@@ -210,6 +214,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      * @param ids
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String ids) {
         String[] idsArr = ids.split(",");
 

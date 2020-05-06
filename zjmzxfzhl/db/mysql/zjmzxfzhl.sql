@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2020-04-25 18:55:10
+Date: 2020-05-06 23:40:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5213,6 +5213,7 @@ INSERT INTO `act_ru_identitylink` VALUES ('cc307a39-70b2-11ea-b6d9-4851b7b02457'
 INSERT INTO `act_ru_identitylink` VALUES ('d4327ef0-70b2-11ea-b6d9-4851b7b02457', '1', null, 'participant', 'admin', null, 'a55e2250-7022-11ea-82a6-4851b7b02457', null, null, null, null);
 INSERT INTO `act_ru_identitylink` VALUES ('d44f4474-70d9-11ea-b926-4851b7b02457', '1', null, 'participant', 'admin', null, 'a55e2250-7022-11ea-82a6-4851b7b02457', null, null, null, null);
 INSERT INTO `act_ru_identitylink` VALUES ('d6f444bf-70b7-11ea-b6d9-4851b7b02457', '1', null, 'participant', 'admin', null, 'a55e2250-7022-11ea-82a6-4851b7b02457', null, null, null, null);
+INSERT INTO `act_ru_identitylink` VALUES ('d73f3969-8d01-11ea-ad3b-4851b7b02457', '1', null, 'candidate', 'zhl', null, null, 'complex:1:942a246e-7022-11ea-82a6-4851b7b02457', null, null, null);
 INSERT INTO `act_ru_identitylink` VALUES ('d7807177-70b2-11ea-b6d9-4851b7b02457', '1', null, 'participant', 'admin', null, 'a55e2250-7022-11ea-82a6-4851b7b02457', null, null, null, null);
 INSERT INTO `act_ru_identitylink` VALUES ('d8330d77-70d9-11ea-b926-4851b7b02457', '1', null, 'participant', 'admin', null, 'a55e2250-7022-11ea-82a6-4851b7b02457', null, null, null, null);
 INSERT INTO `act_ru_identitylink` VALUES ('d99511c1-70b8-11ea-b6d9-4851b7b02457', '1', null, 'participant', 'admin', null, 'a55e2250-7022-11ea-82a6-4851b7b02457', null, null, null, null);
@@ -5528,6 +5529,238 @@ INSERT INTO `act_ru_variable` VALUES ('b909af0e-7022-11ea-82a6-4851b7b02457', '2
 INSERT INTO `act_ru_variable` VALUES ('b909af0f-7022-11ea-82a6-4851b7b02457', '2', 'string', 'task', 'a55e2250-7022-11ea-82a6-4851b7b02457', 'a55e2250-7022-11ea-82a6-4851b7b02457', null, null, null, null, null, null, null, '', null);
 INSERT INTO `act_ru_variable` VALUES ('bcb9ac52-70f3-11ea-ba79-4851b7b02457', '2', 'string', 'require', '7746e4f4-70f3-11ea-ba79-4851b7b02457', '7746e4f4-70f3-11ea-ba79-4851b7b02457', null, null, null, null, null, null, null, '33', null);
 INSERT INTO `act_ru_variable` VALUES ('bcb9ac53-70f3-11ea-ba79-4851b7b02457', '2', 'string', 'task', '7746e4f4-70f3-11ea-ba79-4851b7b02457', '7746e4f4-70f3-11ea-ba79-4851b7b02457', null, null, null, null, null, null, null, '33', null);
+
+-- ----------------------------
+-- Table structure for qrtz_blob_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_blob_triggers`;
+CREATE TABLE `qrtz_blob_triggers` (
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `blob_data` blob,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
+  CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_blob_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_calendars
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_calendars`;
+CREATE TABLE `qrtz_calendars` (
+  `sched_name` varchar(120) NOT NULL,
+  `calendar_name` varchar(200) NOT NULL,
+  `calendar` blob NOT NULL,
+  PRIMARY KEY (`sched_name`,`calendar_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_calendars
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_cron_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_cron_triggers`;
+CREATE TABLE `qrtz_cron_triggers` (
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `cron_expression` varchar(200) NOT NULL,
+  `time_zone_id` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
+  CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_cron_triggers
+-- ----------------------------
+INSERT INTO `qrtz_cron_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME1', '测试1', '0 0/1 * * * ?', 'Asia/Shanghai');
+INSERT INTO `qrtz_cron_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME2', '测试2', '0 0/1 * * * ?', 'Asia/Shanghai');
+INSERT INTO `qrtz_cron_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME3', '测试3', '0 0/1 * * * ?', 'Asia/Shanghai');
+INSERT INTO `qrtz_cron_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME4', '测试4', '0/15 * * * * ?', 'Asia/Shanghai');
+
+-- ----------------------------
+-- Table structure for qrtz_fired_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_fired_triggers`;
+CREATE TABLE `qrtz_fired_triggers` (
+  `sched_name` varchar(120) NOT NULL,
+  `entry_id` varchar(95) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `instance_name` varchar(200) NOT NULL,
+  `fired_time` bigint NOT NULL,
+  `sched_time` bigint NOT NULL,
+  `priority` int NOT NULL,
+  `state` varchar(16) NOT NULL,
+  `job_name` varchar(200) DEFAULT NULL,
+  `job_group` varchar(200) DEFAULT NULL,
+  `is_nonconcurrent` varchar(1) DEFAULT NULL,
+  `requests_recovery` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`sched_name`,`entry_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_fired_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_job_details
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_job_details`;
+CREATE TABLE `qrtz_job_details` (
+  `sched_name` varchar(120) NOT NULL,
+  `job_name` varchar(200) NOT NULL,
+  `job_group` varchar(200) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `job_class_name` varchar(250) NOT NULL,
+  `is_durable` varchar(1) NOT NULL,
+  `is_nonconcurrent` varchar(1) NOT NULL,
+  `is_update_data` varchar(1) NOT NULL,
+  `requests_recovery` varchar(1) NOT NULL,
+  `job_data` blob,
+  PRIMARY KEY (`sched_name`,`job_name`,`job_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_job_details
+-- ----------------------------
+INSERT INTO `qrtz_job_details` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME1', '测试1', null, 'com.zjmzxfzhl.common.util.job.QuartzJobExecution', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000F5441534B5F50524F5045525449455373720027636F6D2E7A6A6D7A78667A686C2E6D6F64756C65732E7379732E656E746974792E5379734A6F6200000000000000010200094C000A636F6E63757272656E747400124C6A6176612F6C616E672F537472696E673B4C000E63726F6E45787072657373696F6E71007E00094C000C696E766F6B6554617267657471007E00094C00086A6F6247726F757071007E00094C00056A6F62496471007E00094C00076A6F624E616D6571007E00094C000D6D697366697265506F6C69637971007E00094C000672656D61726B71007E00094C000673746174757371007E000978720024636F6D2E7A6A6D7A78667A686C2E636F6D6D6F6E2E626173652E42617365456E7469747900000000000000010200064C0008637265617465427971007E00094C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000A63726561746554696D6571007E000B4C0008757064617465427971007E00094C000A7570646174654461746571007E000B4C000A75706461746554696D6571007E000B78707070707070707400013174000D3020302F31202A202A202A203F7400197A6A6D7A78667A686C4A6F622E6861734E6F506172616D2829740007E6B58BE8AF953174000131740007E6B58BE8AF953174000130740000740001307800);
+INSERT INTO `qrtz_job_details` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME2', '测试2', null, 'com.zjmzxfzhl.common.util.job.QuartzJobExecution', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000F5441534B5F50524F5045525449455373720027636F6D2E7A6A6D7A78667A686C2E6D6F64756C65732E7379732E656E746974792E5379734A6F6200000000000000010200094C000A636F6E63757272656E747400124C6A6176612F6C616E672F537472696E673B4C000E63726F6E45787072657373696F6E71007E00094C000C696E766F6B6554617267657471007E00094C00086A6F6247726F757071007E00094C00056A6F62496471007E00094C00076A6F624E616D6571007E00094C000D6D697366697265506F6C69637971007E00094C000672656D61726B71007E00094C000673746174757371007E000978720024636F6D2E7A6A6D7A78667A686C2E636F6D6D6F6E2E626173652E42617365456E7469747900000000000000010200064C0008637265617465427971007E00094C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000A63726561746554696D6571007E000B4C0008757064617465427971007E00094C000A7570646174654461746571007E000B4C000A75706461746554696D6571007E000B78707070707070707400013174000D3020302F31202A202A202A203F74001C7A6A6D7A78667A686C4A6F622E686173506172616D28273132332729740007E6B58BE8AF953274000132740007E6B58BE8AF953274000130740000740001307800);
+INSERT INTO `qrtz_job_details` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME3', '测试3', null, 'com.zjmzxfzhl.common.util.job.QuartzJobExecution', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000F5441534B5F50524F5045525449455373720027636F6D2E7A6A6D7A78667A686C2E6D6F64756C65732E7379732E656E746974792E5379734A6F6200000000000000010200094C000A636F6E63757272656E747400124C6A6176612F6C616E672F537472696E673B4C000E63726F6E45787072657373696F6E71007E00094C000C696E766F6B6554617267657471007E00094C00086A6F6247726F757071007E00094C00056A6F62496471007E00094C00076A6F624E616D6571007E00094C000D6D697366697265506F6C69637971007E00094C000672656D61726B71007E00094C000673746174757371007E000978720024636F6D2E7A6A6D7A78667A686C2E636F6D6D6F6E2E626173652E42617365456E7469747900000000000000010200064C0008637265617465427971007E00094C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000A63726561746554696D6571007E000B4C0008757064617465427971007E00094C000A7570646174654461746571007E000B4C000A75706461746554696D6571007E000B787070707074000561646D696E7372000E6A6176612E7574696C2E44617465686A81014B5974190300007870770800000171EA9231F47871007E000F7400013174000D3020302F31202A202A202A203F7400407A6A6D7A78667A686C4A6F622E6861734D756C7469706C65506172616D732827333231272C20747275652C20323030304C2C203331362E3530442C2031303029740007E6B58BE8AF953374000133740007E6B58BE8AF953374000130740000740001307800);
+INSERT INTO `qrtz_job_details` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME4', '测试4', null, 'com.zjmzxfzhl.common.util.job.QuartzJobExecution', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000F5441534B5F50524F5045525449455373720027636F6D2E7A6A6D7A78667A686C2E6D6F64756C65732E7379732E656E746974792E5379734A6F6200000000000000010200094C000A636F6E63757272656E747400124C6A6176612F6C616E672F537472696E673B4C000E63726F6E45787072657373696F6E71007E00094C000C696E766F6B6554617267657471007E00094C00086A6F6247726F757071007E00094C00056A6F62496471007E00094C00076A6F624E616D6571007E00094C000D6D697366697265506F6C69637971007E00094C000672656D61726B71007E00094C000673746174757371007E000978720024636F6D2E7A6A6D7A78667A686C2E636F6D6D6F6E2E626173652E42617365456E7469747900000000000000010200064C0008637265617465427971007E00094C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000A63726561746554696D6571007E000B4C0008757064617465427971007E00094C000A7570646174654461746571007E000B4C000A75706461746554696D6571007E000B787074000561646D696E7372000E6A6176612E7574696C2E44617465686A81014B5974190300007870770800000171B7378000787371007E000E770800000171BBF308587874000561646D696E7371007E000E770800000171B7378000787371007E000E770800000171BBF32B80787400013174000E302F3135202A202A202A202A203F7400177A6A6D7A78667A686C4A6F622E73617665546573742829740007E6B58BE8AF953474000134740007E6B58BE8AF95347400013074000432323234740001307800);
+
+-- ----------------------------
+-- Table structure for qrtz_locks
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_locks`;
+CREATE TABLE `qrtz_locks` (
+  `sched_name` varchar(120) NOT NULL,
+  `lock_name` varchar(40) NOT NULL,
+  PRIMARY KEY (`sched_name`,`lock_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_locks
+-- ----------------------------
+INSERT INTO `qrtz_locks` VALUES ('ZjmzxfzhlScheduler', 'STATE_ACCESS');
+INSERT INTO `qrtz_locks` VALUES ('ZjmzxfzhlScheduler', 'TRIGGER_ACCESS');
+
+-- ----------------------------
+-- Table structure for qrtz_paused_trigger_grps
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
+CREATE TABLE `qrtz_paused_trigger_grps` (
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_paused_trigger_grps
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_scheduler_state
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_scheduler_state`;
+CREATE TABLE `qrtz_scheduler_state` (
+  `sched_name` varchar(120) NOT NULL,
+  `instance_name` varchar(200) NOT NULL,
+  `last_checkin_time` bigint NOT NULL,
+  `checkin_interval` bigint NOT NULL,
+  PRIMARY KEY (`sched_name`,`instance_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_scheduler_state
+-- ----------------------------
+INSERT INTO `qrtz_scheduler_state` VALUES ('ZjmzxfzhlScheduler', 'CN-20200214SKQY1588778314789', '1588779658385', '15000');
+
+-- ----------------------------
+-- Table structure for qrtz_simple_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_simple_triggers`;
+CREATE TABLE `qrtz_simple_triggers` (
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `repeat_count` bigint NOT NULL,
+  `repeat_interval` bigint NOT NULL,
+  `times_triggered` bigint NOT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
+  CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_simple_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_simprop_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
+CREATE TABLE `qrtz_simprop_triggers` (
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `str_prop_1` varchar(512) DEFAULT NULL,
+  `str_prop_2` varchar(512) DEFAULT NULL,
+  `str_prop_3` varchar(512) DEFAULT NULL,
+  `int_prop_1` int DEFAULT NULL,
+  `int_prop_2` int DEFAULT NULL,
+  `long_prop_1` bigint DEFAULT NULL,
+  `long_prop_2` bigint DEFAULT NULL,
+  `dec_prop_1` decimal(13,4) DEFAULT NULL,
+  `dec_prop_2` decimal(13,4) DEFAULT NULL,
+  `bool_prop_1` varchar(1) DEFAULT NULL,
+  `bool_prop_2` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
+  CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_simprop_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_triggers`;
+CREATE TABLE `qrtz_triggers` (
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `job_name` varchar(200) NOT NULL,
+  `job_group` varchar(200) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `next_fire_time` bigint DEFAULT NULL,
+  `prev_fire_time` bigint DEFAULT NULL,
+  `priority` int DEFAULT NULL,
+  `trigger_state` varchar(16) NOT NULL,
+  `trigger_type` varchar(8) NOT NULL,
+  `start_time` bigint NOT NULL,
+  `end_time` bigint DEFAULT NULL,
+  `calendar_name` varchar(200) DEFAULT NULL,
+  `misfire_instr` smallint DEFAULT NULL,
+  `job_data` blob,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
+  KEY `sched_name` (`sched_name`,`job_name`,`job_group`),
+  CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `job_name`, `job_group`) REFERENCES `qrtz_job_details` (`sched_name`, `job_name`, `job_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_triggers
+-- ----------------------------
+INSERT INTO `qrtz_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME1', '测试1', 'TASK_CLASS_NAME1', '测试1', null, '1588778340000', '-1', '5', 'PAUSED', 'CRON', '1588778315000', '0', null, '0', '');
+INSERT INTO `qrtz_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME2', '测试2', 'TASK_CLASS_NAME2', '测试2', null, '1588778340000', '-1', '5', 'PAUSED', 'CRON', '1588778315000', '0', null, '0', '');
+INSERT INTO `qrtz_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME3', '测试3', 'TASK_CLASS_NAME3', '测试3', null, '1588778760000', '1588778700000', '5', 'PAUSED', 'CRON', '1588778381000', '0', null, '0', '');
+INSERT INTO `qrtz_triggers` VALUES ('ZjmzxfzhlScheduler', 'TASK_CLASS_NAME4', '测试4', 'TASK_CLASS_NAME4', '测试4', null, '1588778370000', '-1', '5', 'PAUSED', 'CRON', '1588778370000', '0', null, '0', '');
 
 -- ----------------------------
 -- Table structure for t_app_user
@@ -6647,7 +6880,10 @@ INSERT INTO `t_sys_code_info` VALUES ('identityType-1', 'identityType', '1', '�
 INSERT INTO `t_sys_code_info` VALUES ('identityType-2', 'identityType', '2', '岗位', '', '2', '', '1', 'admin', '2020-03-01', '2020-03-01 19:14:53', 'admin', '2020-04-20', '2020-04-20 20:31:24');
 INSERT INTO `t_sys_code_info` VALUES ('logType-1', 'logType', '1', '登录日志', '', '1', '', '1', 'user2', '2019-09-03', '2019-09-03 00:52:34', null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('logType-2', 'logType', '2', '操作日志', '', '2', '', '1', 'user2', '2019-09-03', '2019-09-03 00:52:56', null, null, null);
-INSERT INTO `t_sys_code_info` VALUES ('logType-3', 'logType', '3', '定时任务', '', '3', '', '1', 'user2', '2019-09-03', '2019-09-03 00:52:09', null, null, null);
+INSERT INTO `t_sys_code_info` VALUES ('misfirePolicy-0', 'misfirePolicy', '0', '默认', '', '0', '', '1', 'admin', '2020-04-26', '2020-04-26 23:56:39', null, null, null);
+INSERT INTO `t_sys_code_info` VALUES ('misfirePolicy-1', 'misfirePolicy', '1', '立即触发执行', '', '1', '', '1', 'admin', '2020-04-26', '2020-04-26 23:57:25', null, null, null);
+INSERT INTO `t_sys_code_info` VALUES ('misfirePolicy-2', 'misfirePolicy', '2', '触发一次执行', '', '2', '', '1', 'admin', '2020-04-26', '2020-04-26 23:57:41', null, null, null);
+INSERT INTO `t_sys_code_info` VALUES ('misfirePolicy-3', 'misfirePolicy', '3', '不触发立即执行', '', '3', '', '1', 'admin', '2020-04-26', '2020-04-26 23:58:03', null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('orgLevel-1', 'orgLevel', '1', '一级', null, '1', null, '1', null, null, null, null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('orgLevel-2', 'orgLevel', '2', '二级', '', '2', '', '1', null, null, null, null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('orgLevel-3', 'orgLevel', '3', '三级', '', '3', '', '1', null, null, null, null, null, null);
@@ -6692,6 +6928,7 @@ CREATE TABLE `t_sys_code_type` (
 INSERT INTO `t_sys_code_type` VALUES ('entityType', '实体类型', '5', '', 'admin', '2019-09-01', '2019-09-01 11:40:19', null, null, null);
 INSERT INTO `t_sys_code_type` VALUES ('identityType', '授权类型', '10', '', 'admin', '2020-03-01', '2020-03-01 19:13:55', null, null, null);
 INSERT INTO `t_sys_code_type` VALUES ('logType', '日志类型', '7', '', 'user2', '2019-09-03', '2019-09-03 00:52:09', null, null, null);
+INSERT INTO `t_sys_code_type` VALUES ('misfirePolicy', '计划执行错误策略', '12', '', 'admin', '2020-04-26', '2020-04-26 23:54:48', null, null, null);
 INSERT INTO `t_sys_code_type` VALUES ('orgLevel', '机构级别', '3', null, null, null, null, 'admin', '2019-09-01', '2019-09-01 17:06:53');
 INSERT INTO `t_sys_code_type` VALUES ('orgType', '机构类型', '4', null, null, null, null, 'admin', '2019-09-01', '2019-09-01 17:01:27');
 INSERT INTO `t_sys_code_type` VALUES ('sourceStrategy', '数据源策略', '6', '', 'admin', '2019-09-01', '2019-09-01 13:04:14', 'admin', '2019-09-01', '2019-09-01 17:06:49');
@@ -6824,6 +7061,11 @@ INSERT INTO `t_sys_func` VALUES ('sysDataPermission-3', '删除', 'sysDataPermis
 INSERT INTO `t_sys_func` VALUES ('sysFunc-1', '新增', 'sysFunc', 'sys:func:save', '', '1', null, null, null, null, null, null);
 INSERT INTO `t_sys_func` VALUES ('sysFunc-2', '修改', 'sysFunc', 'sys:func:update', '', '2', null, null, null, null, null, null);
 INSERT INTO `t_sys_func` VALUES ('sysFunc-3', '删除', 'sysFunc', 'sys:func:delete', '', '3', null, null, null, null, null, null);
+INSERT INTO `t_sys_func` VALUES ('sysJob-1', '新增', 'sysJob', 'sys:job:save', '', '1', null, null, null, null, null, null);
+INSERT INTO `t_sys_func` VALUES ('sysJob-2', '修改', 'sysJob', 'sys:job:update', '', '2', null, null, null, null, null, null);
+INSERT INTO `t_sys_func` VALUES ('sysJob-3', '删除', 'sysJob', 'sys:job:delete', '', '3', null, null, null, null, null, null);
+INSERT INTO `t_sys_func` VALUES ('sysJob-4', '激活/挂起', 'sysJob', 'sys:job:changeStatus', '', '4', 'admin', '2020-04-27', '2020-04-27 22:33:30', null, null, null);
+INSERT INTO `t_sys_func` VALUES ('sysJob-5', '立即执行', 'sysJob', 'sys:job:run', '', '5', 'admin', '2020-04-27', '2020-04-27 23:29:17', null, null, null);
 INSERT INTO `t_sys_func` VALUES ('sysMenu-1', '新增', 'sysMenu', 'sys:menu:save', '', '1', null, null, null, null, null, null);
 INSERT INTO `t_sys_func` VALUES ('sysMenu-2', '修改', 'sysMenu', 'sys:menu:update', '', '2', null, null, null, null, null, null);
 INSERT INTO `t_sys_func` VALUES ('sysMenu-3', '删除', 'sysMenu', 'sys:menu:delete', '', '3', null, null, null, null, null, null);
@@ -6842,24 +7084,83 @@ INSERT INTO `t_sys_func` VALUES ('sysRole-5', '分配用户', 'sysRole', 'sys:ro
 INSERT INTO `t_sys_func` VALUES ('sysUser-1', '新增', 'sysUser', 'sys:user:save,sys:org:getTreeData', '', '1', null, null, null, 'admin', '2019-09-08', '2019-09-08 17:51:12');
 INSERT INTO `t_sys_func` VALUES ('sysUser-2', '修改', 'sysUser', 'sys:user:update,sys:org:getTreeData', '', '2', null, null, null, 'admin', '2019-09-08', '2019-09-08 17:51:19');
 INSERT INTO `t_sys_func` VALUES ('sysUser-3', '删除', 'sysUser', 'sys:user:delete', '', '3', null, null, null, null, null, null);
+INSERT INTO `t_sys_func` VALUES ('sysUser-4', '导出', 'sysUser', 'sys:user:export', '', '4', 'admin', '2020-05-03', '2020-05-03 11:48:01', 'admin', '2020-05-03', '2020-05-03 11:48:14');
+
+-- ----------------------------
+-- Table structure for t_sys_job
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sys_job`;
+CREATE TABLE `t_sys_job` (
+  `JOB_ID` varchar(32) NOT NULL COMMENT '任务ID',
+  `JOB_NAME` varchar(64) NOT NULL COMMENT '任务名称',
+  `JOB_GROUP` varchar(64) NOT NULL COMMENT '任务组名',
+  `INVOKE_TARGET` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `CRON_EXPRESSION` varchar(255) DEFAULT NULL COMMENT 'cron执行表达式',
+  `MISFIRE_POLICY` varchar(20) DEFAULT NULL COMMENT '计划执行错误策略',
+  `CONCURRENT` varchar(1) DEFAULT NULL COMMENT '是否并发执行',
+  `STATUS` varchar(1) DEFAULT NULL COMMENT '是否正常状态',
+  `REMARK` varchar(500) DEFAULT NULL COMMENT '备注',
+  `CREATE_BY` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `CREATE_DATE` date DEFAULT NULL COMMENT '创建日期',
+  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) DEFAULT NULL COMMENT '修改人',
+  `UPDATE_DATE` date DEFAULT NULL COMMENT '修改日期',
+  `UPDATE_TIME` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`JOB_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='SYS15_定时任务表';
+
+-- ----------------------------
+-- Records of t_sys_job
+-- ----------------------------
+INSERT INTO `t_sys_job` VALUES ('1', '测试1', '测试1', 'zjmzxfzhlJob.hasNoParam()', '0 0/1 * * * ?', '0', '1', '0', '', 'admin', '2020-04-27', '2020-04-27 00:00:21', 'admin', '2020-04-27', '2020-04-27 00:02:03');
+INSERT INTO `t_sys_job` VALUES ('2', '测试2', '测试2', 'zjmzxfzhlJob.hasParam(\'123\')', '0 0/1 * * * ?', '0', '1', '0', '', 'admin', '2020-04-27', '2020-04-27 22:02:27', 'admin', '2020-04-27', '2020-04-27 22:02:42');
+INSERT INTO `t_sys_job` VALUES ('3', '测试3', '测试3', 'zjmzxfzhlJob.hasMultipleParams(\'321\', true, 2000L, 316.50D, 100)', '0 0/1 * * * ?', '0', '1', '0', '', 'admin', '2020-04-27', '2020-04-27 22:03:01', 'admin', '2020-05-06', '2020-05-06 23:25:12');
+INSERT INTO `t_sys_job` VALUES ('4', '测试4', '测试4', 'zjmzxfzhlJob.saveTest()', '0/15 * * * * ?', '0', '1', '0', '', 'admin', '2020-04-27', '2020-04-27 22:03:19', 'admin', '2020-04-27', '2020-04-27 22:03:28');
+
+-- ----------------------------
+-- Table structure for t_sys_job_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sys_job_log`;
+CREATE TABLE `t_sys_job_log` (
+  `JOB_LOG_ID` varchar(32) NOT NULL COMMENT '日志ID',
+  `JOB_NAME` varchar(64) NOT NULL COMMENT '任务名称',
+  `JOB_GROUP` varchar(64) NOT NULL COMMENT '任务组名',
+  `INVOKE_TARGET` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `JOB_MESSAGE` varchar(500) DEFAULT NULL COMMENT '日志信息',
+  `STATUS` varchar(20) DEFAULT NULL COMMENT '是否正常执行',
+  `EXCEPTION_INFO` mediumtext COMMENT '异常信息',
+  `START_TIME` datetime DEFAULT NULL COMMENT '开始时间',
+  `STOP_TIME` datetime DEFAULT NULL COMMENT '结束时间',
+  `CREATE_BY` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `CREATE_DATE` date DEFAULT NULL COMMENT '创建日期',
+  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_BY` varchar(32) DEFAULT NULL COMMENT '修改人',
+  `UPDATE_DATE` date DEFAULT NULL COMMENT '修改日期',
+  `UPDATE_TIME` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`JOB_LOG_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='SYS16_定时任务执行日志表';
+
+-- ----------------------------
+-- Records of t_sys_job_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_sys_log
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_log`;
 CREATE TABLE `t_sys_log` (
-  `LOG_ID` varchar(32) NOT NULL,
-  `LOG_TYPE` int DEFAULT NULL COMMENT '日志类型（1登录日志，2操作日志）',
-  `LOG_CONTENT` varchar(255) DEFAULT NULL COMMENT '日志内容',
-  `OPERATE_TYPE` int DEFAULT NULL COMMENT '操作类型',
-  `USER_ID` varchar(32) DEFAULT NULL COMMENT '操作用户账号',
-  `USER_NAME` varchar(100) DEFAULT NULL COMMENT '操作用户名称',
-  `IP` varchar(100) DEFAULT NULL COMMENT 'IP',
-  `METHOD` varchar(255) DEFAULT NULL COMMENT '请求JAVA方法',
+  `LOG_ID` varchar(32) NOT NULL COMMENT 'UUID',
+  `LOG_TYPE` varchar(2) NOT NULL COMMENT '日志类型',
+  `LOG_CONTENT` varchar(100) NOT NULL COMMENT '日志内容',
+  `OPERATE_TYPE` varchar(2) DEFAULT NULL COMMENT '操作类型',
+  `USER_ID` varchar(32) DEFAULT NULL COMMENT '操作用户',
+  `USER_NAME` varchar(100) DEFAULT NULL COMMENT '操作用户姓名',
+  `IP` varchar(100) DEFAULT NULL COMMENT 'IP地址',
+  `METHOD` varchar(255) DEFAULT NULL COMMENT '请求方法',
   `REQUEST_URL` varchar(255) DEFAULT NULL COMMENT '请求路径',
-  `REQUEST_PARAM` longtext COMMENT '请求参数',
+  `REQUEST_PARAM` text COMMENT '请求参数',
   `REQUEST_TYPE` varchar(10) DEFAULT NULL COMMENT '请求类型',
-  `OPERATE_RESULT` longtext COMMENT '操作结果',
+  `OPERATE_RESULT` text COMMENT '操作结果',
   `COST_TIME` bigint DEFAULT NULL COMMENT '耗时',
   `CREATE_BY` varchar(32) DEFAULT NULL COMMENT '创建人',
   `CREATE_DATE` date DEFAULT NULL COMMENT '创建日期',
@@ -6868,7 +7169,7 @@ CREATE TABLE `t_sys_log` (
   `UPDATE_DATE` date DEFAULT NULL COMMENT '修改日期',
   `UPDATE_TIME` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`LOG_ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='SYS12_系统日志表';
 
 -- ----------------------------
 -- Records of t_sys_log
@@ -6923,6 +7224,8 @@ INSERT INTO `t_sys_menu` VALUES ('sysCodeType', '代码类别', 'sys', 'list', '
 INSERT INTO `t_sys_menu` VALUES ('sysConfig', '参数管理', 'sys', 'list', 'config', 'sys:config:list', 'views/sys/config/index', null, '0', '1', 'SysConfig', '1', '0', '1', '10100', null, null, null, 'admin', '2020-03-15', '2020-03-15 13:34:44');
 INSERT INTO `t_sys_menu` VALUES ('sysDataPermission', '数据权限', 'sys', 'list', 'dataPermission', 'sys:dataPermission:list', 'views/sys/dataPermission/index', null, '0', '1', 'SysDataPermission', '1', '0', '1', '10900', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:04:01');
 INSERT INTO `t_sys_menu` VALUES ('sysFunc', '功能管理', 'sys', 'tree', 'func', 'sys:func:list,sys:menu:getTreeData', 'views/sys/func/index', null, '0', '1', 'SysFunc', '1', '0', '1', '10500', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:03:30');
+INSERT INTO `t_sys_menu` VALUES ('sysJob', '定时任务', 'sys', 'list', 'job', 'sys:job:list', 'views/sys/job/index', null, '0', '1', 'SysJob', '1', '0', '1', '19100', null, null, null, null, null, null);
+INSERT INTO `t_sys_menu` VALUES ('sysJobLog', '定时任务日志', 'sys', 'list', 'jobLog', 'sys:jobLog:list', 'views/sys/jobLog/index', null, '0', '1', 'SysJobLog', '1', '0', '1', '19200', null, null, null, null, null, null);
 INSERT INTO `t_sys_menu` VALUES ('sysLog', '系统日志', 'sys', 'list', 'log', 'sys:log:list', 'views/sys/log/index', null, '0', '1', 'SysLog', '1', '0', '1', '11000', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:03:17');
 INSERT INTO `t_sys_menu` VALUES ('sysMenu', '菜单管理', 'sys', 'tree', 'menu', 'sys:menu:list,sys:menu:getTreeData', 'views/sys/menu/index', null, '0', '1', 'SysMenu', '1', '0', '1', '10400', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:10:50');
 INSERT INTO `t_sys_menu` VALUES ('sysOrg', '机构管理', 'sys', 'tree', 'org', 'sys:org:list,sys:org:getTreeData', 'views/sys/org/index', null, '0', '1', 'SysOrg', '1', '0', '1', '10600', null, null, null, 'admin', '2019-09-17', '2019-09-17 22:44:53');
@@ -7062,73 +7365,70 @@ CREATE TABLE `t_sys_role_permission` (
 -- ----------------------------
 -- Records of t_sys_role_permission
 -- ----------------------------
-INSERT INTO `t_sys_role_permission` VALUES ('0353ffceb46ffee5c125a1eae93ee98a', 'admin', '1', 'sysRole', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('0400dfec82a6cab0b9dcd0b2ef7d5149', 'queryRole', '1', 'demoZjmzxfzhl', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('082a689599be719fa90810ab9ae1d518', 'admin', '2', 'sysConfig-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('10b7ef111c0e1c876324b88980fedc79', 'admin', '2', 'sysRole-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('12a142ad5368d496094f7ff38b93c030', 'admin', '2', 'sysFunc-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('136be4d8ee56653866e99e30ee1ed801', 'admin', '2', 'sysMenu-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('187bb9259c065df18057c48928d4d20c', 'admin', '2', 'sysRole-5', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('05d313ece50099a174e2453acc0579fb', 'admin', '2', 'flowableProcessDefinition-4', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('060c600f28ef786367341f468bb52cf7', 'admin', '2', 'sysConfig-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('0ddbe63529c020d26d72a0769dffb254', 'admin', '2', 'flowableProcessDefinition-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('19719acc69348d1d4d528b8b236d57ad', 'admin', '2', 'sysConfig-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('1b3ed49659d507f604dc3f7876e7484e', 'admin', '2', 'sysFunc-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('1e1297c669a7a14a75256072836598c6', 'queryRole', '1', 'sysConfig', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('200d434ec6f929c00181aeea6ea0a75c', 'admin', '1', 'flowableForm', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('216e2eb4c0491fb4db55519169d7e4fe', 'admin', '2', 'flowableProcessInstance-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('2199f99ab0edd90895b9efcc1b9d330a', 'admin', '2', 'sysMenu-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('250e6561498cad15b8629bbc5ed7e124', 'queryRole', '1', 'sysOrg', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('278b8e0b40360fce11150c25a60ecf98', 'admin', '1', 'sysFunc', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('3526a59e0c4c88b68a2b8597fbc324fe', 'admin', '2', 'sysFunc-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('35fd454c13f1e546f88a32a2ca857daf', 'admin', '1', 'sysMenu', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('3f52d41d70465df6c4cb62eb92c06691', 'admin', '2', 'flowableProcessDefinition-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('43d0599df2b287636386e0667f73bb70', 'admin', '1', 'sysUser', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('2c063ba29ff5338b084e9a5ef0efada0', 'admin', '2', 'sysUser-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('329e01432851939aaa302965bbdd0897', 'admin', '1', 'flowableProcessInstance', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('393b6aa0c2487b399fa529299f4eda20', 'admin', '2', 'sysUser-4', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('47518fd933c1c4221b7cb2c53aded27b', 'queryRole', '1', 'sysCodeType', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('47bee92620c31c698802c97dfa1f5fde', 'admin', '2', 'sysRole-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('4821967779ad21be696c0758508d89ca', 'queryRole', '1', 'demo', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('4910413c39f42080a5efdb57d80619a4', 'admin', '2', 'sysUser-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('4bf12906b3e2feb95e75e53c1608cfdf', 'admin', '1', 'flowableMyProcess', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('513a4065f8e1691345aed2d1bfc2550d', 'admin', '2', 'flowableForm-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('53dde689e487ca39107ab47ffc1a7ed6', 'admin', '1', 'flowableTask', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('5492e31194ef42f9c74bc8d852716ad6', 'admin', '1', 'sys', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('5a4f5c68cb6ce723a41fd61dc99d65f4', 'admin', '2', 'sysDataPermission-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('5d099bf2c7d621197f57ee93ed5af0e6', 'admin', '2', 'flowableProcessDefinition-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('5f87ce9d48215e7735965dc89297a6a5', 'admin', '2', 'flowableProcessDefinition-5', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('66f83916bb2eaa2bb1c2b707a783594e', 'admin', '1', 'sysConfig', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('4ee9fe9c26cb64cc5ab5cc7bfa09a3b6', 'admin', '2', 'sysDataPermission-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('501399b098756095599afde6122e6371', 'admin', '1', 'sys', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('65ea31ec99b9388d9e714e95d8c196aa', 'admin', '2', 'sysUser-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('68a8193ebd3efbf785e91ad35ad897c5', 'queryRole', '1', 'sysRole', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('698dfc6322382d710054e185378f6178', 'admin', '2', 'flowableForm-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('6a87ad9bcb5341c22eda9a1225241ecb', 'admin', '2', 'sysDataPermission-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('6f1b7547864a35222cd971383babb769', 'admin', '2', 'flowableProcessInstance-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('6fbe569e175583c42633a7617ddf226a', 'admin', '1', 'flowableStartMyProcess', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('70b3d6be6a92b85df04ef675261d1e82', 'admin', '2', 'flowableProcessDefinition-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('70c5c86d09b31f6ad77f6c4e4b588592', 'admin', '2', 'sysMenu-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('72af9f2c0ca695e3332c56b3c2129176', 'admin', '2', 'sysFunc-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('737a3a06f7f53a7133b29a678c713f0a', 'admin', '1', 'sysDataPermission', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('7aa34aa2373c2adbfaaa8860234feba7', 'admin', '2', 'sysDataPermission-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('808de85c70e82e991f9277383fcb07eb', 'admin', '2', 'flowableForm-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('68c1e4522efb12a0e0516b16826047e9', 'admin', '2', 'flowableProcessInstance-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('6db7dcd69c84ce82944c3eddc50669ba', 'admin', '2', 'sysPost-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('6e0ab890d14ca895b5fe53b3f6b054d9', 'admin', '1', 'flowableProcessDefinition', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('70c0a99753a2e8e4dc7fdfccd62f73bf', 'admin', '1', 'flowable', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('719ba92e6a8c160754075d9ecf664d18', 'admin', '1', 'flowableForm', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('78605ae040bafeb339d896351f6b4764', 'admin', '2', 'sysDataPermission-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('78d9186edc7d1f0ffa57f288aaa7f038', 'admin', '2', 'flowableTask-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('82c7319b6a8873763b2e53892e60d305', 'queryRole', '1', 'sysCodeInfo', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('83f8a2ec6217d0afb044872b952380c3', 'admin', '2', 'sysConfig-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('870b78a151d9b19b8ac647648b40dd26', 'queryRole', '1', 'demoHelloworld', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('875d705df63b389f3e80a48801d081ee', 'admin', '2', 'sysPost-4', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('933df297e130f8e32d791cde6aa45731', 'admin', '2', 'sysUser-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('94cc5068b6ec47d090a74a0d0629e17c', 'admin', '2', 'sysRole-4', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('96cdb7e5f0eb728935e1ee41a5ec1154', 'admin', '2', 'sysRole-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('99a38a1f97796d359147f98c684e67a4', 'admin', '1', 'flowableProcessDefinition', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('87fbd65f5518df252baa247659c4d637', 'admin', '2', 'sysFunc-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('8f2149f84a4d82dd4eeabb25539d4532', 'admin', '2', 'sysPost-4', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('9360572b4fd87b56495ba4f6cd039f19', 'admin', '2', 'flowableProcessDefinition-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('961a79e7c3f3355ae8016c12666d9cc3', 'admin', '2', 'sysPost-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('9702444bb2706737cc89807e787f2abf', 'admin', '1', 'sysRole', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('97ff381be904f5bf430376cb9758b72b', 'admin', '2', 'sysMenu-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('98609d91016df3d1033dafd191b59243', 'admin', '1', 'sysUser', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('99efa52ac20c8d02e355f8c97c3f8960', 'admin', '2', 'sysUser-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('9a51d3bf35f5eb073056e458459237af', 'admin', '1', 'sysConfig', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('9b8e135e4a68b20a19c5826fc469127e', 'admin', '1', 'sysFunc', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('9c68ab8c9b262f81200d24765a210de0', 'queryRole', '1', 'sysLog', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('9c859e997f06ff36f6a1b5c18c9a9ffd', 'admin', '2', 'sysRole-4', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('9d1f48400264b38d6f54f0c9d1210624', 'admin', '2', 'sysRole-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('9df04963058d7cd7c66e051b27f3f912', 'admin', '2', 'flowableForm-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('a26fa79ca1785e9b43ca7ec0b6e3ef01', 'queryRole', '1', 'sys', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('af31f953bc3358e62463179db248dbc5', 'admin', '2', 'flowableProcessInstance-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('af804e5a5f7c4e45781ee6c8b009139b', 'admin', '1', 'sysDataPermission', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('afc6cad7eb8f1cc46dc70134b0ebf124', 'queryRole', '1', 'sysMenu', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('bc246be02df8e50f236bbd8818aaca4c', 'admin', '1', 'sysPost', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('b43cff8248a6c6322d3b6a33ac7fc691', 'admin', '1', 'sysPost', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('bd013e4bb7ef5c508a1db0677dc02f02', 'admin', '2', 'sysDataPermission-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('bd8cee10e9cfe0ddbb7be93ded132a4a', 'queryRole', '1', 'sysFunc', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('bdfe8fd2ba5798f6934635aead3c6c58', 'admin', '2', 'sysRole-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('bf28ef3c8ad4be6c935a80b6295ad947', 'queryRole', '1', 'sysUser', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('ce1ae2aa0113f0dbed42fdc7c59dbaa6', 'admin', '1', 'flowableTaskDone', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('cee1061e35999691a93b119bb71f8d82', 'admin', '1', 'flowableTaskTodo', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('d2754eb5ca883f67fa6bf27561d4116e', 'admin', '2', 'sysMenu-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('db453a90375323e914fa2c5c87dd8c84', 'admin', '1', 'flowableProcessInstance', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('dcdd8a4fbbef371c661d80465360badd', 'admin', '2', 'sysPost-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('ddc935a5ac29b5708775ccf0f875616d', 'admin', '2', 'flowableTask-1', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('e03007c19f511c63cd3642a4c4877c4b', 'admin', '2', 'flowableProcessDefinition-4', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('e1daa8a408b151d987b3c12d907bc7fe', 'admin', '2', 'sysUser-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('bf51e3e31eb2a6cb4943a4b038087d54', 'admin', '2', 'flowableProcessInstance-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('bff1417940235cf97c10b6398e3ac0f2', 'admin', '2', 'flowableForm-3', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('c362849a1cb140f6d51b5caf14e5bfe2', 'admin', '2', 'sysRole-5', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('c8419c83591c1e2efd37ef102dadf594', 'admin', '2', 'sysMenu-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('d0cfab2db00c5d3adf3526bf12d30d73', 'admin', '2', 'sysPost-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('d5e7b1f98494f50b7bdbf37e9f8a9b76', 'admin', '2', 'flowableForm-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('dd31d681294e613f8afbe6a60d37b257', 'admin', '2', 'sysConfig-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 INSERT INTO `t_sys_role_permission` VALUES ('e2a8d10ed5bc78257261f9c5de69520a', 'queryRole', '1', 'sysDataPermission', 'admin', '2020-04-19', '2020-04-19 19:39:12', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('e4942b8eee4958151f6712c5b750e811', 'admin', '1', 'flowable', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('e49ae0599c0dda3c29eed28c27c474ce', 'admin', '2', 'flowableProcessInstance-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('e580d170a6ffad8c224ced9a2a26c85c', 'admin', '2', 'sysConfig-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('ee0bd9e777aa498f126ecaad80dd2b03', 'admin', '2', 'sysPost-2', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
-INSERT INTO `t_sys_role_permission` VALUES ('f590d98ae3610e297f5ec5be85dc8e77', 'admin', '2', 'sysPost-3', 'zhl', '2020-04-18', '2020-04-18 18:23:33', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('e4ae083fa9c28555a43dc71f3e1bd043', 'admin', '1', 'sysMenu', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('e4bd74eead5b91366ba10909b95b6fd4', 'admin', '2', 'sysRole-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('e865c1b4fe14820d1f6df60987e736c6', 'admin', '2', 'flowableProcessDefinition-5', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('f0eced4076c913be803a066bba257fcc', 'admin', '2', 'sysFunc-1', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('f164eef033c0ee08f3b8a8f30603a1ca', 'admin', '2', 'flowableProcessDefinition-2', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
+INSERT INTO `t_sys_role_permission` VALUES ('f431e9b6efe3f01ccf380cf819c38954', 'admin', '1', 'flowableTask', 'admin', '2020-05-03', '2020-05-03 11:48:53', null, null, null);
 
 -- ----------------------------
 -- Table structure for t_sys_role_user
@@ -7156,43 +7456,6 @@ INSERT INTO `t_sys_role_user` VALUES ('queryRole-zhl', 'queryRole', 'zhl', 'admi
 INSERT INTO `t_sys_role_user` VALUES ('queryRole-zjm', 'queryRole', 'zjm', 'admin', '2020-04-25', '2020-04-25 17:28:35', null, null, null);
 INSERT INTO `t_sys_role_user` VALUES ('queryRole-zjmzxfzhl', 'queryRole', 'zjmzxfzhl', 'admin', '2020-04-18', '2020-04-18 21:42:25', null, null, null);
 INSERT INTO `t_sys_role_user` VALUES ('queryRole-zxf', 'queryRole', 'zxf', 'admin', '2020-04-25', '2020-04-25 17:28:35', null, null, null);
-
--- ----------------------------
--- Table structure for t_sys_test
--- ----------------------------
-DROP TABLE IF EXISTS `t_sys_test`;
-CREATE TABLE `t_sys_test` (
-  `TEST_ID` varchar(32) NOT NULL COMMENT 'ID',
-  `ZJMZXFZHL_NAME` varchar(32) NOT NULL COMMENT '名称',
-  `ZJMZXFZHL_CODE_INFO` varchar(1) DEFAULT NULL COMMENT '代码信息',
-  `ZJMZXFZHL_DATE` date DEFAULT NULL COMMENT '日期格式',
-  `ZJMZXFZHL_DATETIME` datetime DEFAULT NULL COMMENT '时间格式',
-  `ORG_ID` varchar(32) DEFAULT NULL COMMENT '所属机构ID',
-  `ZJMZXFZHL_DBPARAM1` varchar(3) DEFAULT NULL COMMENT '参数1',
-  `ZJMZXFZHL_DBPARAM2` int DEFAULT NULL COMMENT '参数2',
-  `FILTER_OPERATOR_EQ` varchar(3) DEFAULT NULL COMMENT '等于',
-  `FILTER_OPERATOR_NE` int DEFAULT NULL COMMENT '不等于',
-  `FILTER_OPERATOR_LT` float(5,2) DEFAULT NULL COMMENT '小于',
-  `FILTER_OPERATOR_LE` int DEFAULT NULL COMMENT '小于等于',
-  `FILTER_OPERATOR_GT` int DEFAULT NULL COMMENT '大于',
-  `FILTER_OPERATOR_GE` float(5,2) DEFAULT NULL COMMENT '大于等于',
-  `FILTER_OPERATOR_IN` varchar(3) DEFAULT NULL COMMENT 'IN',
-  `FILTER_OPERATOR_BETWEEN` int DEFAULT NULL COMMENT 'BETWEEN',
-  `FILTER_OPERATOR_LIKE` varchar(32) DEFAULT NULL COMMENT '模糊',
-  `FILTER_OPERATOR_LIKE_LEFT` varchar(32) DEFAULT NULL COMMENT '左模糊',
-  `FILTER_OPERATOR_LIKE_RIGHT` varchar(32) DEFAULT NULL COMMENT '右模糊',
-  `CREATE_BY` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `CREATE_DATE` date DEFAULT NULL COMMENT '创建日期',
-  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
-  `UPDATE_BY` varchar(32) DEFAULT NULL COMMENT '修改人',
-  `UPDATE_DATE` date DEFAULT NULL COMMENT '修改日期',
-  `UPDATE_TIME` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`TEST_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='TEST01_开发示例';
-
--- ----------------------------
--- Records of t_sys_test
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_sys_user

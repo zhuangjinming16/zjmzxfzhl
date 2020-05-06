@@ -43,12 +43,15 @@ import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionRequest;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionResponse;
 import com.zjmzxfzhl.modules.flowable.wapper.ProcDefListWrapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author 庄金明
  * @date 2020年3月24日
  */
 @RestController
 @RequestMapping("/flowable/processDefinition")
+@Slf4j
 public class ProcessDefinitionController extends BaseFlowableController {
     private static final Map<String, QueryProperty> ALLOWED_SORT_PROPERTIES = new HashMap<>();
     @Autowired
@@ -200,9 +203,8 @@ public class ProcessDefinitionController extends BaseFlowableController {
         try {
             return new ResponseEntity<>(IOUtils.toByteArray(resourceStream), responseHeaders, HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("获取流程定义XML信息异常", e);
-            throw new FlowableException(messageFormat("Process definition xml read error with id {0}", deploymentId),
-                    e);
+            log.error("获取流程定义XML信息异常", e);
+            throw new FlowableException(messageFormat("ProcessDefinition xml read error with id {0}", deploymentId), e);
         }
     }
 

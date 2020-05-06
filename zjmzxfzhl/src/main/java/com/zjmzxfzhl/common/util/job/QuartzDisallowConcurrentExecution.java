@@ -3,6 +3,7 @@ package com.zjmzxfzhl.common.util.job;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 
+import com.zjmzxfzhl.common.util.SpringContextUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysJob;
 
 /**
@@ -15,6 +16,7 @@ import com.zjmzxfzhl.modules.sys.entity.SysJob;
 public class QuartzDisallowConcurrentExecution extends AbstractQuartzJob {
     @Override
     protected void doExecute(JobExecutionContext context, SysJob sysJob) throws Exception {
-        JobInvokeUtil.invokeMethod(sysJob);
+        JobInvokeUtil jobInvokeUtil = SpringContextUtils.getBean(JobInvokeUtil.class);
+        jobInvokeUtil.invokeMethod(sysJob);
     }
 }

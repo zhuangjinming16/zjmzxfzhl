@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,6 +45,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveSysMenu(SysMenu sysMenu) {
         // 【1】 判断是否有上级菜单
         if (!CommonUtil.isEmptyStr(sysMenu.getParentMenuId())) {
@@ -71,6 +73,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateSysMenu(SysMenu sysMenu) {
         SysMenu sysMenuDb = this.getById(sysMenu.getMenuId());
         if (sysMenuDb == null) {
@@ -103,6 +106,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(String id) {
         int countChildren = this.count(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentMenuId, id));
         if (countChildren > 0) {

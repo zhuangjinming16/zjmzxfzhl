@@ -3,13 +3,13 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.{_sys}.mapper.{_Sys}{_CodeType}Mapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType}">
-		select
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType}">
+        select
 {searchColumns}
 
-		from {tableName} a 
-		where 1=1 
+        from {tableName} a 
+        where 1=1 
 {whereConditions}{orderBy}
-	</select>
+    </select>
 </mapper>

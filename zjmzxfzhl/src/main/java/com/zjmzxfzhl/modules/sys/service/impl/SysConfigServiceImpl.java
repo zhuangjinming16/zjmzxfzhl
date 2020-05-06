@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -63,6 +64,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
      * @param sysConfig
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveSysConfig(SysConfig sysConfig) {
         this.save(sysConfig);
         this.loadSysConfigToRedis(sysConfig.getConfigId());
@@ -74,6 +76,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
      * @param sysConfig
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateSysConfig(SysConfig sysConfig) {
         this.updateById(sysConfig);
         this.loadSysConfigToRedis(sysConfig.getConfigId());
@@ -85,6 +88,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
      * @param ids
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteSysConfig(String ids) {
         if (ids == null || ids.trim().length() == 0) {
             throw new SysException("ids can't be empty");

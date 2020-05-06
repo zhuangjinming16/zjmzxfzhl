@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -94,6 +95,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public SessionObject saveGetUserInfo(SysUser sysUser, String roleId) {
         SessionObject sessionObject = new SessionObject();
         sessionObject.setSysUser(sysUser);
@@ -279,6 +281,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @param sysUser
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveSysUser(SysUser sysUser) {
         String salt = PasswordUtil.randomGen(8);
         String defaultPassword = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + "defaultPassword", "1");
@@ -298,6 +301,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @param sysUser
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateSysUser(SysUser sysUser) {
         SysUser sysUserDb = this.getById(sysUser.getUserId());
         if (!sysUserDb.getRoleId().equals(sysUser.getRoleId())) {
@@ -321,6 +325,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @param ids
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String ids) {
         if (ids == null || ids.trim().length() == 0) {
             throw new SysException("ids can't be empty");
@@ -346,6 +351,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @param sysPasswordForm
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updatePassword(SysPasswordForm sysPasswordForm) {
         String userId = ShiroUtils.getUserId();
         SysUser sysUser = this.getById(userId);

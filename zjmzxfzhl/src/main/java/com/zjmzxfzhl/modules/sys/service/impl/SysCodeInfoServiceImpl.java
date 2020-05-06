@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -138,6 +139,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
      * @param sysCodeInfo
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveSysCodeInfo(SysCodeInfo sysCodeInfo) {
         this.save(sysCodeInfo);
         this.loadSysCodeInfoToRedis(sysCodeInfo.getCodeTypeId());
@@ -149,6 +151,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
      * @param sysCodeInfo
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateSysCodeInfo(SysCodeInfo sysCodeInfo) {
         this.updateById(sysCodeInfo);
         this.loadSysCodeInfoToRedis(sysCodeInfo.getCodeTypeId());
@@ -160,6 +163,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
      * @param ids
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteSysCodeInfo(String ids) {
         if (ids == null || ids.trim().length() == 0) {
             throw new SysException("ids can't be empty");
