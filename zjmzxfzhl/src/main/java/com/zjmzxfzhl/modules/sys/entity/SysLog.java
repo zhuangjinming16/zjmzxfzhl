@@ -1,21 +1,21 @@
 package com.zjmzxfzhl.modules.sys.entity;
 
+import javax.validation.constraints.NotNull;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
-import javax.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.Data;
 
 /**
  * 【系统日志】实体类
  * 
  * @author 庄金明
  */
-@Getter
-@Setter
+@Data
 @TableName("T_SYS_LOG")
 public class SysLog extends BaseEntity {
 

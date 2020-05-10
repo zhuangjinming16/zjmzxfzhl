@@ -9,55 +9,53 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * 【角色和用户关系】实体类
  * 
  * @author 庄金明
  */
-@Getter
-@Setter
+@Data
 @TableName("T_SYS_ROLE_USER")
 public class SysRoleUser extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * UUID
-	 */
-	@TableId(type = IdType.ASSIGN_UUID)
-	@NotNull
-	@LengthForUtf8(max = 32)
-	private String roleUserId;
+    /**
+     * UUID
+     */
+    @TableId(type = IdType.ASSIGN_UUID)
+    @NotNull
+    @LengthForUtf8(max = 32)
+    private String roleUserId;
 
-	/**
-	 * 角色ID
-	 */
-	@NotNull
-	@LengthForUtf8(max = 32)
-	private String roleId;
+    /**
+     * 角色ID
+     */
+    @NotNull
+    @LengthForUtf8(max = 32)
+    private String roleId;
 
-	/**
-	 * 用户ID
-	 */
-	@NotNull
-	@LengthForUtf8(max = 32)
-	private String userId;
+    /**
+     * 用户ID
+     */
+    @NotNull
+    @LengthForUtf8(max = 32)
+    private String userId;
 
-	@TableField(exist = false)
-	private String userName;
+    @TableField(exist = false)
+    private String userName;
 
-	@TableField(exist = false)
-	private String authFilterSql;
+    @TableField(exist = false)
+    private String authFilterSql;
 
-	public SysRoleUser() {
-	}
+    public SysRoleUser() {
+    }
 
-	public SysRoleUser(String roleId, String userId) {
-		this.roleUserId = roleId + '-' + userId;
-		this.roleId = roleId;
-		this.userId = userId;
-	}
+    public SysRoleUser(String roleId, String userId) {
+        this.roleUserId = roleId + '-' + userId;
+        this.roleId = roleId;
+        this.userId = userId;
+    }
 }

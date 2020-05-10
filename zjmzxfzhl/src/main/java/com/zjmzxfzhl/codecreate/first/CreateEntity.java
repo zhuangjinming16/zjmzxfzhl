@@ -64,8 +64,7 @@ public class CreateEntity {
                     "import com.zjmzxfzhl.common.base.BaseEntity;\\r\\n");
             importHashMap.put("import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;\r\n",
                     "import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;\r\n");
-            importHashMap.put("import lombok.Getter;\r\n", "import lombok.Getter;\r\n");
-            importHashMap.put("import lombok.Setter;\r\n", "import lombok.Setter;\r\n");
+            importHashMap.put("import lombok.Data;\r\n", "import lombok.Data;\r\n");
 
             processingList(aSysCodeType, tableName, list, stringBufferHead2, stringBufferMid, stringBufferFoot,
                     importHashMap);
@@ -115,8 +114,7 @@ public class CreateEntity {
                 stringBufferHead2.append(" * " + "\r\n");
                 stringBufferHead2.append(" * @author " + CodeUtil.author + "\r\n");
                 stringBufferHead2.append(" */" + "\r\n");
-                stringBufferHead2.append("@Getter" + "\r\n");
-                stringBufferHead2.append("@Setter" + "\r\n");
+                stringBufferHead2.append("@Data" + "\r\n");
                 stringBufferHead2.append("@TableName(\"" + tableName + "\")" + "\r\n");
                 stringBufferHead2
                         .append("public class " + sysCodeTypeFirstUpper + " extends BaseEntity {" + "\r\n\r\n");

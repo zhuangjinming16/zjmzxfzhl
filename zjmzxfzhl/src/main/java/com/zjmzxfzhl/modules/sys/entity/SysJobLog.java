@@ -13,16 +13,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * 【定时任务执行日志】实体类
  * 
  * @author 庄金明
  */
-@Getter
-@Setter
+@Data
 @TableName("T_SYS_JOB_LOG")
 public class SysJobLog extends BaseEntity {
 

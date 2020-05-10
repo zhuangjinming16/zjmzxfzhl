@@ -10,15 +10,13 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * @author 庄金明
  * @date 2020年3月24日
  */
-@Getter
-@Setter
+@Data
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 

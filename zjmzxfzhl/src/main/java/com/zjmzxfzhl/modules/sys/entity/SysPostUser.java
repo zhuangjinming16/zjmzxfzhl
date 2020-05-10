@@ -9,55 +9,53 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * 【岗位和用户关系】实体类
  * 
  * @author 庄金明
  */
-@Getter
-@Setter
+@Data
 @TableName("T_SYS_POST_USER")
 public class SysPostUser extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * UUID
-	 */
-	@TableId(type = IdType.ASSIGN_UUID)
-	@NotNull
-	@LengthForUtf8(max = 32)
-	private String postUserId;
+    /**
+     * UUID
+     */
+    @TableId(type = IdType.ASSIGN_UUID)
+    @NotNull
+    @LengthForUtf8(max = 32)
+    private String postUserId;
 
-	/**
-	 * 岗位ID
-	 */
-	@NotNull
-	@LengthForUtf8(max = 32)
-	private String postId;
+    /**
+     * 岗位ID
+     */
+    @NotNull
+    @LengthForUtf8(max = 32)
+    private String postId;
 
-	/**
-	 * 用户ID
-	 */
-	@NotNull
-	@LengthForUtf8(max = 32)
-	private String userId;
+    /**
+     * 用户ID
+     */
+    @NotNull
+    @LengthForUtf8(max = 32)
+    private String userId;
 
-	@TableField(exist = false)
-	private String userName;
+    @TableField(exist = false)
+    private String userName;
 
-	@TableField(exist = false)
-	private String authFilterSql;
+    @TableField(exist = false)
+    private String authFilterSql;
 
-	public SysPostUser() {
-	}
+    public SysPostUser() {
+    }
 
-	public SysPostUser(String postId, String userId) {
-		this.postUserId = postId + '-' + userId;
-		this.postId = postId;
-		this.userId = userId;
-	}
+    public SysPostUser(String postId, String userId) {
+        this.postUserId = postId + '-' + userId;
+        this.postId = postId;
+        this.userId = userId;
+    }
 }
