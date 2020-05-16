@@ -34,6 +34,7 @@ import com.zjmzxfzhl.common.util.ObjectUtils;
 import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
+import com.zjmzxfzhl.modules.flowable.service.FlowableFormService;
 import com.zjmzxfzhl.modules.flowable.service.ProcessDefinitionService;
 import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionRequest;
@@ -51,7 +52,7 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
     @Autowired
     protected RuntimeService runtimeService;
     @Autowired
-    private FlowableFormServiceImpl flowableFormService;
+    private FlowableFormService flowableFormService;
 
     @Override
     public ProcessDefinition getProcessDefinitionById(String processDefinitionId) {

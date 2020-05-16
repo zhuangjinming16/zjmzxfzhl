@@ -6969,7 +6969,7 @@ DROP TABLE IF EXISTS `t_sys_data_permission`;
 CREATE TABLE `t_sys_data_permission` (
   `DATA_PERMISSION_ID` varchar(32) NOT NULL COMMENT '数据权限ID',
   `DATA_PERMISSION_NAME` varchar(100) DEFAULT NULL COMMENT '数据权限名称',
-  `METHOD_ID` varchar(100) DEFAULT '' COMMENT '方法Id(DataPermission.methodId)',
+  `METHOD_ID` varchar(255) DEFAULT '' COMMENT '方法Id(DataPermission.methodId)',
   `ENTITY_TYPE` varchar(1) DEFAULT NULL COMMENT '实体类型(1-角色2-用户)',
   `ENTITY_ID` varchar(32) DEFAULT NULL COMMENT '实体ID(用户ID或角色ID)',
   `TABLE_NAME` varchar(100) DEFAULT NULL COMMENT '业务表名',

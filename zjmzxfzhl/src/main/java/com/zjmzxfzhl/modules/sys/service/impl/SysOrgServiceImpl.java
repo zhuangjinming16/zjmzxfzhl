@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.common.permission.provider.OrgDataPermissionProvider;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.modules.sys.common.SysConstants;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
@@ -30,51 +28,6 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrgMapper, SysOrg> imp
     @Override
     public IPage<SysOrg> list(IPage<SysOrg> page, SysOrg sysOrg) {
         return page.setRecords(baseMapper.list(page, sysOrg));
-    }
-
-    /**
-     * 查询机构数据权限
-     * 
-     * type=1
-     * 
-     * @param sysOrg
-     * @return
-     */
-    @Override
-    @DataPermission(providers = { OrgDataPermissionProvider.class }, providerParams = {
-            "{\"alias\":\"o\",\"type\":\"1\"}" })
-    public List<SysOrg> listOrgDataPermission1(SysOrg sysOrg) {
-        return baseMapper.list(null, sysOrg);
-    }
-
-    /**
-     * 查询机构数据权限
-     * 
-     * type=2
-     * 
-     * @param sysOrg
-     * @return
-     */
-    @Override
-    @DataPermission(providers = { OrgDataPermissionProvider.class }, providerParams = {
-            "{\"alias\":\"a\",\"type\":\"2\"}" })
-    public List<SysOrg> listOrgDataPermission2(SysOrg sysOrg) {
-        return baseMapper.list(null, sysOrg);
-    }
-
-    /**
-     * 查询机构数据权限
-     * 
-     * type=2
-     * 
-     * @param sysOrg
-     * @return
-     */
-    @Override
-    @DataPermission(providers = { OrgDataPermissionProvider.class }, providerParams = {
-            "{\"alias\":\"a\",\"type\":\"3\"}" })
-    public List<SysOrg> listOrgDataPermission3(SysOrg sysOrg) {
-        return baseMapper.list(null, sysOrg);
     }
 
     /**

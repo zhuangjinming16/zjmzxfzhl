@@ -23,36 +23,6 @@ public interface SysOrgService extends BaseService<SysOrg> {
     IPage<SysOrg> list(IPage<SysOrg> page, SysOrg sysOrg);
 
     /**
-     * 查询机构数据权限
-     * 
-     * type=1
-     * 
-     * @param sysOrg
-     * @return
-     */
-    List<SysOrg> listOrgDataPermission1(SysOrg sysOrg);
-
-    /**
-     * 查询机构数据权限
-     * 
-     * type=2
-     * 
-     * @param sysOrg
-     * @return
-     */
-    List<SysOrg> listOrgDataPermission2(SysOrg sysOrg);
-
-    /**
-     * 查询机构数据权限
-     * 
-     * type=2
-     * 
-     * @param sysOrg
-     * @return
-     */
-    List<SysOrg> listOrgDataPermission3(SysOrg sysOrg);
-
-    /**
      * 新增机构，自动计算机构级别、机构级次码、是否叶子
      * 
      * @param sysOrg

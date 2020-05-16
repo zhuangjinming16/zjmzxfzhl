@@ -12,13 +12,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
-import com.zjmzxfzhl.common.permission.FilterOperate;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.modules.sys.entity.SysPost;
 import com.zjmzxfzhl.modules.sys.entity.SysPostUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.mapper.SysPostMapper;
 import com.zjmzxfzhl.modules.sys.service.SysPostService;
+import com.zjmzxfzhl.modules.sys.service.SysPostUserService;
 
 /**
  * 岗位Service
@@ -28,7 +27,7 @@ import com.zjmzxfzhl.modules.sys.service.SysPostService;
 @Service
 public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> implements SysPostService {
     @Autowired
-    private SysPostUserServiceImpl sysPostUserService;
+    private SysPostUserService sysPostUserService;
 
     @Override
     public IPage<SysPost> list(IPage<SysPost> page, SysPost sysPost) {
@@ -59,8 +58,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
         String[] userIdArray = userIds.split(",");
         // 【1】先删除岗位用户
         QueryWrapper<SysPostUser> queryWrapper = new QueryWrapper<>();
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "postId", FilterOperate.EQ, postId);
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
+        queryWrapper.eq("POST_ID", postId).in("USER_ID", (Object[]) userIdArray);
         this.sysPostUserService.remove(queryWrapper);
 
         // 【2】保存岗位用户
@@ -79,10 +77,8 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deletePostUsers(String postId, String userIds) {
-        String[] userIdArray = userIds.split(",");
         QueryWrapper<SysPostUser> queryWrapper = new QueryWrapper<>();
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "postId", FilterOperate.EQ, postId);
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
+        queryWrapper.eq("POST_ID", postId).in("USER_ID", (Object[]) userIds.split(","));
         this.sysPostUserService.remove(queryWrapper);
     }
 

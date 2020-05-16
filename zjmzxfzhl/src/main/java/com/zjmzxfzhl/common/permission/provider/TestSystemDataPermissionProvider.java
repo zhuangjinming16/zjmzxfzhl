@@ -1,12 +1,9 @@
 package com.zjmzxfzhl.common.permission.provider;
 
-import com.zjmzxfzhl.common.permission.FilterGroup;
-import com.zjmzxfzhl.common.util.CommonUtil;
-import com.zjmzxfzhl.modules.sys.common.SessionObject;
+import com.zjmzxfzhl.common.permission.wrapper.PermissionWrapper;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 测试数据库后台返回provider
@@ -16,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Getter
 @Setter
-@Slf4j
+// @Slf4j
 public class TestSystemDataPermissionProvider extends AbstractDataPermissionProvider {
 
     /**
@@ -28,16 +25,16 @@ public class TestSystemDataPermissionProvider extends AbstractDataPermissionProv
     private int dbParam2;
 
     @Override
-    public FilterGroup filter(SessionObject sessionObject) {
+    public PermissionWrapper wrap(PermissionWrapper permissionWrapper) {
         // 测试请打开注释
-        log.info(this.alias);
-        log.info(this.columnName);
-        log.info(this.dbParam1);
-        log.info(String.valueOf(this.dbParam2));
-        String alias = CommonUtil.isEmptyDefault(this.alias, "o");
-        log.info(alias);
-        String columnName = CommonUtil.isEmptyDefault(this.columnName, "columnName");
-        log.info(columnName);
-        return null;
+        /// log.info(this.alias);
+        /// log.info(this.columnName);
+        /// log.info(this.dbParam1);
+        /// log.info(String.valueOf(this.dbParam2));
+        /// String alias = CommonUtil.isEmptyDefault(this.alias, "o");
+        /// log.info(alias);
+        /// String columnName = CommonUtil.isEmptyDefault(this.columnName, "columnName");
+        /// log.info(columnName);
+        return permissionWrapper;
     }
 }

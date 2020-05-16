@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
+import com.zjmzxfzhl.common.permission.provider.OrgDataPermissionProvider;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -24,6 +26,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param entity
      * @return
      */
+    @DataPermission(providers = OrgDataPermissionProvider.class, providerParams = "{\"alias\":\"o\",\"type\":\"1\"}", fieldName = "authFilterSql")
     public List<SysUser> list(IPage<SysUser> page, @Param("entity") SysUser entity);
 
     /**

@@ -82,8 +82,4 @@ public class SysOrg extends BaseEntity {
 
     @TableField(exist = false)
     private String parentOrgName;
-
-    @TableField(exist = false)
-    private String authFilterSql;
-
 }

@@ -1,7 +1,6 @@
 package com.zjmzxfzhl.common.permission.provider;
 
-import com.zjmzxfzhl.common.permission.FilterGroup;
-import com.zjmzxfzhl.modules.sys.common.SessionObject;
+import com.zjmzxfzhl.common.permission.wrapper.PermissionWrapper;
 
 /**
  * 空的DataPermissionProvider，可以用于测试
@@ -11,7 +10,7 @@ import com.zjmzxfzhl.modules.sys.common.SessionObject;
  */
 public class NullDataPermissionProvider extends AbstractDataPermissionProvider {
     @Override
-    public FilterGroup filter(SessionObject sessionObject) {
-        return null;
+    public PermissionWrapper wrap(PermissionWrapper permissionWrapper) {
+        return permissionWrapper;
     }
 }

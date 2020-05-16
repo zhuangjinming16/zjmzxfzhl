@@ -38,7 +38,7 @@ public class SysDataPermission extends BaseEntity {
     /**
      * 方法Id
      */
-    @LengthForUtf8(max = 100)
+    @LengthForUtf8(max = 255)
     private String methodId;
 
     /**

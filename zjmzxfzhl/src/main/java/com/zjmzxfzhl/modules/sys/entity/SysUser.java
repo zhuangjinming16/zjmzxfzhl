@@ -119,8 +119,4 @@ public class SysUser extends BaseEntity {
     @TableField(exist = false)
     @ExcelProperty("机构名称")
     private String orgName;
-
-    @TableField(exist = false)
-    @ExcelIgnore
-    private String authFilterSql;
 }

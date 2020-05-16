@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -90,11 +89,4 @@ public class DemoZjmzxfzhl extends BaseEntity {
 
     @LengthForUtf8(max = 32)
     private String filterOperatorLikeRight;
-
-    @TableField(exist = false)
-    private String authFilterSql;
-
-    @TableField(exist = false)
-    private String otherAuthFilterSql;
-
 }

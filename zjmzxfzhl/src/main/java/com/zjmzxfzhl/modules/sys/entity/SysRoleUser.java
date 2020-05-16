@@ -47,9 +47,6 @@ public class SysRoleUser extends BaseEntity {
     @TableField(exist = false)
     private String userName;
 
-    @TableField(exist = false)
-    private String authFilterSql;
-
     public SysRoleUser() {
     }
 

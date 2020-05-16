@@ -31,9 +31,7 @@
 		<if test="entity.orgId != null and entity.orgId !=''">
 			<![CDATA[	AND a.ORG_ID = #{entity.orgId}	]]>
 		</if>
-		<if test="entity.authFilterSql != null and entity.authFilterSql !=''">
-			<![CDATA[	AND ${entity.authFilterSql}	]]>
-		</if>
+		{{authFilterSql}}
 		order by a.sort_no
 	</select>
 	

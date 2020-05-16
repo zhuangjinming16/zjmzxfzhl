@@ -17,8 +17,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zjmzxfzhl.common.Constants;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.common.permission.FilterOperate;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.modules.sys.entity.SysCodeInfo;
@@ -78,7 +76,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
         Map<String, List<SysCodeInfo>> codeInfoMap = new HashMap<String, List<SysCodeInfo>>(16);
         QueryWrapper<SysCodeInfo> queryWrapper = new QueryWrapper<>();
         if (CommonUtil.isNotEmptyAfterTrim(codeTypeIds)) {
-            QueryWrapperGenerator.addEasyQuery(queryWrapper, "codeTypeId", FilterOperate.IN, codeTypeIds);
+            queryWrapper.in("CODE_TYPE_ID", (Object[]) codeTypeIds.split(","));
         }
         queryWrapper.orderByAsc("CODE_TYPE_ID", "SORT_NO");
         List<SysCodeInfo> codeInfoList = this.list(queryWrapper);

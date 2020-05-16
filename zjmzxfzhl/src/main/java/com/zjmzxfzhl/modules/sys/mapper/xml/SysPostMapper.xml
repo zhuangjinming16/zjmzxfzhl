@@ -47,9 +47,7 @@
 		<if test="entity.userName != null and entity.userName !=''">
 			<![CDATA[	AND a.USER_NAME = #{entity.userName}	]]>
 		</if>
-		<if test="entity.authFilterSql != null and entity.authFilterSql !=''">
-			<![CDATA[	AND ${entity.authFilterSql}	]]>
-		</if>
+		{{authFilterSql}}
 	</select>
 	
 	<!-- flowable查询用户角色使用 -->

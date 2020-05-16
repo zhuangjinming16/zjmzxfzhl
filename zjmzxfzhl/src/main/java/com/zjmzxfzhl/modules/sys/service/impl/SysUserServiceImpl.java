@@ -15,10 +15,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.Constants;
-import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.common.permission.provider.OrgDataPermissionProvider;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.PasswordUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
@@ -26,6 +24,7 @@ import com.zjmzxfzhl.common.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
+import com.zjmzxfzhl.modules.sys.entity.SysPostUser;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.entity.SysRoleUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -34,6 +33,10 @@ import com.zjmzxfzhl.modules.sys.entity.vo.Route;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysPasswordForm;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO;
 import com.zjmzxfzhl.modules.sys.mapper.SysUserMapper;
+import com.zjmzxfzhl.modules.sys.service.SysOrgService;
+import com.zjmzxfzhl.modules.sys.service.SysPostUserService;
+import com.zjmzxfzhl.modules.sys.service.SysRoleService;
+import com.zjmzxfzhl.modules.sys.service.SysRoleUserService;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
 
 /**
@@ -44,21 +47,21 @@ import com.zjmzxfzhl.modules.sys.service.SysUserService;
 @Service
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements SysUserService {
     @Autowired
-    private SysRoleServiceImpl sysRoleService;
+    private SysRoleService sysRoleService;
 
     @Autowired
-    private SysRoleUserServiceImpl sysRoleUserService;
+    private SysRoleUserService sysRoleUserService;
 
     @Autowired
-    private SysOrgServiceImpl sysOrgService;
+    private SysPostUserService sysPostUserService;
+
+    @Autowired
+    private SysOrgService sysOrgService;
 
     @Autowired
     private RedisUtil redisUtil;
 
     @Override
-    @DataPermission(methodId = "sysUserList", tableNames = { "T_SYS_USER", "T_SYS_ORG" }, aliasNames = { "a",
-            "o" }, providers = {
-                    OrgDataPermissionProvider.class }, providerParams = { "{\"alias\":\"o\",\"type\":\"1\"}" })
     public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
         List<SysUser> records = baseMapper.list(page, sysUser);
         if (page == null) {
@@ -76,7 +79,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @return
      */
     @Override
-    @DataPermission(providers = OrgDataPermissionProvider.class)
     public IPage<SysUser> listSelectUser(IPage<SysUser> page, SysUser sysUser) {
         return page.setRecords(baseMapper.list(page, sysUser));
     }
@@ -341,8 +343,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         } else {
             removeById(idsArr[0]);
         }
-        QueryWrapper<SysRoleUser> queryWrapper = new QueryWrapper<>();
-        sysRoleUserService.remove(queryWrapper.in("user_id", (Object[]) idsArr));
+        sysRoleUserService.remove(new QueryWrapper<SysRoleUser>().in("user_id", (Object[]) idsArr));
+        sysPostUserService.remove(new QueryWrapper<SysPostUser>().in("user_id", (Object[]) idsArr));
     }
 
     /**

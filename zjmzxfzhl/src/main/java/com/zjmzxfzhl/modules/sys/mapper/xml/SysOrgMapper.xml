@@ -23,9 +23,7 @@
 		<if test="entity.parentOrgId != null and entity.parentOrgId !=''">
 			<![CDATA[	AND o.PARENT_ORG_ID = #{entity.parentOrgId}	]]>
 		</if>
-		<if test="entity.authFilterSql != null and entity.authFilterSql !=''">
-			<![CDATA[	AND ${entity.authFilterSql}	]]>
-		</if>
+		{{authFilterSql}}
 		order by o.ORG_LEVEL_CODE
 	</select>
 </mapper>

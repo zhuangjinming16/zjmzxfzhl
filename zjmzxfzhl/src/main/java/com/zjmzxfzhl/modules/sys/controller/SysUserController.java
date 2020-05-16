@@ -61,6 +61,9 @@ public class SysUserController extends BaseController {
     @GetMapping(value = "/list")
     public Result list(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysUser> pageList = sysUserService.list(new Page<SysUser>(current, size), sysUser);
+        // QueryWrapper<SysUser> queryWrapper = QueryWrapperGenerator.initQueryWrapperSimple(sysUser);
+        // IPage<SysUser> pageList = sysUserService.getBaseMapper().selectPage(new Page<SysUser>(current, size),
+        // queryWrapper);
         return Result.ok(pageList);
     }
 

@@ -14,13 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.exception.AppException;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.common.permission.FilterOperate;
-import com.zjmzxfzhl.common.permission.provider.OrgDataPermissionProvider;
-import com.zjmzxfzhl.common.query.QueryWrapperGenerator;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.modules.sys.entity.SysFunc;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
@@ -29,8 +25,14 @@ import com.zjmzxfzhl.modules.sys.entity.SysRolePermission;
 import com.zjmzxfzhl.modules.sys.entity.SysRoleUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.ElTree;
+import com.zjmzxfzhl.modules.sys.mapper.SysFuncMapper;
+import com.zjmzxfzhl.modules.sys.mapper.SysMenuMapper;
 import com.zjmzxfzhl.modules.sys.mapper.SysRoleMapper;
+import com.zjmzxfzhl.modules.sys.service.SysFuncService;
+import com.zjmzxfzhl.modules.sys.service.SysMenuService;
+import com.zjmzxfzhl.modules.sys.service.SysRolePermissionService;
 import com.zjmzxfzhl.modules.sys.service.SysRoleService;
+import com.zjmzxfzhl.modules.sys.service.SysRoleUserService;
 
 /**
  * 角色Service
@@ -40,15 +42,15 @@ import com.zjmzxfzhl.modules.sys.service.SysRoleService;
 @Service
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
     @Autowired
-    private SysMenuServiceImpl sysMenuService;
+    private SysMenuService sysMenuService;
 
     @Autowired
-    private SysFuncServiceImpl sysFuncService;
+    private SysFuncService sysFuncService;
 
     @Autowired
-    private SysRolePermissionServiceImpl sysRolePermissionService;
+    private SysRolePermissionService sysRolePermissionService;
     @Autowired
-    private SysRoleUserServiceImpl sysRoleUserService;
+    private SysRoleUserService sysRoleUserService;
 
     @Override
     public IPage<SysRole> list(IPage<SysRole> page, SysRole sysRole) {
@@ -64,8 +66,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      */
     @Override
     public Map<String, Object> getRolePermissions(SysUser sysUser, String roleId) {
-        List<SysMenu> menus = sysMenuService.getBaseMapper().list(null, new SysMenu());
-        List<SysFunc> funcs = sysFuncService.getBaseMapper().list(null, new SysFunc());
+        List<SysMenu> menus = ((SysMenuMapper) sysMenuService.getBaseMapper()).list(null, new SysMenu());
+        List<SysFunc> funcs = ((SysFuncMapper) sysFuncService.getBaseMapper()).list(null, new SysFunc());
 
         Map<String, List<ElTree>> funcMap = new LinkedHashMap<String, List<ElTree>>();
         for (SysFunc sysFunc : funcs) {
@@ -164,8 +166,6 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      * @return
      */
     @Override
-    @DataPermission(providers = { OrgDataPermissionProvider.class }, providerParams = {
-            "{\"alias\":\"o\",\"type\":\"1\"}" })
     public IPage<SysUser> getRoleUser(Page<SysUser> page, SysRoleUser sysRoleUser) {
         return page.setRecords(baseMapper.getRoleUser(page, sysRoleUser));
     }
@@ -181,8 +181,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         String[] userIdArray = userIds.split(",");
         // 【1】先删除角色用户
         QueryWrapper<SysRoleUser> queryWrapper = new QueryWrapper<>();
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "roleId", FilterOperate.EQ, roleId);
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
+        queryWrapper.eq("ROLE_ID", roleId).in("USER_ID", (Object[]) userIdArray);
         this.sysRoleUserService.remove(queryWrapper);
 
         // 【2】保存角色用户
@@ -200,11 +199,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteRoleUsers(String roleId, String userIds) {
-        String[] userIdArray = userIds.split(",");
-
         QueryWrapper<SysRoleUser> queryWrapper = new QueryWrapper<>();
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "roleId", FilterOperate.EQ, roleId);
-        QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
+        queryWrapper.eq("ROLE_ID", roleId).in("USER_ID", (Object[]) userIds.split(","));
         this.sysRoleUserService.remove(queryWrapper);
     }
 

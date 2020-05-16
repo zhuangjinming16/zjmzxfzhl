@@ -1,11 +1,14 @@
 package com.zjmzxfzhl.config;
 
+import java.util.Collections;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
+import com.zjmzxfzhl.common.permission.PermissionParser;
 
 /**
  * @author 庄金明
@@ -14,10 +17,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParser
 @Configuration
 @MapperScan("com.**.mapper*")
 public class MybatisPlusConfig {
-	@Bean
-	public PaginationInterceptor paginationInterceptor() {
-		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-		paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
-		return paginationInterceptor;
-	}
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+        paginationInterceptor.setSqlParserList(Collections.singletonList(permissionParser()));
+        paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
+        return paginationInterceptor;
+    }
+
+    @Bean
+    public PermissionParser permissionParser() {
+        return new PermissionParser();
+    }
 }
