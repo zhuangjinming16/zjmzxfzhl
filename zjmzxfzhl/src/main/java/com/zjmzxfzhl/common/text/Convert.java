@@ -826,21 +826,21 @@ public class Convert {
      * @return 全角字符串.
      */
     public static String toSbc(String input, Set<Character> notConvertSet) {
-        char c[] = input.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (null != notConvertSet && notConvertSet.contains(c[i])) {
+        char[] charArray = input.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            if (null != notConvertSet && notConvertSet.contains(charArray[i])) {
                 // 跳过不替换的字符
                 continue;
             }
 
-            if (c[i] == ' ') {
-                c[i] = '\u3000';
-            } else if (c[i] < '\177') {
-                c[i] = (char) (c[i] + 65248);
+            if (charArray[i] == ' ') {
+                charArray[i] = '\u3000';
+            } else if (charArray[i] < '\177') {
+                charArray[i] = (char) (charArray[i] + 65248);
 
             }
         }
-        return new String(c);
+        return new String(charArray);
     }
 
     /**
@@ -864,20 +864,20 @@ public class Convert {
      * @return 替换后的字符
      */
     public static String toDbc(String text, Set<Character> notConvertSet) {
-        char c[] = text.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (null != notConvertSet && notConvertSet.contains(c[i])) {
+        char[] charArray = text.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            if (null != notConvertSet && notConvertSet.contains(charArray[i])) {
                 // 跳过不替换的字符
                 continue;
             }
 
-            if (c[i] == '\u3000') {
-                c[i] = ' ';
-            } else if (c[i] > '\uFF00' && c[i] < '\uFF5F') {
-                c[i] = (char) (c[i] - 65248);
+            if (charArray[i] == '\u3000') {
+                charArray[i] = ' ';
+            } else if (charArray[i] > '\uFF00' && charArray[i] < '\uFF5F') {
+                charArray[i] = (char) (charArray[i] - 65248);
             }
         }
-        String returnString = new String(c);
+        String returnString = new String(charArray);
 
         return returnString;
     }
