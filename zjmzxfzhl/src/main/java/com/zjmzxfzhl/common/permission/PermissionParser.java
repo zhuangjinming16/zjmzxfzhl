@@ -129,9 +129,15 @@ public class PermissionParser implements ISqlParser {
             DataPermission dataPermission = dataPermissions[i];
             String[] tableNames = dataPermission.tableNames();
             String[] aliasNames = dataPermission.aliasNames();
+            if (tableNames.length != aliasNames.length) {
+                throw new SysException("数据权限tableNames和aliasNames配置错误");
+            }
             Class<AbstractDataPermissionProvider>[] providers = (Class<AbstractDataPermissionProvider>[]) dataPermission
                     .providers();
             String[] providerParams = dataPermission.providerParams();
+            if (providers.length > 1 && providers.length != providerParams.length) {
+                throw new SysException("数据权限providers和providerParams配置错误");
+            }
             String fieldName = dataPermission.fieldName();
             String userId = sysUser.getUserId();
             String roleId = role.getRoleId();
@@ -152,7 +158,7 @@ public class PermissionParser implements ISqlParser {
                     String tmpSql = retSql.substring(0, index);
                     int count = tmpSql.length() - tmpSql.replaceAll("\\?", "").length();
                     if (parameterMappings.size() < count) {
-                        throw new SysException("参数个数错误");
+                        throw new SysException("数据权限封装参数个数错误");
                     }
                     parameterMappings.addAll(count, permissionWrapper.getParameterMappings());
                 }

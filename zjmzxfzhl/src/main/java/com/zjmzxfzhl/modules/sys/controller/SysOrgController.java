@@ -120,10 +120,13 @@ public class SysOrgController extends BaseController {
     /**
      * 公共机构选择树
      * 
+     * @param type
+     *            不同机构选择树策略(预留字段，可根据不同应用场景新增type，由前端输入)
      * @return
      */
     @GetMapping(value = "/getSelectTreeData")
     public Result getSelectTreeData(String type) {
+        // 默认返回当前用户数据权限范围的机构树
         List<ElTree> treeData = sysOrgService.getTreeData();
         return Result.ok(treeData);
     }

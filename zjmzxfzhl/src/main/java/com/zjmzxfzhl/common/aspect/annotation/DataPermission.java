@@ -40,10 +40,10 @@ public @interface DataPermission {
      */
     Class<? extends AbstractDataPermissionProvider>[] providers() default {};
 
-    String[] providerParams() default { "" };
+    String[] providerParams() default {};
 
     /**
-     * 组拼好的sql字符串将结果注入到方法的第index个参数中的fieldName属性中，默认属性 authFilterSql
+     * 组拼好的sql字符串用于替换*Mapper.xml中配置的{{authFilterSql}}，默认值为 authFilterSql
      * 
      * @return
      */
