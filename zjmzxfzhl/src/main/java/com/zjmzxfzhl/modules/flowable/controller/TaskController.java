@@ -343,6 +343,8 @@ public class TaskController extends BaseFlowableController {
     @GetMapping(value = "/executeTaskData")
     public Result executeTaskData(@RequestParam String taskId) {
         Task task = permissionService.validateReadPermissionOnTask2(taskId, ShiroUtils.getUserId(), true, true);
+        String startFormKey = formService.getStartFormKey(task.getProcessDefinitionId());
+        String taskFormKey = formService.getTaskFormKey(task.getProcessDefinitionId(), task.getTaskDefinitionKey());
         Object renderedStartForm = formService.getRenderedStartForm(task.getProcessDefinitionId());
         Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
@@ -351,6 +353,8 @@ public class TaskController extends BaseFlowableController {
                 .processInstanceId(task.getProcessInstanceId()).singleResult();
         Map<String, Object> ret = new HashMap<String, Object>(7);
         ret.put("startUserId", processInstance.getStartUserId());
+        ret.put("startFormKey", startFormKey);
+        ret.put("taskFormKey", taskFormKey);
         ret.put("renderedStartForm", renderedStartForm);
         ret.put("renderedTaskForm", renderedTaskForm);
         ret.put("variables", variables);

@@ -16,9 +16,4 @@ public class TaskRequest {
     private String activityId;
     private String activityName;
     private Map<String, Object> values;
-    private boolean isInitiator = false;
-
-    public void setIsInitiator(boolean isInitiator) {
-        this.isInitiator = isInitiator;
-    }
 }

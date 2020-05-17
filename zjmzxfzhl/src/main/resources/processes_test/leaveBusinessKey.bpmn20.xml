@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="请假流程带Key">
-  <process id="leaveShowBusinessKey" name="请假流程带Key" isExecutable="true">
+  <process id="leaveBusinessKey" name="请假流程带Key" isExecutable="true">
     <documentation>请假流程带Key</documentation>
     <startEvent id="start" name="Start" activiti:formKey="leaveApply.form"></startEvent>
     <endEvent id="end" name="End"></endEvent>
@@ -9,7 +9,7 @@
         <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:initiator-can-complete>
       </extensionElements>
     </userTask>
-    <userTask id="managerApprove" name="部门经理审批" activiti:candidateGroups="manager"></userTask>
+    <userTask id="managerApprove" name="部门经理审批并可修改流程表单" activiti:candidateGroups="manager" activiti:formKey="leaveApply.form"></userTask>
     <userTask id="bossApprove" name="老板审批" activiti:candidateGroups="boss"></userTask>
     <sequenceFlow id="flow1" sourceRef="start" targetRef="__initiator__"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="__initiator__" targetRef="managerApprove"></sequenceFlow>
@@ -21,8 +21,8 @@
       </extensionElements>
     </dataObject>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_leaveShowBusinessKey">
-    <bpmndi:BPMNPlane bpmnElement="leaveShowBusinessKey" id="BPMNPlane_leaveShowBusinessKey">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_leaveBusinessKey">
+    <bpmndi:BPMNPlane bpmnElement="leaveBusinessKey" id="BPMNPlane_leaveBusinessKey">
       <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -33,7 +33,7 @@
         <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="managerApprove" id="BPMNShape_managerApprove">
-        <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="90.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="105.0" x="290.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="bossApprove" id="BPMNShape_bossApprove">
         <omgdc:Bounds height="55.0" width="105.0" x="440.0" y="90.0"></omgdc:Bounds>

@@ -281,13 +281,30 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
             }
         }
 
-        this.addComment(taskId, task.getProcessInstanceId(), currUserId,
-                taskRequest.isInitiator() ? CommentTypeEnum.CXTJ : CommentTypeEnum.WC, taskRequest.getMessage());
-
         Map<String, Object> completeVariables = null;
         if (taskRequest.getValues() != null && !taskRequest.getValues().isEmpty()) {
             completeVariables = taskRequest.getValues();
+            // 允许任务表单修改流程表单场景 begin
+            // 与前端约定：流程表单变量名为 processInstanceFormData，且只有流程表单startFormKey=taskFormKey时才允许修改该变量的值，防止恶意节点修改流程表单内容
+            if (completeVariables.containsKey("processInstanceFormData")) {
+                String startFormKey = formService.getStartFormKey(task.getProcessDefinitionId());
+                String taskFormKey = formService.getTaskFormKey(task.getProcessDefinitionId(),
+                        task.getTaskDefinitionKey());
+                boolean modifyProcessInstanceFormData = CommonUtil.isNotEmptyStr(startFormKey)
+                        && CommonUtil.isNotEmptyStr(taskFormKey) && startFormKey.equals(taskFormKey);
+                if (!modifyProcessInstanceFormData) {
+                    throw new FlowableNoPermissionException("User does not have permission");
+                }
+            }
+            // 允许任务表单修改流程表单场景 end
+
         }
+
+        this.addComment(taskId, task.getProcessInstanceId(), currUserId,
+                FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey()) ? CommentTypeEnum.CXTJ
+                        : CommentTypeEnum.WC,
+                taskRequest.getMessage());
+
         if (task.getAssignee() == null || !task.getAssignee().equals(currUserId)) {
             taskService.setAssignee(taskId, currUserId);
         }
