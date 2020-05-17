@@ -26,7 +26,8 @@ public interface SysJobService extends BaseService<SysJob> {
      * 
      * @param job
      *            调度信息
-     * @return 结果
+     * @return
+     * @throws SchedulerException
      */
     public boolean saveJob(SysJob job) throws SchedulerException;
 
@@ -35,6 +36,7 @@ public interface SysJobService extends BaseService<SysJob> {
      * 
      * @param job
      *            调度信息
+     * @throws SchedulerException
      * @return 结果
      */
     public boolean updateJob(SysJob job) throws SchedulerException;
@@ -44,6 +46,7 @@ public interface SysJobService extends BaseService<SysJob> {
      * 
      * @param job
      *            调度信息
+     * @throws SchedulerException
      * @return 结果
      */
     public void pause(SysJob job) throws SchedulerException;
@@ -53,6 +56,7 @@ public interface SysJobService extends BaseService<SysJob> {
      * 
      * @param job
      *            调度信息
+     * @throws SchedulerException
      * @return 结果
      */
     public void resume(SysJob job) throws SchedulerException;
@@ -62,6 +66,7 @@ public interface SysJobService extends BaseService<SysJob> {
      * 
      * @param job
      *            调度信息
+     * @throws SchedulerException
      * @return 结果
      */
     public void delete(SysJob job) throws SchedulerException;
@@ -69,8 +74,9 @@ public interface SysJobService extends BaseService<SysJob> {
     /**
      * 批量删除调度信息
      * 
-     * @param jobIds
+     * @param ids
      *            需要删除的任务ID
+     * @throws SchedulerException
      * @return 结果
      */
     public void delete(String ids) throws SchedulerException;
@@ -78,8 +84,9 @@ public interface SysJobService extends BaseService<SysJob> {
     /**
      * 任务调度状态修改
      * 
-     * @param job
+     * @param jobId
      *            调度信息
+     * @throws SchedulerException
      * @return 结果
      */
     public void changeStatus(String jobId) throws SchedulerException;
@@ -87,8 +94,9 @@ public interface SysJobService extends BaseService<SysJob> {
     /**
      * 立即运行任务
      * 
-     * @param job
+     * @param jobId
      *            调度信息
+     * @throws SchedulerException
      * @return 结果
      */
     public void run(String jobId) throws SchedulerException;

@@ -13,7 +13,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-// @Slf4j
 public class TestSystemDataPermissionProvider extends AbstractDataPermissionProvider {
 
     /**

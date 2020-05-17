@@ -51,35 +51,25 @@ public class CreateMybatisMapperXml {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-
         // 【1】 根据字段 循环得到中文表名和英文表名
         // 读到的表名对象list.
         ArrayList<TableObject> list = hashMap.get(createTableName);
         // 中文表名
-        String tableNameCn = "";
-        // 英文表名
-        String tableName = "";
-        // 主键
-        String primaryKey = "";
-
+        String tableNameCn = "", tableName = "", primaryKey = "";
         for (int i = 0; i < list.size(); i++) {
             TableObject tableObject = list.get(i);
-
             // 中文表名和列表字段
             if (i == 0) {
                 tableNameCn = tableObject.getTableNameCn();
                 // 取出中文表名中的前缀,A01_系统参数表.
                 tableNameCn = StringUtils.substringAfter(tableNameCn, "_");
                 tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
-
                 tableName = tableObject.getTableName();
             }
-
             if (CommonUtil.isExist("UUID主键,数据库生成主键,前台输入主键", tableObject.getIsNull(), ",")) {
                 primaryKey = tableObject.getColumnNameEn();
             }
         }
-
         // 【2】得到查询的searchColumns和whereConditions
         // 查询的字段
         String searchColumns = getSearchColumns(list);
@@ -92,10 +82,8 @@ public class CreateMybatisMapperXml {
         String insertColumns = getInsertColumns(list);
         // 插入值
         String insertValues = getInsertValues(list);
-
         // 【4】得到updateSetValues 更新值
         String updateSetValues = getUpdateSetValues(list);
-
         try {
             String filePath = CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\modules\\" + sys
                     + "\\mapper\\xml\\";
@@ -103,7 +91,6 @@ public class CreateMybatisMapperXml {
             file.mkdirs();
             BufferedWriter bufferedWriter = new BufferedWriter(
                     new FileWriter(new File(filePath + aSys + aCodeType + "Mapper.xml")));
-
             // 根据表名替换:关键词
             String temp = stringBufferAll.toString();
             temp = StringUtils.replace(temp, "{_SYS}", sysUpper);

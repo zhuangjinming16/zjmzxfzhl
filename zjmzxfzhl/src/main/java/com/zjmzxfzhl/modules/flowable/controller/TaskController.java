@@ -138,7 +138,8 @@ public class TaskController extends BaseFlowableController {
             }
         }
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_FINISHED))) {
-            boolean isProcessFinished = ObjectUtils.convertToBoolean(requestParams.get("processFinished"));
+            boolean isProcessFinished = ObjectUtils
+                    .convertToBoolean(requestParams.get(FlowableConstant.PROCESS_FINISHED));
             if (isProcessFinished) {
                 query.processFinished();
             } else {
@@ -161,11 +162,6 @@ public class TaskController extends BaseFlowableController {
             query.taskCandidateGroupIn(
                     Arrays.asList(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUPS).split(",")));
         }
-        setTaskQueryDate(requestParams, query);
-        return query;
-    }
-
-    private void setTaskQueryDate(Map<String, String> requestParams, HistoricTaskInstanceQuery query) {
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_AFTER))) {
             query.taskDueAfter(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_AFTER)));
         }
@@ -188,6 +184,7 @@ public class TaskController extends BaseFlowableController {
             query.taskCompletedAfter(
                     ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_COMPLETED_AFTER)));
         }
+        return query;
     }
 
     protected TaskQuery createTaskQuery(Map<String, String> requestParams) {

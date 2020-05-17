@@ -47,9 +47,9 @@ public abstract class AbstractDataPermissionProvider {
     }
 
     /**
-     * 返回规则组
+     * 封装permissionWrapper
      * 
-     * @param sessionObject
+     * @param permissionWrapper
      * @return
      */
     public abstract PermissionWrapper wrap(PermissionWrapper permissionWrapper);

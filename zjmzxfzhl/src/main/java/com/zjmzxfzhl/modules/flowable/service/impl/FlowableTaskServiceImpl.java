@@ -286,7 +286,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
             completeVariables = taskRequest.getValues();
             // 允许任务表单修改流程表单场景 begin
             // 与前端约定：流程表单变量名为 processInstanceFormData，且只有流程表单startFormKey=taskFormKey时才允许修改该变量的值，防止恶意节点修改流程表单内容
-            if (completeVariables.containsKey("processInstanceFormData")) {
+            if (completeVariables.containsKey(FlowableConstant.PROCESS_INSTANCE_FORM_DATA)) {
                 String startFormKey = formService.getStartFormKey(task.getProcessDefinitionId());
                 String taskFormKey = formService.getTaskFormKey(task.getProcessDefinitionId(),
                         task.getTaskDefinitionKey());

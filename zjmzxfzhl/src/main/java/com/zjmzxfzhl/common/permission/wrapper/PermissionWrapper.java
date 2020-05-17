@@ -9,6 +9,10 @@ import org.apache.ibatis.session.Configuration;
 
 import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 
+/**
+ * @author 庄金明
+ *
+ */
 public class PermissionWrapper extends AbstractPermissionWrapper<String, PermissionWrapper> {
 
     private static final long serialVersionUID = 1L;

@@ -50,6 +50,12 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.sql.SqlUtils;
 
+/**
+ * @author 庄金明
+ *
+ * @param <R>
+ * @param <Children>
+ */
 @SuppressWarnings("unchecked")
 public abstract class AbstractPermissionWrapper<R, Children extends AbstractPermissionWrapper<R, Children>>
         implements ISqlSegment {
@@ -333,6 +339,8 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
 
     /**
      * 子类返回一个自己的新对象
+     * 
+     * @return
      */
     protected abstract Children instance();
 
