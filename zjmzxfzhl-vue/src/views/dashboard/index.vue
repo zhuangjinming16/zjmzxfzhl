@@ -1,5 +1,9 @@
 <template>
     <div class="dashboard-container">
+        # 1.1.3 升级日志 2020-05-17 <br/>
+        1.数据权限优化，使用MyBatis-Plus的SqlParser <br/>
+        2.完成任务支持修改流程表单（流程设计时UserTask的formKey=startEvent的formKey） <br/>
+        3.Lombok@Getter@Setter注解改成使用@Data <br/>
         # 1.1.2 升级日志 2020-05-06 <br/>
         1.新增定时任务 <br/>
         2.新增异步线程池 <br/>
