@@ -78,6 +78,8 @@
             return {
                 // fullscreen: true,
                 activeName: 'processInstanceForm',
+                startFormKey: undefined,
+                taskFormKey: undefined,
                 startFormJson: undefined,
                 taskFormJson: undefined,
                 generateStartFormVisible: false,
@@ -104,6 +106,8 @@
                     this.startUserId = data.startUserId
                     this.showBusinessKey = data.showBusinessKey
                     this.businessKey = data.businessKey
+                    this.startFormKey = data.startFormKey
+                    this.taskFormKey = data.taskFormKey
                     this.isInitiator = data.isInitiator
                     if (data.renderedStartForm) {
                         this.startFormJson = JSON.parse(data.renderedStartForm)
@@ -112,7 +116,7 @@
                     }
                     if (data.renderedTaskForm) {
                         this.taskFormJson = JSON.parse(data.renderedTaskForm)
-                        if(this.isInitiator){
+                        if (this.startFormKey && this.taskFormKey && this.startFormKey == this.taskFormKey) {
                             this.taskFormData = JSON.parse(data.variables.processInstanceFormData)
                         }
                         this.generateTaskFormVisible = true
@@ -136,7 +140,7 @@
                     this.$refs.generateFormTask.getData().then(values => {
                         if (values && values != undefined) {
                             let realValues = values
-                            if(this.isInitiator){
+                            if (this.startFormKey && this.taskFormKey && this.startFormKey == this.taskFormKey) {
                                 let processInstanceFormData = JSON.stringify(values)
                                 realValues = Object.assign({processInstanceFormData}, values)
                             }
