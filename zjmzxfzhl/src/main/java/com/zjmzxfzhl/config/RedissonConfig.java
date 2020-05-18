@@ -16,18 +16,18 @@ import org.springframework.core.io.ClassPathResource;
  */
 @Configuration
 public class RedissonConfig {
-	@Value("${spring.redis.sentinel.nodes:}")
-	private String nodes;
+    @Value("${spring.redis.sentinel.nodes:}")
+    private String nodes;
 
-	@Bean
-	public RedissonClient redissonClient() throws IOException {
-		Config config = null;
-		if (nodes != null && nodes.length() > 0) {
-			config = Config.fromYAML(new ClassPathResource("redisson-sentinel.yml").getInputStream());
-			return Redisson.create(config);
-		} else {
-			config = Config.fromYAML(new ClassPathResource("redisson-single.yml").getInputStream());
-		}
-		return Redisson.create(config);
-	}
+    @Bean
+    public RedissonClient redissonClient() throws IOException {
+        Config config = null;
+        if (nodes != null && nodes.length() > 0) {
+            config = Config.fromYAML(new ClassPathResource("redisson-sentinel.yml").getInputStream());
+            return Redisson.create(config);
+        } else {
+            config = Config.fromYAML(new ClassPathResource("redisson-single.yml").getInputStream());
+        }
+        return Redisson.create(config);
+    }
 }

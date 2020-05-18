@@ -14,12 +14,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysConfig;
  * @author 庄金明
  */
 public interface SysConfigMapper extends BaseMapper<SysConfig> {
-	/**
-	 * 查询系统参数列表
-	 * 
-	 * @param page
-	 * @param entity
-	 * @return
-	 */
-	public List<SysConfig> list(IPage<SysConfig> page, @Param("entity") SysConfig entity);
+    /**
+     * 查询系统参数列表
+     * 
+     * @param page
+     * @param entity
+     * @return
+     */
+    public List<SysConfig> list(IPage<SysConfig> page, @Param("entity") SysConfig entity);
 }

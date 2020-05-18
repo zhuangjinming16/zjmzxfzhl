@@ -27,30 +27,31 @@ import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
 @RestController
 @RequestMapping("/flowable/taskIdentityLink")
 public class TaskIdentityLinkController extends BaseFlowableController {
-	@Autowired
-	protected FlowableTaskService flowableTaskService;
+    @Autowired
+    protected FlowableTaskService flowableTaskService;
 
-	@RequiresPermissions("flowable:taskIdentityLink:list")
-	@GetMapping(value = "/list")
-	public Result list(@RequestParam String taskId) {
-		HistoricTaskInstance task = flowableTaskService.getHistoricTaskInstanceNotNull(taskId);
-		List<HistoricIdentityLink> historicIdentityLinks = historyService.getHistoricIdentityLinksForTask(task.getId());
-		return Result.ok(responseFactory.createTaskIdentityResponseList(historicIdentityLinks));
-	}
+    @RequiresPermissions("flowable:taskIdentityLink:list")
+    @GetMapping(value = "/list")
+    public Result list(@RequestParam String taskId) {
+        HistoricTaskInstance task = flowableTaskService.getHistoricTaskInstanceNotNull(taskId);
+        List<HistoricIdentityLink> historicIdentityLinks = historyService.getHistoricIdentityLinksForTask(task.getId());
+        return Result.ok(responseFactory.createTaskIdentityResponseList(historicIdentityLinks));
+    }
 
-	@SysLogAuto(value = "新增任务授权")
-	@RequiresPermissions("flowable:taskIdentityLink:save")
-	@PostMapping(value = "/save")
-	public Result save(@RequestBody IdentityRequest taskIdentityRequest) {
-		flowableTaskService.saveTaskIdentityLink(taskIdentityRequest);
-		return Result.ok();
-	}
+    @SysLogAuto(value = "新增任务授权")
+    @RequiresPermissions("flowable:taskIdentityLink:save")
+    @PostMapping(value = "/save")
+    public Result save(@RequestBody IdentityRequest taskIdentityRequest) {
+        flowableTaskService.saveTaskIdentityLink(taskIdentityRequest);
+        return Result.ok();
+    }
 
-	@SysLogAuto(value = "删除任务授权")
-	@RequiresPermissions("flowable:taskIdentityLink:delete")
-	@DeleteMapping(value = "/delete")
-	public Result deleteIdentityLink(@RequestParam String taskId, @RequestParam String identityId, @RequestParam String identityType) {
-		flowableTaskService.deleteTaskIdentityLink(taskId, identityId, identityType);
-		return Result.ok();
-	}
+    @SysLogAuto(value = "删除任务授权")
+    @RequiresPermissions("flowable:taskIdentityLink:delete")
+    @DeleteMapping(value = "/delete")
+    public Result deleteIdentityLink(@RequestParam String taskId, @RequestParam String identityId,
+            @RequestParam String identityType) {
+        flowableTaskService.deleteTaskIdentityLink(taskId, identityId, identityType);
+        return Result.ok();
+    }
 }

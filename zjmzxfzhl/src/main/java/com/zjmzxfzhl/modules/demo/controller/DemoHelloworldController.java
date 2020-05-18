@@ -15,8 +15,8 @@ import com.zjmzxfzhl.common.base.BaseController;
 @RestController
 @RequestMapping("/demo/helloworld")
 public class DemoHelloworldController extends BaseController {
-	@GetMapping(value = "/helloworld")
-	public Result helloworld() {
-		return Result.ok("Hello World");
-	}
+    @GetMapping(value = "/helloworld")
+    public Result helloworld() {
+        return Result.ok("Hello World");
+    }
 }

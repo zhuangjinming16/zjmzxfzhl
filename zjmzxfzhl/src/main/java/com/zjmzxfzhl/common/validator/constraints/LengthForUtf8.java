@@ -29,20 +29,20 @@ import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8.List;
 @Retention(RUNTIME)
 @Repeatable(List.class)
 public @interface LengthForUtf8 {
-	int min() default 0;
+    int min() default 0;
 
-	int max() default Integer.MAX_VALUE;
+    int max() default Integer.MAX_VALUE;
 
-	String message() default "{org.hibernate.validator.constraints.Length.message}";
+    String message() default "{org.hibernate.validator.constraints.Length.message}";
 
-	Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 
-	@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
-	@Retention(RUNTIME)
-	@Documented
-	public @interface List {
-		LengthForUtf8[] value();
-	}
+    @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
+    @Retention(RUNTIME)
+    @Documented
+    public @interface List {
+        LengthForUtf8[] value();
+    }
 }

@@ -14,12 +14,12 @@ import com.zjmzxfzhl.modules.app.entity.AppUser;
  * @author 庄金明
  */
 public interface AppUserMapper extends BaseMapper<AppUser> {
-	/**
-	 * 查询用户列表
-	 * 
-	 * @param page
-	 * @param entity
-	 * @return
-	 */
-	public List<AppUser> list(IPage<AppUser> page, @Param("entity") AppUser entity);
+    /**
+     * 查询用户列表
+     * 
+     * @param page
+     * @param entity
+     * @return
+     */
+    public List<AppUser> list(IPage<AppUser> page, @Param("entity") AppUser entity);
 }

@@ -19,17 +19,19 @@ import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
 @RequestMapping("/app")
 public class AppUserController extends BaseController {
 
-	@GetMapping("/getUserInfo")
-	public Result getUserInfo(@RequestAttribute(AppLoginInterceptor.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
-		return Result.ok(appSessionObject);
-	}
+    @GetMapping("/getUserInfo")
+    public Result getUserInfo(
+            @RequestAttribute(AppLoginInterceptor.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
+        return Result.ok(appSessionObject);
+    }
 
-	@GetMapping("/getUserId")
-	public Result getUserId(@RequestAttribute(AppLoginInterceptor.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
-		String userId = null;
-		if (appSessionObject != null) {
-			userId = appSessionObject.getUserId();
-		}
-		return Result.ok(null, userId);
-	}
+    @GetMapping("/getUserId")
+    public Result getUserId(
+            @RequestAttribute(AppLoginInterceptor.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
+        String userId = null;
+        if (appSessionObject != null) {
+            userId = appSessionObject.getUserId();
+        }
+        return Result.ok(null, userId);
+    }
 }

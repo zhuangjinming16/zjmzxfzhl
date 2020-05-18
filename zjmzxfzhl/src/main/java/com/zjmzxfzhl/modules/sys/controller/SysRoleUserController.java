@@ -30,72 +30,72 @@ import com.zjmzxfzhl.modules.sys.service.SysRoleUserService;
 @RestController
 @RequestMapping("/sys/roleUser")
 public class SysRoleUserController extends BaseController {
-	@Autowired
-	private SysRoleUserService sysRoleUserService;
+    @Autowired
+    private SysRoleUserService sysRoleUserService;
 
-	/**
-	 * 自定义查询列表
-	 * 
-	 * @param sysRoleUser
-	 * @param current
-	 * @param size
-	 * @return
-	 */
-	@RequiresPermissions("sys:roleUser:list")
-	@GetMapping(value = "/list")
-	public Result list(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
-		IPage<SysRoleUser> pageList = sysRoleUserService.list(new Page<SysRoleUser>(current, size), sysRoleUser);
-		return Result.ok(pageList);
-	}
+    /**
+     * 自定义查询列表
+     * 
+     * @param sysRoleUser
+     * @param current
+     * @param size
+     * @return
+     */
+    @RequiresPermissions("sys:roleUser:list")
+    @GetMapping(value = "/list")
+    public Result list(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
+        IPage<SysRoleUser> pageList = sysRoleUserService.list(new Page<SysRoleUser>(current, size), sysRoleUser);
+        return Result.ok(pageList);
+    }
 
-	@RequiresPermissions("sys:roleUser:list")
-	@GetMapping(value = "/queryById")
-	public Result queryById(@RequestParam String id) {
-		SysRoleUser sysRoleUser = sysRoleUserService.getById(id);
-		return Result.ok(sysRoleUser);
-	}
+    @RequiresPermissions("sys:roleUser:list")
+    @GetMapping(value = "/queryById")
+    public Result queryById(@RequestParam String id) {
+        SysRoleUser sysRoleUser = sysRoleUserService.getById(id);
+        return Result.ok(sysRoleUser);
+    }
 
-	/**
-	 * @功能：新增
-	 * @param sysRoleUser
-	 * @return
-	 */
-	@RequiresPermissions("sys:roleUser:save")
-	@PostMapping(value = "/save")
-	public Result save(@Valid @RequestBody SysRoleUser sysRoleUser) {
-		sysRoleUserService.save(sysRoleUser);
-		return Result.ok();
-	}
+    /**
+     * @功能：新增
+     * @param sysRoleUser
+     * @return
+     */
+    @RequiresPermissions("sys:roleUser:save")
+    @PostMapping(value = "/save")
+    public Result save(@Valid @RequestBody SysRoleUser sysRoleUser) {
+        sysRoleUserService.save(sysRoleUser);
+        return Result.ok();
+    }
 
-	/**
-	 * @功能：修改
-	 * @param sysRoleUser
-	 * @return
-	 */
-	@RequiresPermissions("sys:roleUser:update")
-	@PutMapping(value = "/update")
-	public Result update(@Valid @RequestBody SysRoleUser sysRoleUser) {
-		sysRoleUserService.updateById(sysRoleUser);
-		return Result.ok();
-	}
+    /**
+     * @功能：修改
+     * @param sysRoleUser
+     * @return
+     */
+    @RequiresPermissions("sys:roleUser:update")
+    @PutMapping(value = "/update")
+    public Result update(@Valid @RequestBody SysRoleUser sysRoleUser) {
+        sysRoleUserService.updateById(sysRoleUser);
+        return Result.ok();
+    }
 
-	/**
-	 * @功能：批量删除
-	 * @param ids
-	 * @return
-	 */
-	@RequiresPermissions("sys:roleUser:delete")
-	@DeleteMapping(value = "/delete")
-	public Result delete(@RequestParam String ids) {
-		if (ids == null || ids.trim().length() == 0) {
-			return Result.error("ids can't be empty");
-		}
-		String[] idsArr = ids.split(",");
-		if (idsArr.length > 1) {
-			sysRoleUserService.removeByIds(Arrays.asList(idsArr));
-		} else {
-			sysRoleUserService.removeById(idsArr[0]);
-		}
-		return Result.ok();
-	}
+    /**
+     * @功能：批量删除
+     * @param ids
+     * @return
+     */
+    @RequiresPermissions("sys:roleUser:delete")
+    @DeleteMapping(value = "/delete")
+    public Result delete(@RequestParam String ids) {
+        if (ids == null || ids.trim().length() == 0) {
+            return Result.error("ids can't be empty");
+        }
+        String[] idsArr = ids.split(",");
+        if (idsArr.length > 1) {
+            sysRoleUserService.removeByIds(Arrays.asList(idsArr));
+        } else {
+            sysRoleUserService.removeById(idsArr[0]);
+        }
+        return Result.ok();
+    }
 }

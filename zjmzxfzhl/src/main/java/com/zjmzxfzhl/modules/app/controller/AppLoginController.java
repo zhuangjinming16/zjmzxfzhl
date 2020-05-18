@@ -31,33 +31,33 @@ import com.zjmzxfzhl.modules.app.service.AppUserService;
 @RequestMapping("/app")
 public class AppLoginController {
 
-	@Autowired
-	private AppUserService appUserService;
+    @Autowired
+    private AppUserService appUserService;
 
-	@Autowired
-	private RedisUtil redisUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
-	@PostMapping("/login")
-	public Result login(@Valid @RequestBody AppLoginForm form, HttpServletRequest request) {
-		AppUser appUser = appUserService.login(form);
-		String userId = appUser.getUserId();
-		String token = JwtUtil.sign(userId, appUser.getPassword());
+    @PostMapping("/login")
+    public Result login(@Valid @RequestBody AppLoginForm form, HttpServletRequest request) {
+        AppUser appUser = appUserService.login(form);
+        String userId = appUser.getUserId();
+        String token = JwtUtil.sign(userId, appUser.getPassword());
 
-		AppSessionObject appSessionObject = new AppSessionObject();
-		// password不存缓存
-		appUser.setPassword(null);
-		// 密码盐不缓存
-		appUser.setSalt(null);
-		appSessionObject.setAppUser(appUser);
-		appSessionObject.setUserId(userId);
-		appSessionObject.setLoginTime(DateUtil.getNow());
-		appSessionObject.setIpAddr(IpUtils.getIpAddr(request));
-		appSessionObject.setToken(token);
-		redisUtil.set(AppConstants.PREFIX_USER_APP_SESSION_OBJECT + userId, appSessionObject, JwtUtil.EXPIRE_TIME);
+        AppSessionObject appSessionObject = new AppSessionObject();
+        // password不存缓存
+        appUser.setPassword(null);
+        // 密码盐不缓存
+        appUser.setSalt(null);
+        appSessionObject.setAppUser(appUser);
+        appSessionObject.setUserId(userId);
+        appSessionObject.setLoginTime(DateUtil.getNow());
+        appSessionObject.setIpAddr(IpUtils.getIpAddr(request));
+        appSessionObject.setToken(token);
+        redisUtil.set(AppConstants.PREFIX_USER_APP_SESSION_OBJECT + userId, appSessionObject, JwtUtil.EXPIRE_TIME);
 
-		Map<String, Object> map = new HashMap<>(1);
-		map.put("token", token);
-		return Result.ok(map);
-	}
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("token", token);
+        return Result.ok(map);
+    }
 
 }

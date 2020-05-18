@@ -13,10 +13,10 @@ import lombok.Data;
  */
 @Data
 public class AppSessionObject implements Serializable {
-	private static final long serialVersionUID = 1L;
-	public String token;
-	private String userId;
-	private AppUser appUser;
-	private Date loginTime;
-	private String ipAddr;
+    private static final long serialVersionUID = 1L;
+    public String token;
+    private String userId;
+    private AppUser appUser;
+    private Date loginTime;
+    private String ipAddr;
 }

@@ -14,8 +14,7 @@ import com.zjmzxfzhl.modules.sys.service.SysLogService;
  * @author 庄金明
  */
 @Service
-public class SysLogServiceImpl extends BaseServiceImpl<SysLogMapper, SysLog>
-        implements SysLogService {
+public class SysLogServiceImpl extends BaseServiceImpl<SysLogMapper, SysLog> implements SysLogService {
     @Override
     public IPage<SysLog> list(IPage<SysLog> page, SysLog sysLog) {
         return page.setRecords(baseMapper.list(page, sysLog));

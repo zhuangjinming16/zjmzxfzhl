@@ -8,13 +8,13 @@ import lombok.Data;
  */
 @Data
 public class SysPasswordForm {
-	/**
-	 * 原密码
-	 */
-	private String password;
-	/**
-	 * 新密码
-	 */
-	private String newPassword;
+    /**
+     * 原密码
+     */
+    private String password;
+    /**
+     * 新密码
+     */
+    private String newPassword;
 
 }

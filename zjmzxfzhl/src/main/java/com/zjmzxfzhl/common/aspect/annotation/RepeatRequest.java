@@ -27,37 +27,37 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RepeatRequest {
-	/**
-	 * true时，若用户未登陆，则只使用 lockIndexs 组拼key，若用户已登录，只使用 userId 组拼 key 忽略 lockIndexs
-	 * 
-	 * false时，若用户未登陆，则只使用 lockIndexs 组拼key，若用户已登录，即使用 userId 组拼 key 也使用 lockIndexs 组拼key
-	 */
-	boolean isExistAndOnlyUserId() default true;
+    /**
+     * true时，若用户未登陆，则只使用 lockIndexs 组拼key，若用户已登录，只使用 userId 组拼 key 忽略 lockIndexs
+     * 
+     * false时，若用户未登陆，则只使用 lockIndexs 组拼key，若用户已登录，即使用 userId 组拼 key 也使用 lockIndexs 组拼key
+     */
+    boolean isExistAndOnlyUserId() default true;
 
-	/**
-	 * 要锁的参数角标
-	 */
-	int[] lockIndexs() default {};
+    /**
+     * 要锁的参数角标
+     */
+    int[] lockIndexs() default {};
 
-	/**
-	 * 要锁的参数的属性名
-	 */
-	String[] fieldNames() default {};
+    /**
+     * 要锁的参数的属性名
+     */
+    String[] fieldNames() default {};
 
-	/**
-	 * 等待多久（单位：秒）,默认不等待，若前一个请求未执行完毕，直接返回错误
-	 */
-	int waitTime() default 0;
+    /**
+     * 等待多久（单位：秒）,默认不等待，若前一个请求未执行完毕，直接返回错误
+     */
+    int waitTime() default 0;
 
-	/**
-	 * 锁多久后自动释放（单位：秒）
-	 */
-	int leaseTime() default 30;
+    /**
+     * 锁多久后自动释放（单位：秒）
+     */
+    int leaseTime() default 30;
 
-	/**
-	 * 未取到锁时提示信息
-	 * 
-	 * @return
-	 */
-	String msg() default "交易未执行完毕，请勿重复提交";
+    /**
+     * 未取到锁时提示信息
+     * 
+     * @return
+     */
+    String msg() default "交易未执行完毕，请勿重复提交";
 }

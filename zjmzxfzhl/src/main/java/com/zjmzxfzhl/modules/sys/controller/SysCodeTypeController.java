@@ -29,67 +29,67 @@ import com.zjmzxfzhl.modules.sys.service.SysCodeTypeService;
 @RestController
 @RequestMapping("/sys/codeType")
 public class SysCodeTypeController extends BaseController {
-	@Autowired
-	private SysCodeTypeService sysCodeTypeService;
+    @Autowired
+    private SysCodeTypeService sysCodeTypeService;
 
-	/**
-	 * 自定义查询列表
-	 * 
-	 * @param sysCodeType
-	 * @param current
-	 * @param size
-	 * @return
-	 */
-	@RequiresPermissions("sys:codeType:list")
-	@GetMapping(value = "/list")
-	public Result list(SysCodeType sysCodeType, @RequestParam Integer current, @RequestParam Integer size) {
-		IPage<SysCodeType> pageList = sysCodeTypeService.list(new Page<SysCodeType>(current, size), sysCodeType);
-		return Result.ok(pageList);
-	}
+    /**
+     * 自定义查询列表
+     * 
+     * @param sysCodeType
+     * @param current
+     * @param size
+     * @return
+     */
+    @RequiresPermissions("sys:codeType:list")
+    @GetMapping(value = "/list")
+    public Result list(SysCodeType sysCodeType, @RequestParam Integer current, @RequestParam Integer size) {
+        IPage<SysCodeType> pageList = sysCodeTypeService.list(new Page<SysCodeType>(current, size), sysCodeType);
+        return Result.ok(pageList);
+    }
 
-	@RequiresPermissions("sys:codeType:list")
-	@GetMapping(value = "/queryById")
-	public Result queryById(@RequestParam String id) {
-		SysCodeType sysCodeType = sysCodeTypeService.getById(id);
-		return Result.ok(sysCodeType);
-	}
+    @RequiresPermissions("sys:codeType:list")
+    @GetMapping(value = "/queryById")
+    public Result queryById(@RequestParam String id) {
+        SysCodeType sysCodeType = sysCodeTypeService.getById(id);
+        return Result.ok(sysCodeType);
+    }
 
-	/**
-	 * @功能：新增
-	 * @param sysCodeType
-	 * @return
-	 */
-	@SysLogAuto(value = "新增代码类别")
-	@RequiresPermissions("sys:codeType:save")
-	@PostMapping(value = "/save")
-	public Result save(@Valid @RequestBody SysCodeType sysCodeType) {
-		sysCodeTypeService.save(sysCodeType);
-		return Result.ok();
-	}
+    /**
+     * @功能：新增
+     * @param sysCodeType
+     * @return
+     */
+    @SysLogAuto(value = "新增代码类别")
+    @RequiresPermissions("sys:codeType:save")
+    @PostMapping(value = "/save")
+    public Result save(@Valid @RequestBody SysCodeType sysCodeType) {
+        sysCodeTypeService.save(sysCodeType);
+        return Result.ok();
+    }
 
-	/**
-	 * @功能：修改
-	 * @param sysCodeType
-	 * @return
-	 */
-	@SysLogAuto(value = "修改代码类别")
-	@RequiresPermissions("sys:codeType:update")
-	@PutMapping(value = "/update")
-	public Result update(@Valid @RequestBody SysCodeType sysCodeType) {
-		sysCodeTypeService.updateById(sysCodeType);
-		return Result.ok();
-	}
+    /**
+     * @功能：修改
+     * @param sysCodeType
+     * @return
+     */
+    @SysLogAuto(value = "修改代码类别")
+    @RequiresPermissions("sys:codeType:update")
+    @PutMapping(value = "/update")
+    public Result update(@Valid @RequestBody SysCodeType sysCodeType) {
+        sysCodeTypeService.updateById(sysCodeType);
+        return Result.ok();
+    }
 
-	/**
-	 * @功能：批量删除
-	 * @param ids
-	 * @return
-	 */
-	@SysLogAuto(value = "删除代码类别")
-	@RequiresPermissions("sys:codeType:delete")
-	@DeleteMapping(value = "/delete")
-	public Result delete(@RequestParam String ids) {
-		sysCodeTypeService.deleteSysCodeType(ids);
-		return Result.ok();
-	}
+    /**
+     * @功能：批量删除
+     * @param ids
+     * @return
+     */
+    @SysLogAuto(value = "删除代码类别")
+    @RequiresPermissions("sys:codeType:delete")
+    @DeleteMapping(value = "/delete")
+    public Result delete(@RequestParam String ids) {
+        sysCodeTypeService.deleteSysCodeType(ids);
+        return Result.ok();
+    }
 }

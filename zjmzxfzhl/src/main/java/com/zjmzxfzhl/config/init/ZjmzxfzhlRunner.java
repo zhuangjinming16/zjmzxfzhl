@@ -22,17 +22,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ZjmzxfzhlRunner implements ApplicationRunner {
 
-	@Autowired
-	private SysConfigService sysConfigService;
-	@Autowired
-	private SysCodeInfoService sysCodeInfoService;
+    @Autowired
+    private SysConfigService sysConfigService;
+    @Autowired
+    private SysCodeInfoService sysCodeInfoService;
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		sysConfigService.loadSysConfigToRedis(null);
-		sysCodeInfoService.loadSysCodeInfoToRedis(null);
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        sysConfigService.loadSysConfigToRedis(null);
+        sysCodeInfoService.loadSysCodeInfoToRedis(null);
 
-		log.info("------【加载了下拉框的内存数据】---------");
-	}
+        log.info("------【加载了下拉框的内存数据】---------");
+    }
 
 }

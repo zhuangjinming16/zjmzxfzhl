@@ -13,11 +13,12 @@ import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
  */
 @Configuration
 public class AppMvcConfig implements WebMvcConfigurer {
-	@Autowired
-	private AppLoginInterceptor authorizationInterceptor;
+    @Autowired
+    private AppLoginInterceptor authorizationInterceptor;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authorizationInterceptor).addPathPatterns("/app/**").excludePathPatterns("/app/login", "/app/register");
-	}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authorizationInterceptor).addPathPatterns("/app/**").excludePathPatterns("/app/login",
+                "/app/register");
+    }
 }

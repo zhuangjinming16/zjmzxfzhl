@@ -19,22 +19,22 @@ import com.zjmzxfzhl.modules.app.service.AppUserService;
 @RestController
 @RequestMapping("/app")
 public class AppRegisterController {
-	@Autowired
-	private AppUserService appUserService;
+    @Autowired
+    private AppUserService appUserService;
 
-	@PostMapping("/register")
-	public Result register(@RequestBody AppRegisterForm form) {
-		String salt = PasswordUtil.randomGen(8);
-		// 默认密码
-		String password = PasswordUtil.encrypt(form.getPassword(), salt);
-		AppUser appUser = new AppUser();
-		appUser.setUserId(form.getMobile());
-		appUser.setMobile(form.getMobile());
-		appUser.setUserName(form.getMobile());
-		appUser.setSalt(salt);
-		appUser.setPassword(password);
-		appUser.setCreateBy(form.getMobile());
-		appUserService.save(appUser);
-		return Result.ok();
-	}
+    @PostMapping("/register")
+    public Result register(@RequestBody AppRegisterForm form) {
+        String salt = PasswordUtil.randomGen(8);
+        // 默认密码
+        String password = PasswordUtil.encrypt(form.getPassword(), salt);
+        AppUser appUser = new AppUser();
+        appUser.setUserId(form.getMobile());
+        appUser.setMobile(form.getMobile());
+        appUser.setUserName(form.getMobile());
+        appUser.setSalt(salt);
+        appUser.setPassword(password);
+        appUser.setCreateBy(form.getMobile());
+        appUserService.save(appUser);
+        return Result.ok();
+    }
 }

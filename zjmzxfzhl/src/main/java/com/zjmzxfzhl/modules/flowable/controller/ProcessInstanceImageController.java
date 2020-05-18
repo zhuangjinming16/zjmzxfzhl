@@ -33,50 +33,53 @@ import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
  */
 @RestController
 public class ProcessInstanceImageController extends BaseFlowableController {
-	@Autowired
-	private RepositoryService repositoryService;
-	@Autowired
-	private ProcessEngineConfiguration processEngineConfiguration;
+    @Autowired
+    private RepositoryService repositoryService;
+    @Autowired
+    private ProcessEngineConfiguration processEngineConfiguration;
 
-	@GetMapping(value = "/flowable/processInstanceImage")
-	public ResponseEntity<byte[]> image(@RequestParam String processInstanceId) {
-		HistoricProcessInstance processInstance = permissionService.validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(),
-				processInstanceId);
-		ProcessDefinition pde = repositoryService.getProcessDefinition(processInstance.getProcessDefinitionId());
-		if (pde == null || !pde.hasGraphicalNotation()) {
-			throw new FlowableException(messageFormat("Process instance image is not found with id {0}", processInstanceId));
-		}
-		List<String> highLightedFlows = new ArrayList<>();
-		List<String> highLightedActivities = new ArrayList<>();
-		List<HistoricActivityInstance> allHistoricActivityIntances = historyService.createHistoricActivityInstanceQuery()
-				.processInstanceId(processInstanceId).list();
-		allHistoricActivityIntances.forEach(historicActivityInstance -> {
-			if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(historicActivityInstance.getActivityType())) {
-				highLightedFlows.add(historicActivityInstance.getActivityId());
-			} else {
-				highLightedActivities.add(historicActivityInstance.getActivityId());
-			}
-		});
+    @GetMapping(value = "/flowable/processInstanceImage")
+    public ResponseEntity<byte[]> image(@RequestParam String processInstanceId) {
+        HistoricProcessInstance processInstance = permissionService
+                .validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
+        ProcessDefinition pde = repositoryService.getProcessDefinition(processInstance.getProcessDefinitionId());
+        if (pde == null || !pde.hasGraphicalNotation()) {
+            throw new FlowableException(
+                    messageFormat("Process instance image is not found with id {0}", processInstanceId));
+        }
+        List<String> highLightedFlows = new ArrayList<>();
+        List<String> highLightedActivities = new ArrayList<>();
+        List<HistoricActivityInstance> allHistoricActivityIntances = historyService
+                .createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
+        allHistoricActivityIntances.forEach(historicActivityInstance -> {
+            if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(historicActivityInstance.getActivityType())) {
+                highLightedFlows.add(historicActivityInstance.getActivityId());
+            } else {
+                highLightedActivities.add(historicActivityInstance.getActivityId());
+            }
+        });
 
-		List<String> runningActivitiIdList = null;
-		// 流程已结束
-		if (processInstance != null && processInstance.getEndTime() != null) {
-			runningActivitiIdList = Arrays.asList();
-		} else {
-			runningActivitiIdList = runtimeService.getActiveActivityIds(processInstanceId);
-		}
+        List<String> runningActivitiIdList = null;
+        // 流程已结束
+        if (processInstance != null && processInstance.getEndTime() != null) {
+            runningActivitiIdList = Arrays.asList();
+        } else {
+            runningActivitiIdList = runtimeService.getActiveActivityIds(processInstanceId);
+        }
 
-		BpmnModel bpmnModel = repositoryService.getBpmnModel(pde.getId());
-		CustomProcessDiagramGenerator diagramGenerator = (CustomProcessDiagramGenerator) processEngineConfiguration.getProcessDiagramGenerator();
-		InputStream resource = diagramGenerator.generateCustomDiagram(bpmnModel, "png", highLightedActivities, runningActivitiIdList,
-				highLightedFlows, processEngineConfiguration.getActivityFontName(), processEngineConfiguration.getLabelFontName(),
-				processEngineConfiguration.getAnnotationFontName(), processEngineConfiguration.getClassLoader(), 1.0, true);
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setContentType(MediaType.IMAGE_PNG);
-		try {
-			return new ResponseEntity<>(IOUtils.toByteArray(resource), responseHeaders, HttpStatus.OK);
-		} catch (Exception e) {
-			throw new FlowableException("Process instance image read error", e);
-		}
-	}
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(pde.getId());
+        CustomProcessDiagramGenerator diagramGenerator = (CustomProcessDiagramGenerator) processEngineConfiguration
+                .getProcessDiagramGenerator();
+        InputStream resource = diagramGenerator.generateCustomDiagram(bpmnModel, "png", highLightedActivities,
+                runningActivitiIdList, highLightedFlows, processEngineConfiguration.getActivityFontName(),
+                processEngineConfiguration.getLabelFontName(), processEngineConfiguration.getAnnotationFontName(),
+                processEngineConfiguration.getClassLoader(), 1.0, true);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.IMAGE_PNG);
+        try {
+            return new ResponseEntity<>(IOUtils.toByteArray(resource), responseHeaders, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new FlowableException("Process instance image read error", e);
+        }
+    }
 }

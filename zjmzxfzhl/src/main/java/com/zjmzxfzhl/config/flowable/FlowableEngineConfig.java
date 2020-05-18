@@ -13,19 +13,19 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class FlowableEngineConfig implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
-	@Value("${flowableFontName}")
-	private String flowableFontName;
+    @Value("${flowableFontName}")
+    private String flowableFontName;
 
-	@Override
-	public void configure(SpringProcessEngineConfiguration engineConfiguration) {
-		engineConfiguration.setProcessDiagramGenerator(processDiagramGenerator());
-		engineConfiguration.setActivityFontName(flowableFontName);
-		engineConfiguration.setLabelFontName(flowableFontName);
-		engineConfiguration.setAnnotationFontName(flowableFontName);
-	}
+    @Override
+    public void configure(SpringProcessEngineConfiguration engineConfiguration) {
+        engineConfiguration.setProcessDiagramGenerator(processDiagramGenerator());
+        engineConfiguration.setActivityFontName(flowableFontName);
+        engineConfiguration.setLabelFontName(flowableFontName);
+        engineConfiguration.setAnnotationFontName(flowableFontName);
+    }
 
-	@Bean
-	public ProcessDiagramGenerator processDiagramGenerator() {
-		return new CustomProcessDiagramGenerator();
-	}
+    @Bean
+    public ProcessDiagramGenerator processDiagramGenerator() {
+        return new CustomProcessDiagramGenerator();
+    }
 }

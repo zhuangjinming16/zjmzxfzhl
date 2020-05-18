@@ -14,12 +14,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysFunc;
  * @author 庄金明
  */
 public interface SysFuncMapper extends BaseMapper<SysFunc> {
-	/**
-	 * 查询功能列表
-	 * 
-	 * @param page
-	 * @param entity
-	 * @return
-	 */
-	public List<SysFunc> list(IPage<SysFunc> page, @Param("entity") SysFunc entity);
+    /**
+     * 查询功能列表
+     * 
+     * @param page
+     * @param entity
+     * @return
+     */
+    public List<SysFunc> list(IPage<SysFunc> page, @Param("entity") SysFunc entity);
 }

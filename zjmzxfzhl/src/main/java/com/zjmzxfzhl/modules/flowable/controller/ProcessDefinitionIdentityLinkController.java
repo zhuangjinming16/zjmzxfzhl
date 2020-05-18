@@ -27,30 +27,32 @@ import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
 @RestController
 @RequestMapping("/flowable/processDefinitionIdentityLink")
 public class ProcessDefinitionIdentityLinkController extends BaseFlowableController {
-	@Autowired
-	private ProcessDefinitionService processDefinitionService;
+    @Autowired
+    private ProcessDefinitionService processDefinitionService;
 
-	@RequiresPermissions("flowable:processDefinitionIdentityLink:list")
-	@GetMapping(value = "/list")
-	public Result list(@RequestParam String processDefinitionId) {
-		ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
-		List<IdentityLink> identityLinks = repositoryService.getIdentityLinksForProcessDefinition(processDefinition.getId());
-		return Result.ok(responseFactory.createIdentityResponseList(identityLinks));
-	}
+    @RequiresPermissions("flowable:processDefinitionIdentityLink:list")
+    @GetMapping(value = "/list")
+    public Result list(@RequestParam String processDefinitionId) {
+        ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
+        List<IdentityLink> identityLinks = repositoryService
+                .getIdentityLinksForProcessDefinition(processDefinition.getId());
+        return Result.ok(responseFactory.createIdentityResponseList(identityLinks));
+    }
 
-	@SysLogAuto(value = "新增流程定义授权")
-	@RequiresPermissions("flowable:processDefinitionIdentityLink:save")
-	@PostMapping(value = "/save")
-	public Result save(@RequestBody IdentityRequest identityRequest) {
-		processDefinitionService.saveProcessDefinitionIdentityLink(identityRequest);
-		return Result.ok();
-	}
+    @SysLogAuto(value = "新增流程定义授权")
+    @RequiresPermissions("flowable:processDefinitionIdentityLink:save")
+    @PostMapping(value = "/save")
+    public Result save(@RequestBody IdentityRequest identityRequest) {
+        processDefinitionService.saveProcessDefinitionIdentityLink(identityRequest);
+        return Result.ok();
+    }
 
-	@SysLogAuto(value = "删除流程定义授权")
-	@RequiresPermissions("flowable:processDefinitionIdentityLink:delete")
-	@DeleteMapping(value = "/delete")
-	public Result delete(@RequestParam String processDefinitionId, @RequestParam String identityId, @RequestParam String identityType) {
-		processDefinitionService.deleteProcessDefinitionIdentityLink(processDefinitionId, identityId, identityType);
-		return Result.ok();
-	}
+    @SysLogAuto(value = "删除流程定义授权")
+    @RequiresPermissions("flowable:processDefinitionIdentityLink:delete")
+    @DeleteMapping(value = "/delete")
+    public Result delete(@RequestParam String processDefinitionId, @RequestParam String identityId,
+            @RequestParam String identityType) {
+        processDefinitionService.deleteProcessDefinitionIdentityLink(processDefinitionId, identityId, identityType);
+        return Result.ok();
+    }
 }

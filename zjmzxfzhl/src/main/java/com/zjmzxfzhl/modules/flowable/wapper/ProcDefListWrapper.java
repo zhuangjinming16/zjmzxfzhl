@@ -14,12 +14,12 @@ import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 @Component
 public class ProcDefListWrapper implements IListWrapper {
 
-	@Autowired
-	private ResponseFactory responseFactory;
+    @Autowired
+    private ResponseFactory responseFactory;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public List execute(List list) {
-		return responseFactory.createProcessDefinitionResponseList(list);
-	}
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public List execute(List list) {
+        return responseFactory.createProcessDefinitionResponseList(list);
+    }
 }

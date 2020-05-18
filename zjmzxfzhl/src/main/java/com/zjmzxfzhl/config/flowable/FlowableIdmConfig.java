@@ -16,19 +16,19 @@ import com.zjmzxfzhl.modules.flowable.identity.CustomUserEntityManager;
 @Configuration
 public class FlowableIdmConfig implements EngineConfigurationConfigurer<SpringIdmEngineConfiguration> {
 
-	@Override
-	public void configure(SpringIdmEngineConfiguration configuration) {
-		configuration.setGroupEntityManager(customGroupEntityManager(configuration));
-		configuration.setUserEntityManager(customUserEntityManager(configuration));
-	}
+    @Override
+    public void configure(SpringIdmEngineConfiguration configuration) {
+        configuration.setGroupEntityManager(customGroupEntityManager(configuration));
+        configuration.setUserEntityManager(customUserEntityManager(configuration));
+    }
 
-	@Bean
-	public CustomGroupEntityManager customGroupEntityManager(IdmEngineConfiguration configuration) {
-		return new CustomGroupEntityManager(configuration, configuration.getGroupDataManager());
-	}
+    @Bean
+    public CustomGroupEntityManager customGroupEntityManager(IdmEngineConfiguration configuration) {
+        return new CustomGroupEntityManager(configuration, configuration.getGroupDataManager());
+    }
 
-	@Bean
-	public CustomUserEntityManager customUserEntityManager(IdmEngineConfiguration configuration) {
-		return new CustomUserEntityManager(configuration, configuration.getUserDataManager());
-	}
+    @Bean
+    public CustomUserEntityManager customUserEntityManager(IdmEngineConfiguration configuration) {
+        return new CustomUserEntityManager(configuration, configuration.getUserDataManager());
+    }
 }

@@ -23,18 +23,18 @@ import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 @RequestMapping("/flowable/processDefinitionJob")
 public class ProcessDefinitionJobController extends BaseFlowableController {
 
-	@RequiresPermissions("flowable:processDefinitionJob:list")
-	@GetMapping(value = "/list")
-	public List<Job> list(@RequestParam String processDefinitionId) {
-		return managementService.createTimerJobQuery().processDefinitionId(processDefinitionId).list();
-	}
+    @RequiresPermissions("flowable:processDefinitionJob:list")
+    @GetMapping(value = "/list")
+    public List<Job> list(@RequestParam String processDefinitionId) {
+        return managementService.createTimerJobQuery().processDefinitionId(processDefinitionId).list();
+    }
 
-	@SysLogAuto(value = "新增流程定义定时任务")
-	@RequiresPermissions("flowable:processDefinitionJob:delete")
-	@DeleteMapping(value = "/delete")
-	@Transactional(rollbackFor = Exception.class)
-	public Result deleteJob(@RequestParam String jobId) {
-		managementService.deleteTimerJob(jobId);
-		return Result.ok();
-	}
+    @SysLogAuto(value = "新增流程定义定时任务")
+    @RequiresPermissions("flowable:processDefinitionJob:delete")
+    @DeleteMapping(value = "/delete")
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteJob(@RequestParam String jobId) {
+        managementService.deleteTimerJob(jobId);
+        return Result.ok();
+    }
 }

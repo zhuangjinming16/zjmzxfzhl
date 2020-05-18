@@ -32,79 +32,79 @@ import com.zjmzxfzhl.modules.sys.service.SysMenuService;
 @RestController
 @RequestMapping("/sys/menu")
 public class SysMenuController extends BaseController {
-	@Autowired
-	private SysMenuService sysMenuService;
+    @Autowired
+    private SysMenuService sysMenuService;
 
-	/**
-	 * 自定义查询列表
-	 * 
-	 * @param sysMenu
-	 * @param current
-	 * @param size
-	 * @return
-	 */
-	@RequiresPermissions("sys:menu:list")
-	@GetMapping(value = "/list")
-	public Result list(SysMenu sysMenu, @RequestParam Integer current, @RequestParam Integer size) {
-		IPage<SysMenu> pageList = sysMenuService.list(new Page<SysMenu>(current, size), sysMenu);
-		return Result.ok(pageList);
-	}
+    /**
+     * 自定义查询列表
+     * 
+     * @param sysMenu
+     * @param current
+     * @param size
+     * @return
+     */
+    @RequiresPermissions("sys:menu:list")
+    @GetMapping(value = "/list")
+    public Result list(SysMenu sysMenu, @RequestParam Integer current, @RequestParam Integer size) {
+        IPage<SysMenu> pageList = sysMenuService.list(new Page<SysMenu>(current, size), sysMenu);
+        return Result.ok(pageList);
+    }
 
-	@RequiresPermissions("sys:menu:list")
-	@GetMapping(value = "/queryById")
-	public Result queryById(@RequestParam String id) {
-		SysMenu sysMenu = sysMenuService.getById(id);
-		return Result.ok(sysMenu);
-	}
+    @RequiresPermissions("sys:menu:list")
+    @GetMapping(value = "/queryById")
+    public Result queryById(@RequestParam String id) {
+        SysMenu sysMenu = sysMenuService.getById(id);
+        return Result.ok(sysMenu);
+    }
 
-	/**
-	 * @功能：新增
-	 * @param sysMenu
-	 * @return
-	 */
-	@SysLogAuto(value = "新增功能菜单")
-	@RequiresPermissions("sys:menu:save")
-	@PostMapping(value = "/save")
-	public Result save(@Valid @RequestBody SysMenu sysMenu) {
-		sysMenuService.saveSysMenu(sysMenu);
-		return Result.ok(sysMenu);
-	}
+    /**
+     * @功能：新增
+     * @param sysMenu
+     * @return
+     */
+    @SysLogAuto(value = "新增功能菜单")
+    @RequiresPermissions("sys:menu:save")
+    @PostMapping(value = "/save")
+    public Result save(@Valid @RequestBody SysMenu sysMenu) {
+        sysMenuService.saveSysMenu(sysMenu);
+        return Result.ok(sysMenu);
+    }
 
-	/**
-	 * @功能：修改
-	 * @param sysMenu
-	 * @return
-	 */
-	@SysLogAuto(value = "修改功能菜单")
-	@RequiresPermissions("sys:menu:update")
-	@PutMapping(value = "/update")
-	public Result update(@Valid @RequestBody SysMenu sysMenu) {
-		sysMenuService.updateSysMenu(sysMenu);
-		return Result.ok(sysMenu);
-	}
+    /**
+     * @功能：修改
+     * @param sysMenu
+     * @return
+     */
+    @SysLogAuto(value = "修改功能菜单")
+    @RequiresPermissions("sys:menu:update")
+    @PutMapping(value = "/update")
+    public Result update(@Valid @RequestBody SysMenu sysMenu) {
+        sysMenuService.updateSysMenu(sysMenu);
+        return Result.ok(sysMenu);
+    }
 
-	/**
-	 * @功能：删除
-	 * @param id
-	 * @return
-	 */
-	@SysLogAuto(value = "删除功能菜单")
-	@RequiresPermissions("sys:menu:delete")
-	@DeleteMapping(value = "/delete")
-	public Result delete(@RequestParam String id) {
-		sysMenuService.delete(id);
-		return Result.ok();
-	}
+    /**
+     * @功能：删除
+     * @param id
+     * @return
+     */
+    @SysLogAuto(value = "删除功能菜单")
+    @RequiresPermissions("sys:menu:delete")
+    @DeleteMapping(value = "/delete")
+    public Result delete(@RequestParam String id) {
+        sysMenuService.delete(id);
+        return Result.ok();
+    }
 
-	/**
-	 * 菜单管理，菜单树数据
-	 * 
-	 * @return
-	 */
-	@RequiresPermissions("sys:menu:getTreeData")
-	@GetMapping(value = "/getTreeData")
-	public Result getTreeData() {
-		List<ElTree> treeData = sysMenuService.getTreeData();
-		return Result.ok(treeData);
-	}
+    /**
+     * 菜单管理，菜单树数据
+     * 
+     * @return
+     */
+    @RequiresPermissions("sys:menu:getTreeData")
+    @GetMapping(value = "/getTreeData")
+    public Result getTreeData() {
+        List<ElTree> treeData = sysMenuService.getTreeData();
+        return Result.ok(treeData);
+    }
 }

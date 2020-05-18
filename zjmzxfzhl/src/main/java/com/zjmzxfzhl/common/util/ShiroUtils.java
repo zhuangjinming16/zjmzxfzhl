@@ -13,43 +13,43 @@ import com.zjmzxfzhl.modules.sys.entity.SysUser;
  */
 public class ShiroUtils {
 
-	public static Session getSession() {
-		return SecurityUtils.getSubject().getSession();
-	}
+    public static Session getSession() {
+        return SecurityUtils.getSubject().getSession();
+    }
 
-	public static Subject getSubject() {
-		return SecurityUtils.getSubject();
-	}
+    public static Subject getSubject() {
+        return SecurityUtils.getSubject();
+    }
 
-	public static SessionObject getSessionObject() {
-		return (SessionObject) SecurityUtils.getSubject().getPrincipal();
-	}
+    public static SessionObject getSessionObject() {
+        return (SessionObject) SecurityUtils.getSubject().getPrincipal();
+    }
 
-	public static SysUser getSysUser() {
-		SessionObject sessionObject = getSessionObject();
-		if (sessionObject == null) {
-			return null;
-		}
-		return sessionObject.getSysUser();
-	}
+    public static SysUser getSysUser() {
+        SessionObject sessionObject = getSessionObject();
+        if (sessionObject == null) {
+            return null;
+        }
+        return sessionObject.getSysUser();
+    }
 
-	public static String getUserId() {
-		SysUser sysUser = getSysUser();
-		if (sysUser == null) {
-			return null;
-		}
-		return sysUser.getUserId();
-	}
+    public static String getUserId() {
+        SysUser sysUser = getSysUser();
+        if (sysUser == null) {
+            return null;
+        }
+        return sysUser.getUserId();
+    }
 
-	public static void setSessionAttribute(Object key, Object value) {
-		getSession().setAttribute(key, value);
-	}
+    public static void setSessionAttribute(Object key, Object value) {
+        getSession().setAttribute(key, value);
+    }
 
-	public static Object getSessionAttribute(Object key) {
-		return getSession().getAttribute(key);
-	}
+    public static Object getSessionAttribute(Object key) {
+        return getSession().getAttribute(key);
+    }
 
-	public static boolean isLogin() {
-		return SecurityUtils.getSubject().getPrincipal() != null;
-	}
+    public static boolean isLogin() {
+        return SecurityUtils.getSubject().getPrincipal() != null;
+    }
 }

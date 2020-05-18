@@ -10,9 +10,9 @@ import lombok.Data;
  */
 @Data
 public class AppRegisterForm {
-	@NotBlank
-	private String mobile;
-	@NotBlank
-	private String password;
+    @NotBlank
+    private String mobile;
+    @NotBlank
+    private String password;
 
 }
