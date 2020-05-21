@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zjmzxfzhl.common.util.ShiroUtils;
+import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
 import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
 import com.zjmzxfzhl.modules.flowable.service.PermissionService;

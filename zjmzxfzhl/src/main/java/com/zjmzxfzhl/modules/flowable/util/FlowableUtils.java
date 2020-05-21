@@ -33,7 +33,7 @@ import org.flowable.idm.api.User;
 import org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl;
 
 import com.google.common.collect.Sets;
-import com.zjmzxfzhl.common.util.ShiroUtils;
+import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
