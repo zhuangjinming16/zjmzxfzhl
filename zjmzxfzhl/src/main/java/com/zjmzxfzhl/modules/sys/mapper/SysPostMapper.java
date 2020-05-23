@@ -8,10 +8,10 @@ import org.flowable.idm.engine.impl.GroupQueryImpl;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
-import com.zjmzxfzhl.framework.permission.provider.OrgDataPermissionProvider;
 import com.zjmzxfzhl.modules.sys.entity.SysPost;
 import com.zjmzxfzhl.modules.sys.entity.SysPostUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
+import com.zjmzxfzhl.modules.sys.permission.provider.OrgDataPermissionProvider;
 
 /**
  * 岗位Mapper

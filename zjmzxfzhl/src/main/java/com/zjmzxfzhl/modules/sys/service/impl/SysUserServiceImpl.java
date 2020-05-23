@@ -20,7 +20,6 @@ import com.zjmzxfzhl.common.exception.SysException;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.PasswordUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
-import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
@@ -38,6 +37,7 @@ import com.zjmzxfzhl.modules.sys.service.SysPostUserService;
 import com.zjmzxfzhl.modules.sys.service.SysRoleService;
 import com.zjmzxfzhl.modules.sys.service.SysRoleUserService;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
+import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * 用户Service

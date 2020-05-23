@@ -34,7 +34,6 @@ import com.google.common.collect.ImmutableMap;
 import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -42,6 +41,7 @@ import com.zjmzxfzhl.modules.flowable.service.ProcessDefinitionService;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionRequest;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionResponse;
 import com.zjmzxfzhl.modules.flowable.wapper.ProcDefListWrapper;
+import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 import lombok.extern.slf4j.Slf4j;
 

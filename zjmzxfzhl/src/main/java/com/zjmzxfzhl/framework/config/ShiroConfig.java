@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import com.zjmzxfzhl.framework.shiro.AuthRealm;
-import com.zjmzxfzhl.framework.shiro.JwtFilter;
+import com.zjmzxfzhl.modules.sys.shiro.AuthRealm;
+import com.zjmzxfzhl.modules.sys.shiro.JwtFilter;
 
 /**
  * @author 庄金明

@@ -17,12 +17,12 @@ import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JacksonUtil;
-import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysLoginForm;
 import com.zjmzxfzhl.modules.sys.service.SysLogService;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
+import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * 系统日志处理

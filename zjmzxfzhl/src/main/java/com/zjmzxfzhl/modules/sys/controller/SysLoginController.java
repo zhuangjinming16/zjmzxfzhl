@@ -25,11 +25,11 @@ import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.PasswordUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
-import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysLoginForm;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
+import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

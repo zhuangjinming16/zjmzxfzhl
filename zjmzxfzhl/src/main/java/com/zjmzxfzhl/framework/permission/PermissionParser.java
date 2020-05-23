@@ -40,12 +40,12 @@ import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.DateUtil;
 import com.zjmzxfzhl.common.util.SpringContextUtils;
 import com.zjmzxfzhl.common.xss.SqlFilter;
-import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysDataPermission;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.service.SysDataPermissionService;
+import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * @author 庄金明
@@ -485,7 +485,12 @@ public class PermissionParser implements ISqlParser {
         Map<Class<AbstractDataPermissionProvider>, String> providerMap = new HashMap<>(16);
         for (int i = 0; i < providers.length; i++) {
             Class<AbstractDataPermissionProvider> providerClass = providers[i];
-            providerMap.put(providerClass, providerParams[i]);
+            // 若未配置providerParams则直接设置null
+            if (i > (providerParams.length - 1)) {
+                providerMap.put(providerClass, null);
+            } else {
+                providerMap.put(providerClass, providerParams[i]);
+            }
         }
 
         // 【2】处理methodId个性配置

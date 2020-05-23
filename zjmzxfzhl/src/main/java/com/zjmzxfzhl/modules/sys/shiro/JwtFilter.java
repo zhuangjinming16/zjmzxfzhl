@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.framework.shiro;
+package com.zjmzxfzhl.modules.sys.shiro;
 
 import java.io.IOException;
 

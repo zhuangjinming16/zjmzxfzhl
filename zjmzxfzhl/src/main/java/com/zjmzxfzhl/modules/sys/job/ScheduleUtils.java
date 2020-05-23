@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.framework.job;
+package com.zjmzxfzhl.modules.sys.job;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;

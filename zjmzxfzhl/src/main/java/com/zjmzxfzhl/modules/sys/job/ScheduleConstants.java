@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.framework.job;
+package com.zjmzxfzhl.modules.sys.job;
 
 /**
  * 任务调度通用常量

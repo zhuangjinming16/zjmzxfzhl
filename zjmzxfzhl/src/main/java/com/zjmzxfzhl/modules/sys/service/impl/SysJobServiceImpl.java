@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.framework.job.CronUtils;
-import com.zjmzxfzhl.framework.job.ScheduleConstants;
-import com.zjmzxfzhl.framework.job.ScheduleUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysJob;
+import com.zjmzxfzhl.modules.sys.job.CronUtils;
+import com.zjmzxfzhl.modules.sys.job.ScheduleConstants;
+import com.zjmzxfzhl.modules.sys.job.ScheduleUtils;
 import com.zjmzxfzhl.modules.sys.mapper.SysJobMapper;
 import com.zjmzxfzhl.modules.sys.service.SysJobService;
 

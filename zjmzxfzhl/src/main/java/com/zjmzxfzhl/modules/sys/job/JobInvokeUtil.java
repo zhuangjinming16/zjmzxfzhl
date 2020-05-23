@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.framework.job;
+package com.zjmzxfzhl.modules.sys.job;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

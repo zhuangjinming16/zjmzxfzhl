@@ -1,12 +1,12 @@
-package com.zjmzxfzhl.framework.permission.provider;
+package com.zjmzxfzhl.modules.sys.permission.provider;
 
 import com.zjmzxfzhl.common.permission.provider.AbstractDataPermissionProvider;
 import com.zjmzxfzhl.common.permission.wrapper.PermissionWrapper;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.xss.SqlFilter;
-import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
+import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 import lombok.Getter;
 import lombok.Setter;
