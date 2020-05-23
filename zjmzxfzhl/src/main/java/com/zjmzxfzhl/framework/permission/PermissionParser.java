@@ -147,11 +147,12 @@ public class PermissionParser implements ISqlParser {
             wrapByProviders(permissionWrapper, methodId, providers, providerParams, userId, roleId);
             wrapByTableNames(permissionWrapper, methodId, tableNames, aliasNames, userId, roleId);
             String replaceStr = OPEN_TOKEN + fieldName + CLOSE_TOKEN;
-            if (CommonUtil.isEmptyAfterTrim(permissionWrapper.getSqlSegment())) {
+            String permissionWrapperSql = permissionWrapper.getSqlSegment();
+            if (CommonUtil.isEmptyAfterTrim(permissionWrapperSql)) {
                 retSql = StringUtils.replace(retSql, replaceStr, "");
                 continue;
             }
-            String authSql = " AND " + permissionWrapper.getSqlSegment();
+            String authSql = " AND " + permissionWrapperSql;
             int index = retSql.indexOf(replaceStr);
             while (index != -1) {
                 if (permissionWrapper.getParameterMappings() != null
