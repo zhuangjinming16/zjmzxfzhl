@@ -32,7 +32,7 @@ public @interface RepeatRequest {
      * 
      * false时，若用户未登陆，则只使用 lockIndexs 组拼key，若用户已登录，即使用 userId 组拼 key 也使用 lockIndexs 组拼key
      */
-    boolean isExistAndOnlyUserId() default true;
+    boolean isLoginThenOnlyUserId() default true;
 
     /**
      * 要锁的参数角标

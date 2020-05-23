@@ -17,8 +17,8 @@ import com.zjmzxfzhl.common.util.DateUtil;
 import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
-import com.zjmzxfzhl.modules.app.common.AppConstants;
-import com.zjmzxfzhl.modules.app.common.AppSessionObject;
+import com.zjmzxfzhl.framework.app.common.AppConstants;
+import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.form.AppLoginForm;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
@@ -48,8 +48,8 @@ public class AppLoginController {
         appUser.setPassword(null);
         // 密码盐不缓存
         appUser.setSalt(null);
-        appSessionObject.setAppUser(appUser);
         appSessionObject.setUserId(userId);
+        appSessionObject.setUserName(appUser.getUserName());
         appSessionObject.setLoginTime(DateUtil.getNow());
         appSessionObject.setIpAddr(IpUtils.getIpAddr(request));
         appSessionObject.setToken(token);

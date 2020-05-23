@@ -79,7 +79,7 @@ public class AppDemoController extends BaseController {
      * @param param
      * @return
      */
-    @RepeatRequest(isExistAndOnlyUserId = false, lockIndexs = 0)
+    @RepeatRequest(isLoginThenOnlyUserId = false, lockIndexs = 0)
     @GetMapping(value = "/repeatRequest3")
     public Result repeatRequest3(@RequestParam String param) throws Exception {
         Thread.sleep(1000);
@@ -99,7 +99,7 @@ public class AppDemoController extends BaseController {
      * @param param
      * @return
      */
-    @RepeatRequest(isExistAndOnlyUserId = false, lockIndexs = 0, fieldNames = "transId")
+    @RepeatRequest(isLoginThenOnlyUserId = false, lockIndexs = 0, fieldNames = "transId")
     @GetMapping(value = "/repeatRequest4")
     public Result repeatRequest4(AppDemo appDemo) throws Exception {
         Thread.sleep(1000);

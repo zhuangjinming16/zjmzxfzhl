@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.modules.app.common.AppSessionObject;
-import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
+import com.zjmzxfzhl.framework.app.common.AppConstants;
+import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 
 /**
  * 用户Controller
@@ -20,14 +20,12 @@ import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
 public class AppUserController extends BaseController {
 
     @GetMapping("/getUserInfo")
-    public Result getUserInfo(
-            @RequestAttribute(AppLoginInterceptor.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
+    public Result getUserInfo(@RequestAttribute(AppConstants.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
         return Result.ok(appSessionObject);
     }
 
     @GetMapping("/getUserId")
-    public Result getUserId(
-            @RequestAttribute(AppLoginInterceptor.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
+    public Result getUserId(@RequestAttribute(AppConstants.APP_SESSION_OBJECT) AppSessionObject appSessionObject) {
         String userId = null;
         if (appSessionObject != null) {
             userId = appSessionObject.getUserId();

@@ -12,9 +12,9 @@ import com.zjmzxfzhl.common.exception.AppException;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
+import com.zjmzxfzhl.framework.app.common.AppConstants;
+import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.annotation.WithoutLogin;
-import com.zjmzxfzhl.modules.app.common.AppConstants;
-import com.zjmzxfzhl.modules.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
 
@@ -24,8 +24,6 @@ import com.zjmzxfzhl.modules.app.service.AppUserService;
  */
 @Component
 public class AppLoginInterceptor extends HandlerInterceptorAdapter {
-    public static final String APP_SESSION_OBJECT = "appSessionObject";
-
     @Autowired
     private AppUserService appUserService;
 
@@ -70,7 +68,7 @@ public class AppLoginInterceptor extends HandlerInterceptorAdapter {
             }
 
             redisUtil.expire(appSessionObjectKey, JwtUtil.EXPIRE_TIME);
-            request.setAttribute(APP_SESSION_OBJECT, appSessionObject);
+            request.setAttribute(AppConstants.APP_SESSION_OBJECT, appSessionObject);
         }
 
         return true;

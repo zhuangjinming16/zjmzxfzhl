@@ -11,10 +11,10 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.util.DateUtil;
+import com.zjmzxfzhl.framework.app.common.AppBaseEntity;
+import com.zjmzxfzhl.framework.app.common.AppConstants;
+import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
-import com.zjmzxfzhl.modules.app.common.AppBaseEntity;
-import com.zjmzxfzhl.modules.app.common.AppSessionObject;
-import com.zjmzxfzhl.modules.app.interceptor.AppLoginInterceptor;
 
 /**
  * @author 庄金明
@@ -63,7 +63,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
         Object createBy = getFieldValByName(CREATE_BY, metaObject);
         if (createBy == null) {
             AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes()
-                    .getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
+                    .getAttribute(AppConstants.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
             if (appSessionObject != null) {
                 String currUser = appSessionObject.getUserId();
                 setFieldValByName(CREATE_BY, currUser, metaObject);
@@ -101,7 +101,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
         Object updateBy = getFieldValByName(UPDATE_BY, metaObject);
         if (updateBy == null) {
             AppSessionObject appSessionObject = (AppSessionObject) RequestContextHolder.getRequestAttributes()
-                    .getAttribute(AppLoginInterceptor.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
+                    .getAttribute(AppConstants.APP_SESSION_OBJECT, RequestAttributes.SCOPE_REQUEST);
             if (appSessionObject != null) {
                 String currUser = appSessionObject.getUserId();
                 setFieldValByName(UPDATE_BY, currUser, metaObject);

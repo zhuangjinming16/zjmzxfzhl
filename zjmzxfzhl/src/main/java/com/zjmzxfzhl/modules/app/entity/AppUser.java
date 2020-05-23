@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
-import com.zjmzxfzhl.modules.app.common.AppBaseEntity;
+import com.zjmzxfzhl.framework.app.common.AppBaseEntity;
 
 import lombok.Data;
 
