@@ -9,11 +9,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.zjmzxfzhl.common.app.base.AppBaseEntity;
+import com.zjmzxfzhl.common.app.base.AppConstants;
+import com.zjmzxfzhl.common.app.base.AppSessionObject;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.util.DateUtil;
-import com.zjmzxfzhl.framework.app.common.AppBaseEntity;
-import com.zjmzxfzhl.framework.app.common.AppConstants;
-import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**

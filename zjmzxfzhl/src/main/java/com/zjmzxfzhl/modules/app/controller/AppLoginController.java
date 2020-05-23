@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zjmzxfzhl.common.Result;
+import com.zjmzxfzhl.common.app.base.AppConstants;
+import com.zjmzxfzhl.common.app.base.AppSessionObject;
 import com.zjmzxfzhl.common.util.DateUtil;
 import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
-import com.zjmzxfzhl.framework.app.common.AppConstants;
-import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.form.AppLoginForm;
 import com.zjmzxfzhl.modules.app.service.AppUserService;

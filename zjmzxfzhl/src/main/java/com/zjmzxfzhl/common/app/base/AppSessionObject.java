@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.framework.app.common;
+package com.zjmzxfzhl.common.app.base;
 
 import java.io.Serializable;
 import java.util.Date;

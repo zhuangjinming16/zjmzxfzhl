@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import com.zjmzxfzhl.common.app.base.AppConstants;
+import com.zjmzxfzhl.common.app.base.AppSessionObject;
 import com.zjmzxfzhl.common.aspect.components.RepeatRequestComponent;
-import com.zjmzxfzhl.framework.app.common.AppConstants;
-import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 
 /**
  * 登录用户请求防重发处理,Order=0优先于RedissonLockAspect

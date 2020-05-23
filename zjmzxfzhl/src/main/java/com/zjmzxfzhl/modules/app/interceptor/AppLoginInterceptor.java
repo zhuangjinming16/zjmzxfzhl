@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.zjmzxfzhl.common.app.base.AppConstants;
+import com.zjmzxfzhl.common.app.base.AppSessionObject;
 import com.zjmzxfzhl.common.exception.AppException;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
-import com.zjmzxfzhl.framework.app.common.AppConstants;
-import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 import com.zjmzxfzhl.modules.app.annotation.WithoutLogin;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.service.AppUserService;

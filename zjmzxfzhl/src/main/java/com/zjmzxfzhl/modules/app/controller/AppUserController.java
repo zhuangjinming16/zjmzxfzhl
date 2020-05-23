@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zjmzxfzhl.common.Result;
+import com.zjmzxfzhl.common.app.base.AppConstants;
+import com.zjmzxfzhl.common.app.base.AppSessionObject;
 import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.framework.app.common.AppConstants;
-import com.zjmzxfzhl.framework.app.common.AppSessionObject;
 
 /**
  * 用户Controller
