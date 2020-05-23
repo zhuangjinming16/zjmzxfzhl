@@ -2,6 +2,11 @@
 当前最新版本: 1.1.5（发布日期: 2020-05-23）
 ## 项目介绍
 zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代码生成器 的快速开发平台，采用前后端分离架构。
+
+gitee: https://gitee.com/zjm16/zjmzxfzhl
+
+github: https://github.com/zhuangjinming16/zjmzxfzhl
+
 ## 技术架构
 ### 后端技术
 
