@@ -3,6 +3,7 @@ package com.zjmzxfzhl.framework.permission.provider;
 import com.zjmzxfzhl.common.permission.provider.AbstractDataPermissionProvider;
 import com.zjmzxfzhl.common.permission.wrapper.PermissionWrapper;
 import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.common.xss.SqlFilter;
 import com.zjmzxfzhl.framework.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
@@ -44,6 +45,8 @@ public class OrgDataPermissionProvider extends AbstractDataPermissionProvider {
         SessionObject sessionObject = ShiroUtils.getSessionObject();
         // 别名，默认 o
         String alias = CommonUtil.isEmptyDefault(this.alias, "o");
+        // 防止sql注入
+        SqlFilter.sqlInject(alias);
         // 机构数据权限类型，默认1
         String type = CommonUtil.isEmptyDefault(this.type, "1");
         SysOrg sysOrg = sessionObject.getSysOrg();
