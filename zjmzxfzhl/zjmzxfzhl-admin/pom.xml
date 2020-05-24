@@ -26,10 +26,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-sys</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.zjmzxfzhl</groupId>
 			<artifactId>zjmzxfzhl-monitor</artifactId>
 		</dependency>
 		<dependency>

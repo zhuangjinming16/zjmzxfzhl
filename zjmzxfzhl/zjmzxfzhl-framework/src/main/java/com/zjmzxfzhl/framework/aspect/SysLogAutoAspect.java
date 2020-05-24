@@ -17,12 +17,14 @@ import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JacksonUtil;
+import com.zjmzxfzhl.common.util.SpringContextUtils;
+import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.threadpool.manager.AsyncManager;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysLoginForm;
 import com.zjmzxfzhl.modules.sys.service.SysLogService;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
-import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * 系统日志处理
@@ -43,16 +45,14 @@ public class SysLogAutoAspect {
     private static final String LOG_TYPE_2 = "2";
 
     @Autowired
-    private SysLogService sysLogService;
-    @Autowired
     private SysUserService sysUserService;
 
     @Around("@annotation(sysLogAuto)")
     public Object around(ProceedingJoinPoint joinPoint, SysLogAuto sysLogAuto) throws Throwable {
+        final SysLog sysLog = new SysLog();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         // 请求的参数
         Object[] args = joinPoint.getArgs();
-        SysLog sysLog = new SysLog();
         sysLog.setLogContent(sysLogAuto.value());
         sysLog.setLogType(sysLogAuto.logType());
         String className = joinPoint.getTarget().getClass().getName();
@@ -106,8 +106,16 @@ public class SysLogAutoAspect {
         }
 
         sysLog.setOperateResult(operateResult);
-        // 保存系统日志
-        sysLogService.save(sysLog);
+        /// 同步方式保存系统日志
+        /// SpringContextUtils.getBean(SysLogService.class).save(sysLog);
+
+        // 异步方式保存日志
+        AsyncManager.me().execute(new Runnable() {
+            @Override
+            public void run() {
+                SpringContextUtils.getBean(SysLogService.class).save(sysLog);
+            }
+        });
 
         if (ex != null) {
             throw ex;

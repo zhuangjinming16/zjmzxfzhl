@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.ObjectUtils;
+import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -35,7 +36,6 @@ import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
 import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
 import com.zjmzxfzhl.modules.flowable.wapper.TaskListWrapper;
 import com.zjmzxfzhl.modules.flowable.wapper.TaskTodoListWrapper;
-import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * @author 庄金明

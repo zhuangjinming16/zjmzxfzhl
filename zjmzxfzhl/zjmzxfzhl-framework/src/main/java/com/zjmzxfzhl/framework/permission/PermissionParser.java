@@ -40,12 +40,12 @@ import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.DateUtil;
 import com.zjmzxfzhl.common.util.SpringContextUtils;
 import com.zjmzxfzhl.common.xss.SqlFilter;
+import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysDataPermission;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.service.SysDataPermissionService;
-import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * @author 庄金明

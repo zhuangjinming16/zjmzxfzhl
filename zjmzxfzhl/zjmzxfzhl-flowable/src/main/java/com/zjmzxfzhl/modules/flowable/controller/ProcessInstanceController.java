@@ -28,6 +28,7 @@ import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.ObjectUtils;
+import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -36,7 +37,6 @@ import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import com.zjmzxfzhl.modules.flowable.wapper.CommentListWrapper;
 import com.zjmzxfzhl.modules.flowable.wapper.ProcInsListWrapper;
-import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * @author 庄金明

@@ -14,7 +14,7 @@ import com.zjmzxfzhl.common.app.base.AppConstants;
 import com.zjmzxfzhl.common.app.base.AppSessionObject;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.util.DateUtil;
-import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
 
 /**
  * @author 庄金明

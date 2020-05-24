@@ -47,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.ObjectUtils;
+import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
 import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.common.cmd.BackUserTaskCmd;
@@ -59,7 +60,6 @@ import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
 import com.zjmzxfzhl.modules.flowable.vo.TaskRequest;
 import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
 import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
-import com.zjmzxfzhl.modules.sys.shiro.util.ShiroUtils;
 
 /**
  * @author 庄金明

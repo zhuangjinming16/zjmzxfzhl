@@ -53,7 +53,6 @@
 	<modules>
 		<module>zjmzxfzhl-common</module>
 		<module>zjmzxfzhl-framework</module>
-		<module>zjmzxfzhl-sys</module>
 		<module>zjmzxfzhl-monitor</module>
 		<module>zjmzxfzhl-demo</module>
 		<module>zjmzxfzhl-app</module>
@@ -318,11 +317,6 @@
 			<dependency>
 				<groupId>com.zjmzxfzhl</groupId>
 				<artifactId>zjmzxfzhl-framework</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.zjmzxfzhl</groupId>
-				<artifactId>zjmzxfzhl-sys</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

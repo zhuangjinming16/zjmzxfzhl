@@ -21,7 +21,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-sys</artifactId>
+			<artifactId>zjmzxfzhl-framework</artifactId>
 		</dependency>
 		
 		<!--flowable -->
