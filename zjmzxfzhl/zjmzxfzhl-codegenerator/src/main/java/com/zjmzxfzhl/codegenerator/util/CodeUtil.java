@@ -36,7 +36,9 @@ public class CodeUtil {
     /**
      * 开发工程所在系统绝对路径
      */
-    public static String projectPath = System.getProperty("user.dir") + "\\";
+    public static String projectPath = System.getProperty("user.dir").indexOf("\\zjmzxfzhl-codegenerator") != -1
+            ? System.getProperty("user.dir") + "\\"
+            : System.getProperty("user.dir") + "\\zjmzxfzhl-codegenerator\\";
     /**
      * 自动生成的建表语句的输出路径
      */
@@ -50,7 +52,7 @@ public class CodeUtil {
 
     /**
      * 返回驼峰命名法结果.
-     * 
+     *
      * @param name
      *            如:CODE_TYPE;Menu
      * @return 如: codeType, menu
@@ -87,8 +89,7 @@ public class CodeUtil {
     }
 
     /**
-     * 
-     * @return 返回MAP,英文表名为key值.value是表的字段对象list
+     * @return 返回MAP, 英文表名为key值.value是表的字段对象list
      */
     public static LinkedHashMap<String, ArrayList<TableObject>> readExcelDesignInfo(String theTableName) {
         LinkedHashMap<String, ArrayList<TableObject>> hashMap = new LinkedHashMap<String, ArrayList<TableObject>>();
@@ -203,7 +204,7 @@ public class CodeUtil {
 
     /**
      * 读取excel的时候,取得String型的值.
-     * 
+     *
      * @param row
      *            excel行对象
      * @param cellIndex

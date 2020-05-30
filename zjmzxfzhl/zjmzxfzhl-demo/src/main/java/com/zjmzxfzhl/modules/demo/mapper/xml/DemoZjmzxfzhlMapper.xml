@@ -75,6 +75,10 @@
 			<![CDATA[	AND a.FILTER_OPERATOR_LIKE_RIGHT = #{entity.filterOperatorLikeRight}	]]>
 		</if>
 		{{authFilterSql}}
+		{{authFilterSql01}}
+		{{authFilterSql02}}
+		{{authFilterSql01}}
+		{{authFilterSql}}
 		order by a.ZJMZXFZHL_ID
 	</select>
 </mapper>
