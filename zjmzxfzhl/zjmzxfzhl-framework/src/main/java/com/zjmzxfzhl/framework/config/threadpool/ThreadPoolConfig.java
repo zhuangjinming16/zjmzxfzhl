@@ -57,7 +57,9 @@ public class ThreadPoolConfig {
         executor.setKeepAliveSeconds(keepAliveSeconds);
         executor.setThreadNamePrefix("async-service-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setTaskDecorator(new ContextCopyDecorator());
         executor.initialize();
         return executor;
     }
+
 }
