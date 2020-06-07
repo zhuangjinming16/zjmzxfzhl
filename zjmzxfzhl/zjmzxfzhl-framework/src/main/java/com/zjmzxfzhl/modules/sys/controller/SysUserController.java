@@ -23,7 +23,6 @@ import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.base.BaseController;
 import com.zjmzxfzhl.common.exception.SysException;
-import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -40,9 +39,6 @@ import com.zjmzxfzhl.modules.sys.service.SysUserService;
 public class SysUserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
-
-    @Autowired
-    private RedisUtil redisUtil;
 
     /**
      * 自定义查询列表

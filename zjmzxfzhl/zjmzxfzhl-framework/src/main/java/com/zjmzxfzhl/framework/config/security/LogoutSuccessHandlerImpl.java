@@ -17,6 +17,10 @@ import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Configuration
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
     @Autowired

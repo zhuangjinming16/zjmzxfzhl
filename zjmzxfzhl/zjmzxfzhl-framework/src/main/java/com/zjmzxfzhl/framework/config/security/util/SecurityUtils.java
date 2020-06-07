@@ -10,7 +10,10 @@ import com.zjmzxfzhl.common.util.SpringContextUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
-// @Slf4j
+/**
+ * @author 庄金明
+ *
+ */
 public class SecurityUtils {
 
     /**
@@ -23,15 +26,12 @@ public class SecurityUtils {
     public static SessionObject getSessionObject() {
         final Authentication authentication = getAuthentication();
         if (authentication == null) {
-            // throw new SysException("当前登录状态过期");
             return null;
         }
         if (authentication.getPrincipal() instanceof SessionObject) {
             SessionObject sessionObject = (SessionObject) authentication.getPrincipal();
-            // UserDetailsService userDetailsService = SpringContextUtils.getBean(UserDetailsService.class);
             return sessionObject;
         }
-        // throw new SysException("找不到当前登录的信息");
         return null;
     }
 

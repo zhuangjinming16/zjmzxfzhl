@@ -14,6 +14,10 @@ import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.JacksonUtil;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, Serializable {
     private static final long serialVersionUID = 1L;

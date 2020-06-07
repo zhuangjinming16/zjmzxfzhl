@@ -20,10 +20,12 @@ import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-    // @Autowired
-    // private SysUserService sysUserService;
     @Autowired
     private RedisUtil redisUtil;
 

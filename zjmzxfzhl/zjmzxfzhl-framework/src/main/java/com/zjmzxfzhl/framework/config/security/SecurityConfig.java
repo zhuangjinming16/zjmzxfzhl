@@ -24,6 +24,10 @@ import com.zjmzxfzhl.common.util.SpringContextUtils;
 import com.zjmzxfzhl.framework.config.security.annotation.AnonymousAccess;
 import com.zjmzxfzhl.framework.config.security.filter.JwtAuthenticationTokenFilter;
 
+/**
+ * @author 庄金明
+ *
+ */
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
@@ -82,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 请求配置
                 .and().authorizeRequests()
                 // demo
-                .antMatchers("/demo/helloworld/helloworld", "/demo/redlock/*").permitAll()
+                .antMatchers("/", "/demo/helloworld/helloworld", "/demo/redlock/*").permitAll()
                 // 静态资源等等
                 .antMatchers(HttpMethod.GET, "/*.html", "/**/*.html", "/**/*.css", "/**/*.scss", "/**/*.woff",
                         "/**/*.ttf", "/**/*.eot", "/**/*.gif", "/**/*.jpg", "/**/*.png", "/**/*.ico", "/**/*.svg",

@@ -1,6 +1,8 @@
 package com.zjmzxfzhl.framework.config.threadpool;
 
 import org.springframework.core.task.TaskDecorator;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -14,16 +16,17 @@ import com.zjmzxfzhl.common.util.DateUtil;
 public class ContextCopyDecorator implements TaskDecorator {
     @Override
     public Runnable decorate(Runnable runnable) {
+
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        // Map<Object, Object> resources = ThreadContext.getResources();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
         return () -> {
             try {
                 RequestContextHolder.setRequestAttributes(requestAttributes);
-                // ThreadContext.setResources(resources);
+                SecurityContextHolder.setContext(securityContext);
                 runnable.run();
             } finally {
                 DateUtil.clearNow();
-                // ThreadContext.remove();
+                SecurityContextHolder.clearContext();
                 RequestContextHolder.resetRequestAttributes();
             }
         };

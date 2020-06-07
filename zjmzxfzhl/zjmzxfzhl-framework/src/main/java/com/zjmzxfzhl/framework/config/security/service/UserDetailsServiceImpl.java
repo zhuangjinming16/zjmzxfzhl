@@ -12,7 +12,7 @@ import com.zjmzxfzhl.modules.sys.service.SysUserService;
 /**
  * 用户验证处理
  *
- * @author ruoyi
+ * @author 庄金明
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

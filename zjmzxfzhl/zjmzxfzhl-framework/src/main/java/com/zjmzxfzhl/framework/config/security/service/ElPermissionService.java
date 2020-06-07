@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Service(value = "elp")
 public class ElPermissionService {
 
