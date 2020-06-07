@@ -129,7 +129,7 @@
             },
             showImage() {
                 if (!this.imagePath) {
-                    this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processInstanceImage?processInstanceId=' + this.processInstanceId + '&token=' + getToken() + '&time=' + new Date()
+                    this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processInstanceImage?processInstanceId=' + this.processInstanceId + '&access_token=' + getToken() + '&time=' + new Date()
                 }
             }
         }

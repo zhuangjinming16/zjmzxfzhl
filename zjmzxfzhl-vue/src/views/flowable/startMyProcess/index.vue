@@ -119,7 +119,7 @@
                 this.list()
             },
             btnImage(processDefinitionId) {
-                this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + processDefinitionId + '&token=' + getToken() + '&time=' + new Date()
+                this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + processDefinitionId + '&access_token=' + getToken() + '&time=' + new Date()
                 this.dialogImageVisible = true
             },
             btnStartInstance(row) {

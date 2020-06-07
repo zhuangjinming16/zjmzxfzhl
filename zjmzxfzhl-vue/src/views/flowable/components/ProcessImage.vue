@@ -50,9 +50,9 @@
         methods: {
             init() {
                 if (this.processInstanceId && this.processInstanceId != null && this.processInstanceId !== '') {
-                    this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processInstanceImage?processInstanceId=' + this.processInstanceId + '&token=' + getToken() + '&time=' + new Date()
+                    this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processInstanceImage?processInstanceId=' + this.processInstanceId + '&access_token=' + getToken() + '&time=' + new Date()
                 } else if (this.processDefinitionId && this.processDefinitionId != null && this.processDefinitionId !== '') {
-                    this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + this.processDefinitionId + '&token=' + getToken() + '&time=' + new Date()
+                    this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + this.processDefinitionId + '&access_token=' + getToken() + '&time=' + new Date()
                 }
             }
         }

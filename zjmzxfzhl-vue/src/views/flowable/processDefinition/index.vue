@@ -316,7 +316,7 @@
                 downloadAction('/flowable/processDefinition/xml','get', {processDefinitionId: row.id}, row.name + '-v' + row.version + '.bpmn20.xml')
             },
             btnImage(processDefinitionId) {
-                // this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + processDefinitionId + '&token=' + getToken() + '&time=' + new Date()
+                // this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + processDefinitionId + '&access_token=' + getToken() + '&time=' + new Date()
                 this.selectedProcessDefinitionId = processDefinitionId
                 this.dialogProcessImageVisible = true
             },
