@@ -20,11 +20,6 @@ import com.zjmzxfzhl.common.util.RedisUtil;
 import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 
-/**
- * token过滤器 验证token有效性
- * 
- * @author ruoyi
- */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     // @Autowired

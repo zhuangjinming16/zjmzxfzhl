@@ -24,11 +24,6 @@ import com.zjmzxfzhl.common.util.SpringContextUtils;
 import com.zjmzxfzhl.framework.config.security.annotation.AnonymousAccess;
 import com.zjmzxfzhl.framework.config.security.filter.JwtAuthenticationTokenFilter;
 
-/**
- * spring security配置
- * 
- * @author ruoyi
- */
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
@@ -84,23 +79,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().headers().frameOptions().disable()
                 // 不创建会话
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                // 静态资源等等
+                // 请求配置
                 .and().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/*.html", "/**/*.html", "/**/*.css", "/**/*.woff", "/**/*.ttf",
-                        "/**/*.eot", "/**/*.gif", "/**/*.svg", "/**/*.js")
+                // demo
+                .antMatchers("/demo/helloworld/helloworld", "/demo/redlock/*").permitAll()
+                // 静态资源等等
+                .antMatchers(HttpMethod.GET, "/*.html", "/**/*.html", "/**/*.css", "/**/*.scss", "/**/*.woff",
+                        "/**/*.ttf", "/**/*.eot", "/**/*.gif", "/**/*.jpg", "/**/*.png", "/**/*.ico", "/**/*.svg",
+                        "/**/*.js")
                 .permitAll()
                 // swagger 文档
-                .antMatchers("/swagger-ui.html").permitAll().antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/**").permitAll().antMatchers("/*/api-docs").permitAll()
+                .antMatchers("/swagger-ui.html", "/csrf", "/**/*swagger*/**", "/v2/**", "/webjars/**").permitAll()
                 // 阿里巴巴 druid
                 .antMatchers("/druid/**").permitAll()
                 // 放行OPTIONS请求
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // 自定义匿名访问所有url放行 ： 允许匿名和带权限以及登录用户访问
                 .antMatchers(anonymousUrls.toArray(new String[0])).permitAll()
-                // 所有请求都需要认证
+                // 其他所有请求都需要认证
                 .anyRequest().authenticated();
 
+        // 退出配置
         httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
 
         // 添加JWT filter
