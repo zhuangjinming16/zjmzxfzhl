@@ -2,9 +2,9 @@ package com.zjmzxfzhl.framework.exception;
 
 import java.util.List;
 
-import org.apache.shiro.authz.AuthorizationException;
 import org.quartz.SchedulerException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -60,11 +60,11 @@ public class GlobalExceptionHandler {
         return Result.error("数据库中已存在该记录");
     }
 
-    @ExceptionHandler(AuthorizationException.class)
-    public Result handleAuthorizationException(AuthorizationException e) {
-        log.error(e.getMessage(), e);
-        return Result.error("没有权限，请联系管理员授权");
-    }
+    // @ExceptionHandler(AuthorizationException.class)
+    // public Result handleAuthorizationException(AuthorizationException e) {
+    // log.error(e.getMessage(), e);
+    // return Result.error("没有权限，请联系管理员授权");
+    // }
 
     @ExceptionHandler(SchedulerException.class)
     public Result handleSchedulerException(SchedulerException e) {
@@ -92,6 +92,12 @@ public class GlobalExceptionHandler {
         } else {
             return Result.error(e.getMessage());
         }
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public Result handleAccessDeniedException(AccessDeniedException e) {
+        log.error(e.getMessage(), e);
+        return Result.error("没有权限，请联系管理员授权");
     }
 
     @ExceptionHandler(Exception.class)

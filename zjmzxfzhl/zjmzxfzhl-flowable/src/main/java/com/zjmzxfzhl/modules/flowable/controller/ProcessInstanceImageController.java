@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.config.CustomProcessDiagramGenerator;
 
@@ -41,7 +41,7 @@ public class ProcessInstanceImageController extends BaseFlowableController {
     @GetMapping(value = "/flowable/processInstanceImage")
     public ResponseEntity<byte[]> image(@RequestParam String processInstanceId) {
         HistoricProcessInstance processInstance = permissionService
-                .validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
+                .validateReadPermissionOnProcessInstance(SecurityUtils.getUserId(), processInstanceId);
         ProcessDefinition pde = repositoryService.getProcessDefinition(processInstance.getProcessDefinitionId());
         if (pde == null || !pde.hasGraphicalNotation()) {
             throw new FlowableException(

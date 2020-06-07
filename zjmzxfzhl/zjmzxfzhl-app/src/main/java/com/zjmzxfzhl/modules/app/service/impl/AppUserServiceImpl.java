@@ -30,8 +30,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<AppUserMapper, AppUser> 
         if (appUser == null) {
             throw new AppException("手机号或密码错误");
         }
-        String password = PasswordUtil.encrypt(form.getPassword(), appUser.getSalt());
-        if (!password.equals(appUser.getPassword())) {
+        if (PasswordUtil.matchesPassword(form.getPassword(), appUser.getPassword())) {
             throw new AppException("手机号或密码错误");
         }
         return appUser;

@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,14 +40,14 @@ public class SysJobLogController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:jobLog:list")
+    // @RequiresPermissions("sys:jobLog:list")
     @GetMapping(value = "/list")
     public Result list(SysJobLog sysJobLog, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysJobLog> pageList = sysJobLogService.list(new Page<SysJobLog>(current, size), sysJobLog);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:jobLog:list")
+    // @RequiresPermissions("sys:jobLog:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysJobLog sysJobLog = sysJobLogService.getById(id);
@@ -60,7 +59,7 @@ public class SysJobLogController extends BaseController {
      * @param sysJobLog
      * @return
      */
-    @RequiresPermissions("sys:jobLog:save")
+    // @RequiresPermissions("sys:jobLog:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysJobLog sysJobLog) {
         sysJobLogService.save(sysJobLog);
@@ -72,7 +71,7 @@ public class SysJobLogController extends BaseController {
      * @param sysJobLog
      * @return
      */
-    @RequiresPermissions("sys:jobLog:update")
+    // @RequiresPermissions("sys:jobLog:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysJobLog sysJobLog) {
         sysJobLogService.updateById(sysJobLog);
@@ -84,7 +83,7 @@ public class SysJobLogController extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("sys:jobLog:delete")
+    // @RequiresPermissions("sys:jobLog:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

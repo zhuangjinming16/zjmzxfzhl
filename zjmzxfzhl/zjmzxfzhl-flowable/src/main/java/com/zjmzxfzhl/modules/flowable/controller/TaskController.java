@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.flowable.common.engine.api.query.QueryProperty;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -238,7 +237,7 @@ public class TaskController extends BaseFlowableController {
         return query;
     }
 
-    @RequiresPermissions("flowable:task:list")
+    // @RequiresPermissions("flowable:task:list")
     @GetMapping(value = "/list")
     public Result list(@RequestParam Map<String, String> requestParams) {
         HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(requestParams);
@@ -250,7 +249,7 @@ public class TaskController extends BaseFlowableController {
     @GetMapping(value = "/listDone")
     public Result listDone(@RequestParam Map<String, String> requestParams) {
         HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(requestParams);
-        query.finished().or().taskAssignee(ShiroUtils.getUserId()).taskOwner(ShiroUtils.getUserId()).endOr();
+        query.finished().or().taskAssignee(SecurityUtils.getUserId()).taskOwner(SecurityUtils.getUserId()).endOr();
         FlowablePage page = this.pageList(requestParams, query, TaskListWrapper.class, allowedSortProperties,
                 HistoricTaskInstanceQueryProperty.START);
         return Result.ok(page);
@@ -258,7 +257,7 @@ public class TaskController extends BaseFlowableController {
 
     @GetMapping(value = "/listTodo")
     public Result listTodo(@RequestParam Map<String, String> requestParams) {
-        String userId = ShiroUtils.getUserId();
+        String userId = SecurityUtils.getUserId();
         TaskQuery query = createTaskQuery(requestParams);
         query.or().taskCandidateOrAssigned(userId).taskOwner(userId).endOr();
         FlowablePage page = this.pageList(requestParams, query, TaskTodoListWrapper.class, allowedSortProperties,
@@ -273,7 +272,7 @@ public class TaskController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "修改任务")
-    @RequiresPermissions("flowable:task:update")
+    // @RequiresPermissions("flowable:task:update")
     @PutMapping(value = "/update")
     public Result update(@RequestBody TaskUpdateRequest taskUpdateRequest) {
         TaskResponse task = flowableTaskService.updateTask(taskUpdateRequest);
@@ -281,7 +280,7 @@ public class TaskController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "删除任务")
-    @RequiresPermissions("flowable:task:delete")
+    // @RequiresPermissions("flowable:task:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String taskId) {
         flowableTaskService.deleteTask(taskId);
@@ -332,14 +331,14 @@ public class TaskController extends BaseFlowableController {
 
     @GetMapping(value = "/renderedTaskForm")
     public Result renderedTaskForm(@RequestParam String taskId) {
-        permissionService.validateReadPermissionOnTask2(taskId, ShiroUtils.getUserId(), true, true);
+        permissionService.validateReadPermissionOnTask2(taskId, SecurityUtils.getUserId(), true, true);
         Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
         return Result.ok(renderedTaskForm);
     }
 
     @GetMapping(value = "/executeTaskData")
     public Result executeTaskData(@RequestParam String taskId) {
-        Task task = permissionService.validateReadPermissionOnTask2(taskId, ShiroUtils.getUserId(), true, true);
+        Task task = permissionService.validateReadPermissionOnTask2(taskId, SecurityUtils.getUserId(), true, true);
         String startFormKey = formService.getStartFormKey(task.getProcessDefinitionId());
         String taskFormKey = formService.getTaskFormKey(task.getProcessDefinitionId(), task.getTaskDefinitionKey());
         Object renderedStartForm = formService.getRenderedStartForm(task.getProcessDefinitionId());

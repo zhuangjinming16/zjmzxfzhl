@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.sys.controller;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,14 +41,14 @@ public class SysPostController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:post:list")
+    // @RequiresPermissions("sys:post:list")
     @GetMapping(value = "/list")
     public Result list(SysPost sysPost, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysPost> pageList = sysPostService.list(new Page<SysPost>(current, size), sysPost);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:post:list")
+    // @RequiresPermissions("sys:post:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysPost sysPost = sysPostService.getById(id);
@@ -61,7 +60,7 @@ public class SysPostController extends BaseController {
      * @param sysPost
      * @return
      */
-    @RequiresPermissions("sys:post:save")
+    // @RequiresPermissions("sys:post:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysPost sysPost) {
         sysPostService.save(sysPost);
@@ -73,7 +72,7 @@ public class SysPostController extends BaseController {
      * @param sysPost
      * @return
      */
-    @RequiresPermissions("sys:post:update")
+    // @RequiresPermissions("sys:post:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysPost sysPost) {
         sysPostService.updateById(sysPost);
@@ -85,7 +84,7 @@ public class SysPostController extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("sys:post:delete")
+    // @RequiresPermissions("sys:post:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
@@ -103,7 +102,7 @@ public class SysPostController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:post:getPostUser")
+    // @RequiresPermissions("sys:post:getPostUser")
     @GetMapping(value = "/getPostUser")
     public Result getPostUser(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysUser> pageList = this.sysPostService.getPostUser(new Page<SysUser>(current, size), sysPostUser);
@@ -117,7 +116,7 @@ public class SysPostController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "保存岗位用户")
-    @RequiresPermissions("sys:post:savePostUsers")
+    // @RequiresPermissions("sys:post:savePostUsers")
     @PostMapping(value = "/savePostUsers")
     public Result savePostUsers(@RequestBody SysPostUser sysPostUser) {
         this.sysPostService.savePostUsers(sysPostUser.getPostId(), sysPostUser.getUserId());
@@ -132,7 +131,7 @@ public class SysPostController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "删除岗位用户")
-    @RequiresPermissions("sys:post:deletePostUsers")
+    // @RequiresPermissions("sys:post:deletePostUsers")
     @DeleteMapping(value = "/deletePostUsers")
     public Result deletePostUsers(String postId, String userIds) {
         this.sysPostService.deletePostUsers(postId, userIds);

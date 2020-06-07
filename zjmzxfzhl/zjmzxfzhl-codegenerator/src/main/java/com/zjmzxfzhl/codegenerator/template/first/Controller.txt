@@ -41,14 +41,14 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:list")
+    // @RequiresPermissions("{_sys}:{_codeType}:list")
     @GetMapping(value = "/list")
     public Result list({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<{_Sys}{_CodeType}>(current, size), {_sys}{_CodeType});
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("{_sys}:{_codeType}:list")
+    // @RequiresPermissions("{_sys}:{_codeType}:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         {_Sys}{_CodeType} {_sys}{_CodeType} = {_sys}{_CodeType}Service.getById(id);
@@ -60,7 +60,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param {_sys}{_CodeType}
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:save")
+    // @RequiresPermissions("{_sys}:{_codeType}:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.save({_sys}{_CodeType});
@@ -72,7 +72,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param {_sys}{_CodeType}
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:update")
+    // @RequiresPermissions("{_sys}:{_codeType}:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.updateById({_sys}{_CodeType});
@@ -84,7 +84,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("{_sys}:{_codeType}:delete")
+    // @RequiresPermissions("{_sys}:{_codeType}:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

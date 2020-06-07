@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,14 +40,14 @@ public class SysPostUserController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:postUser:list")
+    // @RequiresPermissions("sys:postUser:list")
     @GetMapping(value = "/list")
     public Result list(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysPostUser> pageList = sysPostUserService.list(new Page<SysPostUser>(current, size), sysPostUser);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:postUser:list")
+    // @RequiresPermissions("sys:postUser:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysPostUser sysPostUser = sysPostUserService.getById(id);
@@ -60,7 +59,7 @@ public class SysPostUserController extends BaseController {
      * @param sysPostUser
      * @return
      */
-    @RequiresPermissions("sys:postUser:save")
+    // @RequiresPermissions("sys:postUser:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.save(sysPostUser);
@@ -72,7 +71,7 @@ public class SysPostUserController extends BaseController {
      * @param sysPostUser
      * @return
      */
-    @RequiresPermissions("sys:postUser:update")
+    // @RequiresPermissions("sys:postUser:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.updateById(sysPostUser);
@@ -84,7 +83,7 @@ public class SysPostUserController extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("sys:postUser:delete")
+    // @RequiresPermissions("sys:postUser:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

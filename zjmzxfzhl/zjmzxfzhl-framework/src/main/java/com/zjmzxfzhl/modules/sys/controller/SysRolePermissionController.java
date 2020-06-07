@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +40,7 @@ public class SysRolePermissionController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:rolePermission:list")
+    // @RequiresPermissions("sys:rolePermission:list")
     @GetMapping(value = "/list")
     public Result list(SysRolePermission sysRolePermission, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysRolePermission> pageList = sysRolePermissionService.list(new Page<SysRolePermission>(current, size),
@@ -49,7 +48,7 @@ public class SysRolePermissionController extends BaseController {
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:rolePermission:list")
+    // @RequiresPermissions("sys:rolePermission:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysRolePermission sysRolePermission = sysRolePermissionService.getById(id);
@@ -61,7 +60,7 @@ public class SysRolePermissionController extends BaseController {
      * @param sysRolePermission
      * @return
      */
-    @RequiresPermissions("sys:rolePermission:save")
+    // @RequiresPermissions("sys:rolePermission:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysRolePermission sysRolePermission) {
         sysRolePermissionService.save(sysRolePermission);
@@ -73,7 +72,7 @@ public class SysRolePermissionController extends BaseController {
      * @param sysRolePermission
      * @return
      */
-    @RequiresPermissions("sys:rolePermission:update")
+    // @RequiresPermissions("sys:rolePermission:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysRolePermission sysRolePermission) {
         sysRolePermissionService.updateById(sysRolePermission);
@@ -85,7 +84,7 @@ public class SysRolePermissionController extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("sys:rolePermission:delete")
+    // @RequiresPermissions("sys:rolePermission:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

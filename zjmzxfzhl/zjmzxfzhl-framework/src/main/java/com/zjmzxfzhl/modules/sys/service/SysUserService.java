@@ -49,7 +49,7 @@ public interface SysUserService extends BaseService<SysUser> {
      * @param roleId
      * @return
      */
-    SessionObject saveGetUserInfo(SysUser sysUser, String roleId);
+    SessionObject saveGetUserInfo(String userId, String roleId);
 
     /**
      * 加载用户按钮权限

@@ -9,7 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.zjmzxfzhl.common.aspect.components.RepeatRequestComponent;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 
 /**
  * 登录用户请求防重发处理,Order=0优先于RedissonLockAspect
@@ -37,7 +37,7 @@ public class RepeatRequestAspect {
 
     @Around("controllerAspect()")
     public Object controllerAspectAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        String userId = ShiroUtils.getUserId();
+        String userId = SecurityUtils.getUserId();
         if (userId == null || userId.length() == 0) {
             userId = "";
         }

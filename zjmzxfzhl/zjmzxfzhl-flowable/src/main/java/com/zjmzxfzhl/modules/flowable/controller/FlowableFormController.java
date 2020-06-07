@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,14 +41,14 @@ public class FlowableFormController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("flowable:form:list")
+    // // @RequiresPermissions("flowable:form:list")
     @GetMapping(value = "/list")
     public Result list(FlowableForm flowableForm, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<FlowableForm> pageList = flowableFormService.list(new Page<FlowableForm>(current, size), flowableForm);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("flowable:form:list")
+    // // @RequiresPermissions("flowable:form:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         FlowableForm flowableForm = flowableFormService.getById(id);
@@ -62,7 +61,7 @@ public class FlowableFormController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "新增流程表单")
-    @RequiresPermissions("flowable:form:save")
+    // // @RequiresPermissions("flowable:form:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody FlowableForm flowableForm) {
         flowableFormService.save(flowableForm);
@@ -75,7 +74,7 @@ public class FlowableFormController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "修改流程表单")
-    @RequiresPermissions("flowable:form:update")
+    // // @RequiresPermissions("flowable:form:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody FlowableForm flowableForm) {
         flowableFormService.updateById(flowableForm);
@@ -88,7 +87,7 @@ public class FlowableFormController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "删除流程表单")
-    @RequiresPermissions("flowable:form:delete")
+    // // @RequiresPermissions("flowable:form:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

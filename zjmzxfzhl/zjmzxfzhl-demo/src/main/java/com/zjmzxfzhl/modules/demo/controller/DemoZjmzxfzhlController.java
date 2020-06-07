@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +40,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("demo:zjmzxfzhl:list")
+    // // @RequiresPermissions("demo:zjmzxfzhl:list")
     @GetMapping(value = "/list")
     public Result list(DemoZjmzxfzhl demoZjmzxfzhl, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<DemoZjmzxfzhl> pageList = demoZjmzxfzhlService.list(new Page<DemoZjmzxfzhl>(current, size),
@@ -65,7 +64,7 @@ public class DemoZjmzxfzhlController extends BaseController {
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("demo:zjmzxfzhl:list")
+    // // @RequiresPermissions("demo:zjmzxfzhl:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         DemoZjmzxfzhl demoZjmzxfzhl = demoZjmzxfzhlService.getById(id);
@@ -77,7 +76,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param demoZjmzxfzhl
      * @return
      */
-    @RequiresPermissions("demo:zjmzxfzhl:save")
+    // // @RequiresPermissions("demo:zjmzxfzhl:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
         demoZjmzxfzhlService.save(demoZjmzxfzhl);
@@ -89,7 +88,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param demoZjmzxfzhl
      * @return
      */
-    @RequiresPermissions("demo:zjmzxfzhl:update")
+    // // @RequiresPermissions("demo:zjmzxfzhl:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
         demoZjmzxfzhlService.updateById(demoZjmzxfzhl);
@@ -101,7 +100,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("demo:zjmzxfzhl:delete")
+    // // @RequiresPermissions("demo:zjmzxfzhl:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

@@ -5,14 +5,13 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
  * @author 庄金明
  * @date 2020年4月26日
  */
-@Configuration
+// @Configuration
 public class ScheduleConfig {
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {

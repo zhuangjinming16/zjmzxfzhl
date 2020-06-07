@@ -10,6 +10,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,9 +20,12 @@ import com.zjmzxfzhl.common.Constants;
 import com.zjmzxfzhl.common.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.exception.SysException;
 import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.common.util.DateUtil;
+import com.zjmzxfzhl.common.util.IpUtils;
+import com.zjmzxfzhl.common.util.JwtUtil;
 import com.zjmzxfzhl.common.util.PasswordUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysMenu;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
@@ -98,7 +103,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SessionObject saveGetUserInfo(SysUser sysUser, String roleId) {
+    public SessionObject saveGetUserInfo(String userId, String roleId) {
+        if (userId == null || userId.isEmpty()) {
+            userId = SecurityUtils.getUserId();
+        }
+        SysUser sysUser = getById(userId);
         SessionObject sessionObject = new SessionObject();
         sessionObject.setSysUser(sysUser);
         List<SysRole> sysRoles = getRoleByUserId(sysUser.getUserId());
@@ -149,6 +158,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             updateRoleIdUser.setRoleId(roleId);
             updateById(updateRoleIdUser);
         }
+        sessionObject.setLoginTime(DateUtil.getNow());
+        sessionObject.setIpAddr(IpUtils
+                .getIpAddr(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()));
+        sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + sysUser.getUserId()));
+        redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId(), sessionObject, JwtUtil.EXPIRE_TIME);
         return sessionObject;
     }
 
@@ -285,11 +299,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveSysUser(SysUser sysUser) {
-        String salt = PasswordUtil.randomGen(8);
+        // String salt = PasswordUtil.randomGen(8);
         String defaultPassword = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + "defaultPassword", "1");
         // 默认密码
-        String password = PasswordUtil.encrypt(defaultPassword, salt);
-        sysUser.setSalt(salt);
+        String password = PasswordUtil.encryptPassword(defaultPassword);
+        // sysUser.setSalt(salt);
         sysUser.setPassword(password);
         SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
         sysRoleUserService.saveOrUpdate(sysRoleUser);
@@ -355,16 +369,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updatePassword(SysPasswordForm sysPasswordForm) {
-        String userId = ShiroUtils.getUserId();
+        String userId = SecurityUtils.getUserId();
         SysUser sysUser = this.getById(userId);
         if (sysUser == null) {
             throw new SysException("用户不存在");
         }
-        String oldPassword = PasswordUtil.encrypt(sysPasswordForm.getPassword(), sysUser.getSalt());
-        String salt = PasswordUtil.randomGen(8);
-        String newPassword = PasswordUtil.encrypt(sysPasswordForm.getNewPassword(), salt);
+        if (!PasswordUtil.matchesPassword(sysPasswordForm.getPassword(), sysUser.getPassword())) {
+            throw new SysException("旧密码错误");
+        }
+        // String salt = PasswordUtil.randomGen(8);
+        String newPassword = PasswordUtil.encryptPassword(sysPasswordForm.getNewPassword());
         sysUser.setPassword(newPassword);
-        sysUser.setSalt(salt);
-        return this.update(sysUser, new QueryWrapper<SysUser>().eq("user_id", userId).eq("password", oldPassword));
+        // sysUser.setSalt(salt);
+        return this.update(sysUser, new QueryWrapper<SysUser>().eq("user_id", userId));
     }
 }

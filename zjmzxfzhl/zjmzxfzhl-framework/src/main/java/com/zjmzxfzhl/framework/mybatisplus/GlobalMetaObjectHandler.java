@@ -14,7 +14,7 @@ import com.zjmzxfzhl.common.app.base.AppConstants;
 import com.zjmzxfzhl.common.app.base.AppSessionObject;
 import com.zjmzxfzhl.common.base.BaseEntity;
 import com.zjmzxfzhl.common.util.DateUtil;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 
 /**
  * @author 庄金明
@@ -83,7 +83,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
     private void setBaseEntityInsertFill(MetaObject metaObject) {
         Object createBy = getFieldValByName(CREATE_BY, metaObject);
         if (createBy == null) {
-            String currUser = ShiroUtils.getUserId();
+            String currUser = SecurityUtils.getUserId();
             setFieldValByName(CREATE_BY, currUser, metaObject);
         }
         Date now = DateUtil.getNow();
@@ -121,7 +121,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
     private void setBaseEntityUpdateFill(MetaObject metaObject) {
         Object updateBy = getFieldValByName(UPDATE_BY, metaObject);
         if (updateBy == null) {
-            String currUser = ShiroUtils.getUserId();
+            String currUser = SecurityUtils.getUserId();
             setFieldValByName(UPDATE_BY, currUser, metaObject);
         }
         Date now = DateUtil.getNow();

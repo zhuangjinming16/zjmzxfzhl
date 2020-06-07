@@ -24,14 +24,14 @@ public class AppRegisterController {
 
     @PostMapping("/register")
     public Result register(@RequestBody AppRegisterForm form) {
-        String salt = PasswordUtil.randomGen(8);
+        // String salt = PasswordUtil.randomGen(8);
         // 默认密码
-        String password = PasswordUtil.encrypt(form.getPassword(), salt);
+        String password = PasswordUtil.encryptPassword(form.getPassword());
         AppUser appUser = new AppUser();
         appUser.setUserId(form.getMobile());
         appUser.setMobile(form.getMobile());
         appUser.setUserName(form.getMobile());
-        appUser.setSalt(salt);
+        // appUser.setSalt(salt);
         appUser.setPassword(password);
         appUser.setCreateBy(form.getMobile());
         appUserService.save(appUser);

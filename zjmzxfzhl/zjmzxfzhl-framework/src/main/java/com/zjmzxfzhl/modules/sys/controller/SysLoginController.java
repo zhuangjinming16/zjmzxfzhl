@@ -4,13 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,11 +24,12 @@ import com.google.code.kaptcha.Producer;
 import com.zjmzxfzhl.common.Constants;
 import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
+import com.zjmzxfzhl.common.exception.SysException;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.JwtUtil;
-import com.zjmzxfzhl.common.util.PasswordUtil;
 import com.zjmzxfzhl.common.util.RedisUtil;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.annotation.AnonymousAccess;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysLoginForm;
@@ -49,12 +53,16 @@ public class SysLoginController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Resource
+    private AuthenticationManager authenticationManager;
+
     @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
     private Producer producer;
 
+    @AnonymousAccess
     @GetMapping("/captcha.jpg")
     public void captcha(HttpServletResponse response, String uuid) throws IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
@@ -76,6 +84,7 @@ public class SysLoginController {
         }
     }
 
+    @AnonymousAccess
     @SysLogAuto(value = "用户登录", logType = "1")
     @PostMapping(value = "/login")
     @ApiOperation("用户登录")
@@ -94,15 +103,23 @@ public class SysLoginController {
         redisUtil.del(Constants.PREFIX_USER_CAPTCHA + sysLoginForm.getUuid());
 
         String userId = sysLoginForm.getUserId();
+        String password = sysLoginForm.getPassword();
         SysUser sysUser = sysUserService.getById(userId);
         CommonUtil.isEmptyObject(sysUser, "该用户不存在");
-
-        String password = PasswordUtil.encrypt(sysLoginForm.getPassword(), sysUser.getSalt());
-        if (!password.equals(sysUser.getPassword())) {
-            return Result.error("用户名或密码错误");
+        try {
+            // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, password));
+        } catch (BadCredentialsException e) {
+            throw new SysException("用户密码错误");
         }
+        // SessionObject sessionObject = (SessionObject) authentication.getPrincipal();
+        // String password = PasswordUtil.encrypt(sysLoginForm.getPassword(), sysUser.getSalt());
+        // if (!password.equals(sysUser.getPassword())) {
+        // return Result.error("用户名或密码错误");
+        // }
         // 生成token,不传入token过期时间，在使用JwtUtil.verify时不会校验过期时间
-        String token = JwtUtil.sign(userId, password);
+
+        String token = JwtUtil.sign(userId, null);
         // 使用redis管理token过期时间
         redisUtil.set(Constants.PREFIX_USER_TOKEN + userId, token, JwtUtil.EXPIRE_TIME);
         HashMap<String, String> obj = new HashMap<>(1);
@@ -116,18 +133,17 @@ public class SysLoginController {
      * @param username
      * @return
      */
+    @AnonymousAccess
     @SysLogAuto(value = "用户注销")
-    @RequestMapping(value = "/logout")
+    @RequestMapping(value = "/logout2")
     public Result logout(HttpServletRequest request, HttpServletResponse response) {
         // 用户注销逻辑
-        Subject subject = ShiroUtils.getSubject();
-        SessionObject sessionObject = (SessionObject) subject.getPrincipal();
+        SessionObject sessionObject = SecurityUtils.getSessionObject();
         if (sessionObject == null) {
             return Result.ok("注销成功！");
         }
         SysUser sysUser = sessionObject.getSysUser();
         log.info("用户名:" + sysUser.getUserName() + ",注销成功！ ");
-        subject.logout();
         // 清空用户Token缓存
         redisUtil.del(Constants.PREFIX_USER_TOKEN + sysUser.getUserId());
         // 清空用户sessionObject缓存

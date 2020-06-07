@@ -8,8 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.query.QueryProperty;
 import org.flowable.engine.impl.ProcessDefinitionQueryProperty;
@@ -34,7 +32,7 @@ import com.google.common.collect.ImmutableMap;
 import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -68,7 +66,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
                 ProcessDefinitionQueryProperty.PROCESS_DEFINITION_TENANT_ID);
     }
 
-    @RequiresPermissions("flowable:processDefinition:list")
+    // // @RequiresPermissions("flowable:processDefinition:list")
     @GetMapping(value = "/list")
     public Result list(@RequestParam Map<String, String> requestParams) {
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery();
@@ -123,17 +121,17 @@ public class ProcessDefinitionController extends BaseFlowableController {
             processDefinitionQuery
                     .processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.NAME)));
         }
-        processDefinitionQuery.latestVersion().active().startableByUser(ShiroUtils.getUserId());
+        processDefinitionQuery.latestVersion().active().startableByUser(SecurityUtils.getUserId());
         FlowablePage page = this.pageList(requestParams, processDefinitionQuery, ProcDefListWrapper.class,
                 ALLOWED_SORT_PROPERTIES);
         return Result.ok(page);
     }
 
-    @RequiresPermissions(value = { "flowable:processDefinition:list",
-            "flowable:processDefinition:listMyself" }, logical = Logical.OR)
+    // // @RequiresPermissions(value = { "flowable:processDefinition:list",
+    // "flowable:processDefinition:listMyself" }, logical = Logical.OR)
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String processDefinitionId) {
-        permissionService.validateReadPermissionOnProcessDefinition(ShiroUtils.getUserId(), processDefinitionId);
+        permissionService.validateReadPermissionOnProcessDefinition(SecurityUtils.getUserId(), processDefinitionId);
         ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
         String formKey = null;
         if (processDefinition.hasStartFormKey()) {
@@ -146,7 +144,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
 
     @GetMapping(value = "/renderedStartForm")
     public Result renderedStartForm(@RequestParam String processDefinitionId) {
-        permissionService.validateReadPermissionOnProcessDefinition(ShiroUtils.getUserId(), processDefinitionId);
+        permissionService.validateReadPermissionOnProcessDefinition(SecurityUtils.getUserId(), processDefinitionId);
         Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
         boolean showBusinessKey = this.isShowBusinessKey(processDefinitionId);
         return Result.ok(ImmutableMap.of("renderedStartForm", renderedStartForm, "showBusinessKey", showBusinessKey));
@@ -154,7 +152,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
 
     @GetMapping(value = "/image")
     public ResponseEntity<byte[]> image(@RequestParam String processDefinitionId) {
-        permissionService.validateReadPermissionOnProcessDefinition(ShiroUtils.getUserId(), processDefinitionId);
+        permissionService.validateReadPermissionOnProcessDefinition(SecurityUtils.getUserId(), processDefinitionId);
         ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
         InputStream imageStream = repositoryService.getProcessDiagram(processDefinition.getId());
         if (imageStream == null) {
@@ -171,10 +169,10 @@ public class ProcessDefinitionController extends BaseFlowableController {
         }
     }
 
-    @RequiresPermissions("flowable:processDefinition:xml")
+    // // @RequiresPermissions("flowable:processDefinition:xml")
     @GetMapping(value = "/xml")
     public ResponseEntity<byte[]> xml(@RequestParam String processDefinitionId) {
-        permissionService.validateReadPermissionOnProcessDefinition(ShiroUtils.getUserId(), processDefinitionId);
+        permissionService.validateReadPermissionOnProcessDefinition(SecurityUtils.getUserId(), processDefinitionId);
         ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
         String deploymentId = processDefinition.getDeploymentId();
         String resourceId = processDefinition.getResourceName();
@@ -209,7 +207,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "删除流程定义")
-    @RequiresPermissions("flowable:processDefinition:delete")
+    // // @RequiresPermissions("flowable:processDefinition:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processDefinitionId,
             @RequestParam(required = false, defaultValue = "false") Boolean cascade) {
@@ -218,7 +216,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "激活流程定义")
-    @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
+    // // @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
     @PutMapping(value = "/activate")
     public Result activate(@RequestBody ProcessDefinitionRequest actionRequest) {
         processDefinitionService.activate(actionRequest);
@@ -226,7 +224,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "挂起流程定义")
-    @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
+    // // @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
     @PutMapping(value = "/suspend")
     public Result suspend(@RequestBody ProcessDefinitionRequest actionRequest) {
         processDefinitionService.suspend(actionRequest);
@@ -240,7 +238,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
      * @return
      */
     @SysLogAuto(value = "导入流程定义")
-    @RequiresPermissions("flowable:processDefinition:import")
+    // // @RequiresPermissions("flowable:processDefinition:import")
     @PostMapping(value = "/import")
     public Result doImport(@RequestParam(required = false) String tenantId, HttpServletRequest request) {
         processDefinitionService.doImport(tenantId, request);

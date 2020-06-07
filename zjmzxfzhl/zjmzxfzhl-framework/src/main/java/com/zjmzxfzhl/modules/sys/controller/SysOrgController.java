@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,14 +43,14 @@ public class SysOrgController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:org:list")
+    // @RequiresPermissions("sys:org:list")
     @GetMapping(value = "/list")
     public Result list(SysOrg sysOrg, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysOrg> pageList = sysOrgService.list(new Page<SysOrg>(current, size), sysOrg);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:org:list")
+    // @RequiresPermissions("sys:org:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysOrg sysOrg = sysOrgService.getById(id);
@@ -64,7 +63,7 @@ public class SysOrgController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "新增机构")
-    @RequiresPermissions("sys:org:save")
+    // @RequiresPermissions("sys:org:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysOrg sysOrg) {
         sysOrgService.saveSysOrg(sysOrg);
@@ -77,7 +76,7 @@ public class SysOrgController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "修改机构")
-    @RequiresPermissions("sys:org:update")
+    // @RequiresPermissions("sys:org:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysOrg sysOrg) {
         sysOrgService.updateSysOrg(sysOrg);
@@ -90,7 +89,7 @@ public class SysOrgController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "删除机构")
-    @RequiresPermissions("sys:org:delete")
+    // @RequiresPermissions("sys:org:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
@@ -110,7 +109,7 @@ public class SysOrgController extends BaseController {
      * 
      * @return
      */
-    @RequiresPermissions("sys:org:getTreeData")
+    // @RequiresPermissions("sys:org:getTreeData")
     @GetMapping(value = "/getTreeData")
     public Result getTreeData() {
         List<ElTree> treeData = sysOrgService.getTreeData();

@@ -40,7 +40,7 @@ import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.DateUtil;
 import com.zjmzxfzhl.common.util.SpringContextUtils;
 import com.zjmzxfzhl.common.xss.SqlFilter;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.common.SessionObject;
 import com.zjmzxfzhl.modules.sys.entity.SysDataPermission;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
@@ -100,7 +100,7 @@ public class PermissionParser implements ISqlParser {
         }
         String methodId = mappedStatement.getId();
         DataPermission[] dataPermissions = targetMethod.getAnnotationsByType(DataPermission.class);
-        SessionObject sessionObject = ShiroUtils.getSessionObject();
+        SessionObject sessionObject = SecurityUtils.getSessionObject();
         if (sessionObject == null) {
             throw new SysException("登录超时，请重新登录");
         }

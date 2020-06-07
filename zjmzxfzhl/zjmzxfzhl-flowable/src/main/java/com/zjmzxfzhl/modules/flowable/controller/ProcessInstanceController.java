@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.flowable.common.engine.api.query.QueryProperty;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
@@ -28,7 +27,7 @@ import com.zjmzxfzhl.common.Result;
 import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.CommonUtil;
 import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -64,7 +63,7 @@ public class ProcessInstanceController extends BaseFlowableController {
         allowedSortProperties.put(FlowableConstant.TENANT_ID, HistoricProcessInstanceQueryProperty.TENANT_ID);
     }
 
-    @RequiresPermissions("flowable:processInstance:list")
+    // @RequiresPermissions("flowable:processInstance:list")
     @GetMapping(value = "/list")
     public Result list(@RequestParam Map<String, String> requestParams) {
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
@@ -124,7 +123,7 @@ public class ProcessInstanceController extends BaseFlowableController {
         if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.START_BY_ME))) {
             boolean isStartByMe = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.START_BY_ME));
             if (isStartByMe) {
-                query.startedBy(ShiroUtils.getUserId());
+                query.startedBy(SecurityUtils.getUserId());
             }
         }
         if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.TENANT_ID))) {
@@ -138,13 +137,13 @@ public class ProcessInstanceController extends BaseFlowableController {
 
     @GetMapping(value = "/listMyInvolved")
     public Result listMyInvolved(@RequestParam Map<String, String> requestParams) {
-        requestParams.put(FlowableConstant.INVOLVED_USER, ShiroUtils.getUserId());
+        requestParams.put(FlowableConstant.INVOLVED_USER, SecurityUtils.getUserId());
         return list(requestParams);
     }
 
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String processInstanceId) {
-        permissionService.validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
+        permissionService.validateReadPermissionOnProcessInstance(SecurityUtils.getUserId(), processInstanceId);
         ProcessInstance processInstance = null;
         HistoricProcessInstance historicProcessInstance = processInstanceService
                 .getHistoricProcessInstanceById(processInstanceId);
@@ -165,7 +164,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "删除流程实例")
-    @RequiresPermissions("flowable:processInstance:delete")
+    // @RequiresPermissions("flowable:processInstance:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processInstanceId, @RequestParam(required = false) boolean cascade,
             @RequestParam(required = false) String deleteReason) {
@@ -174,7 +173,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "挂起流程实例")
-    @RequiresPermissions("flowable:processInstance:suspendOrActivate")
+    // @RequiresPermissions("flowable:processInstance:suspendOrActivate")
     @PutMapping(value = "/suspend")
     public Result suspend(@RequestBody ProcessInstanceRequest processInstanceRequest) {
         processInstanceService.suspend(processInstanceRequest.getProcessInstanceId());
@@ -182,7 +181,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "激活流程实例")
-    @RequiresPermissions("flowable:processInstance:suspendOrActivate")
+    // @RequiresPermissions("flowable:processInstance:suspendOrActivate")
     @PutMapping(value = "/activate")
     public Result activate(@RequestBody ProcessInstanceRequest processInstanceRequest) {
         processInstanceService.activate(processInstanceRequest.getProcessInstanceId());
@@ -191,7 +190,7 @@ public class ProcessInstanceController extends BaseFlowableController {
 
     @GetMapping(value = "/comments")
     public Result comments(@RequestParam String processInstanceId) {
-        permissionService.validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
+        permissionService.validateReadPermissionOnProcessInstance(SecurityUtils.getUserId(), processInstanceId);
         List<Comment> datas = taskService.getProcessInstanceComments(processInstanceId);
         Collections.reverse(datas);
         return Result.ok(this.listWrapper(CommentListWrapper.class, datas));
@@ -200,7 +199,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     @GetMapping(value = "/formData")
     public Result formData(@RequestParam String processInstanceId) {
         HistoricProcessInstance processInstance = permissionService
-                .validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
+                .validateReadPermissionOnProcessInstance(SecurityUtils.getUserId(), processInstanceId);
         Object renderedStartForm = formService.getRenderedStartForm(processInstance.getProcessDefinitionId());
         Map<String, Object> variables = null;
         if (processInstance.getEndTime() == null) {

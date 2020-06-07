@@ -38,6 +38,7 @@
 		<commons.version>2.6</commons.version>
 		<jwt.version>3.4.1</jwt.version>
 		<shiro.version>1.4.2</shiro.version>
+		<security-oauth2.version>2.3.6.RELEASE</security-oauth2.version>
 		<jsoup.version>1.12.1</jsoup.version>
 		<swagger.version>2.9.2</swagger.version>
 		<redisson.version>3.11.1</redisson.version>
@@ -203,11 +204,25 @@
 			</dependency>
 
 			<!--shiro -->
-			<dependency>
+			<!-- <dependency>
 				<groupId>org.apache.shiro</groupId>
 				<artifactId>shiro-spring-boot-starter</artifactId>
 				<version>${shiro.version}</version>
+			</dependency> -->
+			
+			<!-- spring security 安全认证 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-security</artifactId>
+				<version>${spring-boot.version}</version>
 			</dependency>
+			
+			<!-- Spring Security Oauth2 -->
+	        <dependency>
+	            <groupId>org.springframework.security.oauth</groupId>
+	            <artifactId>spring-security-oauth2</artifactId>
+				<version>${security-oauth2.version}</version>
+	        </dependency>
 
 			<!-- jsoup HTML parser library @ https://jsoup.org/ -->
 			<dependency>

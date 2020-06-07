@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,14 +40,14 @@ public class SysLogController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:log:list")
+    // @RequiresPermissions("sys:log:list")
     @GetMapping(value = "/list")
     public Result list(SysLog sysLog, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysLog> pageList = sysLogService.list(new Page<SysLog>(current, size), sysLog);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:log:list")
+    // @RequiresPermissions("sys:log:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysLog sysLog = sysLogService.getById(id);
@@ -60,7 +59,7 @@ public class SysLogController extends BaseController {
      * @param sysLog
      * @return
      */
-    @RequiresPermissions("sys:log:save")
+    // @RequiresPermissions("sys:log:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysLog sysLog) {
         sysLogService.save(sysLog);
@@ -72,7 +71,7 @@ public class SysLogController extends BaseController {
      * @param sysLog
      * @return
      */
-    @RequiresPermissions("sys:log:update")
+    // @RequiresPermissions("sys:log:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysLog sysLog) {
         sysLogService.updateById(sysLog);
@@ -84,7 +83,7 @@ public class SysLogController extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("sys:log:delete")
+    // @RequiresPermissions("sys:log:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

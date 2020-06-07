@@ -18,7 +18,7 @@ import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
 import com.zjmzxfzhl.common.util.IpUtils;
 import com.zjmzxfzhl.common.util.JacksonUtil;
 import com.zjmzxfzhl.common.util.SpringContextUtils;
-import com.zjmzxfzhl.framework.config.shiro.util.ShiroUtils;
+import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
 import com.zjmzxfzhl.framework.config.threadpool.manager.AsyncManager;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -74,7 +74,7 @@ public class SysLogAutoAspect {
                 sysUser.setUserId(aSysLoginForm.getUserId());
             }
         } else if (LOG_TYPE_2.equals(sysLogAuto.logType())) {
-            sysUser = ShiroUtils.getSysUser();
+            sysUser = SecurityUtils.getSysUser();
             sysLog.setRequestParam(paramsToJson(args));
         }
         if (sysUser != null) {

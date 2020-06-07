@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,14 +40,14 @@ public class SysRoleUserController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:roleUser:list")
+    // @RequiresPermissions("sys:roleUser:list")
     @GetMapping(value = "/list")
     public Result list(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysRoleUser> pageList = sysRoleUserService.list(new Page<SysRoleUser>(current, size), sysRoleUser);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:roleUser:list")
+    // @RequiresPermissions("sys:roleUser:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysRoleUser sysRoleUser = sysRoleUserService.getById(id);
@@ -60,7 +59,7 @@ public class SysRoleUserController extends BaseController {
      * @param sysRoleUser
      * @return
      */
-    @RequiresPermissions("sys:roleUser:save")
+    // @RequiresPermissions("sys:roleUser:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysRoleUser sysRoleUser) {
         sysRoleUserService.save(sysRoleUser);
@@ -72,7 +71,7 @@ public class SysRoleUserController extends BaseController {
      * @param sysRoleUser
      * @return
      */
-    @RequiresPermissions("sys:roleUser:update")
+    // @RequiresPermissions("sys:roleUser:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysRoleUser sysRoleUser) {
         sysRoleUserService.updateById(sysRoleUser);
@@ -84,7 +83,7 @@ public class SysRoleUserController extends BaseController {
      * @param ids
      * @return
      */
-    @RequiresPermissions("sys:roleUser:delete")
+    // @RequiresPermissions("sys:roleUser:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

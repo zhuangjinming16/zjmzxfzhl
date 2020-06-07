@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.sys.controller;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,14 +39,14 @@ public class SysJobController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:job:list")
+    // @RequiresPermissions("sys:job:list")
     @GetMapping(value = "/list")
     public Result list(SysJob sysJob, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysJob> pageList = sysJobService.list(new Page<SysJob>(current, size), sysJob);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:job:list")
+    // @RequiresPermissions("sys:job:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysJob sysJob = sysJobService.getById(id);
@@ -61,7 +60,7 @@ public class SysJobController extends BaseController {
      * @throws JobException
      * @throws SchedulerException
      */
-    @RequiresPermissions("sys:job:save")
+    // @RequiresPermissions("sys:job:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.saveJob(sysJob);
@@ -73,7 +72,7 @@ public class SysJobController extends BaseController {
      * @param sysJob
      * @return
      */
-    @RequiresPermissions("sys:job:update")
+    // @RequiresPermissions("sys:job:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.updateJob(sysJob);
@@ -86,21 +85,21 @@ public class SysJobController extends BaseController {
      * @return
      * @throws SchedulerException
      */
-    @RequiresPermissions("sys:job:delete")
+    // @RequiresPermissions("sys:job:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) throws SchedulerException {
         sysJobService.delete(ids);
         return Result.ok();
     }
 
-    @RequiresPermissions("sys:job:changeStatus")
+    // @RequiresPermissions("sys:job:changeStatus")
     @PutMapping("/changeStatus")
     public Result changeStatus(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.changeStatus(sysJob.getJobId());
         return Result.ok();
     }
 
-    @RequiresPermissions("sys:job:run")
+    // @RequiresPermissions("sys:job:run")
     @PutMapping("/run")
     public Result run(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.run(sysJob.getJobId());

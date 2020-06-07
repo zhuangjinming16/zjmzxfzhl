@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,14 +42,14 @@ public class SysCodeInfoController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:codeInfo:list")
+    // @RequiresPermissions("sys:codeInfo:list")
     @GetMapping(value = "/list")
     public Result list(SysCodeInfo sysCodeInfo, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysCodeInfo> pageList = sysCodeInfoService.list(new Page<SysCodeInfo>(current, size), sysCodeInfo);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:codeInfo:list")
+    // @RequiresPermissions("sys:codeInfo:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysCodeInfo sysCodeInfo = sysCodeInfoService.getById(id);
@@ -63,7 +62,7 @@ public class SysCodeInfoController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "新增代码信息")
-    @RequiresPermissions("sys:codeInfo:save")
+    // @RequiresPermissions("sys:codeInfo:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.saveSysCodeInfo(sysCodeInfo);
@@ -76,7 +75,7 @@ public class SysCodeInfoController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "修改代码信息")
-    @RequiresPermissions("sys:codeInfo:update")
+    // @RequiresPermissions("sys:codeInfo:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.updateSysCodeInfo(sysCodeInfo);
@@ -89,7 +88,7 @@ public class SysCodeInfoController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "删除代码信息")
-    @RequiresPermissions("sys:codeInfo:delete")
+    // @RequiresPermissions("sys:codeInfo:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         sysCodeInfoService.deleteSysCodeInfo(ids);

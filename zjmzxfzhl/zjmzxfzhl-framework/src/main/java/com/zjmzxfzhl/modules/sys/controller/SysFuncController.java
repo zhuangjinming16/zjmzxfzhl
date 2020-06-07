@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,14 +41,14 @@ public class SysFuncController extends BaseController {
      * @param size
      * @return
      */
-    @RequiresPermissions("sys:func:list")
+    // @RequiresPermissions("sys:func:list")
     @GetMapping(value = "/list")
     public Result list(SysFunc sysFunc, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysFunc> pageList = sysFuncService.list(new Page<SysFunc>(current, size), sysFunc);
         return Result.ok(pageList);
     }
 
-    @RequiresPermissions("sys:func:list")
+    // @RequiresPermissions("sys:func:list")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysFunc sysFunc = sysFuncService.getById(id);
@@ -62,7 +61,7 @@ public class SysFuncController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "新增功能按钮")
-    @RequiresPermissions("sys:func:save")
+    // @RequiresPermissions("sys:func:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysFunc sysFunc) {
         sysFuncService.save(sysFunc);
@@ -75,7 +74,7 @@ public class SysFuncController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "修改功能按钮")
-    @RequiresPermissions("sys:func:update")
+    // @RequiresPermissions("sys:func:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysFunc sysFunc) {
         sysFuncService.updateById(sysFunc);
@@ -88,7 +87,7 @@ public class SysFuncController extends BaseController {
      * @return
      */
     @SysLogAuto(value = "删除功能按钮")
-    @RequiresPermissions("sys:func:delete")
+    // @RequiresPermissions("sys:func:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

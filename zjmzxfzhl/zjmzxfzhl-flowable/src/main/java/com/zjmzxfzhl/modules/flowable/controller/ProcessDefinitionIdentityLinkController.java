@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.flowable.controller;
 
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.identitylink.api.IdentityLink;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class ProcessDefinitionIdentityLinkController extends BaseFlowableControl
     @Autowired
     private ProcessDefinitionService processDefinitionService;
 
-    @RequiresPermissions("flowable:processDefinitionIdentityLink:list")
+    // // @RequiresPermissions("flowable:processDefinitionIdentityLink:list")
     @GetMapping(value = "/list")
     public Result list(@RequestParam String processDefinitionId) {
         ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
@@ -40,7 +39,7 @@ public class ProcessDefinitionIdentityLinkController extends BaseFlowableControl
     }
 
     @SysLogAuto(value = "新增流程定义授权")
-    @RequiresPermissions("flowable:processDefinitionIdentityLink:save")
+    // @RequiresPermissions("flowable:processDefinitionIdentityLink:save")
     @PostMapping(value = "/save")
     public Result save(@RequestBody IdentityRequest identityRequest) {
         processDefinitionService.saveProcessDefinitionIdentityLink(identityRequest);
@@ -48,7 +47,7 @@ public class ProcessDefinitionIdentityLinkController extends BaseFlowableControl
     }
 
     @SysLogAuto(value = "删除流程定义授权")
-    @RequiresPermissions("flowable:processDefinitionIdentityLink:delete")
+    // @RequiresPermissions("flowable:processDefinitionIdentityLink:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processDefinitionId, @RequestParam String identityId,
             @RequestParam String identityType) {

@@ -2,7 +2,6 @@ package com.zjmzxfzhl.modules.flowable.controller;
 
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.flowable.identitylink.api.history.HistoricIdentityLink;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class TaskIdentityLinkController extends BaseFlowableController {
     @Autowired
     protected FlowableTaskService flowableTaskService;
 
-    @RequiresPermissions("flowable:taskIdentityLink:list")
+    // @RequiresPermissions("flowable:taskIdentityLink:list")
     @GetMapping(value = "/list")
     public Result list(@RequestParam String taskId) {
         HistoricTaskInstance task = flowableTaskService.getHistoricTaskInstanceNotNull(taskId);
@@ -39,7 +38,7 @@ public class TaskIdentityLinkController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "新增任务授权")
-    @RequiresPermissions("flowable:taskIdentityLink:save")
+    // @RequiresPermissions("flowable:taskIdentityLink:save")
     @PostMapping(value = "/save")
     public Result save(@RequestBody IdentityRequest taskIdentityRequest) {
         flowableTaskService.saveTaskIdentityLink(taskIdentityRequest);
@@ -47,7 +46,7 @@ public class TaskIdentityLinkController extends BaseFlowableController {
     }
 
     @SysLogAuto(value = "删除任务授权")
-    @RequiresPermissions("flowable:taskIdentityLink:delete")
+    // @RequiresPermissions("flowable:taskIdentityLink:delete")
     @DeleteMapping(value = "/delete")
     public Result deleteIdentityLink(@RequestParam String taskId, @RequestParam String identityId,
             @RequestParam String identityType) {

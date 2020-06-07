@@ -21,6 +21,8 @@ public class JwtUtil {
      */
     public static final long EXPIRE_TIME = 15 * 60;
 
+    private static final String defaultSecret = "tokensecret";
+
     /**
      * 校验token是否正确
      *
@@ -31,6 +33,9 @@ public class JwtUtil {
      * @return 是否正确
      */
     public static boolean verify(String token, String userId, String secret) {
+        if (secret == null || secret.isEmpty()) {
+            secret = defaultSecret;
+        }
         try {
             // 根据密码生成JWT效验器
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -52,6 +57,7 @@ public class JwtUtil {
     public static String getUserId(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
+            jwt.getClaim("").asArray(String.class);
             return jwt.getClaim("userId").asString();
         } catch (JWTDecodeException e) {
             return null;
@@ -70,6 +76,9 @@ public class JwtUtil {
      * @return 加密的token
      */
     public static String sign(String userId, String secret, Date date) {
+        if (secret == null || secret.isEmpty()) {
+            secret = defaultSecret;
+        }
         Algorithm algorithm = Algorithm.HMAC256(secret);
         // 如果有传过期时间，则加入过期时间
         if (date != null) {
