@@ -7,15 +7,15 @@
                 <h3 class="title">登录界面</h3>
             </div>
 
-            <el-form-item prop="userId">
+            <el-form-item prop="username">
                 <span class="svg-container">
                   <svg-icon icon-class="user"/>
                 </span>
                 <el-input size="medium"
-                        ref="userId"
-                        v-model="loginForm.userId"
+                        ref="username"
+                        v-model="loginForm.username"
                         placeholder="用户名"
-                        name="userId"
+                        name="username"
                         type="text"
                         tabindex="1"
                         auto-complete="on"
@@ -91,13 +91,13 @@
             return {
                 captchaPath: '',
                 loginForm: {
-                    userId: 'admin',
+                    username: 'admin',
                     password: '1',
                     uuid: '',
                     captcha: ''
                 },
                 loginRules: {
-                    userId: [{required: true, trigger: 'blur', validator: validateUserId}],
+                    username: [{required: true, trigger: 'blur', validator: validateUserId}],
                     password: [{required: true, trigger: 'blur', validator: validatePassword}],
                     captcha: [{required: true, trigger: 'blur', validator: validateCaptcha}]
                 },

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {MessageBox, Message, Loading} from 'element-ui'
+import errorCode from '@/utils/errorCode'
 import store from '@/store'
 import {getToken} from '@/utils/auth'
 
@@ -12,9 +13,9 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         Loading.service({text: "Loading..."});
-        if (store.getters.token) {
-            // config.headers['token'] = getToken()
-            config.headers['Authorization'] = 'Bearer ' + getToken()
+        let token = store.getters.token;
+        if (token) {
+            config.headers['Authorization'] = 'Bearer ' + token
         }
         return config
     },
@@ -28,35 +29,32 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         Loading.service().close();
+        const status = Number(response.status) || 200
         const res = response.data
-
-        if (res && res.code && res.code !== 200) {
-            if (res.code === 401 || res.code === 403) {
-                MessageBox.confirm('登录超时，请重新登录', '提示', {
-                    confirmButtonText: '重新登录',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    store.dispatch('user/resetToken').then(() => {
-                        location.reload()
-                    })
-                })
-            } else {
-                Message.error(res.msg || 'error')
-            }
-            return Promise.reject(res.msg || 'error')
-        } else {
-            //打印后台返回数据，用于mock数据
-            // let uri = response.config.url.replace(response.config.baseURL,'')
-            // let log = '{url:"' + uri + '",type:"' + response.config.method + '",response: config => {return '+ JSON.stringify(res) +'}},'
-            // console.log(log)
-            return res
+        const message = res.msg || errorCode[status] || errorCode['default']
+        if(status === 401 || (res && res.code && res.code === 401)){
+            store.dispatch('user/resetToken').then(() => {
+                location.reload()
+            })
+            return
         }
+
+        if(status !== 200 || (res && res.code && res.code !== 200)){
+            Message.error(message)
+            return Promise.reject(message)
+        }
+
+        //打印后台返回数据，用于mock数据
+        // let uri = response.config.url.replace(response.config.baseURL,'')
+        // let log = '{url:"' + uri + '",type:"' + response.config.method + '",response: config => {return '+ JSON.stringify(res) +'}},'
+        // console.log(log)
+        return res
     },
     error => {
         Loading.service().close();
+        const message = (error.response && error.response.data && error.response.data.message) || error.message
         console.log('err' + error) // for debug
-        Message.error(error.message)
+        Message.error(message)
         return Promise.reject(error)
     }
 )

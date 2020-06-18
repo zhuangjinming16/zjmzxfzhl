@@ -1,4 +1,5 @@
-import {getAction, postAction} from '@/api/manage'
+import request from '@/utils/request'
+import {getAction, postAction, deleteAction} from '@/api/manage'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 import router, {resetRouter, constantRoutes, permissionRoutes} from '@/router'
 import store from "../index";
@@ -48,10 +49,19 @@ const mutations = {
 const actions = {
     login({commit}, sysLoginForm) {
         return new Promise((resolve, reject) => {
-            postAction('/sys/login', sysLoginForm).then(response => {
-                const {data} = response
-                commit('SET_TOKEN', data.token)
-                setToken(data.token)
+            Object.assign(sysLoginForm,{grant_type:'password',scope:'admin'})
+            request({
+                url: '/oauth/token',
+                headers: {
+                    isToken:false,
+                    'Authorization': 'Basic emptenhmemhsOjE='
+                },
+                method: 'post',
+                params: sysLoginForm
+            }).then(data => {
+                // const {data} = response
+                commit('SET_TOKEN', data.access_token)
+                setToken(data.access_token)
                 resolve()
             }).catch(error => {
                 reject(error)
@@ -90,7 +100,7 @@ const actions = {
     // user logout
     logout({commit, state}) {
         return new Promise((resolve, reject) => {
-            postAction('/logout', state.token).then(() => {
+            deleteAction('/token/logout', state.token).then(() => {
                 commit('SET_TOKEN', '')
                 commit('SET_NAME', '')
                 commit('SET_AVATAR', '')
