@@ -2,11 +2,8 @@ package com.zjmzxfzhl.modules.app.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -20,9 +17,9 @@ import com.zjmzxfzhl.common.aspect.components.RepeatRequestComponent;
  * @author 庄金明
  * @date 2020年3月24日
  */
-@Aspect
-@Component
-@Order(0)
+// @Aspect
+// @Component
+// @Order(0)
 public class AppRepeatRequestAspect {
     @Autowired
     private RepeatRequestComponent repeatRequestComponent;

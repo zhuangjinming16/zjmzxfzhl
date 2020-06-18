@@ -39,6 +39,7 @@
 		<jwt.version>3.4.1</jwt.version>
 		<shiro.version>1.4.2</shiro.version>
 		<security-oauth2.version>2.3.6.RELEASE</security-oauth2.version>
+		<spring-security-oauth2-autoconfigure.version>2.1.2.RELEASE</spring-security-oauth2-autoconfigure.version>
 		<jsoup.version>1.12.1</jsoup.version>
 		<swagger.version>2.9.2</swagger.version>
 		<redisson.version>3.11.1</redisson.version>
@@ -71,12 +72,12 @@
 	            <scope>test</scope>
 	        </dependency>
 	
-	        <dependency>
+	        <!-- <dependency>
 	            <groupId>org.springframework.boot</groupId>
 	            <artifactId>spring-boot-devtools</artifactId>
 	            <version>${spring-boot.version}</version>
 	            <optional>true</optional>
-	        </dependency>
+	        </dependency> -->
 	        
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -223,6 +224,12 @@
 	            <artifactId>spring-security-oauth2</artifactId>
 				<version>${security-oauth2.version}</version>
 	        </dependency>
+	        
+	        <dependency> 
+                <groupId>org.springframework.security.oauth.boot</groupId>
+                <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+                <version>${spring-security-oauth2-autoconfigure.version}</version>
+        	</dependency>
 
 			<!-- jsoup HTML parser library @ https://jsoup.org/ -->
 			<dependency>

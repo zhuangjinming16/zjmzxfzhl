@@ -127,6 +127,8 @@ public class SysUserController extends BaseController {
         } else {
             sessionObject = SecurityUtils.getSessionObject();
         }
+
+        // sessionObject = sysUserService.saveGetUserInfo("admin", roleId);
         return Result.ok(sessionObject);
     }
 

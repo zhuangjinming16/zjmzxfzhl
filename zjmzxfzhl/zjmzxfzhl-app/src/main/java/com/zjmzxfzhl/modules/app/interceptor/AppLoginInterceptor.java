@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -22,7 +21,7 @@ import com.zjmzxfzhl.modules.app.service.AppUserService;
  * @author 庄金明
  * @date 2020年3月23日
  */
-@Component
+// @Component
 public class AppLoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private AppUserService appUserService;

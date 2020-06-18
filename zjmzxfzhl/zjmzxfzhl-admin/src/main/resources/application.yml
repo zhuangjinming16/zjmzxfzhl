@@ -43,3 +43,6 @@ async:
      queue-capacity: 2000
      name-prefix: async-service-
      keep-alive-seconds: 60
+# 需要验证验证码的client_id,以逗号隔开
+captchaFilter:
+  clients: zjmzxfzhl
