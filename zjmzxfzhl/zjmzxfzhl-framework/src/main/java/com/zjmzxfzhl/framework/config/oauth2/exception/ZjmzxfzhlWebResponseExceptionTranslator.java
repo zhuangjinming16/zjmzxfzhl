@@ -21,23 +21,19 @@ public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExcep
 
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) {
-
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
-
         Exception ase = (AuthenticationException) throwableAnalyzer
                 .getFirstThrowableOfType(AuthenticationException.class, causeChain);
         // 身份验证相关异常
         if (ase != null) {
             return handleOAuth2Exception(new UnauthorizedException(e.getMessage(), e));
         }
-
         ase = (AccessDeniedException) throwableAnalyzer.getFirstThrowableOfType(AccessDeniedException.class,
                 causeChain);
         // 拒绝访问异常
         if (ase != null) {
             return handleOAuth2Exception(new ForbiddenException(ase.getMessage(), ase));
         }
-
         ase = (InvalidGrantException) throwableAnalyzer.getFirstThrowableOfType(InvalidGrantException.class,
                 causeChain);
         if (ase != null) {
@@ -51,26 +47,21 @@ public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExcep
             }
             return handleOAuth2Exception(new InvalidException(ase.getMessage(), ase));
         }
-
         ase = (HttpRequestMethodNotSupportedException) throwableAnalyzer
                 .getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
         // Http方法请求异常
         if (ase != null) {
             return handleOAuth2Exception(new MethodNotAllowedException(ase.getMessage(), ase));
         }
-
         ase = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
         // OAuth2Exception异常
         if (ase != null) {
             return handleOAuth2Exception((OAuth2Exception) ase);
         }
-
         return handleOAuth2Exception(new ServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
-
     }
 
     private ResponseEntity<OAuth2Exception> handleOAuth2Exception(OAuth2Exception e) {
-
         int status = e.getHttpErrorCode();
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CACHE_CONTROL, "no-store");

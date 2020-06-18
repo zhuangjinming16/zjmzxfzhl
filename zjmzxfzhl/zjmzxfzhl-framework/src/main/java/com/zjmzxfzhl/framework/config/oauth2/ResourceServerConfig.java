@@ -27,50 +27,14 @@ import com.zjmzxfzhl.framework.config.security.annotation.AnonymousAccess;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-    /**
-     * 认证失败处理类
-     */
     @Autowired
     private AuthenticationEntryPointImpl authenticationEntryPointImpl;
 
     @Autowired
     private CaptchaFilter captchaFilter;
 
-    // @Autowired
-    // private ResourceServerProperties resourceServerProperties;
-    // @Autowired
-    // private OAuth2ClientProperties oAuth2ClientProperties;
-
-    // @Bean
-    // public AuthIgnoreConfig authIgnoreConfig() {
-    // return new AuthIgnoreConfig();
-    // }
-
-    // @Bean
-    // public RestTemplate restTemplate() {
-    // RestTemplate restTemplate = new RestTemplate();
-    // restTemplate.setErrorHandler(new DefaultResponseErrorHandler());
-    // return restTemplate;
-    // }
-
-    // @Bean
-    // public ResourceServerTokenServices tokenServices() {
-    // RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-    // DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
-    // // UserAuthenticationConverter userTokenConverter = new CommonUserConverter();
-    // // accessTokenConverter.setUserTokenConverter(userTokenConverter);
-    // remoteTokenServices.setCheckTokenEndpointUrl(resourceServerProperties.getTokenInfoUri());
-    // remoteTokenServices.setClientId(oAuth2ClientProperties.getClientId());
-    // remoteTokenServices.setClientSecret(oAuth2ClientProperties.getClientSecret());
-    // remoteTokenServices.setRestTemplate(restTemplate());
-    // remoteTokenServices.setAccessTokenConverter(accessTokenConverter);
-    // return remoteTokenServices;
-    // }
-
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        // httpSecurity.requestMatchers().antMatchers("/app/**").and().authorizeRequests().anyRequest().authenticated();
-
         // 搜寻匿名标记 url： @AnonymousAccess
         Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = SpringContextUtils.getApplicationContext()
                 .getBean(RequestMappingHandlerMapping.class).getHandlerMethods();
@@ -86,10 +50,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         httpSecurity
                 // 禁用 CSRF
                 .csrf().disable()
-                // // 授权异常
-                // .exceptionHandling().authenticationEntryPoint(authenticationEntryPointImpl)
                 // 防止iframe 造成跨域
-                // .and()
                 .headers().frameOptions().disable()
                 // 不创建会话
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -99,11 +60,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/", "/demo/helloworld/helloworld", "/demo/redlock/*").permitAll()
                 // OAuth2
                 .antMatchers("/oauth/*", "/token/**").permitAll()
-                // 静态资源等等
-                .antMatchers(HttpMethod.GET, "/*.html", "/**/*.html", "/**/*.css", "/**/*.scss", "/**/*.woff",
-                        "/**/*.ttf", "/**/*.eot", "/**/*.gif", "/**/*.jpg", "/**/*.png", "/**/*.ico", "/**/*.svg",
-                        "/**/*.js")
-                .permitAll()
                 // swagger 文档
                 .antMatchers("/swagger-ui.html", "/csrf", "/**/*swagger*/**", "/v2/**", "/webjars/**").permitAll()
                 // 阿里巴巴 druid
@@ -116,7 +72,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/app/**").access("#oauth2.hasScope('app')")
                 // 其他所有请求都需要认证
                 .anyRequest().access("#oauth2.hasScope('admin')")
-                // .anyRequest().authenticated();
+                /// .anyRequest().authenticated();
                 .and().addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

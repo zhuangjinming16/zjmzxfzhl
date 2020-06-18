@@ -2,11 +2,11 @@ package com.zjmzxfzhl.framework.config.security;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @author 庄金明
  *
  */
-// @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -25,18 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Resource
     private UserDetailsService userDetailsService;
-
-    /**
-     * 认证失败处理类
-     */
-    @Autowired
-    private AuthenticationEntryPointImpl authenticationEntryPointImpl;
-
-    @Autowired
-    private LogoutSuccessHandlerImpl logoutSuccessHandler;
-
-    // @Autowired
-    // private JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     /**
      * 解决 无法直接注入 AuthenticationManager
@@ -50,20 +37,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    // @Override
-    // public void configure(WebSecurity web) throws Exception {
-    // web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
-    // "/swagger-ui.html", "/webjars/**", "/doc.html", "/login.html");
-    // web.ignoring().antMatchers("/js/**");
-    // web.ignoring().antMatchers("/css/**");
-    // web.ignoring().antMatchers("/health");
-    // // 忽略登录界面
-    // web.ignoring().antMatchers("/login.html");
-    // web.ignoring().antMatchers("/index.html");
-    // web.ignoring().antMatchers("/oauth/user/token");
-    // web.ignoring().antMatchers("/oauth/client/token");
-    // web.ignoring().antMatchers("/validata/code/**");
-    // }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        // web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources",
+        // "/configuration/security",
+        // "/swagger-ui.html", "/webjars/**", "/doc.html", "/login.html");
+        // web.ignoring().antMatchers("/js/**");
+        // web.ignoring().antMatchers("/css/**");
+        web.ignoring().antMatchers("/static/**", "/favicon.ico");
+        // 忽略登录界面
+        // web.ignoring().antMatchers("/login.html");
+        // web.ignoring().antMatchers("/index.html");
+        // web.ignoring().antMatchers("/oauth/user/token");
+        // web.ignoring().antMatchers("/oauth/client/token");
+        // web.ignoring().antMatchers("/validata/code/**");
+    }
 
     /**
      * 强散列哈希加密实现
