@@ -3,7 +3,7 @@
         <div class="filter-container">
             <el-select v-model="listQuery.logType" placeholder="日志类型" class="filter-item"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
             <el-input v-model="listQuery.userId" placeholder="操作用户" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.userName" placeholder="操作用户姓名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
+            <el-input v-model="listQuery.clientId" placeholder="客户端ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.ip" placeholder="IP地址" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
@@ -30,7 +30,7 @@
             </el-table-column>
             <el-table-column label="日志类型" prop="logType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.logType,scope.row.logType)"></span></template></el-table-column>            <el-table-column label="日志内容" prop="logContent" align="center"><template slot-scope="scope"><span>{{ scope.row.logContent }}</span></template></el-table-column>
             <el-table-column label="操作用户" prop="userId" align="center"><template slot-scope="scope"><span>{{ scope.row.userId }}</span></template></el-table-column>
-            <el-table-column label="操作用户姓名" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.userName }}</span></template></el-table-column>
+            <el-table-column label="客户端ID" prop="clientId" align="center"><template slot-scope="scope"><span>{{ scope.row.clientId }}</span></template></el-table-column>
             <el-table-column label="耗时" prop="costTime" align="center"><template slot-scope="scope"><span>{{ scope.row.costTime }}</span></template></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
@@ -55,9 +55,10 @@
                 <el-form-item label="日志内容" prop="logContent"><el-input v-model="temp.logContent"/></el-form-item>
                 <el-form-item label="操作类型" prop="operateType"><el-input v-model="temp.operateType"/></el-form-item>
                 <el-form-item label="操作用户" prop="userId"><el-input v-model="temp.userId"/></el-form-item>
-                <el-form-item label="操作用户姓名" prop="userName"><el-input v-model="temp.userName"/></el-form-item>
                 <el-form-item label="IP地址" prop="ip"><el-input v-model="temp.ip"/></el-form-item>
                 <el-form-item label="请求方法" prop="method"><el-input v-model="temp.method"/></el-form-item>
+                <el-form-item label="浏览器" prop="userAgent"><el-input v-model="temp.userAgent"/></el-form-item>
+                <el-form-item label="客户端ID" prop="clientId"><el-input v-model="temp.clientId"/></el-form-item>
                 <el-form-item label="请求路径" prop="requestUrl"><el-input v-model="temp.requestUrl"/></el-form-item>
                 <el-form-item label="请求参数" prop="requestParam"><el-input v-model="temp.requestParam"/></el-form-item>
                 <el-form-item label="请求类型" prop="requestType"><el-input v-model="temp.requestType"/></el-form-item>
@@ -91,7 +92,7 @@
                     size: 10,
                     logType: undefined,
                     userId: undefined,
-                    userName: undefined,
+                    clientId: undefined,
                     ip: undefined
                 },
                 dialogFormVisible: false,
@@ -102,9 +103,10 @@
                     logContent: '',
                     operateType: '',
                     userId: '',
-                    userName: '',
                     ip: '',
                     method: '',
+                    userAgent: '',
+                    clientId: '',
                     requestUrl: '',
                     requestParam: '',
                     requestType: '',
@@ -140,7 +142,7 @@
                     size: 10,
                     logType: undefined,
                     userId: undefined,
-                    userName: undefined,
+                    clientId: undefined,
                     ip: undefined
                 }
                 this.list()
@@ -152,9 +154,10 @@
                     logContent: '',
                     operateType: '',
                     userId: '',
-                    userName: '',
                     ip: '',
                     method: '',
+                    userAgent: '',
+                    clientId: '',
                     requestUrl: '',
                     requestParam: '',
                     requestType: '',
