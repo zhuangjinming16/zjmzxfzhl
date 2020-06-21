@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.aspect.annotation.RepeatRequest;
 import com.zjmzxfzhl.common.core.base.BaseController;
-import com.zjmzxfzhl.modules.app.form.AppDemo;
+import com.zjmzxfzhl.common.security.annotation.AnonymousAccess;
+import com.zjmzxfzhl.modules.app.form.AppTransVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,9 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AppDemoController extends BaseController {
 
+    @AnonymousAccess
     @GetMapping("/withoutLogin")
     public Result withoutLogin() {
-        return Result.ok("不需要登陆，访问的交易，在Controller的Mapping方法使用@WithoutLogin");
+        return Result.ok("不需要登陆，访问的交易，在Controller的Mapping方法使用@AnonymousAccess");
     }
 
     /**
@@ -40,7 +42,7 @@ public class AppDemoController extends BaseController {
     @RepeatRequest(waitTime = 2, leaseTime = 5, msg = "等待2秒且5秒后释放")
     @GetMapping(value = "/repeatRequest1")
     public Result repeatRequest1() throws Exception {
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         log.info("请求接入repeatRequest1");
         return Result.ok();
     }
@@ -58,7 +60,7 @@ public class AppDemoController extends BaseController {
     @RepeatRequest(lockIndexs = { 0, 1 })
     @GetMapping(value = "/repeatRequest2")
     public Result repeatRequest2(@RequestParam String deviceSn, @RequestParam String deviceImei) throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         log.info("请求接入repeatRequest2");
         return Result.ok();
     }
@@ -78,7 +80,7 @@ public class AppDemoController extends BaseController {
     @RepeatRequest(isLoginThenOnlyUserId = false, lockIndexs = 0)
     @GetMapping(value = "/repeatRequest3")
     public Result repeatRequest3(@RequestParam String param) throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         log.info("请求接入repeatRequest3");
         return Result.ok();
     }
@@ -97,7 +99,7 @@ public class AppDemoController extends BaseController {
      */
     @RepeatRequest(isLoginThenOnlyUserId = false, lockIndexs = 0, fieldNames = "transId")
     @GetMapping(value = "/repeatRequest4")
-    public Result repeatRequest4(AppDemo appDemo) throws Exception {
+    public Result repeatRequest4(AppTransVO appDemo) throws Exception {
         Thread.sleep(1000);
         log.info("请求接入repeatRequest4");
 

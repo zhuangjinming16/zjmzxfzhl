@@ -41,7 +41,7 @@ public class RepeatRequestComponent {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         RepeatRequest repeatRequest = signature.getMethod().getAnnotation((RepeatRequest.class));
         // 未设置注解，且未登录
-        if (repeatRequest == null && userId.length() == 0) {
+        if (repeatRequest == null && (userId == null || userId.length() == 0 || "anonymousUser".equals(userId))) {
             return joinPoint.proceed();
         }
         String lockParams = "";

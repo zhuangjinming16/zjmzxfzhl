@@ -17,7 +17,7 @@
 		<!-- zjmzxfzhl -->
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-common-core</artifactId>
+			<artifactId>zjmzxfzhl-common-security</artifactId>
 		</dependency>
 	</dependencies>
 </project>

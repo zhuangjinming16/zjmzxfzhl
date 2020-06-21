@@ -1,13 +1,14 @@
 package com.zjmzxfzhl.modules.app.config.security.service;
 
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.zjmzxfzhl.common.core.exception.AppException;
 import com.zjmzxfzhl.common.core.util.SpringContextUtils;
+import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
 
@@ -22,6 +23,10 @@ public class AppUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUserService appUserService = SpringContextUtils.getBean(AppUserService.class);
         AppUser appUser = appUserService.getById(username);
-        return new User(appUser.getUserId(), appUser.getPassword(), AuthorityUtils.NO_AUTHORITIES);
+        if (appUser == null) {
+            throw new AppException("用户不存在");
+        }
+        return new SecurityUser(null, appUser.getUserId(), appUser.getPassword(), true, true, true, true,
+                AuthorityUtils.NO_AUTHORITIES);
     }
 }
