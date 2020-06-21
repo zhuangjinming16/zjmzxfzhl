@@ -9,7 +9,6 @@ const getters = {
     sysRole: state => state.user.sysRole,
     sysRoles: state => state.user.sysRoles,
     sysOrg: state => state.user.sysOrg,
-    funcIds: state => state.user.funcIds,
     permissions: state => state.user.permissions,
     routes: state => state.permission.routes,
     addRoutes: state => state.permission.addRoutes,

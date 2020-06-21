@@ -12,7 +12,6 @@ const state = {
     sysRole: {},
     sysRoles: [],
     sysOrg: {},
-    funcIds: [],
     permissions: []
 }
 
@@ -37,9 +36,6 @@ const mutations = {
     },
     SET_ORG: (state, sysOrg) => {
         state.sysOrg = sysOrg
-    },
-    SET_FUNCIDS: (state, funcIds) => {
-        state.funcIds = funcIds
     },
     SET_PERMISSIONS: (state, permissions) => {
         state.permissions = permissions
@@ -77,7 +73,7 @@ const actions = {
                 if (!data) {
                     reject('登录失败，请重新登录')
                 }
-                const {sysUser, sysRole, sysRoles, sysOrg, routes, funcIds, permissions, avatar} = data
+                const {sysUser, sysRole, sysRoles, sysOrg, routes, authorities, avatar} = data
                 // roles must be a non-empty array
                 if (!sysRoles || sysRoles.length == 0) {
                     reject('该用户未配置角色，请联系管理员授权')
@@ -88,7 +84,9 @@ const actions = {
                 commit('SET_ROLE', sysRole)
                 commit('SET_ROLES', sysRoles)
                 commit('SET_ORG', sysOrg)
-                commit('SET_FUNCIDS', funcIds)
+                let permissions = authorities && authorities.map(function(item,key,ary) {
+                    return item.authority
+                })
                 commit('SET_PERMISSIONS', permissions)
                 resolve(data)
             }).catch(error => {
