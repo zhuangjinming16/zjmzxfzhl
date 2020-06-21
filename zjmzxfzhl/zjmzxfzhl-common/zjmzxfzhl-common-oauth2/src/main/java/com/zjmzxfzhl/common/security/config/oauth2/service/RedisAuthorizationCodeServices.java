@@ -6,6 +6,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
 
+/**
+ * @author 庄金明
+ *
+ */
 public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCodeServices {
 
     private RedisTemplate<String, Object> redisTemplate;

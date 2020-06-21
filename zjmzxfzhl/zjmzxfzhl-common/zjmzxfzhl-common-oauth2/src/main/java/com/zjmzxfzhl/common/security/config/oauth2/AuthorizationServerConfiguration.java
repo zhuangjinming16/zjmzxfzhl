@@ -29,6 +29,10 @@ import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
 
 import lombok.SneakyThrows;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Component
 @Configuration
 @EnableAuthorizationServer

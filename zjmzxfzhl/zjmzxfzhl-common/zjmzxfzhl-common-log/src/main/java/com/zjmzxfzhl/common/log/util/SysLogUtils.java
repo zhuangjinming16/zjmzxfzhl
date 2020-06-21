@@ -11,6 +11,10 @@ import com.zjmzxfzhl.common.core.util.IpUtils;
 import com.zjmzxfzhl.common.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
 
+/**
+ * @author 庄金明
+ *
+ */
 public class SysLogUtils {
     public static SysLog getSysLog() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects

@@ -15,9 +15,16 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
 import org.springframework.security.web.util.ThrowableAnalyzer;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 
+/**
+ * @author 庄金明
+ *
+ */
 public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExceptionTranslator<OAuth2Exception> {
 
     private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
+
+    private final static String BAD_CREDENTIALS = "Bad credentials";
+    private final static String USER_IS_DISABLED = "User is disabled";
 
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) {
@@ -37,20 +44,25 @@ public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExcep
         ase = (InvalidGrantException) throwableAnalyzer.getFirstThrowableOfType(InvalidGrantException.class,
                 causeChain);
         if (ase != null) {
-            if (ase.getMessage() != null
-                    && (ase.getMessage().equals("Bad credentials") || ase.getMessage().equals("User is disabled"))) {
-                String message = "";
-                if (ase.getMessage().equals("Bad credentials")) {
-                    message = "用户名或密码错误";
-                } else if (ase.getMessage().equals("User is disabled")) {
-                    message = "用户已锁定";
+            if (ase.getMessage() != null) {
+                if (BAD_CREDENTIALS.equals(ase.getMessage())) {
+                    String message = "用户名或密码错误";
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
+                    headers.set(HttpHeaders.PRAGMA, "no-cache");
+                    return new ResponseEntity<>(
+                            new ZjmzxfzhlAuth2Exception(message, ((InvalidGrantException) ase).getOAuth2ErrorCode()),
+                            headers, HttpStatus.OK);
+                } else if (USER_IS_DISABLED.equals(ase.getMessage())) {
+                    String message = "用户已锁定";
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
+                    headers.set(HttpHeaders.PRAGMA, "no-cache");
+                    return new ResponseEntity<>(
+                            new ZjmzxfzhlAuth2Exception(message, ((InvalidGrantException) ase).getOAuth2ErrorCode()),
+                            headers, HttpStatus.OK);
                 }
-                HttpHeaders headers = new HttpHeaders();
-                headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
-                headers.set(HttpHeaders.PRAGMA, "no-cache");
-                return new ResponseEntity<>(
-                        new ZjmzxfzhlAuth2Exception(message, ((InvalidGrantException) ase).getOAuth2ErrorCode()),
-                        headers, HttpStatus.OK);
+
             }
             return handleOAuth2Exception(new InvalidException(ase.getMessage(), ase));
         }

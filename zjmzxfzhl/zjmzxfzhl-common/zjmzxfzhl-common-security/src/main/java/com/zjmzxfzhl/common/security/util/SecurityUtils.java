@@ -1,7 +1,5 @@
 package com.zjmzxfzhl.common.security.util;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,17 +46,17 @@ public class SecurityUtils {
         return null;
     }
 
-    public static String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && !bearerToken.isEmpty() && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
-        }
-        String token = request.getParameter("access_token");
-        if (token != null && !token.isEmpty()) {
-            return token;
-        }
-        return null;
-    }
+    /// public static String resolveToken(HttpServletRequest request) {
+    /// String bearerToken = request.getHeader("Authorization");
+    /// if (bearerToken != null && !bearerToken.isEmpty() && bearerToken.startsWith("Bearer")) {
+    /// return bearerToken.substring(7);
+    /// }
+    /// String token = request.getParameter("access_token");
+    /// if (token != null && !token.isEmpty()) {
+    /// return token;
+    /// }
+    /// return null;
+    /// }
 
     /**
      * 生成BCryptPasswordEncoder密码

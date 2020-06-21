@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
 
+/**
+ * @author 庄金明
+ *
+ */
 @JsonSerialize(using = ZjmzxfzhlAuth2ExceptionSerializer.class)
 public class ZjmzxfzhlAuth2Exception extends OAuth2Exception {
     private static final long serialVersionUID = 1L;

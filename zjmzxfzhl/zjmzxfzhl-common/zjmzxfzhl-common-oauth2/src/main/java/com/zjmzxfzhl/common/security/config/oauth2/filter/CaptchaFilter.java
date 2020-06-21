@@ -22,6 +22,10 @@ import com.zjmzxfzhl.common.core.util.RedisUtil;
 import com.zjmzxfzhl.common.security.config.oauth2.constant.Oauth2Constants;
 import com.zjmzxfzhl.common.security.util.SecurityUtils;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Component
 public class CaptchaFilter extends OncePerRequestFilter {
 

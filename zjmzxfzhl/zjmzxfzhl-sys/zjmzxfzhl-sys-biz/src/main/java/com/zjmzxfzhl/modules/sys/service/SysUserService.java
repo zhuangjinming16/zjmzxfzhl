@@ -48,7 +48,7 @@ public interface SysUserService extends BaseService<SysUser> {
     /**
      * 获取用户信息 ，若用户变更角色，则roleId不能为空,并且将变更后的roleId更新到T_SYS_USER表中
      * 
-     * @param sysUser
+     * @param userId
      * @param roleId
      * @return
      */

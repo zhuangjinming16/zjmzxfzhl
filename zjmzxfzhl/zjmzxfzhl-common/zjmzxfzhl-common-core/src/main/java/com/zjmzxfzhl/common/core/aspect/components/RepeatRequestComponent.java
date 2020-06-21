@@ -16,6 +16,10 @@ import com.zjmzxfzhl.common.core.exception.BaseException;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Slf4j
 @Component
 public class RepeatRequestComponent {
@@ -41,7 +45,9 @@ public class RepeatRequestComponent {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         RepeatRequest repeatRequest = signature.getMethod().getAnnotation((RepeatRequest.class));
         // 未设置注解，且未登录
-        if (repeatRequest == null && (userId == null || userId.length() == 0 || "anonymousUser".equals(userId))) {
+        Boolean canProceed = repeatRequest == null
+                && (userId == null || userId.length() == 0 || "anonymousUser".equals(userId));
+        if (canProceed) {
             return joinPoint.proceed();
         }
         String lockParams = "";

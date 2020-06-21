@@ -23,6 +23,10 @@ import com.zjmzxfzhl.common.security.annotation.AnonymousAccess;
 import com.zjmzxfzhl.common.security.config.AuthenticationEntryPointImpl;
 import com.zjmzxfzhl.common.security.config.oauth2.filter.CaptchaFilter;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)

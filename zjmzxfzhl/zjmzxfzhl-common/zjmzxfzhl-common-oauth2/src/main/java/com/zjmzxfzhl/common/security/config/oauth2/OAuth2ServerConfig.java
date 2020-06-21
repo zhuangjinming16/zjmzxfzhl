@@ -11,6 +11,10 @@ import org.springframework.security.oauth2.provider.code.RandomValueAuthorizatio
 import com.zjmzxfzhl.common.security.config.oauth2.service.RedisAuthorizationCodeServices;
 import com.zjmzxfzhl.common.security.config.oauth2.service.RedisClientDetailsService;
 
+/**
+ * @author 庄金明
+ *
+ */
 @Configuration
 public class OAuth2ServerConfig {
 

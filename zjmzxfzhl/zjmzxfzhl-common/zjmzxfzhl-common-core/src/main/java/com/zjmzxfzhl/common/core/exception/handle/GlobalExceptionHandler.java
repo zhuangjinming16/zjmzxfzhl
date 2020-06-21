@@ -59,17 +59,17 @@ public class GlobalExceptionHandler {
         return Result.error("数据库中已存在该记录");
     }
 
-    // @ExceptionHandler(AuthorizationException.class)
-    // public Result handleAuthorizationException(AuthorizationException e) {
-    // log.error(e.getMessage(), e);
-    // return Result.error("没有权限，请联系管理员授权");
-    // }
+    /// @ExceptionHandler(AuthorizationException.class)
+    /// public Result handleAuthorizationException(AuthorizationException e) {
+    /// log.error(e.getMessage(), e);
+    /// return Result.error("没有权限，请联系管理员授权");
+    /// }
 
-    // @ExceptionHandler(SchedulerException.class)
-    // public Result handleSchedulerException(SchedulerException e) {
-    // log.error(e.getMessage(), e);
-    // return Result.error("处理定时任务失败");
-    // }
+    /// @ExceptionHandler(SchedulerException.class)
+    /// public Result handleSchedulerException(SchedulerException e) {
+    /// log.error(e.getMessage(), e);
+    /// return Result.error("处理定时任务失败");
+    /// }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

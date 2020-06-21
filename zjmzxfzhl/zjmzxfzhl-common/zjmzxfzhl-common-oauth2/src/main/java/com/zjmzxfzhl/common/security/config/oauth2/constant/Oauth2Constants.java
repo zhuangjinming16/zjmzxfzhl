@@ -1,5 +1,9 @@
 package com.zjmzxfzhl.common.security.config.oauth2.constant;
 
+/**
+ * @author 庄金明
+ *
+ */
 public interface Oauth2Constants {
     /**
      * 默认登录URL
