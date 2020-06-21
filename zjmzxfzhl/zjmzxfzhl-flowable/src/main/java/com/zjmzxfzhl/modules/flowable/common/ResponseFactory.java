@@ -25,7 +25,7 @@ import org.flowable.task.api.TaskInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.vo.CommentResponse;
 import com.zjmzxfzhl.modules.flowable.vo.HistoricProcessInstanceResponse;

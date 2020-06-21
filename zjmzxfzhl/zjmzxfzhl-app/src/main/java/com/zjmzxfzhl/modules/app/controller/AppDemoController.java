@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.aspect.annotation.RepeatRequest;
-import com.zjmzxfzhl.common.base.BaseController;
-import com.zjmzxfzhl.modules.app.annotation.WithoutLogin;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.aspect.annotation.RepeatRequest;
+import com.zjmzxfzhl.common.core.base.BaseController;
 import com.zjmzxfzhl.modules.app.form.AppDemo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AppDemoController extends BaseController {
 
-    @WithoutLogin
     @GetMapping("/withoutLogin")
     public Result withoutLogin() {
         return Result.ok("不需要登陆，访问的交易，在Controller的Mapping方法使用@WithoutLogin");
@@ -40,7 +38,6 @@ public class AppDemoController extends BaseController {
      * @return
      */
     @RepeatRequest(waitTime = 2, leaseTime = 5, msg = "等待2秒且5秒后释放")
-    @WithoutLogin
     @GetMapping(value = "/repeatRequest1")
     public Result repeatRequest1() throws Exception {
         Thread.sleep(3000);
@@ -59,7 +56,6 @@ public class AppDemoController extends BaseController {
      * @return
      */
     @RepeatRequest(lockIndexs = { 0, 1 })
-    @WithoutLogin
     @GetMapping(value = "/repeatRequest2")
     public Result repeatRequest2(@RequestParam String deviceSn, @RequestParam String deviceImei) throws Exception {
         Thread.sleep(1000);

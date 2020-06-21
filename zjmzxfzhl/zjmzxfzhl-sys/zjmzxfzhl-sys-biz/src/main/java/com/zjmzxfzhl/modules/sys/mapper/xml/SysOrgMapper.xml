@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysOrgMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysOrg">
+		select
+			o.ORG_ID as orgId,
+			o.ORG_NAME as orgName,
+			o.PARENT_ORG_ID as parentOrgId,
+			o.SHORT_NAME as shortName,
+			o.ORG_TYPE as orgType,
+			o.ORG_LEVEL as orgLevel,
+			o.ORG_LEVEL_CODE as orgLevelCode,
+			o.REMARK as remark,
+			o.IS_LEAF as isLeaf,
+			o.ORG_NAME as parentOrgName
+
+		from T_SYS_ORG o
+		left join T_SYS_ORG po on o.PARENT_ORG_ID = po.ORG_ID
+		where 1=1 
+		<if test="entity.parentOrgId != null and entity.parentOrgId !=''">
+			<![CDATA[	AND o.PARENT_ORG_ID = #{entity.parentOrgId}	]]>
+		</if>
+		{{authFilterSql}}
+		order by o.ORG_LEVEL_CODE
+	</select>
+</mapper>

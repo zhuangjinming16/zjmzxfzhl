@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.exception.BaseException;
-import com.zjmzxfzhl.common.redlock.RedissonDistributedLocker;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.config.redis.redlock.RedissonDistributedLocker;
+import com.zjmzxfzhl.common.core.exception.BaseException;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.demo.service.DemoRedlockService;
 

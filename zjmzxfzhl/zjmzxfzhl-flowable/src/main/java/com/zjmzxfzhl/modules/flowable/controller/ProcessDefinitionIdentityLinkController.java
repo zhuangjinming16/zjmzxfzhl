@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.log.annotation.Log;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.service.ProcessDefinitionService;
 import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
@@ -38,7 +38,7 @@ public class ProcessDefinitionIdentityLinkController extends BaseFlowableControl
         return Result.ok(responseFactory.createIdentityResponseList(identityLinks));
     }
 
-    @SysLogAuto(value = "新增流程定义授权")
+    @Log(value = "新增流程定义授权")
     // @RequiresPermissions("flowable:processDefinitionIdentityLink:save")
     @PostMapping(value = "/save")
     public Result save(@RequestBody IdentityRequest identityRequest) {
@@ -46,7 +46,7 @@ public class ProcessDefinitionIdentityLinkController extends BaseFlowableControl
         return Result.ok();
     }
 
-    @SysLogAuto(value = "删除流程定义授权")
+    @Log(value = "删除流程定义授权")
     // @RequiresPermissions("flowable:processDefinitionIdentityLink:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processDefinitionId, @RequestParam String identityId,

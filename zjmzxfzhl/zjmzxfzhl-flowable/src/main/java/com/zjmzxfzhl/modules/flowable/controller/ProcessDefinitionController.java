@@ -29,10 +29,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.ImmutableMap;
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
-import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.log.annotation.Log;
+import com.zjmzxfzhl.common.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -206,7 +206,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
         }
     }
 
-    @SysLogAuto(value = "删除流程定义")
+    @Log(value = "删除流程定义")
     // // @RequiresPermissions("flowable:processDefinition:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processDefinitionId,
@@ -215,7 +215,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "激活流程定义")
+    @Log(value = "激活流程定义")
     // // @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
     @PutMapping(value = "/activate")
     public Result activate(@RequestBody ProcessDefinitionRequest actionRequest) {
@@ -223,7 +223,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "挂起流程定义")
+    @Log(value = "挂起流程定义")
     // // @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
     @PutMapping(value = "/suspend")
     public Result suspend(@RequestBody ProcessDefinitionRequest actionRequest) {
@@ -237,7 +237,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
      * @param request
      * @return
      */
-    @SysLogAuto(value = "导入流程定义")
+    @Log(value = "导入流程定义")
     // // @RequiresPermissions("flowable:processDefinition:import")
     @PostMapping(value = "/import")
     public Result doImport(@RequestParam(required = false) String tenantId, HttpServletRequest request) {

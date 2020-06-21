@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.log.annotation.Log;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
 import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
@@ -37,7 +37,7 @@ public class TaskIdentityLinkController extends BaseFlowableController {
         return Result.ok(responseFactory.createTaskIdentityResponseList(historicIdentityLinks));
     }
 
-    @SysLogAuto(value = "新增任务授权")
+    @Log(value = "新增任务授权")
     // @RequiresPermissions("flowable:taskIdentityLink:save")
     @PostMapping(value = "/save")
     public Result save(@RequestBody IdentityRequest taskIdentityRequest) {
@@ -45,7 +45,7 @@ public class TaskIdentityLinkController extends BaseFlowableController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "删除任务授权")
+    @Log(value = "删除任务授权")
     // @RequiresPermissions("flowable:taskIdentityLink:delete")
     @DeleteMapping(value = "/delete")
     public Result deleteIdentityLink(@RequestParam String taskId, @RequestParam String identityId,

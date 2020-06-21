@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.base.BaseServiceImpl;
-import com.zjmzxfzhl.common.exception.AppException;
-import com.zjmzxfzhl.common.util.PasswordUtil;
+import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
+import com.zjmzxfzhl.common.core.exception.AppException;
+import com.zjmzxfzhl.common.core.util.PasswordUtil;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.form.AppLoginForm;
 import com.zjmzxfzhl.modules.app.mapper.AppUserMapper;

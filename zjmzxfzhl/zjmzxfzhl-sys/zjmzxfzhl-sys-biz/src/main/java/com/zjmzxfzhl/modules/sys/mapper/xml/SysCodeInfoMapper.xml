@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysCodeInfoMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysCodeInfo">
+		select
+			a.CODE_INFO_ID as codeInfoId,
+			a.CODE_TYPE_ID as codeTypeId,
+			a.VALUE as value,
+			a.CONTENT as content,
+			a.PARENT_VALUE as parentValue,
+			a.SORT_NO as sortNo,
+			a.REMARK as remark,
+			a.IS_OK as isOk
+
+		from T_SYS_CODE_INFO a 
+		where 1=1 
+		<if test="entity.codeTypeId != null and entity.codeTypeId !=''">
+			<![CDATA[	AND a.CODE_TYPE_ID = #{entity.codeTypeId}	]]>
+		</if>
+		<if test="entity.value != null and entity.value !=''">
+			<![CDATA[	AND a.VALUE = #{entity.value}	]]>
+		</if>
+		<if test="entity.content != null and entity.content !=''">
+			<![CDATA[	AND a.CONTENT = #{entity.content}	]]>
+		</if>
+		order by a.SORT_NO
+	</select>
+</mapper>

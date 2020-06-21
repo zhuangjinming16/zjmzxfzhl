@@ -4,8 +4,8 @@ import javax.validation.constraints.NotNull;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.zjmzxfzhl.common.base.BaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
+import com.zjmzxfzhl.common.core.base.BaseEntity;
+import com.zjmzxfzhl.common.core.validator.constraints.LengthForUtf8;
 
 import lombok.Data;
 

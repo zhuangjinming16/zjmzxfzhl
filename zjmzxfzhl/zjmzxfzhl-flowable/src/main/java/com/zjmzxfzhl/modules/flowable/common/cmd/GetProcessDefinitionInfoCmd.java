@@ -12,7 +12,7 @@ import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityManage
 import org.flowable.engine.impl.util.CommandContextUtil;
 import org.flowable.engine.repository.ProcessDefinition;
 
-import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
 
 /**
  * @author 庄金明

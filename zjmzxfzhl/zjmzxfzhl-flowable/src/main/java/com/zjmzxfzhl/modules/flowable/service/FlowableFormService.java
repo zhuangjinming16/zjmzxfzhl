@@ -1,7 +1,7 @@
 package com.zjmzxfzhl.modules.flowable.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.base.BaseService;
+import com.zjmzxfzhl.common.core.base.BaseService;
 import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
 
 /**

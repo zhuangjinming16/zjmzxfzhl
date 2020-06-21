@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zjmzxfzhl</groupId>
+		<artifactId>zjmzxfzhl-sys</artifactId>
+		<version>1.1.5-SNAPSHOT</version>
+	</parent>
+	<artifactId>zjmzxfzhl-sys-biz</artifactId>
+	<description>zjmzxfzhl系统管理业务模块</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-sys-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-common-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-common-log</artifactId>
+		</dependency>
+		
+		<!-- flowable -->
+		<dependency>
+			<groupId>org.flowable</groupId>
+			<artifactId>flowable-idm-spring</artifactId>
+			<exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
+				<exclusion>
+					<groupId>org.mybatis</groupId>
+					<artifactId>mybatis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- 定时任务 -->
+		<!-- <dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.mchange</groupId>
+					<artifactId>c3p0</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency> -->
+	</dependencies>
+</project>

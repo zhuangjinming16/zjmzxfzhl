@@ -45,9 +45,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zjmzxfzhl.common.util.CommonUtil;
-import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.common.cmd.BackUserTaskCmd;

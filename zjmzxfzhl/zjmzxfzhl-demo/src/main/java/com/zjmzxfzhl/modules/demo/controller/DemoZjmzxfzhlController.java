@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.base.BaseController;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.base.BaseController;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.demo.service.DemoZjmzxfzhlService;
 

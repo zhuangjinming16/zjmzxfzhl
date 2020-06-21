@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysDataPermissionMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysDataPermission">
+		select
+			a.DATA_PERMISSION_ID as dataPermissionId,
+			a.DATA_PERMISSION_NAME as dataPermissionName,
+			a.METHOD_ID as methodId,
+			a.ENTITY_TYPE as entityType,
+			a.ENTITY_ID as entityId,
+			a.TABLE_NAME as tableName,
+			a.CLASS_NAME as className,
+			a.COLUMN_NAME as columnName,
+			a.SOURCE_STRATEGY as sourceStrategy,
+			a.OPERATE as operate,
+			a.VALUE as value,
+			a.SOURCE_PROVIDER as sourceProvider,
+			a.SOURCE_PROVIDER_PARAMS as sourceProviderParams
+
+		from T_SYS_DATA_PERMISSION a 
+		where 1=1 
+		<if test="entity.dataPermissionName != null and entity.dataPermissionName !=''">
+			<![CDATA[	AND a.DATA_PERMISSION_NAME = #{entity.dataPermissionName}	]]>
+		</if>
+		<if test="entity.methodId != null and entity.methodId !=''">
+			<![CDATA[	AND a.METHOD_ID = #{entity.methodId}	]]>
+		</if>
+		<if test="entity.entityType != null and entity.entityType !=''">
+			<![CDATA[	AND a.ENTITY_TYPE = #{entity.entityType}	]]>
+		</if>
+		<if test="entity.entityId != null and entity.entityId !=''">
+			<![CDATA[	AND a.ENTITY_ID = #{entity.entityId}	]]>
+		</if>
+		<if test="entity.tableName != null and entity.tableName !=''">
+			<![CDATA[	AND a.TABLE_NAME = #{entity.tableName}	]]>
+		</if>
+		<if test="entity.columnName != null and entity.columnName !=''">
+			<![CDATA[	AND a.COLUMN_NAME = #{entity.columnName}	]]>
+		</if>
+		<if test="entity.sourceStrategy != null and entity.sourceStrategy !=''">
+			<![CDATA[	AND a.SOURCE_STRATEGY = #{entity.sourceStrategy}	]]>
+		</if>
+		order by a.DATA_PERMISSION_ID
+	</select>
+</mapper>

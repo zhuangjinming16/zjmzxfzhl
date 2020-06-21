@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysRolePermissionMapper">
+
+	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysRolePermission">
+		select
+			a.ROLE_PERMISSION_ID as rolePermissionId,
+			a.ROLE_ID as roleId,
+			a.PERMISSION_TYPE as permissionType,
+			a.MENU_OR_FUNC_ID as menuOrFuncId
+
+		from T_SYS_ROLE_PERMISSION a 
+		where 1=1 
+		order by a.ROLE_PERMISSION_ID
+	</select>
+</mapper>

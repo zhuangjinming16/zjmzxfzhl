@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
+import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.modules.monitor.service.RedisService;
 import com.zjmzxfzhl.modules.monitor.vo.RedisInfo;
 

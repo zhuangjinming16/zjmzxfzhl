@@ -2,7 +2,7 @@ package com.zjmzxfzhl.modules.demo.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.zjmzxfzhl.common.aspect.annotation.RedissonLock;
+import com.zjmzxfzhl.common.core.aspect.annotation.RedissonLock;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.demo.service.DemoRedlockService;
 

@@ -5,8 +5,8 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zjmzxfzhl.common.app.base.AppBaseEntity;
-import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;
+import com.zjmzxfzhl.common.core.base.BaseEntity;
+import com.zjmzxfzhl.common.core.validator.constraints.LengthForUtf8;
 
 import lombok.Data;
 
@@ -17,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @TableName("T_APP_USER")
-public class AppUser extends AppBaseEntity {
+public class AppUser extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
-import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.log.annotation.Log;
+import com.zjmzxfzhl.common.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -271,7 +271,7 @@ public class TaskController extends BaseFlowableController {
         return Result.ok(task);
     }
 
-    @SysLogAuto(value = "修改任务")
+    @Log(value = "修改任务")
     // @RequiresPermissions("flowable:task:update")
     @PutMapping(value = "/update")
     public Result update(@RequestBody TaskUpdateRequest taskUpdateRequest) {
@@ -279,7 +279,7 @@ public class TaskController extends BaseFlowableController {
         return Result.ok(task);
     }
 
-    @SysLogAuto(value = "删除任务")
+    @Log(value = "删除任务")
     // @RequiresPermissions("flowable:task:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String taskId) {
@@ -287,42 +287,42 @@ public class TaskController extends BaseFlowableController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "转办任务")
+    @Log(value = "转办任务")
     @PutMapping(value = "/assign")
     public Result assign(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.assignTask(taskRequest);
         return Result.ok();
     }
 
-    @SysLogAuto(value = "委派任务")
+    @Log(value = "委派任务")
     @PutMapping(value = "/delegate")
     public Result delegate(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.delegateTask(taskRequest);
         return Result.ok();
     }
 
-    @SysLogAuto(value = "认领任务")
+    @Log(value = "认领任务")
     @PutMapping(value = "/claim")
     public Result claim(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.claimTask(taskRequest);
         return Result.ok();
     }
 
-    @SysLogAuto(value = "取消认领任务")
+    @Log(value = "取消认领任务")
     @PutMapping(value = "/unclaim")
     public Result unclaim(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.unclaimTask(taskRequest);
         return Result.ok();
     }
 
-    @SysLogAuto(value = "完成任务")
+    @Log(value = "完成任务")
     @PutMapping(value = "/complete")
     public Result complete(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.completeTask(taskRequest);
         return Result.ok();
     }
 
-    @SysLogAuto(value = "结束流程实例")
+    @Log(value = "结束流程实例")
     @PutMapping(value = "/stopProcessInstance")
     public Result stopProcessInstance(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.stopProcessInstance(taskRequest);
@@ -370,7 +370,7 @@ public class TaskController extends BaseFlowableController {
         return Result.ok(datas);
     }
 
-    @SysLogAuto(value = "退户任务")
+    @Log(value = "退户任务")
     @PutMapping(value = "/back")
     public Result back(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.backTask(taskRequest);

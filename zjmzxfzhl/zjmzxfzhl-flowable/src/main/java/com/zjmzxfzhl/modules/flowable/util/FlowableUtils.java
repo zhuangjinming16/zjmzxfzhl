@@ -33,8 +33,9 @@ import org.flowable.idm.api.User;
 import org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl;
 
 import com.google.common.collect.Sets;
-import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
 /**
@@ -44,7 +45,7 @@ import com.zjmzxfzhl.modules.sys.entity.SysUser;
 public class FlowableUtils {
 
     public static User getFlowableUser() {
-        SysUser sysUser = SecurityUtils.getSysUser();
+        SysUser sysUser = ((SysSecurityUser) SecurityUtils.getUserDetails()).getSysUser();
         User currentUser = new UserEntityImpl();
         currentUser.setId(sysUser.getUserId());
         currentUser.setFirstName(sysUser.getUserName());

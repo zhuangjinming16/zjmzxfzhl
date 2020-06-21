@@ -3,7 +3,7 @@ package com.zjmzxfzhl.modules.flowable.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.base.BaseServiceImpl;
+import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
 import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
 import com.zjmzxfzhl.modules.flowable.mapper.FlowableFormMapper;
 import com.zjmzxfzhl.modules.flowable.service.FlowableFormService;

@@ -17,7 +17,7 @@
 		<!-- zjmzxfzhl -->
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-common</artifactId>
+			<artifactId>zjmzxfzhl-common-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>

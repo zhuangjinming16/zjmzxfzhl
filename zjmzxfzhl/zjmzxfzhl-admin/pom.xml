@@ -18,12 +18,44 @@
 		<!-- zjmzxfzhl -->
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-common</artifactId>
+			<artifactId>zjmzxfzhl-common-core</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-framework</artifactId>
+			<artifactId>zjmzxfzhl-common-log</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-common-security</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-common-mybatis</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-common-oauth2</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-sys-api</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-sys-biz</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-job</artifactId>
+		</dependency>
+			
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
 			<artifactId>zjmzxfzhl-monitor</artifactId>

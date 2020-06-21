@@ -20,14 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zjmzxfzhl.common.util.CommonUtil;
-import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
+import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
 /**
@@ -81,7 +82,7 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         } else if (processDefinitionId.length() != 0 && processDefinitionKey.length() != 0) {
             throw new FlowableException("request param both processDefinitionId and processDefinitionKey is found");
         }
-        SysUser user = SecurityUtils.getSysUser();
+        SysUser user = ((SysSecurityUser) SecurityUtils.getUserDetails()).getSysUser();
         String userId = user.getUserId();
 
         ProcessDefinition definition = permissionService.validateReadPermissionOnProcessDefinition(userId,

@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
-import com.zjmzxfzhl.common.util.CommonUtil;
-import com.zjmzxfzhl.common.util.ObjectUtils;
-import com.zjmzxfzhl.framework.config.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.log.annotation.Log;
+import com.zjmzxfzhl.common.security.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -155,7 +155,7 @@ public class ProcessInstanceController extends BaseFlowableController {
         return Result.ok(pidr);
     }
 
-    @SysLogAuto(value = "启动流程实例")
+    @Log(value = "启动流程实例")
     @PostMapping(value = "/start")
     @Transactional(rollbackFor = Exception.class)
     public Result start(@RequestBody ProcessInstanceRequest processInstanceRequest) {
@@ -163,7 +163,7 @@ public class ProcessInstanceController extends BaseFlowableController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "删除流程实例")
+    @Log(value = "删除流程实例")
     // @RequiresPermissions("flowable:processInstance:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processInstanceId, @RequestParam(required = false) boolean cascade,
@@ -172,7 +172,7 @@ public class ProcessInstanceController extends BaseFlowableController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "挂起流程实例")
+    @Log(value = "挂起流程实例")
     // @RequiresPermissions("flowable:processInstance:suspendOrActivate")
     @PutMapping(value = "/suspend")
     public Result suspend(@RequestBody ProcessInstanceRequest processInstanceRequest) {
@@ -180,7 +180,7 @@ public class ProcessInstanceController extends BaseFlowableController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "激活流程实例")
+    @Log(value = "激活流程实例")
     // @RequiresPermissions("flowable:processInstance:suspendOrActivate")
     @PutMapping(value = "/activate")
     public Result activate(@RequestBody ProcessInstanceRequest processInstanceRequest) {

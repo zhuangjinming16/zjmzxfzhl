@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.base.BaseController;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.base.BaseController;
 
 /**
  * 开发示例Controller

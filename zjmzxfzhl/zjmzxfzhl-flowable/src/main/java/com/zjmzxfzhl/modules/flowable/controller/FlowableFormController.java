@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.aspect.annotation.SysLogAuto;
-import com.zjmzxfzhl.common.base.BaseController;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.base.BaseController;
+import com.zjmzxfzhl.common.log.annotation.Log;
 import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
 import com.zjmzxfzhl.modules.flowable.service.FlowableFormService;
 
@@ -60,7 +60,7 @@ public class FlowableFormController extends BaseController {
      * @param flowableForm
      * @return
      */
-    @SysLogAuto(value = "新增流程表单")
+    @Log(value = "新增流程表单")
     // // @RequiresPermissions("flowable:form:save")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody FlowableForm flowableForm) {
@@ -73,7 +73,7 @@ public class FlowableFormController extends BaseController {
      * @param flowableForm
      * @return
      */
-    @SysLogAuto(value = "修改流程表单")
+    @Log(value = "修改流程表单")
     // // @RequiresPermissions("flowable:form:update")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody FlowableForm flowableForm) {
@@ -86,7 +86,7 @@ public class FlowableFormController extends BaseController {
      * @param ids
      * @return
      */
-    @SysLogAuto(value = "删除流程表单")
+    @Log(value = "删除流程表单")
     // // @RequiresPermissions("flowable:form:delete")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {

@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.zjmzxfzhl.codegenerator.util.CodeUtil;
 import com.zjmzxfzhl.codegenerator.util.TableObject;
-import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
 
 /**
  * @author 庄金明

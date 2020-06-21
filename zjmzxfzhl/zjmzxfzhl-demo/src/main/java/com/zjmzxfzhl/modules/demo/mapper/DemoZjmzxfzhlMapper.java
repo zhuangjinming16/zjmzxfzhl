@@ -2,7 +2,7 @@ package com.zjmzxfzhl.modules.demo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.aspect.annotation.DataPermission;
+import com.zjmzxfzhl.common.core.aspect.annotation.DataPermission;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.sys.permission.provider.OrgDataPermissionProvider;
 import org.apache.ibatis.annotations.Param;

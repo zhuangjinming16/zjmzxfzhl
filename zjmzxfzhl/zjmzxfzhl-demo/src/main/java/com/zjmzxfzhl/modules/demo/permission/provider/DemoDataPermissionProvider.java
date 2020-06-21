@@ -1,7 +1,7 @@
 package com.zjmzxfzhl.modules.demo.permission.provider;
 
-import com.zjmzxfzhl.common.permission.provider.AbstractDataPermissionProvider;
-import com.zjmzxfzhl.common.permission.wrapper.PermissionWrapper;
+import com.zjmzxfzhl.common.core.permission.provider.AbstractDataPermissionProvider;
+import com.zjmzxfzhl.common.core.permission.wrapper.PermissionWrapper;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -3,7 +3,7 @@ package com.zjmzxfzhl.modules.demo.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.base.BaseServiceImpl;
+import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.demo.mapper.DemoZjmzxfzhlMapper;
 import com.zjmzxfzhl.modules.demo.service.DemoZjmzxfzhlService;

@@ -17,7 +17,12 @@
 		<!-- zjmzxfzhl -->
 		<dependency>
 			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-framework</artifactId>
+			<artifactId>zjmzxfzhl-common-core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.zjmzxfzhl</groupId>
+			<artifactId>zjmzxfzhl-sys-biz</artifactId>
 		</dependency>
 	</dependencies>
 </project>

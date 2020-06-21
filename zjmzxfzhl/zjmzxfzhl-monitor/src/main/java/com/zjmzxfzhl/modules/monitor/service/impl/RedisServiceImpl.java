@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Service;
 
-import com.zjmzxfzhl.common.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.modules.monitor.service.RedisService;
 import com.zjmzxfzhl.modules.monitor.vo.RedisInfo;
 
