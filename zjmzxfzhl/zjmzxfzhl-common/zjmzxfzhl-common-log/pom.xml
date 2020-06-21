@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.zjmzxfzhl</groupId>
 		<artifactId>zjmzxfzhl-common</artifactId>
-		<version>1.1.5-SNAPSHOT</version>
+		<version>1.1.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>zjmzxfzhl-common-log</artifactId>
 	<packaging>jar</packaging>

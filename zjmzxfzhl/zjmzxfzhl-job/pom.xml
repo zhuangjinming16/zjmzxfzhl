@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.zjmzxfzhl</groupId>
 		<artifactId>zjmzxfzhl</artifactId>
-		<version>1.1.5-SNAPSHOT</version>
+		<version>1.1.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>zjmzxfzhl-job</artifactId>
 	<description>zjmzxfzhl-job定时任务模块</description>

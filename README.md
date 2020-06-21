@@ -1,5 +1,5 @@
 # 项目介绍
-当前最新版本: 1.1.5（发布日期: 2020-05-23）
+当前最新版本: 1.1.6（发布日期: 2020-06-21）
 ## 项目介绍
 zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代码生成器 的快速开发平台，采用前后端分离架构。
 
@@ -7,13 +7,17 @@ gitee: https://gitee.com/zjm16/zjmzxfzhl
 
 github: https://github.com/zhuangjinming16/zjmzxfzhl
 
+`v1.1.6`以后版本使用`spring-security-oauth2`鉴权
+
+若需要使用`shiro`鉴权请移步 https://gitee.com/zjm16/zjmzxfzhl/tree/v1.1.5
+
 ## 技术架构
 ### 后端技术
 
 - Maven、Jdk8
 - Mysql8.0,oracle,db2
 - Spring-boot2.1.3
-- Shiro1.4.0-RC2 
+- spring-security-oauth2-2.3.6.RELEASE 
 - Flowable6.4.1
 - Java-jwt3.4.1
 - Mybatis-Plus3.3.1.tmp
