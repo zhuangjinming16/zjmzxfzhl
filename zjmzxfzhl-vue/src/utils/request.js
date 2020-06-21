@@ -52,7 +52,7 @@ service.interceptors.response.use(
     },
     error => {
         Loading.service().close();
-        const message = (error.response && error.response.data && error.response.data.message) || error.message
+        const message = (error.response && error.response.data && (error.response.data.msg || error.response.data.message)) || error.message
         console.log('err' + error) // for debug
         Message.error(message)
         return Promise.reject(error)
