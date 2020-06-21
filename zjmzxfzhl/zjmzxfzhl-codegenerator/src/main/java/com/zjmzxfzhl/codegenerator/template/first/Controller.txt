@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zjmzxfzhl.common.Result;
-import com.zjmzxfzhl.common.base.BaseController;
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.base.BaseController;
 import com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType};
 import com.zjmzxfzhl.modules.{_sys}.service.{_Sys}{_CodeType}Service;
 
@@ -41,14 +41,14 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("{_sys}:{_codeType}:list")
+    @PreAuthorize("@elp.single('{_sys}:{_codeType}:list')")
     @GetMapping(value = "/list")
     public Result list({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<{_Sys}{_CodeType}>(current, size), {_sys}{_CodeType});
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("{_sys}:{_codeType}:list")
+    @PreAuthorize("@elp.single('{_sys}:{_codeType}:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         {_Sys}{_CodeType} {_sys}{_CodeType} = {_sys}{_CodeType}Service.getById(id);
@@ -60,7 +60,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param {_sys}{_CodeType}
      * @return
      */
-    // @RequiresPermissions("{_sys}:{_codeType}:save")
+    @PreAuthorize("@elp.single('{_sys}:{_codeType}:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.save({_sys}{_CodeType});
@@ -72,7 +72,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param {_sys}{_CodeType}
      * @return
      */
-    // @RequiresPermissions("{_sys}:{_codeType}:update")
+    @PreAuthorize("@elp.single('{_sys}:{_codeType}:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.updateById({_sys}{_CodeType});
@@ -84,7 +84,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      * @param ids
      * @return
      */
-    // @RequiresPermissions("{_sys}:{_codeType}:delete")
+    @PreAuthorize("@elp.single('{_sys}:{_codeType}:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

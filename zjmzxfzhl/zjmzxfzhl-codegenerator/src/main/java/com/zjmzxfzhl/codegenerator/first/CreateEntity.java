@@ -60,10 +60,10 @@ public class CreateEntity {
                     "import com.baomidou.mybatisplus.annotation.TableId;\r\n");
             importHashMap.put("import com.baomidou.mybatisplus.annotation.TableName;\r\n",
                     "import com.baomidou.mybatisplus.annotation.TableName;\r\n");
-            importHashMap.put("import com.zjmzxfzhl.common.base.BaseEntity;\r\n",
-                    "import com.zjmzxfzhl.common.base.BaseEntity;\\r\\n");
-            importHashMap.put("import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;\r\n",
-                    "import com.zjmzxfzhl.common.validator.constraints.LengthForUtf8;\r\n");
+            importHashMap.put("import com.zjmzxfzhl.common.core.base.BaseEntity;\r\n",
+                    "import com.zjmzxfzhl.common.core.base.BaseEntity;\\r\\n");
+            importHashMap.put("import com.zjmzxfzhl.common.core.validator.constraints.LengthForUtf8;\r\n",
+                    "import com.zjmzxfzhl.common.core.validator.constraints.LengthForUtf8;\r\n");
             importHashMap.put("import lombok.Data;\r\n", "import lombok.Data;\r\n");
 
             processingList(aSysCodeType, tableName, list, stringBufferHead2, stringBufferMid, stringBufferFoot,
