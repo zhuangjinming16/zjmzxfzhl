@@ -10,8 +10,7 @@
 		<version>1.1.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>zjmzxfzhl-monitor</artifactId>
-	<version>${project.parent.version}</version>
-	<name>zjmzxfzhl-monitor</name>
+	<description>zjmzxfzhl-monitor系统监控模块</description>
 
 	<dependencies>
 		<!-- zjmzxfzhl -->

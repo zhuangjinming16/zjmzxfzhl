@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>zjmzxfzhl-codegenerator</artifactId>
 	<version>${project.parent.version}</version>
-	<name>zjmzxfzhl-codegenerator</name>
+	<description>zjmzxfzhl代码生成模块</description>
 
 	<dependencies>
 		<!-- zjmzxfzhl -->

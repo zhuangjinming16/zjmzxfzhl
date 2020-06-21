@@ -10,7 +10,7 @@
   <artifactId>zjmzxfzhl-common-oauth2</artifactId>
   <packaging>jar</packaging>
 
-  <description>zjmzxfzhl oauth2工具类</description>
+  <description>zjmzxfzhl-oauth2配置</description>
   
   <dependencies>
 		<!--工具类核心包-->

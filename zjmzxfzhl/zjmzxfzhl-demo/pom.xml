@@ -10,8 +10,8 @@
 		<version>1.1.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>zjmzxfzhl-demo</artifactId>
-	<version>${project.parent.version}</version>
 	<name>zjmzxfzhl-demo</name>
+	<description>zjmzxfzhl-demo示例模块</description>
 
 	<dependencies>
 		<!-- zjmzxfzhl -->

@@ -11,8 +11,7 @@
 	</parent>
 	<artifactId>zjmzxfzhl-common-security</artifactId>
 	<packaging>jar</packaging>
-
-	<description>zjmzxfzhl 安全工具类</description>
+	<description>zjmzxfzhl-security配置</description>
 
 	<dependencies>
 		<!--工具类核心包 -->

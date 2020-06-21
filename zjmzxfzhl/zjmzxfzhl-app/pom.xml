@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>zjmzxfzhl-app</artifactId>
 	<version>${project.parent.version}</version>
-	<name>zjmzxfzhl-app</name>
+	<description>zjmzxfzhl-appDemo模块</description>
 
 	<dependencies>
 		<!-- zjmzxfzhl -->

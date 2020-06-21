@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>zjmzxfzhl-common-mybatis</artifactId>
 	<packaging>jar</packaging>
-	<description>zjmzxfzhl</description>
+	<description>zjmzxfzhl-mybatis配置</description>
 
 	<dependencies>
 		<dependency>

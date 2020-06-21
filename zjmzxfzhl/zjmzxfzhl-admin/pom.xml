@@ -12,6 +12,7 @@
 	<artifactId>zjmzxfzhl-admin</artifactId>
 	<version>${project.parent.version}</version>
 	<name>zjmzxfzhl-admin</name>
+	<description>zjmzxfzhl-admin模块</description>
 	<packaging>jar</packaging>
 
 	<dependencies>
