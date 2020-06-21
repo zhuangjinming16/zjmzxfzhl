@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,14 +42,14 @@ public class FlowableFormController extends BaseController {
      * @param size
      * @return
      */
-    // // @RequiresPermissions("flowable:form:list")
+    @PreAuthorize("@elp.single('flowable:form:list')")
     @GetMapping(value = "/list")
     public Result list(FlowableForm flowableForm, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<FlowableForm> pageList = flowableFormService.list(new Page<FlowableForm>(current, size), flowableForm);
         return Result.ok(pageList);
     }
 
-    // // @RequiresPermissions("flowable:form:list")
+    @PreAuthorize("@elp.single('flowable:form:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         FlowableForm flowableForm = flowableFormService.getById(id);
@@ -61,7 +62,7 @@ public class FlowableFormController extends BaseController {
      * @return
      */
     @Log(value = "新增流程表单")
-    // // @RequiresPermissions("flowable:form:save")
+    @PreAuthorize("@elp.single('flowable:form:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody FlowableForm flowableForm) {
         flowableFormService.save(flowableForm);
@@ -74,7 +75,7 @@ public class FlowableFormController extends BaseController {
      * @return
      */
     @Log(value = "修改流程表单")
-    // // @RequiresPermissions("flowable:form:update")
+    @PreAuthorize("@elp.single('flowable:form:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody FlowableForm flowableForm) {
         flowableFormService.updateById(flowableForm);
@@ -87,7 +88,7 @@ public class FlowableFormController extends BaseController {
      * @return
      */
     @Log(value = "删除流程表单")
-    // // @RequiresPermissions("flowable:form:delete")
+    @PreAuthorize("@elp.single('flowable:form:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

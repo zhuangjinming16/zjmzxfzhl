@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,14 +41,14 @@ public class SysPostUserController extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("sys:postUser:list")
+    @PreAuthorize("@elp.single('sys:postUser:list')")
     @GetMapping(value = "/list")
     public Result list(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysPostUser> pageList = sysPostUserService.list(new Page<SysPostUser>(current, size), sysPostUser);
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("sys:postUser:list")
+    @PreAuthorize("@elp.single('sys:postUser:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysPostUser sysPostUser = sysPostUserService.getById(id);
@@ -59,7 +60,7 @@ public class SysPostUserController extends BaseController {
      * @param sysPostUser
      * @return
      */
-    // @RequiresPermissions("sys:postUser:save")
+    @PreAuthorize("@elp.single('sys:postUser:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.save(sysPostUser);
@@ -71,7 +72,7 @@ public class SysPostUserController extends BaseController {
      * @param sysPostUser
      * @return
      */
-    // @RequiresPermissions("sys:postUser:update")
+    @PreAuthorize("@elp.single('sys:postUser:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.updateById(sysPostUser);
@@ -83,7 +84,7 @@ public class SysPostUserController extends BaseController {
      * @param ids
      * @return
      */
-    // @RequiresPermissions("sys:postUser:delete")
+    @PreAuthorize("@elp.single('sys:postUser:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

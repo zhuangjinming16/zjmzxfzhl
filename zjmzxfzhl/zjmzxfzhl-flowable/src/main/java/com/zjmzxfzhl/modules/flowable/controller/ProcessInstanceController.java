@@ -13,6 +13,7 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Comment;
 import org.flowable.variable.api.history.HistoricVariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +64,7 @@ public class ProcessInstanceController extends BaseFlowableController {
         allowedSortProperties.put(FlowableConstant.TENANT_ID, HistoricProcessInstanceQueryProperty.TENANT_ID);
     }
 
-    // @RequiresPermissions("flowable:processInstance:list")
+    @PreAuthorize("@elp.single('flowable:processInstance:list')")
     @GetMapping(value = "/list")
     public Result list(@RequestParam Map<String, String> requestParams) {
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
@@ -164,7 +165,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     }
 
     @Log(value = "删除流程实例")
-    // @RequiresPermissions("flowable:processInstance:delete")
+    @PreAuthorize("@elp.single('flowable:processInstance:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processInstanceId, @RequestParam(required = false) boolean cascade,
             @RequestParam(required = false) String deleteReason) {
@@ -173,7 +174,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     }
 
     @Log(value = "挂起流程实例")
-    // @RequiresPermissions("flowable:processInstance:suspendOrActivate")
+    @PreAuthorize("@elp.single('flowable:processInstance:suspendOrActivate')")
     @PutMapping(value = "/suspend")
     public Result suspend(@RequestBody ProcessInstanceRequest processInstanceRequest) {
         processInstanceService.suspend(processInstanceRequest.getProcessInstanceId());
@@ -181,7 +182,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     }
 
     @Log(value = "激活流程实例")
-    // @RequiresPermissions("flowable:processInstance:suspendOrActivate")
+    @PreAuthorize("@elp.single('flowable:processInstance:suspendOrActivate')")
     @PutMapping(value = "/activate")
     public Result activate(@RequestBody ProcessInstanceRequest processInstanceRequest) {
         processInstanceService.activate(processInstanceRequest.getProcessInstanceId());

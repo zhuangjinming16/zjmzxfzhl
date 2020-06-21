@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +42,7 @@ public class SysDataPermissionController extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("sys:dataPermission:list")
+    @PreAuthorize("@elp.single('sys:dataPermission:list')")
     @GetMapping(value = "/list")
     public Result list(SysDataPermission sysDataPermission, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysDataPermission> pageList = sysDataPermissionService.list(new Page<SysDataPermission>(current, size),
@@ -49,7 +50,7 @@ public class SysDataPermissionController extends BaseController {
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("sys:dataPermission:list")
+    @PreAuthorize("@elp.single('sys:dataPermission:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysDataPermission sysDataPermission = sysDataPermissionService.getById(id);
@@ -62,7 +63,7 @@ public class SysDataPermissionController extends BaseController {
      * @return
      */
     @Log(value = "新增数据权限")
-    // @RequiresPermissions("sys:dataPermission:save")
+    @PreAuthorize("@elp.single('sys:dataPermission:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysDataPermission sysDataPermission) {
         sysDataPermissionService.save(sysDataPermission);
@@ -75,7 +76,7 @@ public class SysDataPermissionController extends BaseController {
      * @return
      */
     @Log(value = "修改数据权限")
-    // @RequiresPermissions("sys:dataPermission:update")
+    @PreAuthorize("@elp.single('sys:dataPermission:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysDataPermission sysDataPermission) {
         sysDataPermissionService.updateById(sysDataPermission);
@@ -88,7 +89,7 @@ public class SysDataPermissionController extends BaseController {
      * @return
      */
     @Log(value = "删除数据权限")
-    // @RequiresPermissions("sys:dataPermission:delete")
+    @PreAuthorize("@elp.single('sys:dataPermission:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

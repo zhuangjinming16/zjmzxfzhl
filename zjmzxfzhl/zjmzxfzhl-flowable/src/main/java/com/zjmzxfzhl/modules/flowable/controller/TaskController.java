@@ -13,6 +13,7 @@ import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.flowable.task.service.impl.HistoricTaskInstanceQueryProperty;
 import org.flowable.task.service.impl.TaskQueryProperty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -237,7 +238,7 @@ public class TaskController extends BaseFlowableController {
         return query;
     }
 
-    // @RequiresPermissions("flowable:task:list")
+    @PreAuthorize("@elp.single('flowable:task:list')")
     @GetMapping(value = "/list")
     public Result list(@RequestParam Map<String, String> requestParams) {
         HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(requestParams);
@@ -272,7 +273,7 @@ public class TaskController extends BaseFlowableController {
     }
 
     @Log(value = "修改任务")
-    // @RequiresPermissions("flowable:task:update")
+    @PreAuthorize("@elp.single('flowable:task:update')")
     @PutMapping(value = "/update")
     public Result update(@RequestBody TaskUpdateRequest taskUpdateRequest) {
         TaskResponse task = flowableTaskService.updateTask(taskUpdateRequest);
@@ -280,7 +281,7 @@ public class TaskController extends BaseFlowableController {
     }
 
     @Log(value = "删除任务")
-    // @RequiresPermissions("flowable:task:delete")
+    @PreAuthorize("@elp.single('flowable:task:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String taskId) {
         flowableTaskService.deleteTask(taskId);

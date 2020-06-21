@@ -3,6 +3,7 @@ package com.zjmzxfzhl.modules.sys.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,14 +40,14 @@ public class SysCodeTypeController extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("sys:codeType:list")
+    @PreAuthorize("@elp.single('sys:codeType:list')")
     @GetMapping(value = "/list")
     public Result list(SysCodeType sysCodeType, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysCodeType> pageList = sysCodeTypeService.list(new Page<SysCodeType>(current, size), sysCodeType);
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("sys:codeType:list")
+    @PreAuthorize("@elp.single('sys:codeType:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysCodeType sysCodeType = sysCodeTypeService.getById(id);
@@ -59,7 +60,7 @@ public class SysCodeTypeController extends BaseController {
      * @return
      */
     @Log(value = "新增代码类别")
-    // @RequiresPermissions("sys:codeType:save")
+    @PreAuthorize("@elp.single('sys:codeType:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.save(sysCodeType);
@@ -72,7 +73,7 @@ public class SysCodeTypeController extends BaseController {
      * @return
      */
     @Log(value = "修改代码类别")
-    // @RequiresPermissions("sys:codeType:update")
+    @PreAuthorize("@elp.single('sys:codeType:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.updateById(sysCodeType);
@@ -85,7 +86,7 @@ public class SysCodeTypeController extends BaseController {
      * @return
      */
     @Log(value = "删除代码类别")
-    // @RequiresPermissions("sys:codeType:delete")
+    @PreAuthorize("@elp.single('sys:codeType:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         sysCodeTypeService.deleteSysCodeType(ids);

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +49,7 @@ public class SysUserController extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("sys:user:list")
+    @PreAuthorize("@elp.single('sys:user:list')")
     @GetMapping(value = "/list")
     public Result list(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysUser> pageList = sysUserService.list(new Page<SysUser>(current, size), sysUser);
@@ -72,7 +73,7 @@ public class SysUserController extends BaseController {
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("sys:user:list")
+    @PreAuthorize("@elp.single('sys:user:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysUser sysUser = sysUserService.getById(id);
@@ -85,7 +86,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @Log(value = "新增用户")
-    // @RequiresPermissions("sys:user:save")
+    @PreAuthorize("@elp.single('sys:user:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysUser sysUser) {
         sysUserService.saveSysUser(sysUser);
@@ -98,7 +99,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @Log(value = "修改用户")
-    // @RequiresPermissions("sys:user:update")
+    @PreAuthorize("@elp.single('sys:user:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysUser sysUser) {
         sysUserService.updateSysUser(sysUser);
@@ -111,7 +112,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @Log(value = "删除用户")
-    // @RequiresPermissions("sys:user:delete")
+    @PreAuthorize("@elp.single('sys:user:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         sysUserService.delete(ids);
@@ -142,7 +143,7 @@ public class SysUserController extends BaseController {
     }
 
     @Log(value = "导出用户信息")
-    // @RequiresPermissions("sys:user:export")
+    @PreAuthorize("@elp.single('sys:user:export')")
     @GetMapping(value = "/export")
     public void export(SysUser sysUser, HttpServletResponse response) throws IOException {
         try {

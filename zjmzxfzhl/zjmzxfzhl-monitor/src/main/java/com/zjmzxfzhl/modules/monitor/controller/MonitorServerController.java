@@ -1,5 +1,6 @@
 package com.zjmzxfzhl.modules.monitor.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import com.zjmzxfzhl.common.core.server.Server;
 @RestController
 @RequestMapping("/monitor/server")
 public class MonitorServerController extends BaseController {
-    // @RequiresPermissions("monitor:server:getServerInfo")
+    @PreAuthorize("@elp.single('monitor:server:getServerInfo')")
     @GetMapping(value = "/getServerInfo")
     public Result getServerInfo() throws Exception {
         Server server = new Server();

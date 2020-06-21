@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,14 +40,14 @@ public class SysJobController extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("sys:job:list")
+    @PreAuthorize("@elp.single('sys:job:list')")
     @GetMapping(value = "/list")
     public Result list(SysJob sysJob, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysJob> pageList = sysJobService.list(new Page<SysJob>(current, size), sysJob);
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("sys:job:list")
+    @PreAuthorize("@elp.single('sys:job:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysJob sysJob = sysJobService.getById(id);
@@ -60,7 +61,7 @@ public class SysJobController extends BaseController {
      * @throws JobException
      * @throws SchedulerException
      */
-    // @RequiresPermissions("sys:job:save")
+    @PreAuthorize("@elp.single('sys:job:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.saveJob(sysJob);
@@ -72,7 +73,7 @@ public class SysJobController extends BaseController {
      * @param sysJob
      * @return
      */
-    // @RequiresPermissions("sys:job:update")
+    @PreAuthorize("@elp.single('sys:job:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.updateJob(sysJob);
@@ -85,21 +86,21 @@ public class SysJobController extends BaseController {
      * @return
      * @throws SchedulerException
      */
-    // @RequiresPermissions("sys:job:delete")
+    @PreAuthorize("@elp.single('sys:job:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) throws SchedulerException {
         sysJobService.delete(ids);
         return Result.ok();
     }
 
-    // @RequiresPermissions("sys:job:changeStatus")
+    @PreAuthorize("@elp.single('sys:job:changeStatus')")
     @PutMapping("/changeStatus")
     public Result changeStatus(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.changeStatus(sysJob.getJobId());
         return Result.ok();
     }
 
-    // @RequiresPermissions("sys:job:run")
+    @PreAuthorize("@elp.single('sys:job:run')")
     @PutMapping("/run")
     public Result run(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.run(sysJob.getJobId());

@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,14 +43,14 @@ public class SysCodeInfoController extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("sys:codeInfo:list")
+    @PreAuthorize("@elp.single('sys:codeInfo:list')")
     @GetMapping(value = "/list")
     public Result list(SysCodeInfo sysCodeInfo, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysCodeInfo> pageList = sysCodeInfoService.list(new Page<SysCodeInfo>(current, size), sysCodeInfo);
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("sys:codeInfo:list")
+    @PreAuthorize("@elp.single('sys:codeInfo:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysCodeInfo sysCodeInfo = sysCodeInfoService.getById(id);
@@ -62,7 +63,7 @@ public class SysCodeInfoController extends BaseController {
      * @return
      */
     @Log(value = "新增代码信息")
-    // @RequiresPermissions("sys:codeInfo:save")
+    @PreAuthorize("@elp.single('sys:codeInfo:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.saveSysCodeInfo(sysCodeInfo);
@@ -75,7 +76,7 @@ public class SysCodeInfoController extends BaseController {
      * @return
      */
     @Log(value = "修改代码信息")
-    // @RequiresPermissions("sys:codeInfo:update")
+    @PreAuthorize("@elp.single('sys:codeInfo:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.updateSysCodeInfo(sysCodeInfo);
@@ -88,7 +89,7 @@ public class SysCodeInfoController extends BaseController {
      * @return
      */
     @Log(value = "删除代码信息")
-    // @RequiresPermissions("sys:codeInfo:delete")
+    @PreAuthorize("@elp.single('sys:codeInfo:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         sysCodeInfoService.deleteSysCodeInfo(ids);

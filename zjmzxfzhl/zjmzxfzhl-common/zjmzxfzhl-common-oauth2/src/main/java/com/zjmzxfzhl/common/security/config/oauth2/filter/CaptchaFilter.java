@@ -34,13 +34,13 @@ public class CaptchaFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        Authentication authentication = SecurityUtils.getAuthentication();
-        String clientId = authentication != null ? authentication.getName() : null;
         // 只处理登录请求和需要验证码验证的client_id
-        Boolean captchaVerifiable = clientId != null && clients.contains(clientId)
-                && StringUtils.containsIgnoreCase(request.getServletPath(), Oauth2Constants.OAUTH_TOKEN_URL);
-        if (captchaVerifiable) {
-            validateCaptcha(request);
+        if (StringUtils.containsIgnoreCase(request.getServletPath(), Oauth2Constants.OAUTH_TOKEN_URL)) {
+            Authentication authentication = SecurityUtils.getAuthentication();
+            String clientId = authentication != null ? authentication.getName() : null;
+            if (clientId != null && clients.contains(clientId)) {
+                validateCaptcha(request);
+            }
         }
         filterChain.doFilter(request, response);
     }

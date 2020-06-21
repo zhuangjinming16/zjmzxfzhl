@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +41,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param size
      * @return
      */
-    // // @RequiresPermissions("demo:zjmzxfzhl:list")
+    @PreAuthorize("@elp.single('demo:zjmzxfzhl:list')")
     @GetMapping(value = "/list")
     public Result list(DemoZjmzxfzhl demoZjmzxfzhl, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<DemoZjmzxfzhl> pageList = demoZjmzxfzhlService.list(new Page<DemoZjmzxfzhl>(current, size),
@@ -64,7 +65,7 @@ public class DemoZjmzxfzhlController extends BaseController {
         return Result.ok(pageList);
     }
 
-    // // @RequiresPermissions("demo:zjmzxfzhl:list")
+    @PreAuthorize("@elp.single('demo:zjmzxfzhl:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         DemoZjmzxfzhl demoZjmzxfzhl = demoZjmzxfzhlService.getById(id);
@@ -76,7 +77,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param demoZjmzxfzhl
      * @return
      */
-    // // @RequiresPermissions("demo:zjmzxfzhl:save")
+    @PreAuthorize("@elp.single('demo:zjmzxfzhl:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
         demoZjmzxfzhlService.save(demoZjmzxfzhl);
@@ -88,7 +89,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param demoZjmzxfzhl
      * @return
      */
-    // // @RequiresPermissions("demo:zjmzxfzhl:update")
+    @PreAuthorize("@elp.single('demo:zjmzxfzhl:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody DemoZjmzxfzhl demoZjmzxfzhl) {
         demoZjmzxfzhlService.updateById(demoZjmzxfzhl);
@@ -100,7 +101,7 @@ public class DemoZjmzxfzhlController extends BaseController {
      * @param ids
      * @return
      */
-    // // @RequiresPermissions("demo:zjmzxfzhl:delete")
+    @PreAuthorize("@elp.single('demo:zjmzxfzhl:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

@@ -40,7 +40,6 @@ public class SysConfigController extends BaseController {
      * @param size
      * @return
      */
-    // @RequiresPermissions("sys:config:list")
     @PreAuthorize("@elp.single('sys:config:list')")
     @GetMapping(value = "/list")
     public Result list(SysConfig sysConfig, @RequestParam Integer current, @RequestParam Integer size) {
@@ -48,7 +47,7 @@ public class SysConfigController extends BaseController {
         return Result.ok(pageList);
     }
 
-    // @RequiresPermissions("sys:config:list")
+    @PreAuthorize("@elp.single('sys:config:list')")
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String id) {
         SysConfig sysConfig = sysConfigService.getById(id);
@@ -61,7 +60,6 @@ public class SysConfigController extends BaseController {
      * @return
      */
     @Log(value = "新增系统参数")
-    // @RequiresPermissions("sys:config:save")
     @PreAuthorize("@elp.single('sys:config:save')")
     @PostMapping(value = "/save")
     public Result save(@Valid @RequestBody SysConfig sysConfig) {
@@ -75,8 +73,7 @@ public class SysConfigController extends BaseController {
      * @return
      */
     @Log(value = "修改系统参数")
-    // @RequiresPermissions("sys:config:update")
-    @PreAuthorize("@elp.or('sys:config:list,sys:config:update1')")
+    @PreAuthorize("@elp.single('sys:config:update')")
     @PutMapping(value = "/update")
     public Result update(@Valid @RequestBody SysConfig sysConfig) {
         sysConfigService.updateSysConfig(sysConfig);
@@ -89,8 +86,7 @@ public class SysConfigController extends BaseController {
      * @return
      */
     @Log(value = "删除系统参数")
-    // @RequiresPermissions("sys:config:delete")
-    @PreAuthorize("@elp.and('sys:config:list,sys:config:delete1')")
+    @PreAuthorize("@elp.single('sys:config:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String ids) {
         sysConfigService.deleteSysConfig(ids);

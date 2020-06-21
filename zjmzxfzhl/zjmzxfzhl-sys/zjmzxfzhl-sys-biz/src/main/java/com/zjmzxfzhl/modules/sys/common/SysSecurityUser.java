@@ -32,8 +32,6 @@ public class SysSecurityUser extends SecurityUser {
     private List<SysRole> sysRoles;
     @Getter
     private List<Route> routes;
-    // @Getter
-    // private List<String> permissions;
     @Getter
     private Date loginTime;
     @Getter
@@ -49,7 +47,6 @@ public class SysSecurityUser extends SecurityUser {
         this.sysRole = sysRole;
         this.sysRoles = sysRoles;
         this.routes = routes;
-        // this.permissions = permissions;
         this.loginTime = loginTime;
         this.ipAddr = ipAddr;
     }

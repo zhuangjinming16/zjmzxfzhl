@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,7 +67,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
                 ProcessDefinitionQueryProperty.PROCESS_DEFINITION_TENANT_ID);
     }
 
-    // // @RequiresPermissions("flowable:processDefinition:list")
+    @PreAuthorize("@elp.single('flowable:processDefinition:list')")
     @GetMapping(value = "/list")
     public Result list(@RequestParam Map<String, String> requestParams) {
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery();
@@ -127,8 +128,6 @@ public class ProcessDefinitionController extends BaseFlowableController {
         return Result.ok(page);
     }
 
-    // // @RequiresPermissions(value = { "flowable:processDefinition:list",
-    // "flowable:processDefinition:listMyself" }, logical = Logical.OR)
     @GetMapping(value = "/queryById")
     public Result queryById(@RequestParam String processDefinitionId) {
         permissionService.validateReadPermissionOnProcessDefinition(SecurityUtils.getUserId(), processDefinitionId);
@@ -169,7 +168,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
         }
     }
 
-    // // @RequiresPermissions("flowable:processDefinition:xml")
+    @PreAuthorize("@elp.single('flowable:processDefinition:xml')")
     @GetMapping(value = "/xml")
     public ResponseEntity<byte[]> xml(@RequestParam String processDefinitionId) {
         permissionService.validateReadPermissionOnProcessDefinition(SecurityUtils.getUserId(), processDefinitionId);
@@ -207,7 +206,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     }
 
     @Log(value = "删除流程定义")
-    // // @RequiresPermissions("flowable:processDefinition:delete")
+    @PreAuthorize("@elp.single('flowable:processDefinition:delete')")
     @DeleteMapping(value = "/delete")
     public Result delete(@RequestParam String processDefinitionId,
             @RequestParam(required = false, defaultValue = "false") Boolean cascade) {
@@ -216,7 +215,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     }
 
     @Log(value = "激活流程定义")
-    // // @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
+    @PreAuthorize("@elp.single('flowable:processDefinition:suspendOrActivate')")
     @PutMapping(value = "/activate")
     public Result activate(@RequestBody ProcessDefinitionRequest actionRequest) {
         processDefinitionService.activate(actionRequest);
@@ -224,7 +223,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     }
 
     @Log(value = "挂起流程定义")
-    // // @RequiresPermissions("flowable:processDefinition:suspendOrActivate")
+    @PreAuthorize("@elp.single('flowable:processDefinition:suspendOrActivate')")
     @PutMapping(value = "/suspend")
     public Result suspend(@RequestBody ProcessDefinitionRequest actionRequest) {
         processDefinitionService.suspend(actionRequest);
@@ -238,7 +237,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
      * @return
      */
     @Log(value = "导入流程定义")
-    // // @RequiresPermissions("flowable:processDefinition:import")
+    @PreAuthorize("@elp.single('flowable:processDefinition:import')")
     @PostMapping(value = "/import")
     public Result doImport(@RequestParam(required = false) String tenantId, HttpServletRequest request) {
         processDefinitionService.doImport(tenantId, request);
