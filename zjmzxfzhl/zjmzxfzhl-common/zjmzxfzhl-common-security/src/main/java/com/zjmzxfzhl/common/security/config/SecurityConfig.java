@@ -42,9 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests()
                 // security保护获取code和确认授权
-                .antMatchers("/oauth/authorize", "/oauth/confirm_access")
+                .antMatchers("/oauth/authorize", "/oauth/confirm_access").authenticated()
                 // 其余请求放行，但要被资源服务器保护
-                .authenticated().anyRequest().permitAll().and().csrf().disable();
+                .anyRequest().permitAll().and().csrf().disable();
     }
 
     @Override
