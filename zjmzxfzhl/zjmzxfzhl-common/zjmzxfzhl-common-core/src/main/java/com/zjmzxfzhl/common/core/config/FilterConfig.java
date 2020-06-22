@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.common.security.config.oauth2;
+package com.zjmzxfzhl.common.core.config;
 
 import javax.servlet.DispatcherType;
 
