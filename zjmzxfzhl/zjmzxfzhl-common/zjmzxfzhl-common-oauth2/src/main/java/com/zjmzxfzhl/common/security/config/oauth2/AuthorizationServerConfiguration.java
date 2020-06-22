@@ -90,7 +90,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Bean
     public TokenEnhancer tokenEnhancer() {
         return (accessToken, authentication) -> {
-            if (accessToken instanceof DefaultOAuth2AccessToken) {
+            if (accessToken instanceof DefaultOAuth2AccessToken && authentication.getUserAuthentication() != null) {
                 final Map<String, Object> additionalInfo = new HashMap<>(16);
                 SecurityUser securityUser = (SecurityUser) authentication.getUserAuthentication().getPrincipal();
                 additionalInfo.put("userId", securityUser.getUsername());
