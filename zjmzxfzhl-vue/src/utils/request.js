@@ -52,6 +52,12 @@ service.interceptors.response.use(
     },
     error => {
         Loading.service().close();
+        if(error.response && error.response.status && error.response.status === 401){
+            store.dispatch('user/resetToken').then(() => {
+                location.reload()
+            })
+            return
+        }
         const message = (error.response && error.response.data && (error.response.data.msg || error.response.data.message)) || error.message
         console.log('err' + error) // for debug
         Message.error(message)
