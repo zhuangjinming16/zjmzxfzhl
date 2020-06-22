@@ -63,7 +63,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 // demo
                 .antMatchers("/", "/demo/helloworld/helloworld", "/demo/redlock/*").permitAll()
                 // OAuth2
-                .antMatchers("/oauth/*", "/token/**").permitAll()
+                .antMatchers("/oauth/token", "/oauth/token_key", "/oauth/error", "/token/**").permitAll()
                 // swagger 文档
                 .antMatchers("/swagger-ui.html", "/csrf", "/**/*swagger*/**", "/v2/**", "/webjars/**").permitAll()
                 // 阿里巴巴 druid
