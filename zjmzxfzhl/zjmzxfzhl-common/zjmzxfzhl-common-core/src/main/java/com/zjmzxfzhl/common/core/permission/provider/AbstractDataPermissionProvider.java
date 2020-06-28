@@ -12,7 +12,7 @@ import com.zjmzxfzhl.common.core.util.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 数据规则数据源策略为系统提供时，应自定义实现类实现AbstractDataPermissionProvider的filter方法
+ * 数据规则数据源策略为系统提供时，应自定义实现类实现AbstractDataPermissionProvider的wrap方法
  * 
  * @author 庄金明
  *

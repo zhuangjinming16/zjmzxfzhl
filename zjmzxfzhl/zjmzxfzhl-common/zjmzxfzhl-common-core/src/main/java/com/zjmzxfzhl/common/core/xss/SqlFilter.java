@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class SqlFilter {
-    final static String SQL_FILTER_STRINGS = "'|and |exec |insert |select |delete |update |drop |count |chr |mid |master |truncate |char |declare |;|or |+|,";
+    final static String SQL_FILTER_STRINGS = "'|and |exec |insert |select |delete |update |case |drop |count |chr |mid |master |truncate |char |declare |;|or |+|,";
 
     /**
      * SQL注入过滤

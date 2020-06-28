@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 开发示例Controller
  * 
- * 后端管理平台一般都是需要登陆的，且都是使用 Shiro 管理权限，所以 RepeatRequest 一般用于APP比较多
+ * 后端管理平台一般都是需要登陆的，所以 RepeatRequest 一般用于APP比较多
  * 
  * @author 庄金明
  */
