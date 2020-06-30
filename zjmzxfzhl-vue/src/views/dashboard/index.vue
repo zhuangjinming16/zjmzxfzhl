@@ -1,5 +1,8 @@
 <template>
     <div class="dashboard-container">
+        # 1.1.6 升级日志 2020-06-21 <br/>
+        1.使用spring-security-oauth2鉴权 <br/>
+        2.代码重构 <br/>
         # 1.1.5 升级日志 2020-05-23 <br/>
         1.代码重构，改成maven父子工程 <br/>
         # 1.1.4 升级日志 2020-05-20 <br/>
