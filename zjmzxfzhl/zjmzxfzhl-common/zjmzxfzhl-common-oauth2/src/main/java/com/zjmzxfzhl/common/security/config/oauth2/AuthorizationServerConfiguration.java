@@ -51,7 +51,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @SneakyThrows
     public void configure(ClientDetailsServiceConfigurer clients) {
         clients.withClientDetails(redisClientDetailsService);
-        redisClientDetailsService.loadAllClientToCache();
     }
 
     @Override

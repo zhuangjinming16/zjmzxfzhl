@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysOauthClientDetailsMapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysOauthClientDetails">
+        select
+            a.CLIENT_ID as clientId,
+            a.RESOURCE_IDS as resourceIds,
+            a.CLIENT_SECRET as clientSecret,
+            a.SCOPE as scope,
+            a.AUTHORIZED_GRANT_TYPES as authorizedGrantTypes,
+            a.WEB_SERVER_REDIRECT_URI as webServerRedirectUri,
+            a.AUTHORITIES as authorities,
+            a.ACCESS_TOKEN_VALIDITY as accessTokenValidity,
+            a.REFRESH_TOKEN_VALIDITY as refreshTokenValidity,
+            a.ADDITIONAL_INFORMATION as additionalInformation,
+            a.AUTOAPPROVE as autoapprove,
+            a.STATUS as status
+
+        from T_SYS_OAUTH_CLIENT_DETAILS a 
+        where 1=1 
+        <if test="entity.clientId != null and entity.clientId !=''">
+            <![CDATA[    AND a.CLIENT_ID = #{entity.clientId}    ]]>
+        </if>
+        <if test="entity.autoapprove != null and entity.autoapprove !=''">
+            <![CDATA[    AND a.AUTOAPPROVE = #{entity.autoapprove}    ]]>
+        </if>
+        <if test="entity.status != null and entity.status !=''">
+            <![CDATA[    AND a.STATUS = #{entity.status}    ]]>
+        </if>
+        order by a.CLIENT_ID
+    </select>
+</mapper>

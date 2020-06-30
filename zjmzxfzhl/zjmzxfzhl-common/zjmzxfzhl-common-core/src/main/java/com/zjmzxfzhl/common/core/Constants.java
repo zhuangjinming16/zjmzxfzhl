@@ -18,4 +18,8 @@ public class Constants {
     public static final String CURRENT = "current";
     public static final String SIZE = "size";
     public static final String ORDER_RULE = "orderRule";
+    /**
+     * 缓存client的redis key，这里是hash结构存储
+     */
+    public static final String CACHE_CLIENT_KEY = "oauth:client:details";
 }

@@ -2,7 +2,7 @@ package com.zjmzxfzhl.common.core.config.redis;
 
 import java.lang.reflect.Method;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
  * @date 2020年3月24日
  */
 @Configuration
-@EnableAutoConfiguration
+@EnableCaching
 public class RedisConfig {
 
     @Bean
