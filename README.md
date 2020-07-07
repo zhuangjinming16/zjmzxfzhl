@@ -1,4 +1,11 @@
+# Zjmzxfzhl
+
+## 开源不易，如果`Zjmzxfzhl`对您有帮助，请点右上角 `Star`或者 `Fork` 支持一下。
+
+## 您的支持，是我继续做开源项目的动力，谢谢！
+
 # 项目介绍
+
 当前最新版本: 1.1.6（发布日期: 2020-06-21）
 ## 项目介绍
 zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代码生成器 的快速开发平台，采用前后端分离架构。
