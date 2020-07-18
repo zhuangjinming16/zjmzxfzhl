@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
@@ -46,6 +47,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private RedisConnectionFactory redisConnectionFactory;
     @Autowired
     private RedisClientDetailsService redisClientDetailsService;
+    @Autowired
+    private AuthorizationCodeServices authorizationCodeServices;
 
     @Override
     @SneakyThrows
@@ -65,6 +68,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         endpoints
                 // 请求方式
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+                // 处理授权码
+                .authorizationCodeServices(authorizationCodeServices)
                 // 指定token存储位置
                 .tokenStore(tokenStore())
                 // 自定义生成令牌
