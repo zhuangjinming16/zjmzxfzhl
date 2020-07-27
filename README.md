@@ -18,6 +18,8 @@ github: https://github.com/zhuangjinming16/zjmzxfzhl
 
 若需要使用`shiro`鉴权请移步 https://gitee.com/zjm16/zjmzxfzhl/tree/v1.1.5
 
+若需要使用微服务架构请移步 https://gitee.com/zjm16/zjmzxfzhl-cloud
+
 ## 技术架构
 ### 后端技术
 
