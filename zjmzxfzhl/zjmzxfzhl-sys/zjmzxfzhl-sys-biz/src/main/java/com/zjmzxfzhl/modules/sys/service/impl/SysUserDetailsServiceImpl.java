@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
 
 /**

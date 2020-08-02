@@ -8,7 +8,6 @@ import lombok.SneakyThrows;
 
 /**
  * @author 庄金明
- *
  */
 public class ZjmzxfzhlAuth2ExceptionSerializer extends StdSerializer<ZjmzxfzhlAuth2Exception> {
     private static final long serialVersionUID = 1L;

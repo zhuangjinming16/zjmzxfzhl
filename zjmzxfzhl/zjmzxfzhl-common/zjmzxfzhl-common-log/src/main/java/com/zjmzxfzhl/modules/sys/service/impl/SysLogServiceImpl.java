@@ -10,7 +10,7 @@ import com.zjmzxfzhl.modules.sys.service.SysLogService;
 
 /**
  * 系统日志Service
- * 
+ *
  * @author 庄金明
  */
 @Service

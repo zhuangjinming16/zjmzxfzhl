@@ -24,7 +24,7 @@ import com.zjmzxfzhl.modules.sys.service.SysRolePermissionService;
 
 /**
  * 操作权限Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -35,7 +35,7 @@ public class SysRolePermissionController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysRolePermission
      * @param current
      * @param size
@@ -57,9 +57,9 @@ public class SysRolePermissionController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysRolePermission
      * @return
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('sys:rolePermission:save')")
     @PostMapping(value = "/save")
@@ -69,9 +69,9 @@ public class SysRolePermissionController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysRolePermission
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('sys:rolePermission:update')")
     @PutMapping(value = "/update")
@@ -81,9 +81,9 @@ public class SysRolePermissionController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('sys:rolePermission:delete')")
     @DeleteMapping(value = "/delete")

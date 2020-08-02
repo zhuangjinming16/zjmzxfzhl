@@ -2,7 +2,7 @@ package com.zjmzxfzhl.modules.sys.common;
 
 /**
  * 常量文件类
- * 
+ *
  * @author 庄金明
  */
 public class SysConstants {

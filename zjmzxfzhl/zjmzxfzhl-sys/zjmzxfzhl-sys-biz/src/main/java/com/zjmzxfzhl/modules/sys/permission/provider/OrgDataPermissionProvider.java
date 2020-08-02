@@ -4,7 +4,7 @@ import com.zjmzxfzhl.common.core.permission.provider.AbstractDataPermissionProvi
 import com.zjmzxfzhl.common.core.permission.wrapper.PermissionWrapper;
 import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.common.core.xss.SqlFilter;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
 
@@ -13,9 +13,8 @@ import lombok.Setter;
 
 /**
  * 机构权限
- * 
- * @author 庄金明
  *
+ * @author 庄金明
  */
 @Getter
 @Setter
@@ -30,13 +29,12 @@ public class OrgDataPermissionProvider extends AbstractDataPermissionProvider {
 
     /**
      * 1-机构权限，查询自己及下辖机构的数据
-     * 
+     * <p>
      * 2-只查询当前机构
-     * 
+     * <p>
      * 3-只查询下辖机构不包括自己
-     * 
+     * <p>
      * others-如有需要可添加用户分管机构表等其他场景
-     * 
      */
     private String type;
 

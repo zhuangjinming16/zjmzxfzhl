@@ -24,6 +24,7 @@ public interface DemoZjmzxfzhlMapper extends BaseMapper<DemoZjmzxfzhl> {
      */
     @DataPermission(tableNames = "T_DEMO_ZJMZXFZHL", aliasNames = "a")
     @DataPermission(providers = OrgDataPermissionProvider.class, fieldName = "authFilterSql01")
-    @DataPermission(providers = OrgDataPermissionProvider.class, tableNames = "T_DEMO_ZJMZXFZHL", aliasNames = "a", fieldName = "authFilterSql02")
+    @DataPermission(providers = OrgDataPermissionProvider.class, tableNames = "T_DEMO_ZJMZXFZHL", aliasNames = "a",
+            fieldName = "authFilterSql02")
     public List<DemoZjmzxfzhl> list(IPage<DemoZjmzxfzhl> page, @Param("entity") DemoZjmzxfzhl entity);
 }

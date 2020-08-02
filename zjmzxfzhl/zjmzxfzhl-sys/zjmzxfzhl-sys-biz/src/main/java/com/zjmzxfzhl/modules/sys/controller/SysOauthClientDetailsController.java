@@ -22,7 +22,7 @@ import com.zjmzxfzhl.modules.sys.service.SysOauthClientDetailsService;
 
 /**
  * 应用客户端Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -33,7 +33,7 @@ public class SysOauthClientDetailsController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysOauthClientDetails
      * @param current
      * @param size
@@ -42,9 +42,10 @@ public class SysOauthClientDetailsController extends BaseController {
     @PreAuthorize("@elp.single('sys:oauthClientDetails:list')")
     @GetMapping(value = "/list")
     public Result list(SysOauthClientDetails sysOauthClientDetails, @RequestParam Integer current,
-            @RequestParam Integer size) {
-        IPage<SysOauthClientDetails> pageList = sysOauthClientDetailsService
-                .list(new Page<SysOauthClientDetails>(current, size), sysOauthClientDetails);
+                       @RequestParam Integer size) {
+        IPage<SysOauthClientDetails> pageList =
+                sysOauthClientDetailsService.list(new Page<SysOauthClientDetails>(current, size),
+                        sysOauthClientDetails);
         return Result.ok(pageList);
     }
 
@@ -56,9 +57,9 @@ public class SysOauthClientDetailsController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysOauthClientDetails
      * @return
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('sys:oauthClientDetails:save')")
     @PostMapping(value = "/save")
@@ -68,9 +69,9 @@ public class SysOauthClientDetailsController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysOauthClientDetails
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('sys:oauthClientDetails:update')")
     @PutMapping(value = "/update")
@@ -80,9 +81,9 @@ public class SysOauthClientDetailsController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('sys:oauthClientDetails:delete')")
     @DeleteMapping(value = "/delete")

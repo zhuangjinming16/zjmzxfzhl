@@ -1,15 +1,14 @@
 package com.zjmzxfzhl.common.core.config.mybatis;
 
-import java.util.Date;
-
-import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.stereotype.Component;
-
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.zjmzxfzhl.common.core.base.BaseEntity;
 import com.zjmzxfzhl.common.core.util.DateUtil;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 /**
  * @author 庄金明
@@ -39,9 +38,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
     }
 
     private boolean isBaseEntity(MetaObject metaObject) {
-        return metaObject.getOriginalObject() instanceof BaseEntity
-                || (metaObject.hasGetter(Constants.ENTITY) && metaObject.getValue(Constants.ENTITY) != null
-                        && metaObject.getValue(Constants.ENTITY) instanceof BaseEntity);
+        return metaObject.getOriginalObject() instanceof BaseEntity || (metaObject.hasGetter(Constants.ENTITY) && metaObject.getValue(Constants.ENTITY) != null && metaObject.getValue(Constants.ENTITY) instanceof BaseEntity);
     }
 
     private void setBaseEntityInsertFill(MetaObject metaObject) {

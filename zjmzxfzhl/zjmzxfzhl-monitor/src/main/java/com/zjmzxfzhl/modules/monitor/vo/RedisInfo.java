@@ -63,7 +63,8 @@ public class RedisInfo {
         map.put("aof_enabled", "是否开启了aof");
         map.put("aof_rewrite_in_progress", "标识aof的rewrite操作是否在进行中");
         map.put("aof_rewrite_scheduled",
-                "rewrite任务计划，当客户端发送bgrewriteaof指令，如果当前rewrite子进程正在执行，那么将客户端请求的bgrewriteaof变为计划任务，待aof子进程结束后执行rewrite ");
+                "rewrite任务计划，当客户端发送bgrewriteaof指令，如果当前rewrite子进程正在执行，那么将客户端请求的bgrewriteaof" + "变为计划任务，待aof" +
+                        "子进程结束后执行rewrite ");
 
         map.put("aof_last_rewrite_time_sec", "最近一次aof rewrite耗费的时长");
         map.put("aof_current_rewrite_time_sec", "如果rewrite操作正在进行，则记录所使用的时间，单位秒");
@@ -96,8 +97,8 @@ public class RedisInfo {
         map.put("repl_backlog_active", "复制积压缓冲区是否开启");
         map.put("repl_backlog_size", "复制积压缓冲大小");
         map.put("repl_backlog_first_byte_offset", "复制缓冲区里偏移量的大小");
-        map.put("repl_backlog_histlen",
-                "此值等于 master_repl_offset - repl_backlog_first_byte_offset,该值不会超过repl_backlog_size的大小");
+        map.put("repl_backlog_histlen", "此值等于 master_repl_offset - repl_backlog_first_byte_offset," +
+                "该值不会超过repl_backlog_size的大小");
         map.put("used_cpu_sys", "将所有redis主进程在核心态所占用的CPU时求和累计起来");
         map.put("used_cpu_user", "将所有redis主进程在用户态所占用的CPU时求和累计起来");
         map.put("used_cpu_sys_children", "将后台进程在核心态所占用的CPU时求和累计起来");
@@ -138,7 +139,6 @@ public class RedisInfo {
 
     @Override
     public String toString() {
-        return "RedisInfo{" + "key='" + key + '\'' + ", value='" + value + '\'' + ", desctiption='" + description + '\''
-                + '}';
+        return "RedisInfo{" + "key='" + key + '\'' + ", value='" + value + '\'' + ", desctiption='" + description + '\'' + '}';
     }
 }

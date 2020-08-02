@@ -1,22 +1,22 @@
 package com.zjmzxfzhl.common.log.aspect;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.zjmzxfzhl.common.core.Result;
-import com.zjmzxfzhl.common.core.config.threadpool.manager.AsyncManager;
+import com.zjmzxfzhl.common.core.threadpool.AsyncThreadExecutorProperties;
+import com.zjmzxfzhl.common.core.threadpool.manager.AsyncManager;
 import com.zjmzxfzhl.common.core.util.JacksonUtil;
 import com.zjmzxfzhl.common.core.util.SpringContextUtils;
 import com.zjmzxfzhl.common.log.annotation.Log;
 import com.zjmzxfzhl.common.log.util.SysLogUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
 import com.zjmzxfzhl.modules.sys.service.SysLogService;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 操作日志
@@ -58,16 +58,20 @@ public class LogAspect {
 
         sysLog.setOperateResult(operateResult);
 
-        /// 同步方式保存系统日志
-        /// SpringContextUtils.getBean(SysLogService.class).save(sysLog);
-
-        // 异步方式保存日志
-        AsyncManager.me().execute(new Runnable() {
-            @Override
-            public void run() {
-                SpringContextUtils.getBean(SysLogService.class).save(sysLog);
-            }
-        });
+        AsyncThreadExecutorProperties asyncThreadExecutorProperties =
+                SpringContextUtils.getBeanIgnoreNotFound(AsyncThreadExecutorProperties.class);
+        if (asyncThreadExecutorProperties != null && asyncThreadExecutorProperties.getEnabled()) {
+            // 异步方式保存日志
+            AsyncManager.me().execute(new Runnable() {
+                @Override
+                public void run() {
+                    SpringContextUtils.getBean(SysLogService.class).save(sysLog);
+                }
+            });
+        } else {
+            // 同步方式保存系统日志
+            SpringContextUtils.getBean(SysLogService.class).save(sysLog);
+        }
 
         if (ex != null) {
             throw ex;

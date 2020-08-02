@@ -1,8 +1,7 @@
 package com.zjmzxfzhl.common.security.service;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SpringContextUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.zjmzxfzhl.common.core.util.SpringContextUtils;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户验证处理
@@ -39,8 +38,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String clientId = null;
         Authentication authentication = SecurityUtils.getAuthentication();
         if (authentication == null) {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                    .getRequest();
+            HttpServletRequest request =
+                    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             if (OAUTH_AUTHORIZE_URL.equals(request.getServletPath())) {
                 clientId = request.getParameter("client_id");
                 if (clientId == null || clientId.isEmpty()) {
@@ -52,11 +51,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         if (clientId != null && !clientId.isEmpty() && redisClientDetailsService != null) {
             ClientDetails clientDetails = redisClientDetailsService.loadClientByClientId(clientId);
-            if (clientDetails != null && clientDetails.getAdditionalInformation() != null
-                    && clientDetails.getAdditionalInformation().get("userDetailsService") != null
-                    && !"".equals(clientDetails.getAdditionalInformation().get("userDetailsService"))) {
-                userDetailsServiceBeanId = clientDetails.getAdditionalInformation().get("userDetailsService")
-                        .toString();
+            if (clientDetails != null && clientDetails.getAdditionalInformation() != null && clientDetails.getAdditionalInformation().get("userDetailsService") != null && !"".equals(clientDetails.getAdditionalInformation().get("userDetailsService"))) {
+                userDetailsServiceBeanId =
+                        clientDetails.getAdditionalInformation().get("userDetailsService").toString();
             }
         }
         UserDetailsService realUserDetailsService = SpringContextUtils.getBean(userDetailsServiceBeanId);

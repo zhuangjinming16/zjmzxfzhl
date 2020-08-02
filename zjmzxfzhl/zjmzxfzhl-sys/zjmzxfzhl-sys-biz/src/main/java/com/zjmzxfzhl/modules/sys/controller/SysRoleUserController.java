@@ -24,7 +24,7 @@ import com.zjmzxfzhl.modules.sys.service.SysRoleUserService;
 
 /**
  * 角色和用户关系Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -35,7 +35,7 @@ public class SysRoleUserController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysRoleUser
      * @param current
      * @param size
@@ -56,9 +56,9 @@ public class SysRoleUserController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysRoleUser
      * @return
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('sys:roleUser:save')")
     @PostMapping(value = "/save")
@@ -68,9 +68,9 @@ public class SysRoleUserController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysRoleUser
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('sys:roleUser:update')")
     @PutMapping(value = "/update")
@@ -80,9 +80,9 @@ public class SysRoleUserController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('sys:roleUser:delete')")
     @DeleteMapping(value = "/delete")

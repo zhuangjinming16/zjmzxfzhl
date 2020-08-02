@@ -12,7 +12,7 @@ import lombok.Data;
 
 /**
  * 【app用户】实体类
- * 
+ *
  * @author 庄金明
  */
 @Data

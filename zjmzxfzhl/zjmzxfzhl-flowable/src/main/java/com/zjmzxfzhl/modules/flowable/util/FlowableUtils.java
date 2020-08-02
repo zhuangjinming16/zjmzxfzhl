@@ -33,7 +33,7 @@ import org.flowable.idm.api.User;
 import org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl;
 
 import com.google.common.collect.Sets;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -73,8 +73,8 @@ public class FlowableUtils {
                 if (sourceFlowElement instanceof FlowNode) {
                     canReachToNodes.put(sourceFlowElement.getId(), (FlowNode) sourceFlowElement);
                     if (sourceFlowElement instanceof SubProcess) {
-                        for (Map.Entry<String, FlowElement> entry : ((SubProcess) sourceFlowElement).getFlowElementMap()
-                                .entrySet()) {
+                        for (Map.Entry<String, FlowElement> entry :
+                                ((SubProcess) sourceFlowElement).getFlowElementMap().entrySet()) {
                             if (entry.getValue() instanceof FlowNode) {
                                 FlowNode flowNodeV = (FlowNode) entry.getValue();
                                 canReachToNodes.put(entry.getKey(), flowNodeV);
@@ -96,7 +96,7 @@ public class FlowableUtils {
     }
 
     public static Map<String, FlowNode> getCanReachFrom(FlowNode fromFlowNode,
-            Map<String, FlowNode> canReachFromNodes) {
+                                                        Map<String, FlowNode> canReachFromNodes) {
         if (canReachFromNodes == null) {
             canReachFromNodes = new HashMap<>(16);
         }
@@ -107,8 +107,8 @@ public class FlowableUtils {
                 if (targetFlowElement instanceof FlowNode) {
                     canReachFromNodes.put(targetFlowElement.getId(), (FlowNode) targetFlowElement);
                     if (targetFlowElement instanceof SubProcess) {
-                        for (Map.Entry<String, FlowElement> entry : ((SubProcess) targetFlowElement).getFlowElementMap()
-                                .entrySet()) {
+                        for (Map.Entry<String, FlowElement> entry :
+                                ((SubProcess) targetFlowElement).getFlowElementMap().entrySet()) {
                             if (entry.getValue() instanceof FlowNode) {
                                 FlowNode flowNodeV = (FlowNode) entry.getValue();
                                 canReachFromNodes.put(entry.getKey(), flowNodeV);
@@ -129,23 +129,22 @@ public class FlowableUtils {
         return getSpecialGatewayElements(container, null);
     }
 
-    public static Map<String, Set<String>> getSpecialGatewayElements(FlowElementsContainer container,
-            Map<String, Set<String>> specialGatewayElements) {
+    public static Map<String, Set<String>> getSpecialGatewayElements(FlowElementsContainer container, Map<String,
+            Set<String>> specialGatewayElements) {
         if (specialGatewayElements == null) {
             specialGatewayElements = new HashMap<>(16);
         }
         Collection<FlowElement> flowelements = container.getFlowElements();
         for (FlowElement flowElement : flowelements) {
-            boolean isBeginSpecialGateway = flowElement.getId().endsWith(FlowableConstant.SPECIAL_GATEWAY_BEGIN_SUFFIX)
-                    && (flowElement instanceof ParallelGateway || flowElement instanceof InclusiveGateway
-                            || flowElement instanceof ComplexGateway);
+            boolean isBeginSpecialGateway =
+                    flowElement.getId().endsWith(FlowableConstant.SPECIAL_GATEWAY_BEGIN_SUFFIX) && (flowElement instanceof ParallelGateway || flowElement instanceof InclusiveGateway || flowElement instanceof ComplexGateway);
             if (isBeginSpecialGateway) {
                 String gatewayBeginRealId = flowElement.getId();
                 String gatewayId = gatewayBeginRealId.substring(0, gatewayBeginRealId.length() - 6);
                 Set<String> gatewayIdContainFlowelements = specialGatewayElements.computeIfAbsent(gatewayId,
                         k -> new HashSet<>());
-                findElementsBetweenSpecialGateway(flowElement, gatewayId + FlowableConstant.SPECIAL_GATEWAY_END_SUFFIX,
-                        gatewayIdContainFlowelements);
+                findElementsBetweenSpecialGateway(flowElement,
+                        gatewayId + FlowableConstant.SPECIAL_GATEWAY_END_SUFFIX, gatewayIdContainFlowelements);
             } else if (flowElement instanceof SubProcess) {
                 getSpecialGatewayElements((SubProcess) flowElement, specialGatewayElements);
             }
@@ -153,14 +152,13 @@ public class FlowableUtils {
 
         // 外层到里层排序
         Map<String, Set<String>> specialGatewayNodesSort = new LinkedHashMap<>();
-        specialGatewayElements.entrySet().stream().sorted((o1, o2) -> o2.getValue().size() - o1.getValue().size())
-                .forEach(entry -> specialGatewayNodesSort.put(entry.getKey(), entry.getValue()));
+        specialGatewayElements.entrySet().stream().sorted((o1, o2) -> o2.getValue().size() - o1.getValue().size()).forEach(entry -> specialGatewayNodesSort.put(entry.getKey(), entry.getValue()));
 
         return specialGatewayNodesSort;
     }
 
     public static void findElementsBetweenSpecialGateway(FlowElement specialGatewayBegin, String specialGatewayEndId,
-            Set<String> elements) {
+                                                         Set<String> elements) {
         elements.add(specialGatewayBegin.getId());
         List<SequenceFlow> sequenceFlows = ((FlowNode) specialGatewayBegin).getOutgoingFlows();
         if (sequenceFlows != null && sequenceFlows.size() > 0) {
@@ -199,12 +197,12 @@ public class FlowableUtils {
             targetElement = (FlowNode) ((SequenceFlow) targetFlowElement).getTargetFlowElement();
         }
         if (sourceElement == null) {
-            throw new FlowableException("Invalid sourceElementId '" + sourceElementId
-                    + "': no element found for this id n process definition '" + processDefinitionId + "'");
+            throw new FlowableException("Invalid sourceElementId '" + sourceElementId + "': no element found for this" +
+                    " id n process definition '" + processDefinitionId + "'");
         }
         if (targetElement == null) {
-            throw new FlowableException("Invalid targetElementId '" + targetElementId
-                    + "': no element found for this id n process definition '" + processDefinitionId + "'");
+            throw new FlowableException("Invalid targetElementId '" + targetElementId + "': no element found for this" +
+                    " id n process definition '" + processDefinitionId + "'");
         }
         Set<String> visitedElements = new HashSet<>();
         return isReachable(process, sourceElement, targetElement, visitedElements);
@@ -215,7 +213,7 @@ public class FlowableUtils {
     }
 
     public static boolean isReachable(Process process, FlowNode sourceElement, FlowNode targetElement,
-            Set<String> visitedElements) {
+                                      Set<String> visitedElements) {
         // Special case: start events in an event subprocess might exist as an execution and are most likely be able to
         // reach the target
         // when the target is in the event subprocess, but should be ignored as they are not 'real' runtime executions
@@ -249,8 +247,7 @@ public class FlowableUtils {
         visitedElements.add(sourceElement.getId());
         // by zjm begin
         // 当前节点能够到达子流程，且目标节点在子流程中，说明可以到达，返回true
-        if (sourceElement instanceof SubProcess
-                && ((SubProcess) sourceElement).getFlowElement(targetElement.getId()) != null) {
+        if (sourceElement instanceof SubProcess && ((SubProcess) sourceElement).getFlowElement(targetElement.getId()) != null) {
             return true;
         }
         // by zjm end
@@ -306,7 +303,7 @@ public class FlowableUtils {
 
     /**
      * 查询不同层级
-     * 
+     *
      * @param sourceList
      * @param targetList
      * @return 返回不同的层级，如果其中一个层级较深，则返回层级小的+1，从第0层开始，请注意判断是否会出现下标越界异常；返回 -1 表示在同一层
@@ -343,8 +340,8 @@ public class FlowableUtils {
     }
 
     public static Set<String> getParentExecutionIdsByActivityId(List<ExecutionEntity> executions, String activityId) {
-        List<ExecutionEntity> activityIdExecutions = executions.stream()
-                .filter(e -> activityId.equals(e.getActivityId())).collect(Collectors.toList());
+        List<ExecutionEntity> activityIdExecutions =
+                executions.stream().filter(e -> activityId.equals(e.getActivityId())).collect(Collectors.toList());
         if (activityIdExecutions.isEmpty()) {
             throw new FlowableException("Active execution could not be found with activity id " + activityId);
         }
@@ -424,11 +421,11 @@ public class FlowableUtils {
         List<String> targetParentProcesss = FlowableUtils.getParentProcessIds(targetFlowElement);
         int diffParentLevel = getDiffLevel(sourceParentProcesss, targetParentProcesss);
         if (diffParentLevel != -1) {
-            sourceRealActivityId = sourceParentProcesss.size() == diffParentLevel ? sourceRealActivityId
-                    : sourceParentProcesss.get(diffParentLevel);
-            targetRealActivityId = targetParentProcesss.size() == diffParentLevel ? targetRealActivityId
-                    : targetParentProcesss.get(diffParentLevel);
+            sourceRealActivityId = sourceParentProcesss.size() == diffParentLevel ? sourceRealActivityId :
+                    sourceParentProcesss.get(diffParentLevel);
+            targetRealActivityId = targetParentProcesss.size() == diffParentLevel ? targetRealActivityId :
+                    targetParentProcesss.get(diffParentLevel);
         }
-        return new String[] { sourceRealActivityId, targetRealActivityId };
+        return new String[]{sourceRealActivityId, targetRealActivityId};
     }
 }

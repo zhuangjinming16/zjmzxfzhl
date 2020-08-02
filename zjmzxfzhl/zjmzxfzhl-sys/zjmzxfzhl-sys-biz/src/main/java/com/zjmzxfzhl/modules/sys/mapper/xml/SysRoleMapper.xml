@@ -3,48 +3,48 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysRoleMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysRole">
-		select
-			a.ROLE_ID as roleId,
-			a.ROLE_NAME as roleName,
-			a.SORT_NO as sortNo,
-			a.REMARK as remark
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysRole">
+        select
+        a.ROLE_ID as roleId,
+        a.ROLE_NAME as roleName,
+        a.SORT_NO as sortNo,
+        a.REMARK as remark
 
-		from T_SYS_ROLE a 
-		where 1=1 
-		<if test="entity.roleId != null and entity.roleId !=''">
-			<![CDATA[	AND a.ROLE_ID = #{entity.roleId}	]]>
-		</if>
-		<if test="entity.roleName != null and entity.roleName !=''">
-			<![CDATA[	AND a.ROLE_NAME = #{entity.roleName}	]]>
-		</if>
-		order by a.sort_no
-	</select>
-	
-	<select id="listMenuOrFuncIdsByRoleId" resultType="java.lang.String">
+        from T_SYS_ROLE a
+        where 1=1
+        <if test="entity.roleId != null and entity.roleId !=''">
+            <![CDATA[	AND a.ROLE_ID = #{entity.roleId}	]]>
+        </if>
+        <if test="entity.roleName != null and entity.roleName !=''">
+            <![CDATA[	AND a.ROLE_NAME = #{entity.roleName}	]]>
+        </if>
+        order by a.sort_no
+    </select>
+
+    <select id="listMenuOrFuncIdsByRoleId" resultType="java.lang.String">
 		select	a.MENU_OR_FUNC_ID as menuOrFuncId from T_SYS_ROLE_PERMISSION a 
 		where a.role_id = #{roleId}
 	</select>
-	<select id="getRoleUser" resultType="com.zjmzxfzhl.modules.sys.entity.SysUser">
-		select
-			a.USER_ID as userId,
-			a.USER_NAME as userName,
-			a.ORG_ID as orgId,
-			o.ORG_NAME as orgName
-		from T_SYS_USER a 
-		join T_SYS_ORG o ON o.org_id=a.org_id
-		join T_SYS_ROLE_USER ru on ru.user_id=a.user_id
-		where 1=1 
-		<if test="entity.roleId != null and entity.roleId !=''">
-			<![CDATA[	AND ru.role_id = #{entity.roleId}	]]>
-		</if>
-		<if test="entity.userId != null and entity.userId !=''">
-			<![CDATA[	AND a.user_id = #{entity.userId}	]]>
-		</if>
-		<if test="entity.userName != null and entity.userName !=''">
-			<![CDATA[	AND a.USER_NAME = #{entity.userName}	]]>
-		</if>
-		{{authFilterSql}}
-	</select>
+    <select id="getRoleUser" resultType="com.zjmzxfzhl.modules.sys.entity.SysUser">
+        select
+        a.USER_ID as userId,
+        a.USER_NAME as userName,
+        a.ORG_ID as orgId,
+        o.ORG_NAME as orgName
+        from T_SYS_USER a
+        join T_SYS_ORG o ON o.org_id=a.org_id
+        join T_SYS_ROLE_USER ru on ru.user_id=a.user_id
+        where 1=1
+        <if test="entity.roleId != null and entity.roleId !=''">
+            <![CDATA[	AND ru.role_id = #{entity.roleId}	]]>
+        </if>
+        <if test="entity.userId != null and entity.userId !=''">
+            <![CDATA[	AND a.user_id = #{entity.userId}	]]>
+        </if>
+        <if test="entity.userName != null and entity.userName !=''">
+            <![CDATA[	AND a.USER_NAME = #{entity.userName}	]]>
+        </if>
+        {{authFilterSql}}
+    </select>
 </mapper>

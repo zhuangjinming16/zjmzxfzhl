@@ -6,9 +6,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * 鉴权成功监听器
- * 
- * @author 庄金明
  *
+ * @author 庄金明
  */
 @Component
 public class AuthenticationSuccessEventListener implements ApplicationListener<AuthenticationSuccessEvent> {

@@ -33,7 +33,7 @@ import com.google.common.collect.ImmutableMap;
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.util.ObjectUtils;
 import com.zjmzxfzhl.common.log.annotation.Log;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -55,6 +55,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     private static final Map<String, QueryProperty> ALLOWED_SORT_PROPERTIES = new HashMap<>();
     @Autowired
     private ProcessDefinitionService processDefinitionService;
+
     static {
         ALLOWED_SORT_PROPERTIES.put(FlowableConstant.ID, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_ID);
         ALLOWED_SORT_PROPERTIES.put(FlowableConstant.KEY, ProcessDefinitionQueryProperty.PROCESS_DEFINITION_KEY);
@@ -75,20 +76,16 @@ public class ProcessDefinitionController extends BaseFlowableController {
             processDefinitionQuery.processDefinitionId(requestParams.get(FlowableConstant.ID));
         }
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.CATEGORY))) {
-            processDefinitionQuery.processDefinitionCategoryLike(
-                    ObjectUtils.convertToLike(requestParams.get(FlowableConstant.CATEGORY)));
+            processDefinitionQuery.processDefinitionCategoryLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.CATEGORY)));
         }
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.KEY))) {
-            processDefinitionQuery
-                    .processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.KEY)));
+            processDefinitionQuery.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.KEY)));
         }
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.NAME))) {
-            processDefinitionQuery
-                    .processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.NAME)));
+            processDefinitionQuery.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.NAME)));
         }
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.VERSION))) {
-            processDefinitionQuery.processDefinitionVersion(
-                    ObjectUtils.convertToInteger(requestParams.get(FlowableConstant.VERSION)));
+            processDefinitionQuery.processDefinitionVersion(ObjectUtils.convertToInteger(requestParams.get(FlowableConstant.VERSION)));
         }
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.SUSPENDED))) {
             boolean suspended = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.SUSPENDED));
@@ -119,8 +116,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
     public Result listMyself(@RequestParam Map<String, String> requestParams) {
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery();
         if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.NAME))) {
-            processDefinitionQuery
-                    .processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.NAME)));
+            processDefinitionQuery.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.NAME)));
         }
         processDefinitionQuery.latestVersion().active().startableByUser(SecurityUtils.getUserId());
         FlowablePage page = this.pageList(requestParams, processDefinitionQuery, ProcDefListWrapper.class,
@@ -136,8 +132,8 @@ public class ProcessDefinitionController extends BaseFlowableController {
         if (processDefinition.hasStartFormKey()) {
             formKey = formService.getStartFormKey(processDefinitionId);
         }
-        ProcessDefinitionResponse processDefinitionResponse = responseFactory
-                .createProcessDefinitionResponse(processDefinition, formKey);
+        ProcessDefinitionResponse processDefinitionResponse =
+                responseFactory.createProcessDefinitionResponse(processDefinition, formKey);
         return Result.ok(processDefinitionResponse);
     }
 
@@ -155,16 +151,16 @@ public class ProcessDefinitionController extends BaseFlowableController {
         ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
         InputStream imageStream = repositoryService.getProcessDiagram(processDefinition.getId());
         if (imageStream == null) {
-            throw new FlowableException(
-                    messageFormat("Process definition image is not found with id {0}", processDefinitionId));
+            throw new FlowableException(messageFormat("Process definition image is not found with id {0}",
+                    processDefinitionId));
         }
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.IMAGE_PNG);
         try {
             return new ResponseEntity<>(IOUtils.toByteArray(imageStream), responseHeaders, HttpStatus.OK);
         } catch (Exception e) {
-            throw new FlowableException(
-                    messageFormat("Process definition image read error with id {0}", processDefinitionId), e);
+            throw new FlowableException(messageFormat("Process definition image read error with id {0}",
+                    processDefinitionId), e);
         }
     }
 
@@ -176,23 +172,23 @@ public class ProcessDefinitionController extends BaseFlowableController {
         String deploymentId = processDefinition.getDeploymentId();
         String resourceId = processDefinition.getResourceName();
         if (deploymentId == null || deploymentId.length() == 0) {
-            throw new FlowableException(
-                    messageFormat("Process definition deployment id is not found with id {0}", processDefinitionId));
+            throw new FlowableException(messageFormat("Process definition deployment id is not found with id {0}",
+                    processDefinitionId));
         }
         if (resourceId == null || resourceId.length() == 0) {
-            throw new FlowableException(
-                    messageFormat("Process definition resource id is not found with id {0}", processDefinitionId));
+            throw new FlowableException(messageFormat("Process definition resource id is not found with id {0}",
+                    processDefinitionId));
         }
         Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId).singleResult();
         if (deployment == null) {
-            throw new FlowableException(
-                    messageFormat("Process definition deployment is not found with deploymentId {0}", deploymentId));
+            throw new FlowableException(messageFormat("Process definition deployment is not found with deploymentId " +
+                    "{0}", deploymentId));
         }
 
         List<String> resourceList = repositoryService.getDeploymentResourceNames(deploymentId);
         if (ObjectUtils.isEmpty(resourceList) || !resourceList.contains(resourceId)) {
-            throw new FlowableException(messageFormat(
-                    "Process definition resourceId {0} is not found with deploymentId {1}", resourceId, deploymentId));
+            throw new FlowableException(messageFormat("Process definition resourceId {0} is not found with " +
+                    "deploymentId {1}", resourceId, deploymentId));
         }
         InputStream resourceStream = repositoryService.getResourceAsStream(deploymentId, resourceId);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -208,8 +204,8 @@ public class ProcessDefinitionController extends BaseFlowableController {
     @Log(value = "删除流程定义")
     @PreAuthorize("@elp.single('flowable:processDefinition:delete')")
     @DeleteMapping(value = "/delete")
-    public Result delete(@RequestParam String processDefinitionId,
-            @RequestParam(required = false, defaultValue = "false") Boolean cascade) {
+    public Result delete(@RequestParam String processDefinitionId, @RequestParam(required = false, defaultValue =
+            "false") Boolean cascade) {
         processDefinitionService.delete(processDefinitionId, cascade);
         return Result.ok();
     }
@@ -232,7 +228,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
 
     /**
      * 导入流程定义
-     * 
+     *
      * @param request
      * @return
      */

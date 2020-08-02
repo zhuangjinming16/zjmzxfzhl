@@ -1,18 +1,21 @@
 package com.zjmzxfzhl.common.core.config.mybatis.permission;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.BiConsumer;
-
+import com.baomidou.mybatisplus.core.enums.SqlKeyword;
+import com.baomidou.mybatisplus.core.parser.ISqlParser;
+import com.baomidou.mybatisplus.core.parser.SqlInfo;
+import com.baomidou.mybatisplus.core.parser.SqlParserHelper;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.zjmzxfzhl.common.core.aspect.annotation.DataPermission;
+import com.zjmzxfzhl.common.core.aspect.annotation.DataPermission.DataPermissions;
+import com.zjmzxfzhl.common.core.config.mybatis.permission.mapper.CommonDataPermissionMapper;
+import com.zjmzxfzhl.common.core.constant.Constants;
+import com.zjmzxfzhl.common.core.exception.SysException;
+import com.zjmzxfzhl.common.core.permission.SourceStrategy;
+import com.zjmzxfzhl.common.core.permission.provider.AbstractDataPermissionProvider;
+import com.zjmzxfzhl.common.core.permission.wrapper.PermissionWrapper;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
+import com.zjmzxfzhl.common.core.util.*;
+import com.zjmzxfzhl.common.core.xss.SqlFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -21,59 +24,39 @@ import org.apache.ibatis.parsing.GenericTokenParser;
 import org.apache.ibatis.parsing.TokenHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.enums.SqlKeyword;
-import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.core.parser.SqlInfo;
-import com.baomidou.mybatisplus.core.parser.SqlParserHelper;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.zjmzxfzhl.common.core.Constants;
-import com.zjmzxfzhl.common.core.aspect.annotation.DataPermission;
-import com.zjmzxfzhl.common.core.aspect.annotation.DataPermission.DataPermissions;
-import com.zjmzxfzhl.common.core.exception.SysException;
-import com.zjmzxfzhl.common.core.permission.SourceStrategy;
-import com.zjmzxfzhl.common.core.permission.provider.AbstractDataPermissionProvider;
-import com.zjmzxfzhl.common.core.permission.wrapper.PermissionWrapper;
-import com.zjmzxfzhl.common.core.util.ColumnUtils;
-import com.zjmzxfzhl.common.core.util.CommonUtil;
-import com.zjmzxfzhl.common.core.util.DateUtil;
-import com.zjmzxfzhl.common.core.util.SpringContextUtils;
-import com.zjmzxfzhl.common.core.xss.SqlFilter;
-import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
-import com.zjmzxfzhl.modules.sys.entity.SysDataPermission;
-import com.zjmzxfzhl.modules.sys.service.SysDataPermissionService;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 
 /**
  * @author 庄金明
  * @date 2020年5月16日
  */
-public class PermissionParser implements ISqlParser {
+public class PermissionParser implements ISqlParser, InitializingBean {
     private final static String PERMISSION_WRAPPER = "permissionWrapper";
     private final static String DELEGATE_BOUNDSQL = "delegate.boundSql";
     private final static String DELEGATE_BOUNDSQL_SQL = "delegate.boundSql.sql";
     private final static String DELEGATE_BOUNDSQL_ADDITIONALPARAMETERS = "delegate.boundSql.additionalParameters";
     private final static String DELEGATE_BOUNDSQL_PARAMETERMAPPINGS = "delegate.boundSql.parameterMappings";
-    private final static String METHOD_ID = "METHOD_ID";
-    private final static String TABLE_NAME = "TABLE_NAME";
-    private final static String SOURCE_STRATEGY = "SOURCE_STRATEGY";
-    private final static String ENTITY_TYPE = "ENTITY_TYPE";
-    private final static String ENTITY_TYPE_1 = "1";
-    private final static String ENTITY_TYPE_2 = "2";
-    private final static String ENTITY_ID = "ENTITY_ID";
-    private final static String UPDATE_TIME = "UPDATE_TIME";
     private final static Integer BETWEEN_LENGTH = 2;
     private final static String OPEN_TOKEN = "{{";
     private final static String CLOSE_TOKEN = "}}";
     private final static GenericTokenParser PARSER_EMPTY = new GenericTokenParser(OPEN_TOKEN, CLOSE_TOKEN,
             new TokenHandler() {
-                @Override
-                public String handleToken(String content) {
-                    return "";
-                }
-            });
+        @Override
+        public String handleToken(String content) {
+            return "";
+        }
+    });
     private final static Map<String, SqlKeyword> SQLKEYWORD_OPERATORS = new HashMap<>(16);
+
     static {
         SQLKEYWORD_OPERATORS.put(SqlKeyword.IN.getSqlSegment(), SqlKeyword.IN);
         SQLKEYWORD_OPERATORS.put(SqlKeyword.LIKE.getSqlSegment(), SqlKeyword.LIKE);
@@ -87,6 +70,9 @@ public class PermissionParser implements ISqlParser {
         SQLKEYWORD_OPERATORS.put(SqlKeyword.IS_NOT_NULL.getSqlSegment(), SqlKeyword.IS_NOT_NULL);
         SQLKEYWORD_OPERATORS.put(SqlKeyword.BETWEEN.getSqlSegment(), SqlKeyword.BETWEEN);
     }
+
+    @Value("${zjmzxfzhl.data-permission.table-name:T_SYS_DATA_PERMISSION}")
+    private String dataPermissionTableName;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -105,15 +91,15 @@ public class PermissionParser implements ISqlParser {
         String userId = securityUser.getUsername();
         String roleId = securityUser.getRoleId();
 
-        // admin用户用户所有数据权限
+        // admin用户拥有所有数据权限
         if (Constants.ADMIN.equals(userId) || dataPermissions == null || dataPermissions.length == 0) {
             return SqlInfo.newInstance().setSql(PARSER_EMPTY.parse(sql));
         }
         Configuration configuration = mappedStatement.getConfiguration();
         BoundSql boundSql = (BoundSql) metaObject.getValue(DELEGATE_BOUNDSQL);
         List<ParameterMapping> parameterMappings = new ArrayList<>(boundSql.getParameterMappings());
-        Map<String, Object> additionalParameters = (Map<String, Object>) metaObject
-                .getValue(DELEGATE_BOUNDSQL_ADDITIONALPARAMETERS);
+        Map<String, Object> additionalParameters =
+                (Map<String, Object>) metaObject.getValue(DELEGATE_BOUNDSQL_ADDITIONALPARAMETERS);
         String retSql = sql;
         for (int i = 0; i < dataPermissions.length; i++) {
             DataPermission dataPermission = dataPermissions[i];
@@ -122,8 +108,8 @@ public class PermissionParser implements ISqlParser {
             if (tableNames.length != aliasNames.length) {
                 throw new SysException("数据权限tableNames和aliasNames配置错误");
             }
-            Class<AbstractDataPermissionProvider>[] providers = (Class<AbstractDataPermissionProvider>[]) dataPermission
-                    .providers();
+            Class<AbstractDataPermissionProvider>[] providers =
+                    (Class<AbstractDataPermissionProvider>[]) dataPermission.providers();
             String[] providerParams = dataPermission.providerParams();
             if (providers.length > 1 && providers.length != providerParams.length) {
                 throw new SysException("数据权限providers和providerParams配置错误");
@@ -142,8 +128,7 @@ public class PermissionParser implements ISqlParser {
             String authSql = " AND " + permissionWrapperSql;
             int index = retSql.indexOf(replaceStr);
             while (index != -1) {
-                if (permissionWrapper.getParameterMappings() != null
-                        && permissionWrapper.getParameterMappings().size() > 0) {
+                if (permissionWrapper.getParameterMappings() != null && permissionWrapper.getParameterMappings().size() > 0) {
                     String tmpSql = retSql.substring(0, index);
                     int count = tmpSql.length() - tmpSql.replaceAll("\\?", "").length();
                     if (parameterMappings.size() < count) {
@@ -176,8 +161,8 @@ public class PermissionParser implements ISqlParser {
         final Method[] methods = cls.getMethods();
 
         for (Method method : methods) {
-            boolean isFind = method.getName().equals(methodName) && (method.isAnnotationPresent(DataPermission.class)
-                    || method.isAnnotationPresent(DataPermissions.class));
+            boolean isFind =
+                    method.getName().equals(methodName) && (method.isAnnotationPresent(DataPermission.class) || method.isAnnotationPresent(DataPermissions.class));
             if (isFind) {
                 targetMethod = method;
                 break;
@@ -187,7 +172,7 @@ public class PermissionParser implements ISqlParser {
     }
 
     private void wrapByTableNames(PermissionWrapper permissionWrapper, String methodId, String[] tableNames,
-            String[] aliasNames, String userId, String roleId) {
+                                  String[] aliasNames, String userId, String roleId) {
         if (tableNames.length == 0) {
             return;
         }
@@ -197,39 +182,37 @@ public class PermissionParser implements ISqlParser {
             SqlFilter.sqlInject(aliasNames[i]);
             aliasNamesMap.put(tableNames[i], aliasNames[i]);
         }
-        QueryWrapper<SysDataPermission> queryWrapperByTableName = new QueryWrapper<>();
-        queryWrapperByTableName.eq(METHOD_ID, methodId).in(TABLE_NAME, (Object[]) tableNames).eq(SOURCE_STRATEGY,
-                SourceStrategy.TEXT.getKey());
-        if (roleId != null && !roleId.isEmpty()) {
-            queryWrapperByTableName.and(
-                    wrapper -> wrapper.nested(wrapper2 -> wrapper2.eq(ENTITY_TYPE, ENTITY_TYPE_1).eq(ENTITY_ID, roleId))
-                            .or().nested(wrapper3 -> wrapper3.eq(ENTITY_TYPE, ENTITY_TYPE_2).eq(ENTITY_ID, userId)));
-        } else {
-            queryWrapperByTableName.eq(ENTITY_TYPE, ENTITY_TYPE_2).eq(ENTITY_ID, userId);
-        }
-        queryWrapperByTableName.orderByAsc(TABLE_NAME);
-        SysDataPermissionService sysDataPermissionService = SpringContextUtils.getBean(SysDataPermissionService.class);
-        List<SysDataPermission> sysDataPermissionsByTableName = sysDataPermissionService.list(queryWrapperByTableName);
 
-        Map<String, List<SysDataPermission>> tableNameColumnNameMap = new LinkedHashMap<>();
-        for (SysDataPermission sdp : sysDataPermissionsByTableName) {
+        CommonDataPermissionVO commonDataPermissionVO = new CommonDataPermissionVO();
+        commonDataPermissionVO.setTableName(dataPermissionTableName);
+        commonDataPermissionVO.setMethodId(methodId);
+        commonDataPermissionVO.setTableNames(tableNames);
+        commonDataPermissionVO.setSourceStrategy(SourceStrategy.TEXT.getKey());
+        commonDataPermissionVO.setRoleId(roleId);
+        commonDataPermissionVO.setUserId(userId);
+
+        List<CommonDataPermissionVO> sysDataPermissionsByTableName =
+                SpringContextUtils.getBean(CommonDataPermissionMapper.class).selectDataPermissions(commonDataPermissionVO);
+
+        Map<String, List<CommonDataPermissionVO>> tableNameColumnNameMap = new LinkedHashMap<>();
+        for (CommonDataPermissionVO sdp : sysDataPermissionsByTableName) {
             if (sdp.getTableName() == null || sdp.getTableName().length() == 0) {
                 continue;
             }
             // 防止数据库字段名注入
             SqlFilter.sqlInject(sdp.getColumnName());
             String key = sdp.getTableName().toUpperCase() + "-" + sdp.getColumnName().toUpperCase();
-            List<SysDataPermission> tableNameColumnNameList = tableNameColumnNameMap.computeIfAbsent(key,
+            List<CommonDataPermissionVO> tableNameColumnNameList = tableNameColumnNameMap.computeIfAbsent(key,
                     k -> new ArrayList<>());
             tableNameColumnNameList.add(sdp);
         }
 
-        for (Entry<String, List<SysDataPermission>> entry : tableNameColumnNameMap.entrySet()) {
-            List<SysDataPermission> tableNameColumnList = entry.getValue();
+        for (Entry<String, List<CommonDataPermissionVO>> entry : tableNameColumnNameMap.entrySet()) {
+            List<CommonDataPermissionVO> tableNameColumnList = entry.getValue();
             if (tableNameColumnList == null || tableNameColumnList.size() == 0) {
                 continue;
             }
-            SysDataPermission firstSdp = tableNameColumnList.iterator().next();
+            CommonDataPermissionVO firstSdp = tableNameColumnList.iterator().next();
             String alias = aliasNamesMap.get(firstSdp.getTableName());
             String type = getColumnTypeByClassName(firstSdp.getClassName(), firstSdp.getColumnName());
             wrapSingleTableNameColumn(permissionWrapper, alias, type, tableNameColumnList);
@@ -237,97 +220,97 @@ public class PermissionParser implements ISqlParser {
     }
 
     private void wrapSingleTableNameColumn(PermissionWrapper permissionWrapper, String alias, String type,
-            List<SysDataPermission> tableNameColumnList) {
+                                           List<CommonDataPermissionVO> tableNameColumnList) {
         if (tableNameColumnList != null && tableNameColumnList.size() == 1) {
-            SysDataPermission sysDataPermission = tableNameColumnList.get(0);
-            String value = CommonUtil.isEmptyDefault(sysDataPermission.getValue(), "");
-            String operate = CommonUtil.isEmptyDefault(sysDataPermission.getOperate(), SqlKeyword.EQ.getSqlSegment());
+            CommonDataPermissionVO commonDataPermissionVO = tableNameColumnList.get(0);
+            String value = CommonUtil.isEmptyDefault(commonDataPermissionVO.getValue(), "");
+            String operate = CommonUtil.isEmptyDefault(commonDataPermissionVO.getOperate(),
+                    SqlKeyword.EQ.getSqlSegment());
             SqlKeyword keyword = SQLKEYWORD_OPERATORS.getOrDefault(operate, SqlKeyword.EQ);
             if (keyword.equals(SqlKeyword.IS_NULL)) {
-                permissionWrapper.isNull(alias, sysDataPermission.getColumnName());
+                permissionWrapper.isNull(alias, commonDataPermissionVO.getColumnName());
             } else if (keyword.equals(SqlKeyword.IS_NOT_NULL)) {
-                permissionWrapper.isNotNull(alias, sysDataPermission.getColumnName());
+                permissionWrapper.isNotNull(alias, commonDataPermissionVO.getColumnName());
             } else if (keyword.equals(SqlKeyword.IN)) {
-                Object[] realValue = (Object[]) resolveRealValue(sysDataPermission, value, type, keyword);
-                permissionWrapper.in(alias, sysDataPermission.getColumnName(), realValue);
+                Object[] realValue = (Object[]) resolveRealValue(commonDataPermissionVO, value, type, keyword);
+                permissionWrapper.in(alias, commonDataPermissionVO.getColumnName(), realValue);
             } else if (keyword.equals(SqlKeyword.BETWEEN)) {
-                Object[] realValue = (Object[]) resolveRealValue(sysDataPermission, value, type, keyword);
-                permissionWrapper.between(alias, sysDataPermission.getColumnName(), realValue[0], realValue[1]);
+                Object[] realValue = (Object[]) resolveRealValue(commonDataPermissionVO, value, type, keyword);
+                permissionWrapper.between(alias, commonDataPermissionVO.getColumnName(), realValue[0], realValue[1]);
             } else {
-                Object realValue = resolveRealValue(sysDataPermission, value, type, keyword);
-                permissionWrapper.addCondition(alias, sysDataPermission.getColumnName(), keyword, realValue);
+                Object realValue = resolveRealValue(commonDataPermissionVO, value, type, keyword);
+                permissionWrapper.addCondition(alias, commonDataPermissionVO.getColumnName(), keyword, realValue);
             }
         } else if (tableNameColumnList != null && tableNameColumnList.size() > 1) {
             BiConsumer<PermissionWrapper, Object> consumer = (pw, obj) -> {
-                SysDataPermission sysDataPermission = (SysDataPermission) obj;
-                String value = CommonUtil.isEmptyDefault(sysDataPermission.getValue(), "");
-                String operate = CommonUtil.isEmptyDefault(sysDataPermission.getOperate(),
+                CommonDataPermissionVO commonDataPermissionVO = (CommonDataPermissionVO) obj;
+                String value = CommonUtil.isEmptyDefault(commonDataPermissionVO.getValue(), "");
+                String operate = CommonUtil.isEmptyDefault(commonDataPermissionVO.getOperate(),
                         SqlKeyword.EQ.getSqlSegment());
                 SqlKeyword keyword = SQLKEYWORD_OPERATORS.getOrDefault(operate, SqlKeyword.EQ);
                 if (keyword.equals(SqlKeyword.IS_NULL)) {
-                    pw.or().isNull(alias, sysDataPermission.getColumnName());
+                    pw.or().isNull(alias, commonDataPermissionVO.getColumnName());
                 } else if (keyword.equals(SqlKeyword.IS_NOT_NULL)) {
-                    pw.or().isNotNull(alias, sysDataPermission.getColumnName());
+                    pw.or().isNotNull(alias, commonDataPermissionVO.getColumnName());
                 } else if (keyword.equals(SqlKeyword.IN)) {
-                    Object[] realValue = (Object[]) resolveRealValue(sysDataPermission, value, type, keyword);
-                    pw.or().in(alias, sysDataPermission.getColumnName(), realValue);
+                    Object[] realValue = (Object[]) resolveRealValue(commonDataPermissionVO, value, type, keyword);
+                    pw.or().in(alias, commonDataPermissionVO.getColumnName(), realValue);
                 } else if (keyword.equals(SqlKeyword.BETWEEN)) {
-                    Object[] realValue = (Object[]) resolveRealValue(sysDataPermission, value, type, keyword);
-                    pw.or().between(alias, sysDataPermission.getColumnName(), realValue[0], realValue[1]);
+                    Object[] realValue = (Object[]) resolveRealValue(commonDataPermissionVO, value, type, keyword);
+                    pw.or().between(alias, commonDataPermissionVO.getColumnName(), realValue[0], realValue[1]);
                 } else {
-                    Object realValue = resolveRealValue(sysDataPermission, value, type, keyword);
-                    pw.or().addCondition(alias, sysDataPermission.getColumnName(), keyword, realValue);
+                    Object realValue = resolveRealValue(commonDataPermissionVO, value, type, keyword);
+                    pw.or().addCondition(alias, commonDataPermissionVO.getColumnName(), keyword, realValue);
                 }
             };
             permissionWrapper.and(consumer, tableNameColumnList);
         }
     }
 
-    private Object resolveRealValue(SysDataPermission sysDataPermission, String value, String type,
-            SqlKeyword keyword) {
+    private Object resolveRealValue(CommonDataPermissionVO commonDataPermissionVO, String value, String type,
+                                    SqlKeyword keyword) {
         Object realValue = null;
         try {
             switch (type) {
-            case "java.lang.String":
-                realValue = resolveRealValueString(value, keyword);
-                break;
-            case "java.lang.Integer":
-                realValue = resolveRealValueInteger(value, keyword);
-                break;
-            case "java.math.BigDecimal":
-                realValue = resolveRealValueBigDecimal(value, keyword);
-                break;
-            case "java.lang.Short":
-                realValue = resolveRealValueShort(value, keyword);
-                break;
-            case "java.lang.Long":
-                realValue = resolveRealValueLong(value, keyword);
-                break;
-            case "java.lang.Float":
-                realValue = resolveRealValueFloat(value, keyword);
-                break;
-            case "java.lang.Double":
-                realValue = resolveRealValueDouble(value, keyword);
-                break;
-            case "java.util.Date":
-                realValue = resolveRealValueDate(value, keyword);
-                break;
-            default:
-                throw new SysException(
-                        "数据权限【" + sysDataPermission.getDataPermissionId() + "】配置错误，不支持配置【" + type + "】类型的字段，请联系管理员");
+                case "java.lang.String":
+                    realValue = resolveRealValueString(value, keyword);
+                    break;
+                case "java.lang.Integer":
+                    realValue = resolveRealValueInteger(value, keyword);
+                    break;
+                case "java.math.BigDecimal":
+                    realValue = resolveRealValueBigDecimal(value, keyword);
+                    break;
+                case "java.lang.Short":
+                    realValue = resolveRealValueShort(value, keyword);
+                    break;
+                case "java.lang.Long":
+                    realValue = resolveRealValueLong(value, keyword);
+                    break;
+                case "java.lang.Float":
+                    realValue = resolveRealValueFloat(value, keyword);
+                    break;
+                case "java.lang.Double":
+                    realValue = resolveRealValueDouble(value, keyword);
+                    break;
+                case "java.util.Date":
+                    realValue = resolveRealValueDate(value, keyword);
+                    break;
+                default:
+                    throw new SysException("数据权限【" + commonDataPermissionVO.getDataPermissionId() + "】配置错误，不支持配置【" + type + "】类型的字段，请联系管理员");
             }
         } catch (Exception e) {
-            throw new SysException("数据权限【" + sysDataPermission.getDataPermissionId() + "】配置错误，请联系管理员");
+            throw new SysException("数据权限【" + commonDataPermissionVO.getDataPermissionId() + "】配置错误，请联系管理员");
         }
         if (keyword.equals(SqlKeyword.IN)) {
             Object[] temp = (Object[]) realValue;
             if (temp == null || temp.length == 0) {
-                throw new SysException("数据权限【" + sysDataPermission.getDataPermissionId() + "】配置错误，请联系管理员");
+                throw new SysException("数据权限【" + commonDataPermissionVO.getDataPermissionId() + "】配置错误，请联系管理员");
             }
         } else if (keyword.equals(SqlKeyword.BETWEEN)) {
             Object[] temp = (Object[]) realValue;
             if (temp == null || temp.length != BETWEEN_LENGTH) {
-                throw new SysException("数据权限【" + sysDataPermission.getDataPermissionId() + "】配置错误，请联系管理员");
+                throw new SysException("数据权限【" + commonDataPermissionVO.getDataPermissionId() + "】配置错误，请联系管理员");
             }
         }
         return realValue;
@@ -471,7 +454,8 @@ public class PermissionParser implements ISqlParser {
 
     @SuppressWarnings("unchecked")
     private void wrapByProviders(PermissionWrapper permissionWrapper, String methodId,
-            Class<AbstractDataPermissionProvider>[] providers, String[] providerParams, String userId, String roleId) {
+                                 Class<AbstractDataPermissionProvider>[] providers, String[] providerParams,
+                                 String userId, String roleId) {
         // 【1】处理注解配置
         Map<Class<AbstractDataPermissionProvider>, String> providerMap = new HashMap<>(16);
         for (int i = 0; i < providers.length; i++) {
@@ -485,26 +469,20 @@ public class PermissionParser implements ISqlParser {
         }
 
         // 【2】处理methodId个性配置
-        QueryWrapper<SysDataPermission> qwByProviderAndMethodIdIsNotNull = new QueryWrapper<>();
-        qwByProviderAndMethodIdIsNotNull.eq(SOURCE_STRATEGY, SourceStrategy.SYSTEM.getKey());
-        if (roleId != null && !roleId.isEmpty()) {
-            qwByProviderAndMethodIdIsNotNull.and(wrapper -> wrapper.nested(
-                    entityTypeWrapper1 -> entityTypeWrapper1.eq(ENTITY_TYPE, ENTITY_TYPE_1).eq(ENTITY_ID, roleId)).or()
-                    .nested(entityTypeWrapper2 -> entityTypeWrapper2.eq(ENTITY_TYPE, ENTITY_TYPE_2).eq(ENTITY_ID,
-                            userId)));
-        } else {
-            qwByProviderAndMethodIdIsNotNull.eq(ENTITY_TYPE, ENTITY_TYPE_2).eq(ENTITY_ID, userId);
-        }
+        CommonDataPermissionVO commonDataPermissionVO = new CommonDataPermissionVO();
+        commonDataPermissionVO.setTableName(dataPermissionTableName);
+        commonDataPermissionVO.setMethodId(methodId);
+        commonDataPermissionVO.setSourceStrategy(SourceStrategy.SYSTEM.getKey());
+        commonDataPermissionVO.setRoleId(roleId);
+        commonDataPermissionVO.setUserId(userId);
+        List<CommonDataPermissionVO> sysDataPermissionsByProviderAndMethodIdIsNotNull =
+                SpringContextUtils.getBean(CommonDataPermissionMapper.class).selectDataPermissions(commonDataPermissionVO);
 
-        qwByProviderAndMethodIdIsNotNull.eq(METHOD_ID, methodId);
-        qwByProviderAndMethodIdIsNotNull.orderByAsc(UPDATE_TIME);
-        List<SysDataPermission> sysDataPermissionsByProviderAndMethodIdIsNotNull = SpringContextUtils
-                .getBean(SysDataPermissionService.class).list(qwByProviderAndMethodIdIsNotNull);
-        for (SysDataPermission sysDataPermission : sysDataPermissionsByProviderAndMethodIdIsNotNull) {
+        for (CommonDataPermissionVO sysDataPermission : sysDataPermissionsByProviderAndMethodIdIsNotNull) {
             Class<AbstractDataPermissionProvider> providerClass = null;
             try {
-                providerClass = (Class<AbstractDataPermissionProvider>) Class
-                        .forName(sysDataPermission.getSourceProvider());
+                providerClass =
+                        (Class<AbstractDataPermissionProvider>) Class.forName(sysDataPermission.getSourceProvider());
             } catch (ClassNotFoundException e) {
                 throw new SysException("【" + sysDataPermission.getSourceProvider() + "】不存在，请联系管理员");
             }
@@ -525,4 +503,9 @@ public class PermissionParser implements ISqlParser {
         }
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // 防止配置中sql注入
+        SqlFilter.sqlInject(dataPermissionTableName);
+    }
 }

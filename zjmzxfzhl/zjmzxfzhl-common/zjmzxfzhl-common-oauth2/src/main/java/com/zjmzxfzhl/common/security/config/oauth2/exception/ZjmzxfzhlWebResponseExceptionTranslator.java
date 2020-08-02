@@ -17,7 +17,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 /**
  * @author 庄金明
- *
  */
 public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExceptionTranslator<OAuth2Exception> {
 
@@ -29,8 +28,9 @@ public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExcep
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) {
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
-        Exception ase = (AuthenticationException) throwableAnalyzer
-                .getFirstThrowableOfType(AuthenticationException.class, causeChain);
+        Exception ase =
+                (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class,
+                        causeChain);
         // 身份验证相关异常
         if (ase != null) {
             return handleOAuth2Exception(new UnauthorizedException(e.getMessage(), e));
@@ -50,24 +50,21 @@ public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExcep
                     HttpHeaders headers = new HttpHeaders();
                     headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
                     headers.set(HttpHeaders.PRAGMA, "no-cache");
-                    return new ResponseEntity<>(
-                            new ZjmzxfzhlAuth2Exception(message, ((InvalidGrantException) ase).getOAuth2ErrorCode()),
-                            headers, HttpStatus.OK);
+                    return new ResponseEntity<>(new ZjmzxfzhlAuth2Exception(message,
+                            ((InvalidGrantException) ase).getOAuth2ErrorCode()), headers, HttpStatus.OK);
                 } else if (USER_IS_DISABLED.equals(ase.getMessage())) {
                     String message = "用户已锁定";
                     HttpHeaders headers = new HttpHeaders();
                     headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
                     headers.set(HttpHeaders.PRAGMA, "no-cache");
-                    return new ResponseEntity<>(
-                            new ZjmzxfzhlAuth2Exception(message, ((InvalidGrantException) ase).getOAuth2ErrorCode()),
-                            headers, HttpStatus.OK);
+                    return new ResponseEntity<>(new ZjmzxfzhlAuth2Exception(message,
+                            ((InvalidGrantException) ase).getOAuth2ErrorCode()), headers, HttpStatus.OK);
                 }
 
             }
             return handleOAuth2Exception(new InvalidException(ase.getMessage(), ase));
         }
-        ase = (HttpRequestMethodNotSupportedException) throwableAnalyzer
-                .getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
+        ase = (HttpRequestMethodNotSupportedException) throwableAnalyzer.getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
         // Http方法请求异常
         if (ase != null) {
             return handleOAuth2Exception(new MethodNotAllowedException(ase.getMessage(), ase));
@@ -86,8 +83,8 @@ public class ZjmzxfzhlWebResponseExceptionTranslator implements WebResponseExcep
         headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
         headers.set(HttpHeaders.PRAGMA, "no-cache");
         if (status == HttpStatus.UNAUTHORIZED.value() || (e instanceof InsufficientScopeException)) {
-            headers.set(HttpHeaders.WWW_AUTHENTICATE,
-                    String.format("%s %s", OAuth2AccessToken.BEARER_TYPE, e.getSummary()));
+            headers.set(HttpHeaders.WWW_AUTHENTICATE, String.format("%s %s", OAuth2AccessToken.BEARER_TYPE,
+                    e.getSummary()));
         }
 
         // 客户端异常直接返回

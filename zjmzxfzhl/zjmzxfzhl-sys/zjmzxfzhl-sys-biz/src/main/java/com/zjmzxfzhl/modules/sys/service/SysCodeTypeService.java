@@ -6,14 +6,14 @@ import com.zjmzxfzhl.modules.sys.entity.SysCodeType;
 
 /**
  * 代码类别Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysCodeTypeService extends BaseService<SysCodeType> {
 
     /**
      * 分页查询代码类别
-     * 
+     *
      * @param page
      * @param sysCodeType
      * @return
@@ -22,7 +22,7 @@ public interface SysCodeTypeService extends BaseService<SysCodeType> {
 
     /**
      * 删除数据字典信息
-     * 
+     *
      * @param ids
      */
     void deleteSysCodeType(String ids);

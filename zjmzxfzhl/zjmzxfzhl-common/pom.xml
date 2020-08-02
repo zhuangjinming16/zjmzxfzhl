@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.zjmzxfzhl</groupId>
-		<artifactId>zjmzxfzhl</artifactId>
-		<version>1.1.6-SNAPSHOT</version>
-	</parent>
-	<artifactId>zjmzxfzhl-common</artifactId>
-	<packaging>pom</packaging>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.zjmzxfzhl</groupId>
+        <artifactId>zjmzxfzhl</artifactId>
+        <version>1.1.6-SNAPSHOT</version>
+    </parent>
+    <artifactId>zjmzxfzhl-common</artifactId>
+    <packaging>pom</packaging>
 
-	<description>zjmzxfzhl 公共聚合模块</description>
+    <description>zjmzxfzhl 公共聚合模块</description>
 
-	<modules>
-		<!-- <module>zjmzxfzhl-common-core</module> -->
-		<!-- <module>zjmzxfzhl-common-datasource</module> <module>zjmzxfzhl-common-log</module> 
-			<module>zjmzxfzhl-common-mybatis</module> <module>zjmzxfzhl-common-security</module> -->
-		<!-- <module>zjmzxfzhl-common-swagger</module> -->
-		<module>zjmzxfzhl-common-core</module>
-		<module>zjmzxfzhl-common-log</module>
-		<module>zjmzxfzhl-common-security</module>
-    <module>zjmzxfzhl-common-oauth2</module>
-    <module>zjmzxfzhl-common-mybatis</module>
-  </modules>
+    <modules>
+        <!-- <module>zjmzxfzhl-common-core</module> -->
+        <!-- <module>zjmzxfzhl-common-datasource</module> <module>zjmzxfzhl-common-log</module>
+            <module>zjmzxfzhl-common-mybatis</module> <module>zjmzxfzhl-common-security</module> -->
+        <!-- <module>zjmzxfzhl-common-swagger</module> -->
+        <module>zjmzxfzhl-common-core</module>
+        <module>zjmzxfzhl-common-log</module>
+        <module>zjmzxfzhl-common-security</module>
+        <module>zjmzxfzhl-common-oauth2</module>
+        <module>zjmzxfzhl-common-mybatis</module>
+        <module>zjmzxfzhl-common-redis</module>
+    </modules>
 </project>

@@ -1,18 +1,5 @@
 package com.zjmzxfzhl.common.core.util;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.net.ssl.SSLContext;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -32,6 +19,18 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.TrustStrategy;
 
+import javax.net.ssl.SSLContext;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author 庄金明
  * @date 2020年3月22日
@@ -40,7 +39,7 @@ public class HttpUtils {
 
     /**
      * get
-     * 
+     *
      * @param host
      * @param path
      * @param headers
@@ -48,8 +47,8 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public static HttpResponse doGet(String host, String path, Map<String, String> headers, Map<String, String> querys)
-            throws Exception {
+    public static HttpResponse doGet(String host, String path, Map<String, String> headers,
+                                     Map<String, String> querys) throws Exception {
         HttpClient httpClient = wrapClient(host);
 
         HttpGet request = new HttpGet(buildUrl(host, path, querys));
@@ -63,7 +62,7 @@ public class HttpUtils {
 
     /**
      * post form
-     * 
+     *
      * @param host
      * @param path
      * @param headers
@@ -72,8 +71,8 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys,
-            Map<String, String> bodys) throws Exception {
+    public static HttpResponse doPost(String host, String path, Map<String, String> headers,
+                                      Map<String, String> querys, Map<String, String> bodys) throws Exception {
         HttpClient httpClient = wrapClient(host);
 
         HttpPost request = new HttpPost(buildUrl(host, path, querys));
@@ -100,7 +99,7 @@ public class HttpUtils {
 
     /**
      * Post String
-     * 
+     *
      * @param host
      * @param path
      * @param headers
@@ -109,8 +108,8 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys,
-            String body) throws Exception {
+    public static HttpResponse doPost(String host, String path, Map<String, String> headers,
+                                      Map<String, String> querys, String body) throws Exception {
         HttpClient httpClient = wrapClient(host);
 
         HttpPost request = new HttpPost(buildUrl(host, path, querys));
@@ -129,7 +128,7 @@ public class HttpUtils {
 
     /**
      * Post stream
-     * 
+     *
      * @param host
      * @param path
      * @param headers
@@ -138,8 +137,8 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public static HttpResponse doPost(String host, String path, Map<String, String> headers, Map<String, String> querys,
-            byte[] body) throws Exception {
+    public static HttpResponse doPost(String host, String path, Map<String, String> headers,
+                                      Map<String, String> querys, byte[] body) throws Exception {
         HttpClient httpClient = wrapClient(host);
 
         HttpPost request = new HttpPost(buildUrl(host, path, querys));
@@ -158,7 +157,7 @@ public class HttpUtils {
 
     /**
      * Put String
-     * 
+     *
      * @param host
      * @param path
      * @param headers
@@ -167,8 +166,8 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public static HttpResponse doPut(String host, String path, Map<String, String> headers, Map<String, String> querys,
-            String body) throws Exception {
+    public static HttpResponse doPut(String host, String path, Map<String, String> headers,
+                                     Map<String, String> querys, String body) throws Exception {
         HttpClient httpClient = wrapClient(host);
 
         HttpPut request = new HttpPut(buildUrl(host, path, querys));
@@ -186,7 +185,7 @@ public class HttpUtils {
 
     /**
      * Put stream
-     * 
+     *
      * @param host
      * @param path
      * @param headers
@@ -195,8 +194,8 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public static HttpResponse doPut(String host, String path, Map<String, String> headers, Map<String, String> querys,
-            byte[] body) throws Exception {
+    public static HttpResponse doPut(String host, String path, Map<String, String> headers,
+                                     Map<String, String> querys, byte[] body) throws Exception {
         HttpClient httpClient = wrapClient(host);
 
         HttpPut request = new HttpPut(buildUrl(host, path, querys));
@@ -215,7 +214,7 @@ public class HttpUtils {
 
     /**
      * Delete
-     * 
+     *
      * @param host
      * @param path
      * @param headers
@@ -224,7 +223,7 @@ public class HttpUtils {
      * @throws Exception
      */
     public static HttpResponse doDelete(String host, String path, Map<String, String> headers,
-            Map<String, String> querys) throws Exception {
+                                        Map<String, String> querys) throws Exception {
         HttpClient httpClient = wrapClient(host);
 
         HttpDelete request = new HttpDelete(buildUrl(host, path, querys));
@@ -235,8 +234,7 @@ public class HttpUtils {
         return httpClient.execute(request);
     }
 
-    private static String buildUrl(String host, String path, Map<String, String> querys)
-            throws UnsupportedEncodingException {
+    private static String buildUrl(String host, String path, Map<String, String> querys) throws UnsupportedEncodingException {
         StringBuilder sbUrl = new StringBuilder();
         sbUrl.append(host);
         if (!StringUtils.isBlank(path)) {
@@ -315,7 +313,8 @@ public class HttpUtils {
         // String url2 = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest4?transId=t0002";
         // Map<String, String> headers = new HashMap<String, String>(16);
         // headers.put(AppConstants.X_ACCESS_TOKEN,
-        // "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoxNTcxODA3NjQwLCJ1c2VySWQiOiIxODg4ODg4ODg4OCJ9.L_57nyEmmUrnOV8ds64Q5jpElG0TYPTdyzXAchnoPW8");
+        // "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoxNTcxODA3NjQwLCJ1c2VySWQiOiIxODg4ODg4ODg4OCJ9
+        // .L_57nyEmmUrnOV8ds64Q5jpElG0TYPTdyzXAchnoPW8");
         // CyclicBarrier cyclicBarrier = new CyclicBarrier(10);
         // for (int i = 0; i < 10; i++) {
         // new Thread(() -> {

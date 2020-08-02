@@ -26,7 +26,7 @@ import com.zjmzxfzhl.modules.sys.service.SysMenuService;
 
 /**
  * 菜单Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -37,7 +37,7 @@ public class SysMenuController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysMenu
      * @param current
      * @param size
@@ -58,9 +58,9 @@ public class SysMenuController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysMenu
      * @return
+     * @功能：新增
      */
     @Log(value = "新增功能菜单")
     @PreAuthorize("@elp.single('sys:menu:save')")
@@ -71,9 +71,9 @@ public class SysMenuController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysMenu
      * @return
+     * @功能：修改
      */
     @Log(value = "修改功能菜单")
     @PreAuthorize("@elp.single('sys:menu:update')")
@@ -84,9 +84,9 @@ public class SysMenuController extends BaseController {
     }
 
     /**
-     * @功能：删除
      * @param id
      * @return
+     * @功能：删除
      */
     @Log(value = "删除功能菜单")
     @PreAuthorize("@elp.single('sys:menu:delete')")
@@ -98,7 +98,7 @@ public class SysMenuController extends BaseController {
 
     /**
      * 菜单管理，菜单树数据
-     * 
+     *
      * @return
      */
     @PreAuthorize("@elp.single('sys:menu:getTreeData')")

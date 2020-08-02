@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.common.core.util.ObjectUtils;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.common.cmd.BackUserTaskCmd;
@@ -104,8 +104,8 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
             }
         }
         if (StringUtils.isNotEmpty(taskHis.getParentTaskId())) {
-            parentTask = historyService.createHistoricTaskInstanceQuery().taskId(taskHis.getParentTaskId())
-                    .singleResult();
+            parentTask =
+                    historyService.createHistoricTaskInstanceQuery().taskId(taskHis.getParentTaskId()).singleResult();
         }
         rep = new TaskResponse(taskHis, processDefinition, parentTask, null);
         rep.setFormKey(formKey);
@@ -239,9 +239,8 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         List<IdentityLink> identityLinks = taskService.getIdentityLinksForTask(task.getId());
         boolean isOldUserInvolved = false;
         for (IdentityLink identityLink : identityLinks) {
-            isOldUserInvolved = userId.equals(identityLink.getUserId())
-                    && (identityLink.getType().equals(IdentityLinkType.PARTICIPANT)
-                            || identityLink.getType().equals(IdentityLinkType.CANDIDATE));
+            isOldUserInvolved =
+                    userId.equals(identityLink.getUserId()) && (identityLink.getType().equals(IdentityLinkType.PARTICIPANT) || identityLink.getType().equals(IdentityLinkType.CANDIDATE));
             if (isOldUserInvolved) {
                 break;
             }
@@ -275,8 +274,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         String currUserId = SecurityUtils.getUserId();
         Task task = getTaskNotNull(taskId);
         if (!permissionService.isTaskOwnerOrAssignee(currUserId, task)) {
-            if (StringUtils.isEmpty(task.getScopeType())
-                    && !permissionService.validateIfUserIsInitiatorAndCanCompleteTask(currUserId, task)) {
+            if (StringUtils.isEmpty(task.getScopeType()) && !permissionService.validateIfUserIsInitiatorAndCanCompleteTask(currUserId, task)) {
                 throw new FlowableNoPermissionException("User does not have permission");
             }
         }
@@ -290,8 +288,8 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
                 String startFormKey = formService.getStartFormKey(task.getProcessDefinitionId());
                 String taskFormKey = formService.getTaskFormKey(task.getProcessDefinitionId(),
                         task.getTaskDefinitionKey());
-                boolean modifyProcessInstanceFormData = CommonUtil.isNotEmptyStr(startFormKey)
-                        && CommonUtil.isNotEmptyStr(taskFormKey) && startFormKey.equals(taskFormKey);
+                boolean modifyProcessInstanceFormData =
+                        CommonUtil.isNotEmptyStr(startFormKey) && CommonUtil.isNotEmptyStr(taskFormKey) && startFormKey.equals(taskFormKey);
                 if (!modifyProcessInstanceFormData) {
                     throw new FlowableNoPermissionException("User does not have permission");
                 }
@@ -301,9 +299,8 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         }
 
         this.addComment(taskId, task.getProcessInstanceId(), currUserId,
-                FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey()) ? CommentTypeEnum.CXTJ
-                        : CommentTypeEnum.WC,
-                taskRequest.getMessage());
+                FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey()) ? CommentTypeEnum.CXTJ :
+                        CommentTypeEnum.WC, taskRequest.getMessage());
 
         if (task.getAssignee() == null || !task.getAssignee().equals(currUserId)) {
             taskService.setAssignee(taskId, currUserId);
@@ -344,12 +341,12 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
                 this.addComment(taskId, processInstance.getProcessInstanceId(), userId, CommentTypeEnum.ZZ,
                         taskRequest.getMessage());
                 String endId = endNodes.get(0).getId();
-                List<Execution> executions = runtimeService.createExecutionQuery()
-                        .parentId(processInstance.getProcessInstanceId()).list();
+                List<Execution> executions =
+                        runtimeService.createExecutionQuery().parentId(processInstance.getProcessInstanceId()).list();
                 List<String> executionIds = new ArrayList<>();
                 executions.forEach(execution -> executionIds.add(execution.getId()));
-                runtimeService.createChangeActivityStateBuilder().moveExecutionsToSingleActivityId(executionIds, endId)
-                        .changeState();
+                runtimeService.createChangeActivityStateBuilder().moveExecutionsToSingleActivityId(executionIds,
+                        endId).changeState();
             }
         }
     }
@@ -363,12 +360,10 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         String processDefinitionId = taskEntity.getProcessDefinitionId();
         Process process = repositoryService.getBpmnModel(processDefinitionId).getMainProcess();
         FlowNode currentFlowElement = (FlowNode) process.getFlowElement(currActId, true);
-        List<ActivityInstance> activitys = runtimeService.createActivityInstanceQuery()
-                .processInstanceId(processInstanceId).finished().orderByActivityInstanceStartTime().asc().list();
-        List<String> activityIds = activitys.stream()
-                .filter(activity -> activity.getActivityType().equals(BpmnXMLConstants.ELEMENT_TASK_USER))
-                .filter(activity -> !activity.getActivityId().equals(currActId)).map(ActivityInstance::getActivityId)
-                .distinct().collect(Collectors.toList());
+        List<ActivityInstance> activitys =
+                runtimeService.createActivityInstanceQuery().processInstanceId(processInstanceId).finished().orderByActivityInstanceStartTime().asc().list();
+        List<String> activityIds =
+                activitys.stream().filter(activity -> activity.getActivityType().equals(BpmnXMLConstants.ELEMENT_TASK_USER)).filter(activity -> !activity.getActivityId().equals(currActId)).map(ActivityInstance::getActivityId).distinct().collect(Collectors.toList());
         List<FlowNodeResponse> result = new ArrayList<>();
         for (String activityId : activityIds) {
             FlowNode toBackFlowElement = (FlowNode) process.getFlowElement(activityId, true);
@@ -391,12 +386,12 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         String backSysMessage = "退回到" + taskRequest.getActivityName() + "。";
         this.addComment(taskId, task.getProcessInstanceId(), userId, CommentTypeEnum.TH,
                 backSysMessage + taskRequest.getMessage());
-        String targetRealActivityId = managementService.executeCommand(
-                new BackUserTaskCmd(runtimeService, taskRequest.getTaskId(), taskRequest.getActivityId()));
+        String targetRealActivityId = managementService.executeCommand(new BackUserTaskCmd(runtimeService,
+                taskRequest.getTaskId(), taskRequest.getActivityId()));
         // 退回发起者处理,退回到发起者,默认设置任务执行人为发起者
         if (FlowableConstant.INITIATOR.equals(targetRealActivityId)) {
-            String initiator = runtimeService.createProcessInstanceQuery()
-                    .processInstanceId(task.getProcessInstanceId()).singleResult().getStartUserId();
+            String initiator =
+                    runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getStartUserId();
             List<Task> newTasks = taskService.createTaskQuery().processInstanceId(task.getProcessInstanceId()).list();
             for (Task newTask : newTasks) {
                 // 约定：发起者节点为 __initiator__
@@ -418,16 +413,16 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
 
     private void verifyProcessInstanceStartUser(TaskResponse taskResponse, TaskInfo task) {
         if (task.getProcessInstanceId() != null) {
-            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
-                    .processInstanceId(task.getProcessInstanceId()).singleResult();
+            HistoricProcessInstance historicProcessInstance =
+                    historyService.createHistoricProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
             if (historicProcessInstance != null && StringUtils.isNotEmpty(historicProcessInstance.getStartUserId())) {
                 taskResponse.setProcessInstanceStartUserId(historicProcessInstance.getStartUserId());
                 BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
                 FlowElement flowElement = bpmnModel.getFlowElement(task.getTaskDefinitionKey());
                 if (flowElement instanceof UserTask) {
                     UserTask userTask = (UserTask) flowElement;
-                    List<ExtensionElement> extensionElements = userTask.getExtensionElements()
-                            .get("initiator-can-complete");
+                    List<ExtensionElement> extensionElements = userTask.getExtensionElements().get("initiator-can" +
+                            "-complete");
                     if (CollectionUtils.isNotEmpty(extensionElements)) {
                         String value = extensionElements.get(0).getElementText();
                         if (StringUtils.isNotEmpty(value)) {
@@ -440,18 +435,17 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
     }
 
     private void verifyCandidateGroups(TaskResponse taskResponse, String userId,
-            List<HistoricIdentityLink> taskIdentityLinks) {
+                                       List<HistoricIdentityLink> taskIdentityLinks) {
         List<Group> userGroups = identityService.createGroupQuery().groupMember(userId).list();
-        taskResponse.setMemberOfCandidateGroup(
-                String.valueOf(userGroupsMatchTaskCandidateGroups(userGroups, taskIdentityLinks)));
+        taskResponse.setMemberOfCandidateGroup(String.valueOf(userGroupsMatchTaskCandidateGroups(userGroups,
+                taskIdentityLinks)));
     }
 
     private boolean userGroupsMatchTaskCandidateGroups(List<Group> userGroups,
-            List<HistoricIdentityLink> taskIdentityLinks) {
+                                                       List<HistoricIdentityLink> taskIdentityLinks) {
         for (Group group : userGroups) {
             for (HistoricIdentityLink identityLink : taskIdentityLinks) {
-                if (identityLink.getGroupId() != null && identityLink.getType().equals(IdentityLinkType.CANDIDATE)
-                        && group.getId().equals(identityLink.getGroupId())) {
+                if (identityLink.getGroupId() != null && identityLink.getType().equals(IdentityLinkType.CANDIDATE) && group.getId().equals(identityLink.getGroupId())) {
                     return true;
                 }
             }
@@ -460,15 +454,14 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
     }
 
     private void verifyCandidateUsers(TaskResponse taskResponse, String userId,
-            List<HistoricIdentityLink> taskIdentityLinks) {
-        taskResponse.setMemberOfCandidateUsers(
-                String.valueOf(currentUserMatchesTaskCandidateUsers(userId, taskIdentityLinks)));
+                                      List<HistoricIdentityLink> taskIdentityLinks) {
+        taskResponse.setMemberOfCandidateUsers(String.valueOf(currentUserMatchesTaskCandidateUsers(userId,
+                taskIdentityLinks)));
     }
 
     private boolean currentUserMatchesTaskCandidateUsers(String userId, List<HistoricIdentityLink> taskIdentityLinks) {
         for (HistoricIdentityLink identityLink : taskIdentityLinks) {
-            if (identityLink.getUserId() != null && identityLink.getType().equals(IdentityLinkType.CANDIDATE)
-                    && identityLink.getUserId().equals(userId)) {
+            if (identityLink.getUserId() != null && identityLink.getType().equals(IdentityLinkType.CANDIDATE) && identityLink.getUserId().equals(userId)) {
                 return true;
             }
         }
@@ -525,7 +518,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
 
     @Override
     public void addComment(String taskId, String processInstanceId, String userId, CommentTypeEnum type,
-            String message) {
+                           String message) {
         Authentication.setAuthenticatedUserId(userId);
         type = type == null ? CommentTypeEnum.SP : type;
         message = (message == null || message.length() == 0) ? type.getName() : message;
@@ -555,8 +548,8 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
             }
         }
         if (userId != null && userId.length() > 0 && comments != null && comments.size() > 0) {
-            comments = comments.stream().filter(comment -> userId.equals(comment.getUserId()))
-                    .collect(Collectors.toList());
+            comments =
+                    comments.stream().filter(comment -> userId.equals(comment.getUserId())).collect(Collectors.toList());
         }
         return comments;
     }
@@ -565,8 +558,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         if (identityId == null || identityId.length() == 0) {
             throw new FlowableIllegalArgumentException("identityId is null");
         }
-        if (!FlowableConstant.IDENTITY_GROUP.equals(identityType)
-                && !FlowableConstant.IDENTITY_USER.equals(identityType)) {
+        if (!FlowableConstant.IDENTITY_GROUP.equals(identityType) && !FlowableConstant.IDENTITY_USER.equals(identityType)) {
             throw new FlowableIllegalArgumentException("type must be group or user");
         }
     }

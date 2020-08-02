@@ -10,7 +10,7 @@ import java.util.Optional;
  * @author 庄金明
  * @date 2020年3月23日
  */
-@SuppressWarnings({ "rawtypes" })
+@SuppressWarnings({"rawtypes"})
 public class FlowablePage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -134,6 +134,7 @@ public class FlowablePage implements Serializable {
          * 排序类型
          */
         ASC, DESC;
+
         public boolean isAscending() {
             return this.equals(ASC);
         }
@@ -147,9 +148,8 @@ public class FlowablePage implements Serializable {
             try {
                 return Direction.valueOf(value.toUpperCase(Locale.US));
             } catch (Exception e) {
-                throw new IllegalArgumentException(String.format(
-                        "Invalid value '%s' for orders given! Has to be either 'desc' or 'asc' (case insensitive).",
-                        value), e);
+                throw new IllegalArgumentException(String.format("Invalid value '%s' for orders given! Has to be " +
+                        "either 'desc' or 'asc' (case insensitive).", value), e);
             }
         }
 

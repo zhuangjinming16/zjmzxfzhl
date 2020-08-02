@@ -1,17 +1,15 @@
 package com.zjmzxfzhl.common.core.permission.wrapper;
 
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.session.Configuration;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.session.Configuration;
-
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
-
 /**
  * @author 庄金明
- *
  */
 public class PermissionWrapper extends AbstractPermissionWrapper<String, PermissionWrapper> {
 
@@ -26,8 +24,8 @@ public class PermissionWrapper extends AbstractPermissionWrapper<String, Permiss
     }
 
     private PermissionWrapper(AtomicInteger paramNameSeq, Map<String, Object> paramNameValuePairs,
-            MergeSegments mergeSegments, Configuration configuration, List<ParameterMapping> parameterMappings,
-            String additionalParameterName) {
+                              MergeSegments mergeSegments, Configuration configuration,
+                              List<ParameterMapping> parameterMappings, String additionalParameterName) {
         this.paramNameSeq = paramNameSeq;
         this.paramNameValuePairs = paramNameValuePairs;
         this.expression = mergeSegments;

@@ -13,7 +13,6 @@ import com.zjmzxfzhl.common.security.config.oauth2.service.RedisClientDetailsSer
 
 /**
  * @author 庄金明
- *
  */
 @Configuration
 public class OAuth2ServerConfig {

@@ -3,26 +3,26 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.flowable.mapper.FlowableFormMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.flowable.entity.FlowableForm">
-		select
-			a.FORM_KEY as formKey,
-			a.FORM_NAME as formName,
-			a.CREATE_BY as createBy,
-			a.CREATE_DATE as createDate,
-			a.CREATE_TIME as createTime,
-			a.UPDATE_BY as updateBy,
-			a.UPDATE_DATE as updateDate,
-			a.UPDATE_TIME as updateTime
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.flowable.entity.FlowableForm">
+        select
+        a.FORM_KEY as formKey,
+        a.FORM_NAME as formName,
+        a.CREATE_BY as createBy,
+        a.CREATE_DATE as createDate,
+        a.CREATE_TIME as createTime,
+        a.UPDATE_BY as updateBy,
+        a.UPDATE_DATE as updateDate,
+        a.UPDATE_TIME as updateTime
 
-		from T_FLOWABLE_FORM a 
-		where 1=1 
-		<if test="entity.formKey != null and entity.formKey !=''">
-			<![CDATA[	AND a.FORM_KEY = #{entity.formKey}	]]>
-		</if>
-		<if test="entity.formName != null and entity.formName !=''">
-			<![CDATA[	AND a.FORM_NAME = #{entity.formName}	]]>
-		</if>
-		order by a.CREATE_TIME desc
-	</select>
+        from T_FLOWABLE_FORM a
+        where 1=1
+        <if test="entity.formKey != null and entity.formKey !=''">
+            <![CDATA[	AND a.FORM_KEY = #{entity.formKey}	]]>
+        </if>
+        <if test="entity.formName != null and entity.formName !=''">
+            <![CDATA[	AND a.FORM_NAME = #{entity.formName}	]]>
+        </if>
+        order by a.CREATE_TIME desc
+    </select>
 </mapper>

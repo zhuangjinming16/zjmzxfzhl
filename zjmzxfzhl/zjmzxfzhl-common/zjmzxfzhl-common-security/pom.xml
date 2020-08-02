@@ -1,27 +1,36 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.zjmzxfzhl</groupId>
-		<artifactId>zjmzxfzhl-common</artifactId>
-		<version>1.1.6-SNAPSHOT</version>
-	</parent>
-	<artifactId>zjmzxfzhl-common-security</artifactId>
-	<packaging>jar</packaging>
-	<description>zjmzxfzhl-security配置</description>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.zjmzxfzhl</groupId>
+        <artifactId>zjmzxfzhl-common</artifactId>
+        <version>1.1.6-SNAPSHOT</version>
+    </parent>
+    <artifactId>zjmzxfzhl-common-security</artifactId>
+    <packaging>jar</packaging>
+    <description>zjmzxfzhl-security配置</description>
 
-	<dependencies>
-		<!--工具类核心包 -->
-		<dependency>
-			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-common-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-sys-api</artifactId>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <!-- spring security 安全认证 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <!--工具类核心包 -->
+        <dependency>
+            <groupId>com.zjmzxfzhl</groupId>
+            <artifactId>zjmzxfzhl-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zjmzxfzhl</groupId>
+            <artifactId>zjmzxfzhl-sys-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -3,8 +3,8 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysMenuMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysMenu">
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysMenu">
 		select
 			a.MENU_ID as menuId,
 			a.MENU_NAME as menuName,

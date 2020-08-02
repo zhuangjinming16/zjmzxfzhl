@@ -9,7 +9,7 @@ import java.util.List;
 public interface IListWrapper {
     /**
      * 执行List转换封装
-     * 
+     *
      * @param list
      * @return
      */

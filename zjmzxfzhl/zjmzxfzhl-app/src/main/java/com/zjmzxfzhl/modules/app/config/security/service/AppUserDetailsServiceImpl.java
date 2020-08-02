@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.zjmzxfzhl.common.core.exception.AppException;
 import com.zjmzxfzhl.common.core.util.SpringContextUtils;
-import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
 
 /**
  * @author 庄金明
- * 
  */
 @Service("appUserDetailsService")
 public class AppUserDetailsServiceImpl implements UserDetailsService {
@@ -26,7 +25,7 @@ public class AppUserDetailsServiceImpl implements UserDetailsService {
         if (appUser == null) {
             throw new AppException("用户不存在");
         }
-        return new SecurityUser(null, appUser.getUserId(), appUser.getPassword(), true, true, true, true,
-                AuthorityUtils.NO_AUTHORITIES);
+        return new SecurityUser(null, null, appUser.getUserName(), null, appUser.getUserId(), appUser.getPassword(),
+                true, true, true, true, AuthorityUtils.NO_AUTHORITIES);
     }
 }

@@ -1,4 +1,4 @@
-sentinelServersConfig: 
+sentinelServersConfig:
   idleConnectionTimeout: 10000
   pingTimeout: 1000
   connectTimeout: 10000
@@ -18,13 +18,13 @@ sentinelServersConfig:
   masterConnectionMinimumIdleSize: 32
   masterConnectionPoolSize: 64
   readMode: "SLAVE"
-  sentinelAddresses: 
-  - "redis://172.172.222.101:26379"
-  - "redis://172.172.222.102:26379"
-  - "redis://172.172.222.103:26379"
+  sentinelAddresses:
+    - "redis://172.172.222.101:26379"
+    - "redis://172.172.222.102:26379"
+    - "redis://172.172.222.103:26379"
   masterName: "mymaster"
   database: 0
 threads: 0
 nettyThreads: 0
-codec: !<org.redisson.codec.JsonJacksonCodec> {} 
+codec: !<org.redisson.codec.JsonJacksonCodec> {}
 transportMode: "NIO"

@@ -1,14 +1,24 @@
 package com.zjmzxfzhl.modules.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Sets;
+import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
+import com.zjmzxfzhl.common.core.constant.CacheConstants;
+import com.zjmzxfzhl.common.core.constant.Constants;
+import com.zjmzxfzhl.common.core.exception.SysException;
+import com.zjmzxfzhl.common.core.redis.util.RedisUtil;
+import com.zjmzxfzhl.common.core.util.*;
+import com.zjmzxfzhl.modules.sys.common.SysConstants;
+import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
+import com.zjmzxfzhl.modules.sys.entity.*;
+import com.zjmzxfzhl.modules.sys.entity.vo.Meta;
+import com.zjmzxfzhl.modules.sys.entity.vo.Route;
+import com.zjmzxfzhl.modules.sys.entity.vo.SysPasswordForm;
+import com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO;
+import com.zjmzxfzhl.modules.sys.mapper.SysUserMapper;
+import com.zjmzxfzhl.modules.sys.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,41 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Sets;
-import com.zjmzxfzhl.common.core.Constants;
-import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
-import com.zjmzxfzhl.common.core.exception.SysException;
-import com.zjmzxfzhl.common.core.util.CommonUtil;
-import com.zjmzxfzhl.common.core.util.DateUtil;
-import com.zjmzxfzhl.common.core.util.IpUtils;
-import com.zjmzxfzhl.common.core.util.PasswordUtil;
-import com.zjmzxfzhl.common.core.util.RedisUtil;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
-import com.zjmzxfzhl.modules.sys.common.SysConstants;
-import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
-import com.zjmzxfzhl.modules.sys.entity.SysMenu;
-import com.zjmzxfzhl.modules.sys.entity.SysOrg;
-import com.zjmzxfzhl.modules.sys.entity.SysPostUser;
-import com.zjmzxfzhl.modules.sys.entity.SysRole;
-import com.zjmzxfzhl.modules.sys.entity.SysRoleUser;
-import com.zjmzxfzhl.modules.sys.entity.SysUser;
-import com.zjmzxfzhl.modules.sys.entity.vo.Meta;
-import com.zjmzxfzhl.modules.sys.entity.vo.Route;
-import com.zjmzxfzhl.modules.sys.entity.vo.SysPasswordForm;
-import com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO;
-import com.zjmzxfzhl.modules.sys.mapper.SysUserMapper;
-import com.zjmzxfzhl.modules.sys.service.SysOrgService;
-import com.zjmzxfzhl.modules.sys.service.SysPostUserService;
-import com.zjmzxfzhl.modules.sys.service.SysRoleService;
-import com.zjmzxfzhl.modules.sys.service.SysRoleUserService;
-import com.zjmzxfzhl.modules.sys.service.SysUserService;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户Service
- * 
+ *
  * @author 庄金明
  */
 @Service
@@ -83,7 +64,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     /**
      * 公共选人查询
-     * 
+     *
      * @param page
      * @param sysUser
      * @return
@@ -100,10 +81,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     /**
      * 获取用户信息 ，
-     * 
+     * <p>
      * 若用户变更角色，则roleId不能为空,并且将变更后的roleId更新到T_SYS_USER表中
-     * 
-     * @param sysUser
+     *
+     * @param userId
+     * @param roleId
      * @return
      */
     @Override
@@ -156,14 +138,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             updateRoleIdUser.setRoleId(roleId);
             updateById(updateRoleIdUser);
         }
-        String ipAddr = IpUtils
-                .getIpAddr(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        String ipAddr =
+                IpUtils.getIpAddr(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return new SysSecurityUser(sysUser, sysOrg, sysRoleUser, sysRoles, routes, DateUtil.getNow(), ipAddr,
                 SysConstants.USER_STATUS_1.equals(sysUser.getStatus()), true, true, true, authorities);
     }
 
     /**
-     * 
      * @param sysUser
      * @param roleId
      * @return
@@ -255,9 +236,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     /**
      * 通过URL生成路由name（去掉URL前缀斜杠，替换内容中的斜杠‘/’为-）
-     * 
+     * <p>
      * 举例： URL = /sys/config RouteName = sysConfig
-     * 
+     *
      * @return
      */
     private String urlToRouteName(String url) {
@@ -274,14 +255,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     /**
      * 新增用户
-     * 
+     *
      * @param sysUser
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveSysUser(SysUser sysUser) {
         // String salt = PasswordUtil.randomGen(8);
-        String defaultPassword = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + "defaultPassword", "1");
+        String defaultPassword = (String) redisUtil.get(CacheConstants.SYS_CONFIG + "defaultPassword", "1");
         // 默认密码
         String password = PasswordUtil.encryptPassword(defaultPassword);
         // sysUser.setSalt(salt);
@@ -294,7 +275,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     /**
      * 修改用户
-     * 
+     *
      * @param sysUser
      */
     @Override
@@ -318,7 +299,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     /**
      * 删除用户
-     * 
+     *
      * @param ids
      */
     @Override
@@ -344,7 +325,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     /**
      * 修改密码
-     * 
+     *
      * @param sysPasswordForm
      */
     @Override

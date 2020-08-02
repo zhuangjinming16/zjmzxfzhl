@@ -28,11 +28,8 @@ public class CreateVue {
     private final static String DATETIME_TYPE = "时间型";
 
     /**
-     * 
-     * @param createTableName
-     *            需要创建的表名
-     * @param templetPath
-     *            模板路径
+     * @param createTableName 需要创建的表名
+     * @param templetPath     模板路径
      */
     public static void create(String createTableName, String templetPath) {
         StringBuffer stringBufferAll = new StringBuffer();
@@ -67,9 +64,7 @@ public class CreateVue {
             // 字段名称,定义变量,方便引用,用CODE_TYPE_ID进行举例
             // String _CodeTypeId = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), true);
             String codeTypeId = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);
-            if ("createBy".equals(codeTypeId) || "createDate".equals(codeTypeId) || "createTime".equals(codeTypeId)
-                    || "updateBy".equals(codeTypeId) || "updateDate".equals(codeTypeId)
-                    || "updateTime".equals(codeTypeId)) {
+            if ("createBy".equals(codeTypeId) || "createDate".equals(codeTypeId) || "createTime".equals(codeTypeId) || "updateBy".equals(codeTypeId) || "updateDate".equals(codeTypeId) || "updateTime".equals(codeTypeId)) {
                 continue;
             }
             Boolean isPrimaryKey = CommonUtil.isExist("UUID主键,数据库生成主键,前台输入主键", tableObject.getIsNull(), ",");
@@ -93,8 +88,8 @@ public class CreateVue {
             }
             allColumnsDialog = resolveAllColumnsDialog(allColumnsDialog, tableObject, codeTypeId, readOnlyStr);
             if (isNotNull) {
-                allColumnsRules += "                    " + codeTypeId
-                        + ": [{required: true, message: '该项不能为空', trigger: 'change'}]," + "\r\n";
+                allColumnsRules += "                    " + codeTypeId + ": [{required: true, message: '该项不能为空', " +
+                        "trigger: 'change'}]," + "\r\n";
             }
             if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
                 dicts.put(tableObject.getCodeTypeId(), tableObject.getCodeTypeId());
@@ -120,9 +115,10 @@ public class CreateVue {
     }
 
     private static void writeFile(StringBuffer stringBufferAll, String sysUpper, String sys, String aSys,
-            String aCodeType, String codeType, String searchConditions, String searchConditionsData,
-            String searchColumnsList, String primaryKey, String allColumnsDialog, String allColumnsData,
-            String allColumnsRules, String loadDicts, String tableNameCn) {
+                                  String aCodeType, String codeType, String searchConditions,
+                                  String searchConditionsData, String searchColumnsList, String primaryKey,
+                                  String allColumnsDialog, String allColumnsData, String allColumnsRules,
+                                  String loadDicts, String tableNameCn) {
         try {
             String filePath = CodeUtil.projectPath + "vue\\modules\\" + sys + "\\" + codeType + "\\";
             File file = new File(filePath);
@@ -161,8 +157,8 @@ public class CreateVue {
 
     private static void readStringBufferAll(String templetPath, StringBuffer stringBufferAll) {
         // 读取模板内容
-        File actionFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template\\"
-                + templetPath + "\\Vue.txt");
+        File actionFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template" +
+                "\\" + templetPath + "\\Vue.txt");
         BufferedReader bufferedReader = null;
         try {
             FileInputStream fileInputStream = new FileInputStream(actionFile);
@@ -185,73 +181,58 @@ public class CreateVue {
         }
     }
 
-    private static String resolveAllColumnsDialog(String allColumnsDialog, TableObject tableObject, String codeTypeId,
-            String readOnlyStr) {
+    private static String resolveAllColumnsDialog(String allColumnsDialog, TableObject tableObject, String codeTypeId
+            , String readOnlyStr) {
         if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
-            allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\""
-                    + codeTypeId + "\"><el-select v-model=\"temp." + codeTypeId + "\" placeholder=\""
-                    + tableObject.getColumnNameCn() + "\"><el-option v-for=\"(item, index) in dicts."
-                    + tableObject.getCodeTypeId()
-                    + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select></el-form-item>"
-                    + "\r\n";
+            allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" " +
+                    "prop=\"" + codeTypeId + "\"><el-select v-model=\"temp." + codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\"><el-option v-for=\"(item, index) in dicts." + tableObject.getCodeTypeId() + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select></el-form-item>" + "\r\n";
         } else {
             if (DATE_TYPE.equals(tableObject.getDataType())) {
-                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn()
-                        + "\" prop=\"" + codeTypeId + "\"><el-date-picker v-model=\"temp." + codeTypeId
-                        + "\" type=\"date\"></el-date-picker></el-form-item>" + "\r\n";
+                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" " +
+                        "prop=\"" + codeTypeId + "\"><el-date-picker v-model=\"temp." + codeTypeId + "\" type=\"date" +
+                        "\"></el-date-picker></el-form-item>" + "\r\n";
             } else if (DATETIME_TYPE.equals(tableObject.getDataType())) {
-                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn()
-                        + "\" prop=\"" + codeTypeId + "\"><el-date-picker v-model=\"temp." + codeTypeId
-                        + "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\"></el-date-picker></el-form-item>"
-                        + "\r\n";
+                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" " +
+                        "prop=\"" + codeTypeId + "\"><el-date-picker v-model=\"temp." + codeTypeId + "\" " +
+                        "type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\"></el-date-picker></el-form-item>" +
+                        "\r\n";
             } else {
-                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn()
-                        + "\" prop=\"" + codeTypeId + "\"><el-input v-model=\"temp." + codeTypeId + "\"" + readOnlyStr
-                        + "/></el-form-item>" + "\r\n";
+                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" " +
+                        "prop=\"" + codeTypeId + "\"><el-input v-model=\"temp." + codeTypeId + "\"" + readOnlyStr +
+                        "/></el-form-item>" + "\r\n";
             }
         }
         return allColumnsDialog;
     }
 
     private static String resolveSearchColumnsList(String searchColumnsList, TableObject tableObject,
-            String codeTypeId) {
+                                                   String codeTypeId) {
         if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
-            searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" prop=\""
-                    + codeTypeId
-                    + "\" align=\"center\"><template slot-scope=\"scope\"><span v-html=\"formatDictText(dicts."
-                    + tableObject.getCodeTypeId() + ",scope.row." + codeTypeId
-                    + ")\"></span></template></el-table-column>" + "\r\n";
+            searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" " +
+                    "prop=\"" + codeTypeId + "\" align=\"center\"><template slot-scope=\"scope\"><span " +
+                    "v-html=\"formatDictText(dicts." + tableObject.getCodeTypeId() + ",scope.row." + codeTypeId + ")" +
+                    "\"></span></template></el-table-column>" + "\r\n";
         } else {
-            searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" prop=\""
-                    + codeTypeId + "\" align=\"center\"><template slot-scope=\"scope\"><span>{{ scope.row." + codeTypeId
-                    + " }}</span></template></el-table-column>" + "\r\n";
+            searchColumnsList += "            <el-table-column label=\"" + tableObject.getColumnNameCn() + "\" " +
+                    "prop=\"" + codeTypeId + "\" align=\"center\"><template slot-scope=\"scope\"><span>{{ scope.row." + codeTypeId + " }}</span></template></el-table-column>" + "\r\n";
         }
         return searchColumnsList;
     }
 
     private static String resolveSearchConditions(String searchConditions, TableObject tableObject, String codeTypeId) {
         if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
-            searchConditions += "            <el-select v-model=\"listQuery." + codeTypeId + "\" placeholder=\""
-                    + tableObject.getColumnNameCn()
-                    + "\" class=\"filter-item\"><el-option v-for=\"(item, index) in dicts."
-                    + tableObject.getCodeTypeId()
-                    + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select>"
-                    + "\r\n";
+            searchConditions += "            <el-select v-model=\"listQuery." + codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" class=\"filter-item\"><el-option v-for=\"(item, index) in dicts." + tableObject.getCodeTypeId() + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select>" + "\r\n";
         } else {
             if (DATE_TYPE.equals(tableObject.getDataType())) {
-                searchConditions += "            <el-date-picker v-model=\"listQuery." + codeTypeId
-                        + "\" placeholder=\"" + tableObject.getColumnNameCn()
-                        + "\" type=\"date\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>" + "\r\n";
+                searchConditions += "            <el-date-picker v-model=\"listQuery." + codeTypeId + "\" placeholder" +
+                        "=\"" + tableObject.getColumnNameCn() + "\" type=\"date\" style=\"width: 200px;\" " +
+                        "class=\"filter-item\"></el-date-picker>" + "\r\n";
             } else if (DATETIME_TYPE.equals(tableObject.getDataType())) {
-                searchConditions += "            <el-date-picker v-model=\"listQuery." + codeTypeId
-                        + "\" placeholder=\"" + tableObject.getColumnNameCn()
-                        + "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>"
-                        + "\r\n";
+                searchConditions += "            <el-date-picker v-model=\"listQuery." + codeTypeId + "\" placeholder" +
+                        "=\"" + tableObject.getColumnNameCn() + "\" type=\"datetime\" value-format=\"yyyy-MM-dd " +
+                        "HH:mm:ss\" style=\"width: 200px;\" class=\"filter-item\"></el-date-picker>" + "\r\n";
             } else {
-                searchConditions += "            <el-input v-model=\"listQuery." + codeTypeId + "\" placeholder=\""
-                        + tableObject.getColumnNameCn()
-                        + "\" style=\"width: 200px;\" class=\"filter-item\" @keyup.enter.native=\"btnQuery\"/>"
-                        + "\r\n";
+                searchConditions += "            <el-input v-model=\"listQuery." + codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn() + "\" style=\"width: 200px;\" class=\"filter-item\" @keyup.enter.native=\"btnQuery\"/>" + "\r\n";
             }
         }
         return searchConditions;

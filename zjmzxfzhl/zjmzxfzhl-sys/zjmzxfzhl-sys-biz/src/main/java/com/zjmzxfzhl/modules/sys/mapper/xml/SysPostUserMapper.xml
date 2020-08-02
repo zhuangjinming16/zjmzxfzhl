@@ -3,8 +3,8 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysPostUserMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysPostUser">
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysPostUser">
 		select
 			a.POST_USER_ID as postUserId,
 			a.POST_ID as postId,

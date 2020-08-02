@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.base.BaseController;
-import com.zjmzxfzhl.common.core.server.Server;
+import com.zjmzxfzhl.modules.monitor.server.Server;
 
 /**
  * 服务器监控
- * 
+ *
  * @author 庄金明
  */
 @RestController

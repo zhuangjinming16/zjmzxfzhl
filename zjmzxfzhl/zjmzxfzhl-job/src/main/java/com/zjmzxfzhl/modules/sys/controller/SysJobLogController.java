@@ -24,7 +24,7 @@ import com.zjmzxfzhl.modules.sys.service.SysJobLogService;
 
 /**
  * 定时任务执行日志Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -35,7 +35,7 @@ public class SysJobLogController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysJobLog
      * @param current
      * @param size
@@ -56,9 +56,9 @@ public class SysJobLogController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysJobLog
      * @return
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('sys:jobLog:save')")
     @PostMapping(value = "/save")
@@ -68,9 +68,9 @@ public class SysJobLogController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysJobLog
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('sys:jobLog:update')")
     @PutMapping(value = "/update")
@@ -80,9 +80,9 @@ public class SysJobLogController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('sys:jobLog:delete')")
     @DeleteMapping(value = "/delete")

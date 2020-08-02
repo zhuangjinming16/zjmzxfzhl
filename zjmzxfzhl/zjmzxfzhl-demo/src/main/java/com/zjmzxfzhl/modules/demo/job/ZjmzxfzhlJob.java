@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 定时任务调度demo
- * 
+ *
  * @author 庄金明
  */
 @Component("zjmzxfzhlJob")

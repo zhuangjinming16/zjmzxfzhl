@@ -38,8 +38,8 @@ public class CreateMybatisMapperXml {
         String aCodeType = CodeUtil.getTuoFengName(StringUtils.substringAfter(moduleId, "_"), true);
         String codeType = CodeUtil.getTuoFengName(StringUtils.substringAfter(moduleId, "_"), false);
         // 读取模板内容
-        File serviceFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template\\"
-                + templetPath + "\\MapperXml.txt");
+        File serviceFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template" +
+                "\\" + templetPath + "\\MapperXml.txt");
         try {
             FileInputStream fileInputStream = new FileInputStream(serviceFile);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "utf-8");
@@ -85,12 +85,12 @@ public class CreateMybatisMapperXml {
         // 【4】得到updateSetValues 更新值
         String updateSetValues = getUpdateSetValues(list);
         try {
-            String filePath = CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\modules\\" + sys
-                    + "\\mapper\\xml\\";
+            String filePath = CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\modules\\" + sys + "\\mapper" +
+                    "\\xml\\";
             File file = new File(filePath);
             file.mkdirs();
-            BufferedWriter bufferedWriter = new BufferedWriter(
-                    new FileWriter(new File(filePath + aSys + aCodeType + "Mapper.xml")));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath + aSys + aCodeType +
+                    "Mapper.xml")));
             // 根据表名替换:关键词
             String temp = stringBufferAll.toString();
             temp = StringUtils.replace(temp, "{_SYS}", sysUpper);
@@ -117,7 +117,7 @@ public class CreateMybatisMapperXml {
 
     /**
      * 得到查询list的where条件字符串--多表查询
-     * 
+     *
      * @param list
      * @return
      */
@@ -131,14 +131,12 @@ public class CreateMybatisMapperXml {
                 // 要被搜索的字段名,驼峰法变成小写
                 String columnNameEn = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);
 
-                if ("字符型".equals(tableObject.getDataType()) || "整数型".equals(tableObject.getDataType())
-                        || "浮点型".equals(tableObject.getDataType())) {
+                if ("字符型".equals(tableObject.getDataType()) || "整数型".equals(tableObject.getDataType()) || "浮点型".equals(tableObject.getDataType())) {
                     // <if test="userId != null and userId !=''">
                     // <![CDATA[ a.USER_ID = #{userId} AND ]]>
-                    stringBuffer.append("        " + "<if test=\"entity." + columnNameEn + " != null and entity."
-                            + columnNameEn + " !=''\">" + "\r\n");
-                    stringBuffer.append("            " + "<![CDATA[    AND a." + tableObject.getColumnNameEn()
-                            + " = #{entity." + columnNameEn + "}    ]]>" + "\r\n");
+                    stringBuffer.append("        " + "<if test=\"entity." + columnNameEn + " != null and entity." + columnNameEn + " !=''\">" + "\r\n");
+                    stringBuffer.append("            " + "<![CDATA[    AND a." + tableObject.getColumnNameEn() + " = " +
+                            "#{entity." + columnNameEn + "}    ]]>" + "\r\n");
                     stringBuffer.append("        " + "</if>" + "\r\n");
                 }
 
@@ -150,7 +148,7 @@ public class CreateMybatisMapperXml {
 
     /**
      * 得到查询list的列表字段--字符串
-     * 
+     *
      * @param list
      * @return
      */
@@ -160,12 +158,7 @@ public class CreateMybatisMapperXml {
         for (int i = 0; i < list.size(); i++) {
 
             TableObject tableObject = list.get(i);
-            if ("CREATE_BY".equalsIgnoreCase(tableObject.getColumnNameEn())
-                    || "CREATE_DATE".equalsIgnoreCase(tableObject.getColumnNameEn())
-                    || "CREATE_TIME".equalsIgnoreCase(tableObject.getColumnNameEn())
-                    || "UPDATE_BY".equalsIgnoreCase(tableObject.getColumnNameEn())
-                    || "UPDATE_DATE".equalsIgnoreCase(tableObject.getColumnNameEn())
-                    || "UPDATE_TIME".equalsIgnoreCase(tableObject.getColumnNameEn())) {
+            if ("CREATE_BY".equalsIgnoreCase(tableObject.getColumnNameEn()) || "CREATE_DATE".equalsIgnoreCase(tableObject.getColumnNameEn()) || "CREATE_TIME".equalsIgnoreCase(tableObject.getColumnNameEn()) || "UPDATE_BY".equalsIgnoreCase(tableObject.getColumnNameEn()) || "UPDATE_DATE".equalsIgnoreCase(tableObject.getColumnNameEn()) || "UPDATE_TIME".equalsIgnoreCase(tableObject.getColumnNameEn())) {
                 continue;
             }
             if (i == 0) {
@@ -173,8 +166,7 @@ public class CreateMybatisMapperXml {
             } else {
                 stringBuffer.append(",\r\n            ");
             }
-            stringBuffer.append("a." + tableObject.getColumnNameEn() + " as "
-                    + CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false));
+            stringBuffer.append("a." + tableObject.getColumnNameEn() + " as " + CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false));
 
         }
 
@@ -183,7 +175,7 @@ public class CreateMybatisMapperXml {
 
     /**
      * 得到查询list的where条件字符串--单表查询
-     * 
+     *
      * @param list
      * @return
      */
@@ -195,7 +187,7 @@ public class CreateMybatisMapperXml {
 
     /**
      * 得到insert的列
-     * 
+     *
      * @param list
      * @return
      */
@@ -219,7 +211,7 @@ public class CreateMybatisMapperXml {
 
     /**
      * 得到insert的值
-     * 
+     *
      * @param list
      * @return
      */
@@ -243,7 +235,7 @@ public class CreateMybatisMapperXml {
 
     /**
      * 得到update的值
-     * 
+     *
      * @param list
      * @return
      */
@@ -257,8 +249,7 @@ public class CreateMybatisMapperXml {
 
             // <if test="sampleId != null"> REMARK=#{remark}, </if>
             stringBuffer.append("            " + "<if test=\"" + columnNameEn + " != null\">" + "\r\n");
-            stringBuffer.append("                " + "<![CDATA[    " + tableObject.getColumnNameEn() + " = #{"
-                    + columnNameEn + "},    ]]>" + "\r\n");
+            stringBuffer.append("                " + "<![CDATA[    " + tableObject.getColumnNameEn() + " = #{" + columnNameEn + "},    ]]>" + "\r\n");
             stringBuffer.append("            " + "</if>" + "\r\n");
 
         }

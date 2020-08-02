@@ -64,10 +64,10 @@ spring:
         max-idle: 200
         #最小空闲
         min-idle: 10
-    #sentinel:
+      #sentinel:
       #master: mymaster
       #nodes: 168.168.168.101:26379,168.168.168.102:26379,168.168.168.103:26379
-debug: true 
+debug: true
 swagger-enable: true #生产可关闭设置成false
 #打印mybatis-plussql，生产应关闭
 mybatis-plus:

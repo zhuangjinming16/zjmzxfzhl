@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysLog;
 
 /**
  * 系统日志Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysLogService extends BaseService<SysLog> {
     /**
      * 分页查询系统日志
-     * 
+     *
      * @param page
      * @param sysLog
      * @return

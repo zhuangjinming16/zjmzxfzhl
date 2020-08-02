@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author 庄金明
- *
  */
 @Configuration
 @EnableWebSecurity

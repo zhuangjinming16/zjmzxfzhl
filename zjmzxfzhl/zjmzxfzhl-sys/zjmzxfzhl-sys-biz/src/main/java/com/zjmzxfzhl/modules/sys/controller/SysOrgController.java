@@ -27,7 +27,7 @@ import com.zjmzxfzhl.modules.sys.service.SysOrgService;
 
 /**
  * 机构Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -38,7 +38,7 @@ public class SysOrgController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysOrg
      * @param current
      * @param size
@@ -59,9 +59,9 @@ public class SysOrgController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysOrg
      * @return
+     * @功能：新增
      */
     @Log(value = "新增机构")
     @PreAuthorize("@elp.single('sys:org:save')")
@@ -72,9 +72,9 @@ public class SysOrgController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysOrg
      * @return
+     * @功能：修改
      */
     @Log(value = "修改机构")
     @PreAuthorize("@elp.single('sys:org:update')")
@@ -85,9 +85,9 @@ public class SysOrgController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @Log(value = "删除机构")
     @PreAuthorize("@elp.single('sys:org:delete')")
@@ -107,7 +107,7 @@ public class SysOrgController extends BaseController {
 
     /**
      * 机构管理，机构树数据
-     * 
+     *
      * @return
      */
     @PreAuthorize("@elp.single('sys:org:getTreeData')")
@@ -119,9 +119,8 @@ public class SysOrgController extends BaseController {
 
     /**
      * 公共机构选择树
-     * 
-     * @param type
-     *            不同机构选择树策略(预留字段，可根据不同应用场景新增type，由前端输入)
+     *
+     * @param type 不同机构选择树策略(预留字段，可根据不同应用场景新增type，由前端输入)
      * @return
      */
     @GetMapping(value = "/getSelectTreeData")

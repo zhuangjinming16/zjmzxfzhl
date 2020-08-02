@@ -10,13 +10,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysJob;
 
 /**
  * 定时任务Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysJobMapper extends BaseMapper<SysJob> {
     /**
      * 查询定时任务列表
-     * 
+     *
      * @param page
      * @param entity
      * @return

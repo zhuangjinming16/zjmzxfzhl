@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.base.BaseController;
-import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
 
 /**
  * 用户Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController

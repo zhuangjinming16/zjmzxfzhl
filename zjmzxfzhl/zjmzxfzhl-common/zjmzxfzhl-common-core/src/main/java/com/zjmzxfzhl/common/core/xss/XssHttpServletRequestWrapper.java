@@ -1,15 +1,7 @@
 package com.zjmzxfzhl.common.core.xss;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
+import com.zjmzxfzhl.common.core.exception.SysException;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -17,8 +9,14 @@ import org.jsoup.safety.Whitelist;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import com.zjmzxfzhl.common.core.exception.SysException;
-import com.zjmzxfzhl.common.core.util.CommonUtil;
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author 庄金明
@@ -38,7 +36,8 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public ServletInputStream getInputStream() throws IOException {
         // 非json类型，直接返回
-        if (!MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(super.getHeader(HttpHeaders.CONTENT_TYPE))) {
+        String contentType = super.getHeader(HttpHeaders.CONTENT_TYPE);
+        if (contentType != null && !contentType.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
             return super.getInputStream();
         }
 

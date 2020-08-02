@@ -15,23 +15,24 @@ import com.zjmzxfzhl.modules.sys.permission.provider.OrgDataPermissionProvider;
 
 /**
  * 用户Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 查询用户列表
-     * 
+     *
      * @param page
      * @param entity
      * @return
      */
-    @DataPermission(providers = OrgDataPermissionProvider.class, providerParams = "{\"alias\":\"o\",\"type\":\"1\"}", fieldName = "authFilterSql")
+    @DataPermission(providers = OrgDataPermissionProvider.class, providerParams = "{\"alias\":\"o\",\"type\":\"1\"}",
+            fieldName = "authFilterSql")
     public List<SysUser> list(IPage<SysUser> page, @Param("entity") SysUser entity);
 
     /**
      * 根据用户Id查询角色列表
-     * 
+     *
      * @param userId
      * @return
      */
@@ -39,14 +40,14 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 查询所有权限清单
-     * 
+     *
      * @return
      */
     public List<SysRolePermissionVO> getAdminPermissions();
 
     /**
      * 根据角色Id查询角色权限清单
-     * 
+     *
      * @param roleId
      * @return
      */
@@ -54,7 +55,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 根据角色Id查询菜单列表
-     * 
+     *
      * @param roleId
      * @return
      */

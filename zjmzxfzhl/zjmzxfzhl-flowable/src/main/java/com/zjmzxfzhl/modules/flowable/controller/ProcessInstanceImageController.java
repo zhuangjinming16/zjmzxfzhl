@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.config.CustomProcessDiagramGenerator;
 
@@ -40,17 +40,17 @@ public class ProcessInstanceImageController extends BaseFlowableController {
 
     @GetMapping(value = "/flowable/processInstanceImage")
     public ResponseEntity<byte[]> image(@RequestParam String processInstanceId) {
-        HistoricProcessInstance processInstance = permissionService
-                .validateReadPermissionOnProcessInstance(SecurityUtils.getUserId(), processInstanceId);
+        HistoricProcessInstance processInstance =
+                permissionService.validateReadPermissionOnProcessInstance(SecurityUtils.getUserId(), processInstanceId);
         ProcessDefinition pde = repositoryService.getProcessDefinition(processInstance.getProcessDefinitionId());
         if (pde == null || !pde.hasGraphicalNotation()) {
-            throw new FlowableException(
-                    messageFormat("Process instance image is not found with id {0}", processInstanceId));
+            throw new FlowableException(messageFormat("Process instance image is not found with id {0}",
+                    processInstanceId));
         }
         List<String> highLightedFlows = new ArrayList<>();
         List<String> highLightedActivities = new ArrayList<>();
-        List<HistoricActivityInstance> allHistoricActivityIntances = historyService
-                .createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
+        List<HistoricActivityInstance> allHistoricActivityIntances =
+                historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
         allHistoricActivityIntances.forEach(historicActivityInstance -> {
             if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(historicActivityInstance.getActivityType())) {
                 highLightedFlows.add(historicActivityInstance.getActivityId());
@@ -68,8 +68,8 @@ public class ProcessInstanceImageController extends BaseFlowableController {
         }
 
         BpmnModel bpmnModel = repositoryService.getBpmnModel(pde.getId());
-        CustomProcessDiagramGenerator diagramGenerator = (CustomProcessDiagramGenerator) processEngineConfiguration
-                .getProcessDiagramGenerator();
+        CustomProcessDiagramGenerator diagramGenerator =
+                (CustomProcessDiagramGenerator) processEngineConfiguration.getProcessDiagramGenerator();
         InputStream resource = diagramGenerator.generateCustomDiagram(bpmnModel, "png", highLightedActivities,
                 runningActivitiIdList, highLightedFlows, processEngineConfiguration.getActivityFontName(),
                 processEngineConfiguration.getLabelFontName(), processEngineConfiguration.getAnnotationFontName(),

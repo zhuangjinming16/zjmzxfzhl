@@ -23,7 +23,7 @@ import com.zjmzxfzhl.modules.sys.service.SysJobService;
 
 /**
  * 定时任务Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -34,7 +34,7 @@ public class SysJobController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysJob
      * @param current
      * @param size
@@ -55,11 +55,11 @@ public class SysJobController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysJob
      * @return
      * @throws JobException
      * @throws SchedulerException
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('sys:job:save')")
     @PostMapping(value = "/save")
@@ -69,9 +69,9 @@ public class SysJobController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysJob
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('sys:job:update')")
     @PutMapping(value = "/update")
@@ -81,10 +81,10 @@ public class SysJobController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
      * @throws SchedulerException
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('sys:job:delete')")
     @DeleteMapping(value = "/delete")

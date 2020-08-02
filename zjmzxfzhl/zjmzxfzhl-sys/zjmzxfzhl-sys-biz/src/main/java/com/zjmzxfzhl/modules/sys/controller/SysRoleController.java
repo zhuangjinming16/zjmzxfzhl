@@ -30,7 +30,7 @@ import com.zjmzxfzhl.modules.sys.service.SysRoleService;
 
 /**
  * 角色Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -41,7 +41,7 @@ public class SysRoleController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysRole
      * @param current
      * @param size
@@ -62,9 +62,9 @@ public class SysRoleController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysRole
      * @return
+     * @功能：新增
      */
     @Log(value = "新增角色")
     @PreAuthorize("@elp.single('sys:role:save')")
@@ -75,9 +75,9 @@ public class SysRoleController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysRole
      * @return
+     * @功能：修改
      */
     @Log(value = "修改角色")
     @PreAuthorize("@elp.single('sys:role:update')")
@@ -88,9 +88,9 @@ public class SysRoleController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @Log(value = "删除角色")
     @PreAuthorize("@elp.single('sys:role:delete')")
@@ -105,7 +105,7 @@ public class SysRoleController extends BaseController {
 
     /**
      * 查询角色权限
-     * 
+     *
      * @param roleId
      * @return
      */
@@ -118,12 +118,10 @@ public class SysRoleController extends BaseController {
 
     /**
      * 保存角色权限
-     * 
+     *
      * @param roleId
-     * @param menuOrFuncIds
-     *            菜单或者按钮ID
-     * @param permissionTypes
-     *            权限类型 1-菜单 2-按钮
+     * @param menuOrFuncIds   菜单或者按钮ID
+     * @param permissionTypes 权限类型 1-菜单 2-按钮
      * @return
      */
     @Log(value = "保存角色权限")
@@ -137,7 +135,7 @@ public class SysRoleController extends BaseController {
 
     /**
      * 获取角色用户
-     * 
+     *
      * @param roleId
      * @return
      */
@@ -150,7 +148,7 @@ public class SysRoleController extends BaseController {
 
     /**
      * 保存角色用户
-     * 
+     *
      * @param sysRoleUser
      * @return
      */
@@ -164,7 +162,7 @@ public class SysRoleController extends BaseController {
 
     /**
      * 删除角色用户
-     * 
+     *
      * @param sysRoleUser
      * @return
      */
@@ -178,7 +176,7 @@ public class SysRoleController extends BaseController {
 
     /**
      * 查询所有角色
-     * 
+     *
      * @return
      */
     @PreAuthorize("@elp.single('sys:role:listAll')")

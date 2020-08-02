@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
 
 /**
  * 流程表单Service
- * 
+ *
  * @author 庄金明
  */
 public interface FlowableFormService extends BaseService<FlowableForm> {
     /**
      * 分页查询流程表单
-     * 
+     *
      * @param page
      * @param flowableForm
      * @return

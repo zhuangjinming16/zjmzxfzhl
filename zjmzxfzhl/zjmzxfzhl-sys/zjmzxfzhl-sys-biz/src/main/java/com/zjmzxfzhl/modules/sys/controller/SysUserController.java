@@ -24,15 +24,15 @@ import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.base.BaseController;
 import com.zjmzxfzhl.common.core.exception.SysException;
 import com.zjmzxfzhl.common.log.annotation.Log;
-import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysPasswordForm;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
 
 /**
  * 用户Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -43,7 +43,7 @@ public class SysUserController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysUser
      * @param current
      * @param size
@@ -61,7 +61,7 @@ public class SysUserController extends BaseController {
 
     /**
      * 公共选人查询
-     * 
+     *
      * @param sysUser
      * @param current
      * @param size
@@ -81,9 +81,9 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysUser
      * @return
+     * @功能：新增
      */
     @Log(value = "新增用户")
     @PreAuthorize("@elp.single('sys:user:save')")
@@ -94,9 +94,9 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysUser
      * @return
+     * @功能：修改
      */
     @Log(value = "修改用户")
     @PreAuthorize("@elp.single('sys:user:update')")
@@ -107,9 +107,9 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @Log(value = "删除用户")
     @PreAuthorize("@elp.single('sys:user:delete')")

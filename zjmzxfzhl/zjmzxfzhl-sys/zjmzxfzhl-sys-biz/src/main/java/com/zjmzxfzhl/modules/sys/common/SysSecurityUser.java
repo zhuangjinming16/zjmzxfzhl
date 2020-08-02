@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysOrg;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -37,11 +37,13 @@ public class SysSecurityUser extends SecurityUser {
     @Getter
     private String ipAddr;
 
-    public SysSecurityUser(SysUser sysUser, SysOrg sysOrg, SysRole sysRole, List<SysRole> sysRoles, List<Route> routes,
-            Date loginTime, String ipAddr, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
-            boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(sysRole.getRoleId(), sysUser.getUserId(), sysUser.getPassword(), enabled, accountNonExpired,
-                credentialsNonExpired, accountNonLocked, authorities);
+    public SysSecurityUser(SysUser sysUser, SysOrg sysOrg, SysRole sysRole, List<SysRole> sysRoles,
+                           List<Route> routes, Date loginTime, String ipAddr, boolean enabled,
+                           boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
+                           Collection<? extends GrantedAuthority> authorities) {
+        super(sysRole.getRoleId(), sysOrg.getOrgId(), sysUser.getUserName(), null, sysUser.getUserId(),
+                sysUser.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked,
+                authorities);
         this.sysUser = sysUser;
         this.sysOrg = sysOrg;
         this.sysRole = sysRole;

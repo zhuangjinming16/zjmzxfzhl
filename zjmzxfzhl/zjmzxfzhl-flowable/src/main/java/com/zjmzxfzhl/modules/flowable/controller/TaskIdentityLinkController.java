@@ -50,7 +50,7 @@ public class TaskIdentityLinkController extends BaseFlowableController {
     @PreAuthorize("@elp.single('flowable:taskIdentityLink:delete')")
     @DeleteMapping(value = "/delete")
     public Result deleteIdentityLink(@RequestParam String taskId, @RequestParam String identityId,
-            @RequestParam String identityType) {
+                                     @RequestParam String identityType) {
         flowableTaskService.deleteTaskIdentityLink(taskId, identityId, identityType);
         return Result.ok();
     }

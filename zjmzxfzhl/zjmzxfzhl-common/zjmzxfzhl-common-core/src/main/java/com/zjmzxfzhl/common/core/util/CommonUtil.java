@@ -1,14 +1,14 @@
 package com.zjmzxfzhl.common.core.util;
 
-import java.io.UnsupportedEncodingException;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.zjmzxfzhl.common.core.exception.BaseException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ObjectUtils;
 
-import com.zjmzxfzhl.common.core.exception.BaseException;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 庄金明
@@ -44,6 +44,12 @@ public class CommonUtil {
         }
     }
 
+    public static void isEmptyMapWithKey(Map<String, Object> map, String key, String message) {
+        if (map == null || isEmptyObject(map.get(key))) {
+            throw new BaseException(message);
+        }
+    }
+
     public static boolean isNotEmptyStr(String str) {
         return !StringUtils.isEmpty(str);
     }
@@ -68,13 +74,10 @@ public class CommonUtil {
 
     /**
      * 验证[某字符串]是否存在于逗号分隔的字符串中
-     * 
-     * @param str
-     *            【abc,123,www】
-     * @param substr
-     *            【123】
-     * @param sepatator
-     *            【,】
+     *
+     * @param str       【abc,123,www】
+     * @param substr    【123】
+     * @param sepatator 【,】
      * @return
      */
     public static boolean isExist(String str, String substr, String sepatator) {
@@ -96,7 +99,7 @@ public class CommonUtil {
 
     /**
      * 对String型的id号串,拆分成数组 【abc,123,www】将拆分成str数组
-     * 
+     *
      * @param srcIds
      * @param splitChar
      * @return
@@ -136,7 +139,7 @@ public class CommonUtil {
 
     /**
      * 中文字符串转为utf-8格式
-     * 
+     *
      * @param s
      * @return
      */
@@ -167,11 +170,9 @@ public class CommonUtil {
 
     /**
      * 根据指定的分隔符转换字符串
-     * 
-     * @param source
-     *            原字符串
-     * @param separator
-     *            分隔符
+     *
+     * @param source    原字符串
+     * @param separator 分隔符
      * @return 例子：'1,2,3,4' 转换为'1','2','3','4'
      */
     public static String castStringBySeparator(String source, String separator) {
@@ -187,7 +188,7 @@ public class CommonUtil {
 
     /**
      * 手机号验证
-     * 
+     *
      * @param str
      * @return 验证通过返回true
      */
@@ -211,7 +212,7 @@ public class CommonUtil {
 
     /**
      * 电话号码验证
-     * 
+     *
      * @param str
      * @return 验证通过返回true
      */
@@ -230,7 +231,7 @@ public class CommonUtil {
 
     /**
      * 获取32位唯一的uuid,不带横杠
-     * 
+     *
      * @return
      */
     public static String getUuid() {
@@ -239,7 +240,7 @@ public class CommonUtil {
 
     /**
      * 获取32位唯一的uuid,带横杠
-     * 
+     *
      * @return
      */
     public static String getUuid2() {
@@ -260,7 +261,7 @@ public class CommonUtil {
 
     /**
      * 根据指定编码切割字符串
-     * 
+     *
      * @param str
      * @param num
      * @param charsetName
@@ -279,27 +280,5 @@ public class CommonUtil {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * 格式化文本, {} 表示占位符<br>
-     * 此方法只是简单将占位符 {} 按照顺序替换为参数<br>
-     * 如果想输出 {} 使用 \\转义 { 即可，如果想输出 {} 之前的 \ 使用双转义符 \\\\ 即可<br>
-     * 例：<br>
-     * 通常使用：format("this is {} for {}", "a", "b") -> this is a for b<br>
-     * 转义{}： format("this is \\{} for {}", "a", "b") -> this is \{} for a<br>
-     * 转义\： format("this is \\\\{} for {}", "a", "b") -> this is \a for b<br>
-     * 
-     * @param template
-     *            文本模板，被替换的部分用 {} 表示
-     * @param params
-     *            参数值
-     * @return 格式化后的文本
-     */
-    public static String format(String template, Object... params) {
-        if (isEmptyStr(template) || isEmptyObject(params)) {
-            return template;
-        }
-        return StringFormatter.format(template, params);
     }
 }

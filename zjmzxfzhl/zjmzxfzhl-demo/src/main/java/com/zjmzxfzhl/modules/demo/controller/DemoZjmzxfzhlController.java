@@ -24,7 +24,7 @@ import com.zjmzxfzhl.modules.demo.service.DemoZjmzxfzhlService;
 
 /**
  * 开发示例Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -35,7 +35,7 @@ public class DemoZjmzxfzhlController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param demoZjmzxfzhl
      * @param current
      * @param size
@@ -73,9 +73,9 @@ public class DemoZjmzxfzhlController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param demoZjmzxfzhl
      * @return
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('demo:zjmzxfzhl:save')")
     @PostMapping(value = "/save")
@@ -85,9 +85,9 @@ public class DemoZjmzxfzhlController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param demoZjmzxfzhl
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('demo:zjmzxfzhl:update')")
     @PutMapping(value = "/update")
@@ -97,9 +97,9 @@ public class DemoZjmzxfzhlController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('demo:zjmzxfzhl:delete')")
     @DeleteMapping(value = "/delete")

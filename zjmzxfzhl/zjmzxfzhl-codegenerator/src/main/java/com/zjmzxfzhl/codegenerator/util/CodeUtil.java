@@ -1,19 +1,13 @@
 package com.zjmzxfzhl.codegenerator.util;
 
+import com.zjmzxfzhl.common.core.constant.Constants;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.*;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-
-import com.zjmzxfzhl.common.core.Constants;
-import com.zjmzxfzhl.common.core.util.CommonUtil;
 
 /**
  * @author 庄金明
@@ -36,9 +30,8 @@ public class CodeUtil {
     /**
      * 开发工程所在系统绝对路径
      */
-    public static String projectPath = System.getProperty("user.dir").indexOf("\\zjmzxfzhl-codegenerator") != -1
-            ? System.getProperty("user.dir") + "\\"
-            : System.getProperty("user.dir") + "\\zjmzxfzhl-codegenerator\\";
+    public static String projectPath = System.getProperty("user.dir").indexOf("\\zjmzxfzhl-codegenerator") != -1 ?
+            System.getProperty("user.dir") + "\\" : System.getProperty("user.dir") + "\\zjmzxfzhl-codegenerator\\";
     /**
      * 自动生成的建表语句的输出路径
      */
@@ -53,8 +46,7 @@ public class CodeUtil {
     /**
      * 返回驼峰命名法结果.
      *
-     * @param name
-     *            如:CODE_TYPE;Menu
+     * @param name 如:CODE_TYPE;Menu
      * @return 如: codeType, menu
      */
     public static String getTuoFengName(String name, boolean firstUpper) {
@@ -153,8 +145,7 @@ public class CodeUtil {
     private final static String YES_NO_STRING = "是,否";
     private final static String YES = "是";
 
-    private static TableObject resolveTableObject(Sheet sheet, String tableName, String tableNameCn, int i)
-            throws Exception {
+    private static TableObject resolveTableObject(Sheet sheet, String tableName, String tableNameCn, int i) throws Exception {
         // 组织TableObject对象.
         TableObject tableObject = new TableObject();
         tableObject.setTableName(tableName);
@@ -205,10 +196,8 @@ public class CodeUtil {
     /**
      * 读取excel的时候,取得String型的值.
      *
-     * @param row
-     *            excel行对象
-     * @param cellIndex
-     *            从0开始算
+     * @param row       excel行对象
+     * @param cellIndex 从0开始算
      * @return
      */
     public static String getStringRowCellValue(Row row, int cellIndex) {
@@ -218,23 +207,23 @@ public class CodeUtil {
                 Cell cell = row.getCell(cellIndex);
                 if (cell != null) {
                     switch (cell.getCellType()) {
-                    case STRING:
-                        result = StringUtils.trimToEmpty(cell.getStringCellValue());
-                        break;
-                    case NUMERIC:
-                        // 把数字型转换成 字符串
-                        cell.setCellType(CellType.STRING);
-                        result = StringUtils.trimToEmpty(cell.getStringCellValue());
-                        break;
-                    case BOOLEAN:
-                        result = String.valueOf(cell.getBooleanCellValue());
-                        break;
-                    case BLANK:
-                        result = "";
-                        break;
-                    default:
-                        result = "";
-                        break;
+                        case STRING:
+                            result = StringUtils.trimToEmpty(cell.getStringCellValue());
+                            break;
+                        case NUMERIC:
+                            // 把数字型转换成 字符串
+                            cell.setCellType(CellType.STRING);
+                            result = StringUtils.trimToEmpty(cell.getStringCellValue());
+                            break;
+                        case BOOLEAN:
+                            result = String.valueOf(cell.getBooleanCellValue());
+                            break;
+                        case BLANK:
+                            result = "";
+                            break;
+                        default:
+                            result = "";
+                            break;
                     }
                 }
             }

@@ -15,7 +15,7 @@ public interface ProcessDefinitionService {
 
     /**
      * 查询单一流程定义
-     * 
+     *
      * @param processDefinitionId
      * @return
      */
@@ -23,7 +23,7 @@ public interface ProcessDefinitionService {
 
     /**
      * 删除流程定义
-     * 
+     *
      * @param processDefinitionId
      * @param cascade
      */
@@ -31,21 +31,21 @@ public interface ProcessDefinitionService {
 
     /**
      * 激活流程定义
-     * 
+     *
      * @param actionRequest
      */
     void activate(ProcessDefinitionRequest actionRequest);
 
     /**
      * 挂起流程定义
-     * 
+     *
      * @param actionRequest
      */
     void suspend(ProcessDefinitionRequest actionRequest);
 
     /**
      * 导入流程定义
-     * 
+     *
      * @param tenantId
      * @param request
      */
@@ -53,14 +53,14 @@ public interface ProcessDefinitionService {
 
     /**
      * 保存流程授权
-     * 
+     *
      * @param identityRequest
      */
     void saveProcessDefinitionIdentityLink(IdentityRequest identityRequest);
 
     /**
      * 删除流程授权
-     * 
+     *
      * @param processDefinitionId
      * @param identityId
      * @param type

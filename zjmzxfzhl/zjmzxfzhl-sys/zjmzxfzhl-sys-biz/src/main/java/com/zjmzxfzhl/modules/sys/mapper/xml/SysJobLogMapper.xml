@@ -3,30 +3,30 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysJobLogMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysJobLog">
-		select
-			a.JOB_LOG_ID as jobLogId,
-			a.JOB_NAME as jobName,
-			a.JOB_GROUP as jobGroup,
-			a.INVOKE_TARGET as invokeTarget,
-			a.JOB_MESSAGE as jobMessage,
-			a.STATUS as status,
-			a.EXCEPTION_INFO as exceptionInfo,
-			a.START_TIME as startTime,
-			a.STOP_TIME as stopTime
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysJobLog">
+        select
+        a.JOB_LOG_ID as jobLogId,
+        a.JOB_NAME as jobName,
+        a.JOB_GROUP as jobGroup,
+        a.INVOKE_TARGET as invokeTarget,
+        a.JOB_MESSAGE as jobMessage,
+        a.STATUS as status,
+        a.EXCEPTION_INFO as exceptionInfo,
+        a.START_TIME as startTime,
+        a.STOP_TIME as stopTime
 
-		from T_SYS_JOB_LOG a 
-		where 1=1 
-		<if test="entity.jobName != null and entity.jobName !=''">
-			<![CDATA[	AND a.JOB_NAME = #{entity.jobName}	]]>
-		</if>
-		<if test="entity.jobGroup != null and entity.jobGroup !=''">
-			<![CDATA[	AND a.JOB_GROUP = #{entity.jobGroup}	]]>
-		</if>
-		<if test="entity.status != null and entity.status !=''">
-			<![CDATA[	AND a.STATUS = #{entity.status}	]]>
-		</if>
-		order by a.CREATE_TIME desc
-	</select>
+        from T_SYS_JOB_LOG a
+        where 1=1
+        <if test="entity.jobName != null and entity.jobName !=''">
+            <![CDATA[	AND a.JOB_NAME = #{entity.jobName}	]]>
+        </if>
+        <if test="entity.jobGroup != null and entity.jobGroup !=''">
+            <![CDATA[	AND a.JOB_GROUP = #{entity.jobGroup}	]]>
+        </if>
+        <if test="entity.status != null and entity.status !=''">
+            <![CDATA[	AND a.STATUS = #{entity.status}	]]>
+        </if>
+        order by a.CREATE_TIME desc
+    </select>
 </mapper>

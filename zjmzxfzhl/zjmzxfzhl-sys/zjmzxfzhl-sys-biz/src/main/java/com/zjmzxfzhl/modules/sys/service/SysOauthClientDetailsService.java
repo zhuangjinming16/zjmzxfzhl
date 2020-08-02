@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysOauthClientDetails;
 
 /**
  * 应用客户端Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysOauthClientDetailsService extends BaseService<SysOauthClientDetails> {
     /**
      * 分页查询应用客户端
-     * 
+     *
      * @param page
      * @param sysOauthClientDetails
      * @return

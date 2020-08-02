@@ -1,15 +1,13 @@
 package com.zjmzxfzhl.common.core.validator;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.invoke.MethodHandles;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
+import com.zjmzxfzhl.common.core.validator.constraints.LengthForGbk;
 import org.hibernate.validator.internal.util.logging.Log;
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
 
-import com.zjmzxfzhl.common.core.validator.constraints.LengthForGbk;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.io.UnsupportedEncodingException;
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author 庄金明

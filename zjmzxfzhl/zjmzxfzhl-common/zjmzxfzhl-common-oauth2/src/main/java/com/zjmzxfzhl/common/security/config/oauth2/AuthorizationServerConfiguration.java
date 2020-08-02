@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.zjmzxfzhl.common.core.constant.CacheConstants;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,13 +28,11 @@ import org.springframework.stereotype.Component;
 
 import com.zjmzxfzhl.common.security.config.oauth2.exception.ZjmzxfzhlWebResponseExceptionTranslator;
 import com.zjmzxfzhl.common.security.config.oauth2.service.RedisClientDetailsService;
-import com.zjmzxfzhl.common.security.userdetails.SecurityUser;
 
 import lombok.SneakyThrows;
 
 /**
  * @author 庄金明
- *
  */
 @Component
 @Configuration
@@ -87,7 +87,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Bean
     public TokenStore tokenStore() {
         RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
-        tokenStore.setPrefix("oauth:access:");
+        tokenStore.setPrefix(CacheConstants.OAUTH_ACCESS);
         return tokenStore;
     }
 

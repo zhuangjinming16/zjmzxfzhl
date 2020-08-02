@@ -13,7 +13,7 @@ import lombok.Data;
 
 /**
  * 【角色和用户关系】实体类
- * 
+ *
  * @author 庄金明
  */
 @Data

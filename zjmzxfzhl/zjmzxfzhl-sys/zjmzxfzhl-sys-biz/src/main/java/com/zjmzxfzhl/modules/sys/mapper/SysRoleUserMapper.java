@@ -10,13 +10,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysRoleUser;
 
 /**
  * 角色和用户关系Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysRoleUserMapper extends BaseMapper<SysRoleUser> {
     /**
      * 查询角色和用户关系列表
-     * 
+     *
      * @param page
      * @param entity
      * @return

@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.common.core.util.ObjectUtils;
-import com.zjmzxfzhl.common.security.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
@@ -54,8 +54,8 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
 
     @Override
     public ProcessInstance getProcessInstanceById(String processInstanceId) {
-        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
-                .processInstanceId(processInstanceId).singleResult();
+        ProcessInstance processInstance =
+                runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         if (processInstance == null) {
             throw new FlowableObjectNotFoundException("No process instance found with id " + processInstanceId);
         }
@@ -64,8 +64,8 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
 
     @Override
     public HistoricProcessInstance getHistoricProcessInstanceById(String processInstanceId) {
-        HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
-                .processInstanceId(processInstanceId).singleResult();
+        HistoricProcessInstance historicProcessInstance =
+                historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         if (historicProcessInstance == null) {
             throw new FlowableObjectNotFoundException("No process instance found with id " + processInstanceId);
         }

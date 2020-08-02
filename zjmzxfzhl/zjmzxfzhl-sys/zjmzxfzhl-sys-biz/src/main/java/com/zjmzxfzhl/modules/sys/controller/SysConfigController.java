@@ -23,7 +23,7 @@ import com.zjmzxfzhl.modules.sys.service.SysConfigService;
 
 /**
  * 系统参数Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -34,7 +34,7 @@ public class SysConfigController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysConfig
      * @param current
      * @param size
@@ -55,9 +55,9 @@ public class SysConfigController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysConfig
      * @return
+     * @功能：新增
      */
     @Log(value = "新增系统参数")
     @PreAuthorize("@elp.single('sys:config:save')")
@@ -68,9 +68,9 @@ public class SysConfigController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysConfig
      * @return
+     * @功能：修改
      */
     @Log(value = "修改系统参数")
     @PreAuthorize("@elp.single('sys:config:update')")
@@ -81,9 +81,9 @@ public class SysConfigController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @Log(value = "删除系统参数")
     @PreAuthorize("@elp.single('sys:config:delete')")

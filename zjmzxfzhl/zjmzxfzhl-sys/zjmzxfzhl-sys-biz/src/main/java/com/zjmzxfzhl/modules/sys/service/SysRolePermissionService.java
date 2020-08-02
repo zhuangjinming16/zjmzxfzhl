@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysRolePermission;
 
 /**
  * 操作权限Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysRolePermissionService extends BaseService<SysRolePermission> {
     /**
      * 分页查询操作权限
-     * 
+     *
      * @param page
      * @param sysRolePermission
      * @return

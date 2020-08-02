@@ -32,19 +32,26 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
         super(1.0);
     }
 
-    public InputStream generateCustomDiagram(BpmnModel bpmnModel, String imageType, List<String> highLightedActivities,
-            List<String> highLightedFlows, List<String> runningActivitiIdList, String activityFontName,
-            String labelFontName, String annotationFontName, ClassLoader customClassLoader, double scaleFactor,
-            boolean drawSequenceFlowNameWithNoLabelDi) {
+    public InputStream generateCustomDiagram(BpmnModel bpmnModel, String imageType,
+                                             List<String> highLightedActivities, List<String> highLightedFlows,
+                                             List<String> runningActivitiIdList, String activityFontName,
+                                             String labelFontName, String annotationFontName,
+                                             ClassLoader customClassLoader, double scaleFactor,
+                                             boolean drawSequenceFlowNameWithNoLabelDi) {
         return generateCustomProcessDiagram(bpmnModel, imageType, highLightedActivities, highLightedFlows,
                 runningActivitiIdList, activityFontName, labelFontName, annotationFontName, customClassLoader,
                 scaleFactor, drawSequenceFlowNameWithNoLabelDi).generateImage(imageType);
     }
 
     protected CustomProcessDiagramCanvas generateCustomProcessDiagram(BpmnModel bpmnModel, String imageType,
-            List<String> highLightedActivities, List<String> runningActivitiIdList, List<String> highLightedFlows,
-            String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader,
-            double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDi) {
+                                                                      List<String> highLightedActivities,
+                                                                      List<String> runningActivitiIdList,
+                                                                      List<String> highLightedFlows,
+                                                                      String activityFontName, String labelFontName,
+                                                                      String annotationFontName,
+                                                                      ClassLoader customClassLoader,
+                                                                      double scaleFactor,
+                                                                      boolean drawSequenceFlowNameWithNoLabelDi) {
 
         prepareBpmnModel(bpmnModel);
         CustomProcessDiagramCanvas processDiagramCanvas = initCustomProcessDiagramCanvas(bpmnModel, imageType,
@@ -103,7 +110,10 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
     }
 
     protected static CustomProcessDiagramCanvas initCustomProcessDiagramCanvas(BpmnModel bpmnModel, String imageType,
-            String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader) {
+                                                                               String activityFontName,
+                                                                               String labelFontName,
+                                                                               String annotationFontName,
+                                                                               ClassLoader customClassLoader) {
 
         // We need to calculate maximum values to know how big the image will be in its entirety
         double minX = Double.MAX_VALUE;
@@ -241,8 +251,9 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
     }
 
     protected void drawCustomActivity(CustomProcessDiagramCanvas processDiagramCanvas, BpmnModel bpmnModel,
-            FlowNode flowNode, List<String> highLightedActivities, List<String> runningActivitiIdList,
-            List<String> highLightedFlows, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDi) {
+                                      FlowNode flowNode, List<String> highLightedActivities,
+                                      List<String> runningActivitiIdList, List<String> highLightedFlows,
+                                      double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDi) {
 
         drawInstruction(processDiagramCanvas, bpmnModel, flowNode, highLightedActivities, runningActivitiIdList,
                 scaleFactor);
@@ -261,8 +272,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
             if (defaultFlow != null && defaultFlow.equalsIgnoreCase(sequenceFlow.getId())) {
                 isDefault = true;
             }
-            boolean drawConditionalIndicator = sequenceFlow.getConditionExpression() != null
-                    && !(flowNode instanceof Gateway);
+            boolean drawConditionalIndicator =
+                    sequenceFlow.getConditionExpression() != null && !(flowNode instanceof Gateway);
 
             String sourceRef = sequenceFlow.getSourceRef();
             String targetRef = sequenceFlow.getTargetRef();
@@ -308,8 +319,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
         // Nested elements
         if (flowNode instanceof FlowElementsContainer) {
             for (FlowElement nestedFlowElement : ((FlowElementsContainer) flowNode).getFlowElements()) {
-                if (nestedFlowElement instanceof FlowNode
-                        && !isPartOfCollapsedSubProcess(nestedFlowElement, bpmnModel)) {
+                if (nestedFlowElement instanceof FlowNode && !isPartOfCollapsedSubProcess(nestedFlowElement,
+                        bpmnModel)) {
                     drawCustomActivity(processDiagramCanvas, bpmnModel, (FlowNode) nestedFlowElement,
                             highLightedActivities, highLightedFlows, runningActivitiIdList, scaleFactor,
                             drawSequenceFlowNameWithNoLabelDi);
@@ -319,8 +330,8 @@ public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerato
     }
 
     private void drawInstruction(CustomProcessDiagramCanvas processDiagramCanvas, BpmnModel bpmnModel,
-            FlowNode flowNode, List<String> highLightedActivities, List<String> runningActivitiIdList,
-            double scaleFactor) {
+                                 FlowNode flowNode, List<String> highLightedActivities,
+                                 List<String> runningActivitiIdList, double scaleFactor) {
         ActivityDrawInstruction drawInstruction = activityDrawInstructions.get(flowNode.getClass());
         if (drawInstruction != null) {
 

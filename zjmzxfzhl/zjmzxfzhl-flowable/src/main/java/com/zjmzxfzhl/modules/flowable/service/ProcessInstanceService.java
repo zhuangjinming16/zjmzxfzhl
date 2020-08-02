@@ -12,7 +12,7 @@ import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 public interface ProcessInstanceService {
     /**
      * 查询单一流程实例
-     * 
+     *
      * @param processInstanceId
      * @return
      */
@@ -20,7 +20,7 @@ public interface ProcessInstanceService {
 
     /**
      * 查询单一历史流程实例
-     * 
+     *
      * @param processInstanceId
      * @return
      */
@@ -28,14 +28,14 @@ public interface ProcessInstanceService {
 
     /**
      * 启动流程实例
-     * 
+     *
      * @param processInstanceRequest
      */
     void start(ProcessInstanceRequest processInstanceRequest);
 
     /**
      * 删除流程实例
-     * 
+     *
      * @param processInstanceId
      * @param cascade
      * @param deleteReason
@@ -44,14 +44,14 @@ public interface ProcessInstanceService {
 
     /**
      * 激活流程实例
-     * 
+     *
      * @param processInstanceId
      */
     void activate(String processInstanceId);
 
     /**
      * 挂起流程实例
-     * 
+     *
      * @param processInstanceId
      */
     void suspend(String processInstanceId);

@@ -73,16 +73,14 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
             }
             repositoryService.deleteDeployment(processDefinition.getDeploymentId(), true);
         } else {
-            long processCount = runtimeService.createProcessInstanceQuery().processDefinitionId(processDefinitionId)
-                    .count();
+            long processCount =
+                    runtimeService.createProcessInstanceQuery().processDefinitionId(processDefinitionId).count();
             if (processCount > 0) {
-                throw new FlowableException(
-                        "There are running instances with process definition id " + processDefinitionId);
+                throw new FlowableException("There are running instances with process definition id " + processDefinitionId);
             }
             long jobCount = managementService.createTimerJobQuery().processDefinitionId(processDefinitionId).count();
             if (jobCount > 0) {
-                throw new FlowableException(
-                        "There are running time jobs with process definition id " + processDefinitionId);
+                throw new FlowableException("There are running time jobs with process definition id " + processDefinitionId);
             }
             repositoryService.deleteDeployment(processDefinition.getDeploymentId());
         }
@@ -96,8 +94,8 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
         if (!processDefinition.isSuspended()) {
             throw new FlowableException("Process definition is not suspended with id " + processDefinitionId);
         }
-        repositoryService.activateProcessDefinitionById(processDefinitionId, actionRequest.isIncludeProcessInstances(),
-                actionRequest.getDate());
+        repositoryService.activateProcessDefinitionById(processDefinitionId,
+                actionRequest.isIncludeProcessInstances(), actionRequest.getDate());
     }
 
     @Override
@@ -124,9 +122,8 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
         }
         MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
         String fileName = file.getOriginalFilename();
-        boolean isFileNameInValid = ObjectUtils.isEmpty(fileName)
-                || !(fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn")
-                        || fileName.toLowerCase().endsWith(".bar") || fileName.toLowerCase().endsWith(".zip"));
+        boolean isFileNameInValid =
+                ObjectUtils.isEmpty(fileName) || !(fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn") || fileName.toLowerCase().endsWith(".bar") || fileName.toLowerCase().endsWith(".zip"));
         if (isFileNameInValid) {
             throw new IllegalArgumentException("Request file must end with .bpmn20.xml,.bpmn|,.bar,.zip");
         }
@@ -166,14 +163,12 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
                                 deploymentBuilder.addInputStream(formKey, bi);
                                 formKeyMap.put(formKey, formKey);
                             } else {
-                                throw new FlowableObjectNotFoundException(
-                                        "Cannot find formJson with formKey " + formKeyDefinition);
+                                throw new FlowableObjectNotFoundException("Cannot find formJson with formKey " + formKeyDefinition);
                             }
                         }
                     }
                 }
-            } else if (fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_BAR)
-                    || fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_ZIP)) {
+            } else if (fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_BAR) || fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_ZIP)) {
                 deploymentBuilder.addZipInputStream(new ZipInputStream(file.getInputStream()));
             }
             deploymentBuilder.name(fileName);
@@ -217,8 +212,7 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
             throw new FlowableException("IdentityId may not be null");
         }
         if (!FlowableConstant.IDENTITY_GROUP.equals(type) && !FlowableConstant.IDENTITY_USER.equals(type)) {
-            throw new FlowableException(
-                    "Type must be " + FlowableConstant.IDENTITY_GROUP + " or " + FlowableConstant.IDENTITY_USER);
+            throw new FlowableException("Type must be " + FlowableConstant.IDENTITY_GROUP + " or " + FlowableConstant.IDENTITY_USER);
         }
     }
 }

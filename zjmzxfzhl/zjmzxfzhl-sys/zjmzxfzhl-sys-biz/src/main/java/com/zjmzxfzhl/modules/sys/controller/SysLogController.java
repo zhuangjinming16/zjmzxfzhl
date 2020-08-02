@@ -24,7 +24,7 @@ import com.zjmzxfzhl.modules.sys.service.SysLogService;
 
 /**
  * 系统日志Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -35,7 +35,7 @@ public class SysLogController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysLog
      * @param current
      * @param size
@@ -56,9 +56,9 @@ public class SysLogController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysLog
      * @return
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('sys:log:save')")
     @PostMapping(value = "/save")
@@ -68,9 +68,9 @@ public class SysLogController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysLog
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('sys:log:update')")
     @PutMapping(value = "/update")
@@ -80,9 +80,9 @@ public class SysLogController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('sys:log:delete')")
     @DeleteMapping(value = "/delete")

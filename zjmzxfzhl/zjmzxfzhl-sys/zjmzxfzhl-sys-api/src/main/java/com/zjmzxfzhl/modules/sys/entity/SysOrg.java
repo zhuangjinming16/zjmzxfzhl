@@ -12,7 +12,7 @@ import lombok.Data;
 
 /**
  * 【机构】实体类
- * 
+ *
  * @author 庄金明
  */
 @Data

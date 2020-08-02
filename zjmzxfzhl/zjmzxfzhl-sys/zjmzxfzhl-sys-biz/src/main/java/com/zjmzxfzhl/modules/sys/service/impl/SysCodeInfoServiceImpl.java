@@ -1,36 +1,28 @@
 package com.zjmzxfzhl.modules.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
+import com.zjmzxfzhl.common.core.constant.CacheConstants;
+import com.zjmzxfzhl.common.core.exception.SysException;
+import com.zjmzxfzhl.common.core.redis.util.RedisUtil;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.modules.sys.entity.SysCodeInfo;
+import com.zjmzxfzhl.modules.sys.mapper.SysCodeInfoMapper;
+import com.zjmzxfzhl.modules.sys.service.SysCodeInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.zjmzxfzhl.common.core.Constants;
-import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
-import com.zjmzxfzhl.common.core.exception.SysException;
-import com.zjmzxfzhl.common.core.util.CommonUtil;
-import com.zjmzxfzhl.common.core.util.RedisUtil;
-import com.zjmzxfzhl.modules.sys.entity.SysCodeInfo;
-import com.zjmzxfzhl.modules.sys.mapper.SysCodeInfoMapper;
-import com.zjmzxfzhl.modules.sys.service.SysCodeInfoService;
+import java.util.*;
 
 /**
  * 代码信息ServiceImpl
- * 
+ *
  * @author 庄金明
  */
 @Service
-public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, SysCodeInfo>
-        implements SysCodeInfoService {
+public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, SysCodeInfo> implements SysCodeInfoService {
 
     @Autowired
     private RedisUtil redisUtil;
@@ -42,9 +34,8 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
 
     /**
      * 加载数据字典进redis
-     * 
-     * @param codeTypeIds
-     *            数据字典数组，以逗号隔开， 若传空则加载所有数据字典
+     *
+     * @param codeTypeIds 数据字典数组，以逗号隔开， 若传空则加载所有数据字典
      */
     @Override
     public void loadSysCodeInfoToRedis(String codeTypeIds) {
@@ -52,23 +43,22 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
             String[] codeTypeIdsArr = codeTypeIds.split(",");
             for (String codeTypeId : codeTypeIdsArr) {
                 // 先清除
-                redisUtil.del(Constants.PREFIX_SYS_CODE_TYPE + codeTypeId);
+                redisUtil.del(CacheConstants.SYS_CODE_TYPE + codeTypeId);
             }
         } else {
             // 先清除
-            redisUtil.delPattern(Constants.PREFIX_SYS_CODE_TYPE + "*");
+            redisUtil.delPattern(CacheConstants.SYS_CODE_TYPE + "*");
         }
         Map<String, List<SysCodeInfo>> codeInfoMap = getSysCodeInfosFromDb(codeTypeIds);
         for (String codeInfoMapKey : codeInfoMap.keySet()) {
-            redisUtil.set(Constants.PREFIX_SYS_CODE_TYPE + codeInfoMapKey, codeInfoMap.get(codeInfoMapKey));
+            redisUtil.set(CacheConstants.SYS_CODE_TYPE + codeInfoMapKey, codeInfoMap.get(codeInfoMapKey));
         }
     }
 
     /**
      * 从数据库查询数据字典
-     * 
-     * @param codeTypeIds
-     *            数据字典数组，以逗号隔开， 若传空则加载所有数据字典
+     *
+     * @param codeTypeIds 数据字典数组，以逗号隔开， 若传空则加载所有数据字典
      * @return
      */
     @Override
@@ -102,9 +92,8 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
 
     /**
      * 查询数据字典
-     * 
-     * @param codeTypeIds
-     *            数据字典数组，以逗号隔开， 若传空则加载所有数据字典
+     *
+     * @param codeTypeIds 数据字典数组，以逗号隔开， 若传空则加载所有数据字典
      * @return
      */
     @Override
@@ -115,17 +104,16 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
             keys = new HashSet<>();
             String[] codeTypeIdsArr = codeTypeIds.split(",");
             for (String codeTypeId : codeTypeIdsArr) {
-                keys.add(Constants.PREFIX_SYS_CODE_TYPE + codeTypeId);
+                keys.add(CacheConstants.SYS_CODE_TYPE + codeTypeId);
             }
         } else {
-            keys = redisUtil.keysPattern(Constants.PREFIX_SYS_CODE_TYPE + "*");
+            keys = redisUtil.keysPattern(CacheConstants.SYS_CODE_TYPE + "*");
         }
         Map<String, List<SysCodeInfo>> codeInfoMap = null;
         if (keys != null && keys.size() > 0) {
             codeInfoMap = new HashMap<String, List<SysCodeInfo>>(16);
             for (String key : keys) {
-                codeInfoMap.put(key.replace(Constants.PREFIX_SYS_CODE_TYPE, ""),
-                        (List<SysCodeInfo>) redisUtil.get(key));
+                codeInfoMap.put(key.replace(CacheConstants.SYS_CODE_TYPE, ""), (List<SysCodeInfo>) redisUtil.get(key));
             }
         }
         return codeInfoMap;
@@ -133,7 +121,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
 
     /**
      * 新增代码信息，并加载进redis缓存
-     * 
+     *
      * @param sysCodeInfo
      */
     @Override
@@ -145,7 +133,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
 
     /**
      * 修改代码信息，并加载进redis缓存
-     * 
+     *
      * @param sysCodeInfo
      */
     @Override
@@ -157,7 +145,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
 
     /**
      * 删除代码信息，并重新加载redis缓存
-     * 
+     *
      * @param ids
      */
     @Override

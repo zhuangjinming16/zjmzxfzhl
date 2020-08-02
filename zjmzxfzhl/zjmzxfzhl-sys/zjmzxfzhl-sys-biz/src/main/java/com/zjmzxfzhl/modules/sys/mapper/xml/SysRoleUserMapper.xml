@@ -3,18 +3,18 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysRoleUserMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysRoleUser">
-		select
-			a.ROLE_USER_ID as roleUserId,
-			a.ROLE_ID as roleId,
-			a.USER_ID as userId
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysRoleUser">
+        select
+        a.ROLE_USER_ID as roleUserId,
+        a.ROLE_ID as roleId,
+        a.USER_ID as userId
 
-		from T_SYS_ROLE_USER a 
-		where 1=1 
-		<if test="entity.userId != null and entity.userId !=''">
-			<![CDATA[	AND a.USER_ID = #{entity.userId}	]]>
-		</if>
-		order by a.ROLE_USER_ID
-	</select>
+        from T_SYS_ROLE_USER a
+        where 1=1
+        <if test="entity.userId != null and entity.userId !=''">
+            <![CDATA[	AND a.USER_ID = #{entity.userId}	]]>
+        </if>
+        order by a.ROLE_USER_ID
+    </select>
 </mapper>

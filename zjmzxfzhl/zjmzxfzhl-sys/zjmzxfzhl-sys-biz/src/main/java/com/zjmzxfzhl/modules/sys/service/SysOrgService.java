@@ -9,13 +9,13 @@ import com.zjmzxfzhl.modules.sys.entity.vo.ElTree;
 
 /**
  * 机构Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysOrgService extends BaseService<SysOrg> {
     /**
      * 分页查询机构
-     * 
+     *
      * @param page
      * @param sysOrg
      * @return
@@ -24,7 +24,7 @@ public interface SysOrgService extends BaseService<SysOrg> {
 
     /**
      * 新增机构，自动计算机构级别、机构级次码、是否叶子
-     * 
+     *
      * @param sysOrg
      * @return
      */
@@ -32,7 +32,7 @@ public interface SysOrgService extends BaseService<SysOrg> {
 
     /**
      * 修改机构，自动计算机构级别、机构级次码、是否叶子
-     * 
+     *
      * @param sysOrg
      * @return
      */
@@ -40,14 +40,14 @@ public interface SysOrgService extends BaseService<SysOrg> {
 
     /**
      * 机构管理，机构树数据
-     * 
+     *
      * @return
      */
     List<ElTree> getTreeData();
 
     /**
      * 生成机构树
-     * 
+     *
      * @param orgList
      * @return
      */

@@ -1,30 +1,19 @@
 package com.zjmzxfzhl.common.core.xss;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
 import com.zjmzxfzhl.common.core.util.DateUtil;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * @author 庄金明
  * @date 2020年3月24日
  */
 public class XssFilter implements Filter {
-
     @Override
-    public void init(FilterConfig config) throws ServletException {
-    }
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
         XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest) request);
         try {
             chain.doFilter(xssRequest, response);
@@ -33,9 +22,4 @@ public class XssFilter implements Filter {
             DateUtil.clearNow();
         }
     }
-
-    @Override
-    public void destroy() {
-    }
-
 }

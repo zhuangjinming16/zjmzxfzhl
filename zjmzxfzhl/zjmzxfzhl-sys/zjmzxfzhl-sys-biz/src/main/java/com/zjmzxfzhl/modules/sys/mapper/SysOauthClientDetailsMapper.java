@@ -10,16 +10,17 @@ import com.zjmzxfzhl.modules.sys.entity.SysOauthClientDetails;
 
 /**
  * 应用客户端Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysOauthClientDetailsMapper extends BaseMapper<SysOauthClientDetails> {
     /**
      * 查询应用客户端列表
-     * 
+     *
      * @param page
      * @param entity
      * @return
      */
-    public List<SysOauthClientDetails> list(IPage<SysOauthClientDetails> page, @Param("entity") SysOauthClientDetails entity);
+    public List<SysOauthClientDetails> list(IPage<SysOauthClientDetails> page,
+                                            @Param("entity") SysOauthClientDetails entity);
 }

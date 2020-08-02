@@ -1,20 +1,18 @@
 package com.zjmzxfzhl.modules.demo.controller;
 
-import java.util.concurrent.TimeUnit;
-
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.exception.BaseException;
+import com.zjmzxfzhl.common.core.redis.redlock.RedissonDistributedLocker;
+import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
+import com.zjmzxfzhl.modules.demo.service.DemoRedlockService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zjmzxfzhl.common.core.Result;
-import com.zjmzxfzhl.common.core.config.redis.redlock.RedissonDistributedLocker;
-import com.zjmzxfzhl.common.core.exception.BaseException;
-import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
-import com.zjmzxfzhl.modules.demo.service.DemoRedlockService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 庄金明
@@ -29,7 +27,7 @@ public class DemoRedlockController {
 
     /**
      * 不使用注解，直接使用 RedissonDistributedLocker.tryLock 获得锁
-     * 
+     *
      * @return
      */
     @GetMapping(value = "/redlock1")
@@ -72,7 +70,7 @@ public class DemoRedlockController {
 
     /**
      * 通过RedissonLock注解锁 第一个参数
-     * 
+     *
      * @param someId
      * @return
      */
@@ -86,7 +84,7 @@ public class DemoRedlockController {
 
     /**
      * 通过RedissonLock注解锁 第一个参数、第二个参数组合
-     * 
+     *
      * @param someId
      * @param someInt
      * @return
@@ -101,7 +99,7 @@ public class DemoRedlockController {
 
     /**
      * 通过RedissonLock注解锁 第一个参数、第二个参数、第三个参数的zjmzxfzhlId属性、第四个参数的zjmzxfzhlId属性组合
-     * 
+     *
      * @return
      */
     @GetMapping(value = "/redlock5")
@@ -119,7 +117,7 @@ public class DemoRedlockController {
 
     /**
      * 通过RedissonLock注解锁 第一个参数、第二个参数、第三个参数的zjmzxfzhlId属性、第三个参数的zjmzxfzhlName属性组合
-     * 
+     *
      * @return
      */
     @GetMapping(value = "/redlock6")

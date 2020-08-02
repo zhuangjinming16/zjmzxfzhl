@@ -10,12 +10,11 @@ import com.zjmzxfzhl.modules.demo.service.DemoZjmzxfzhlService;
 
 /**
  * 开发示例Service
- * 
+ *
  * @author 庄金明
  */
 @Service
-public class DemoZjmzxfzhlServiceImpl extends BaseServiceImpl<DemoZjmzxfzhlMapper, DemoZjmzxfzhl>
-        implements DemoZjmzxfzhlService {
+public class DemoZjmzxfzhlServiceImpl extends BaseServiceImpl<DemoZjmzxfzhlMapper, DemoZjmzxfzhl> implements DemoZjmzxfzhlService {
     @Override
     public IPage<DemoZjmzxfzhl> list(IPage<DemoZjmzxfzhl> page, DemoZjmzxfzhl demoZjmzxfzhl) {
         return page.setRecords(baseMapper.list(page, demoZjmzxfzhl));

@@ -10,12 +10,11 @@ import com.zjmzxfzhl.modules.sys.service.SysPostUserService;
 
 /**
  * 岗位和用户关系Service
- * 
+ *
  * @author 庄金明
  */
 @Service
-public class SysPostUserServiceImpl extends BaseServiceImpl<SysPostUserMapper, SysPostUser>
-        implements SysPostUserService {
+public class SysPostUserServiceImpl extends BaseServiceImpl<SysPostUserMapper, SysPostUser> implements SysPostUserService {
     @Override
     public IPage<SysPostUser> list(IPage<SysPostUser> page, SysPostUser sysPostUser) {
         return page.setRecords(baseMapper.list(page, sysPostUser));

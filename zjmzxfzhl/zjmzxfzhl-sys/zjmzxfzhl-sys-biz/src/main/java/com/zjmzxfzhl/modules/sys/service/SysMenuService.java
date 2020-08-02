@@ -9,13 +9,13 @@ import com.zjmzxfzhl.modules.sys.entity.vo.ElTree;
 
 /**
  * 菜单Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysMenuService extends BaseService<SysMenu> {
     /**
      * 分页查询菜单
-     * 
+     *
      * @param page
      * @param sysMenu
      * @return
@@ -24,7 +24,7 @@ public interface SysMenuService extends BaseService<SysMenu> {
 
     /**
      * 新增菜单，自动计算是否叶子
-     * 
+     *
      * @param sysMenu
      * @return
      */
@@ -32,7 +32,7 @@ public interface SysMenuService extends BaseService<SysMenu> {
 
     /**
      * 修改菜单
-     * 
+     *
      * @param sysMenu
      * @return
      */
@@ -40,7 +40,7 @@ public interface SysMenuService extends BaseService<SysMenu> {
 
     /**
      * 删除菜单
-     * 
+     *
      * @param id
      * @return
      */
@@ -48,7 +48,7 @@ public interface SysMenuService extends BaseService<SysMenu> {
 
     /**
      * 菜单管理，菜单树数据
-     * 
+     *
      * @return
      */
     List<ElTree> getTreeData();

@@ -3,82 +3,82 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.demo.mapper.DemoZjmzxfzhlMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl">
-		select
-			a.ZJMZXFZHL_ID as zjmzxfzhlId,
-			a.ZJMZXFZHL_NAME as zjmzxfzhlName,
-			a.ZJMZXFZHL_CODE_INFO as zjmzxfzhlCodeInfo,
-			a.ZJMZXFZHL_DATE as zjmzxfzhlDate,
-			a.ZJMZXFZHL_DATETIME as zjmzxfzhlDatetime,
-			a.ORG_ID as orgId,
-			a.ZJMZXFZHL_DBPARAM1 as zjmzxfzhlDbparam1,
-			a.ZJMZXFZHL_DBPARAM2 as zjmzxfzhlDbparam2,
-			a.FILTER_OPERATOR_EQ as filterOperatorEq,
-			a.FILTER_OPERATOR_NE as filterOperatorNe,
-			a.FILTER_OPERATOR_LT as filterOperatorLt,
-			a.FILTER_OPERATOR_LE as filterOperatorLe,
-			a.FILTER_OPERATOR_GT as filterOperatorGt,
-			a.FILTER_OPERATOR_GE as filterOperatorGe,
-			a.FILTER_OPERATOR_IN as filterOperatorIn,
-			a.FILTER_OPERATOR_BETWEEN as filterOperatorBetween,
-			a.FILTER_OPERATOR_LIKE as filterOperatorLike,
-			a.FILTER_OPERATOR_LIKE_LEFT as filterOperatorLikeLeft,
-			a.FILTER_OPERATOR_LIKE_RIGHT as filterOperatorLikeRight,
-			a.CREATE_BY as createBy,
-			a.CREATE_DATE as createDate,
-			a.CREATE_TIME as createTime,
-			a.UPDATE_BY as updateBy,
-			a.UPDATE_DATE as updateDate,
-			a.UPDATE_TIME as updateTime
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl">
+        select
+        a.ZJMZXFZHL_ID as zjmzxfzhlId,
+        a.ZJMZXFZHL_NAME as zjmzxfzhlName,
+        a.ZJMZXFZHL_CODE_INFO as zjmzxfzhlCodeInfo,
+        a.ZJMZXFZHL_DATE as zjmzxfzhlDate,
+        a.ZJMZXFZHL_DATETIME as zjmzxfzhlDatetime,
+        a.ORG_ID as orgId,
+        a.ZJMZXFZHL_DBPARAM1 as zjmzxfzhlDbparam1,
+        a.ZJMZXFZHL_DBPARAM2 as zjmzxfzhlDbparam2,
+        a.FILTER_OPERATOR_EQ as filterOperatorEq,
+        a.FILTER_OPERATOR_NE as filterOperatorNe,
+        a.FILTER_OPERATOR_LT as filterOperatorLt,
+        a.FILTER_OPERATOR_LE as filterOperatorLe,
+        a.FILTER_OPERATOR_GT as filterOperatorGt,
+        a.FILTER_OPERATOR_GE as filterOperatorGe,
+        a.FILTER_OPERATOR_IN as filterOperatorIn,
+        a.FILTER_OPERATOR_BETWEEN as filterOperatorBetween,
+        a.FILTER_OPERATOR_LIKE as filterOperatorLike,
+        a.FILTER_OPERATOR_LIKE_LEFT as filterOperatorLikeLeft,
+        a.FILTER_OPERATOR_LIKE_RIGHT as filterOperatorLikeRight,
+        a.CREATE_BY as createBy,
+        a.CREATE_DATE as createDate,
+        a.CREATE_TIME as createTime,
+        a.UPDATE_BY as updateBy,
+        a.UPDATE_DATE as updateDate,
+        a.UPDATE_TIME as updateTime
 
-		from T_DEMO_ZJMZXFZHL a 
-		join T_SYS_ORG o ON o.org_id=a.org_id
-		where 1=1 
-		<if test="entity.zjmzxfzhlName != null and entity.zjmzxfzhlName !=''">
-			<![CDATA[	AND a.ZJMZXFZHL_NAME = #{entity.zjmzxfzhlName}	]]>
-		</if>
-		<if test="entity.zjmzxfzhlCodeInfo != null and entity.zjmzxfzhlCodeInfo !=''">
-			<![CDATA[	AND a.ZJMZXFZHL_CODE_INFO = #{entity.zjmzxfzhlCodeInfo}	]]>
-		</if>
-		<if test="entity.filterOperatorEq != null and entity.filterOperatorEq !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_EQ = #{entity.filterOperatorEq}	]]>
-		</if>
-		<if test="entity.filterOperatorNe != null and entity.filterOperatorNe !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_NE = #{entity.filterOperatorNe}	]]>
-		</if>
-		<if test="entity.filterOperatorLt != null and entity.filterOperatorLt !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_LT = #{entity.filterOperatorLt}	]]>
-		</if>
-		<if test="entity.filterOperatorLe != null and entity.filterOperatorLe !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_LE = #{entity.filterOperatorLe}	]]>
-		</if>
-		<if test="entity.filterOperatorGt != null and entity.filterOperatorGt !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_GT = #{entity.filterOperatorGt}	]]>
-		</if>
-		<if test="entity.filterOperatorGe != null and entity.filterOperatorGe !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_GE = #{entity.filterOperatorGe}	]]>
-		</if>
-		<if test="entity.filterOperatorIn != null and entity.filterOperatorIn !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_IN = #{entity.filterOperatorIn}	]]>
-		</if>
-		<if test="entity.filterOperatorBetween != null and entity.filterOperatorBetween !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_BETWEEN = #{entity.filterOperatorBetween}	]]>
-		</if>
-		<if test="entity.filterOperatorLike != null and entity.filterOperatorLike !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_LIKE = #{entity.filterOperatorLike}	]]>
-		</if>
-		<if test="entity.filterOperatorLikeLeft != null and entity.filterOperatorLikeLeft !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_LIKE_LEFT = #{entity.filterOperatorLikeLeft}	]]>
-		</if>
-		<if test="entity.filterOperatorLikeRight != null and entity.filterOperatorLikeRight !=''">
-			<![CDATA[	AND a.FILTER_OPERATOR_LIKE_RIGHT = #{entity.filterOperatorLikeRight}	]]>
-		</if>
-		{{authFilterSql}}
-		{{authFilterSql01}}
-		{{authFilterSql02}}
-		{{authFilterSql01}}
-		{{authFilterSql}}
-		order by a.ZJMZXFZHL_ID
-	</select>
+        from T_DEMO_ZJMZXFZHL a
+        join T_SYS_ORG o ON o.org_id=a.org_id
+        where 1=1
+        <if test="entity.zjmzxfzhlName != null and entity.zjmzxfzhlName !=''">
+            <![CDATA[	AND a.ZJMZXFZHL_NAME = #{entity.zjmzxfzhlName}	]]>
+        </if>
+        <if test="entity.zjmzxfzhlCodeInfo != null and entity.zjmzxfzhlCodeInfo !=''">
+            <![CDATA[	AND a.ZJMZXFZHL_CODE_INFO = #{entity.zjmzxfzhlCodeInfo}	]]>
+        </if>
+        <if test="entity.filterOperatorEq != null and entity.filterOperatorEq !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_EQ = #{entity.filterOperatorEq}	]]>
+        </if>
+        <if test="entity.filterOperatorNe != null and entity.filterOperatorNe !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_NE = #{entity.filterOperatorNe}	]]>
+        </if>
+        <if test="entity.filterOperatorLt != null and entity.filterOperatorLt !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_LT = #{entity.filterOperatorLt}	]]>
+        </if>
+        <if test="entity.filterOperatorLe != null and entity.filterOperatorLe !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_LE = #{entity.filterOperatorLe}	]]>
+        </if>
+        <if test="entity.filterOperatorGt != null and entity.filterOperatorGt !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_GT = #{entity.filterOperatorGt}	]]>
+        </if>
+        <if test="entity.filterOperatorGe != null and entity.filterOperatorGe !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_GE = #{entity.filterOperatorGe}	]]>
+        </if>
+        <if test="entity.filterOperatorIn != null and entity.filterOperatorIn !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_IN = #{entity.filterOperatorIn}	]]>
+        </if>
+        <if test="entity.filterOperatorBetween != null and entity.filterOperatorBetween !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_BETWEEN = #{entity.filterOperatorBetween}	]]>
+        </if>
+        <if test="entity.filterOperatorLike != null and entity.filterOperatorLike !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_LIKE = #{entity.filterOperatorLike}	]]>
+        </if>
+        <if test="entity.filterOperatorLikeLeft != null and entity.filterOperatorLikeLeft !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_LIKE_LEFT = #{entity.filterOperatorLikeLeft}	]]>
+        </if>
+        <if test="entity.filterOperatorLikeRight != null and entity.filterOperatorLikeRight !=''">
+            <![CDATA[	AND a.FILTER_OPERATOR_LIKE_RIGHT = #{entity.filterOperatorLikeRight}	]]>
+        </if>
+        {{authFilterSql}}
+        {{authFilterSql01}}
+        {{authFilterSql02}}
+        {{authFilterSql01}}
+        {{authFilterSql}}
+        order by a.ZJMZXFZHL_ID
+    </select>
 </mapper>

@@ -66,5 +66,5 @@ spring:
     sentinel:
       master: mymaster
       nodes: 168.168.168.101:26379,168.168.168.102:26379,168.168.168.103:26379
-debug: false 
+debug: false
 swagger-enable: false #生产可关闭设置成false

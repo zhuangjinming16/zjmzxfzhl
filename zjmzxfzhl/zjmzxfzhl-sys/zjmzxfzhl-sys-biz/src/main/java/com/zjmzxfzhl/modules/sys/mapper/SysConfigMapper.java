@@ -10,13 +10,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysConfig;
 
 /**
  * 系统参数Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysConfigMapper extends BaseMapper<SysConfig> {
     /**
      * 查询系统参数列表
-     * 
+     *
      * @param page
      * @param entity
      * @return

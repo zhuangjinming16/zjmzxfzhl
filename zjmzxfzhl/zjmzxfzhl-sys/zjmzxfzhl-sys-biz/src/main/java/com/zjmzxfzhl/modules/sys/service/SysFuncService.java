@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysFunc;
 
 /**
  * 功能Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysFuncService extends BaseService<SysFunc> {
     /**
      * 分页查询功能
-     * 
+     *
      * @param page
      * @param sysFunc
      * @return

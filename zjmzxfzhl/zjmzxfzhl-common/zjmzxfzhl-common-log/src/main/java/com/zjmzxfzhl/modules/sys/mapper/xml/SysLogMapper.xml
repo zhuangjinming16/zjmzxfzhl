@@ -6,23 +6,23 @@
     <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
     <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysLog">
         select
-            a.LOG_ID as logId,
-            a.LOG_TYPE as logType,
-            a.LOG_CONTENT as logContent,
-            a.OPERATE_TYPE as operateType,
-            a.USER_ID as userId,
-            a.IP as ip,
-            a.METHOD as method,
-            a.USER_AGENT as userAgent,
-            a.CLIENT_ID as clientId,
-            a.REQUEST_URL as requestUrl,
-            a.REQUEST_PARAM as requestParam,
-            a.REQUEST_TYPE as requestType,
-            a.OPERATE_RESULT as operateResult,
-            a.COST_TIME as costTime
+        a.LOG_ID as logId,
+        a.LOG_TYPE as logType,
+        a.LOG_CONTENT as logContent,
+        a.OPERATE_TYPE as operateType,
+        a.USER_ID as userId,
+        a.IP as ip,
+        a.METHOD as method,
+        a.USER_AGENT as userAgent,
+        a.CLIENT_ID as clientId,
+        a.REQUEST_URL as requestUrl,
+        a.REQUEST_PARAM as requestParam,
+        a.REQUEST_TYPE as requestType,
+        a.OPERATE_RESULT as operateResult,
+        a.COST_TIME as costTime
 
-        from T_SYS_LOG a 
-        where 1=1 
+        from T_SYS_LOG a
+        where 1=1
         <if test="entity.logType != null and entity.logType !=''">
             <![CDATA[    AND a.LOG_TYPE = #{entity.logType}    ]]>
         </if>

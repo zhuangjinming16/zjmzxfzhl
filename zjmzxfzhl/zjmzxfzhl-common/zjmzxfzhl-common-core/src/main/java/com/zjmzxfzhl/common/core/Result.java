@@ -1,30 +1,24 @@
 package com.zjmzxfzhl.common.core;
 
-import java.io.Serializable;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author 庄金明
  * @date 2020年3月23日
  */
 @Data
-@ApiModel(value = "返回说明")
-public class Result implements Serializable {
+public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static Integer SC_INTERNAL_SERVER_ERROR = 500;
     private static Integer SC_OK = 200;
 
-    @ApiModelProperty(value = "返回状态码；200:成功")
     private Integer code = 0;
-    @ApiModelProperty(value = "返回信息")
     private String msg = "操作成功";
 
-    @ApiModelProperty(value = "返回数据")
-    private Object data;
+    private T data;
 
     public Result() {
     }
@@ -39,7 +33,7 @@ public class Result implements Serializable {
         this.msg = msg;
     }
 
-    public Result(Integer code, String msg, Object data) {
+    public Result(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -57,7 +51,7 @@ public class Result implements Serializable {
         return r;
     }
 
-    public static Result error(int code, String msg, Object data) {
+    public static <T> Result error(int code, String msg, T data) {
         if (msg == null || msg.length() == 0) {
             msg = "交易执行失败";
         }
@@ -76,14 +70,14 @@ public class Result implements Serializable {
         return r;
     }
 
-    public static Result ok(Object data) {
+    public static <T> Result<T> ok(T data) {
         Result r = new Result();
         r.setCode(SC_OK);
         r.setData(data);
         return r;
     }
 
-    public static Result ok(String msg, Object data) {
+    public static <T> Result ok(String msg, T data) {
         Result r = new Result();
         r.setCode(SC_OK);
         if (msg != null && msg.length() != 0) {

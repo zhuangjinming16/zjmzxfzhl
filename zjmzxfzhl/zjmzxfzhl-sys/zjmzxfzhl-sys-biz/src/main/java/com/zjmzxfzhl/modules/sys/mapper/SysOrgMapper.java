@@ -12,13 +12,13 @@ import com.zjmzxfzhl.modules.sys.permission.provider.OrgDataPermissionProvider;
 
 /**
  * 机构Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysOrgMapper extends BaseMapper<SysOrg> {
     /**
      * 查询机构列表
-     * 
+     *
      * @param page
      * @param entity
      * @return

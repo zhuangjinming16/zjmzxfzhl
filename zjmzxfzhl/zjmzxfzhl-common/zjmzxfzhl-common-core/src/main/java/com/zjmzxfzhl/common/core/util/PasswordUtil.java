@@ -4,8 +4,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /***
- * 密码加密**
- * 
+ * 密码加密解密
+ *
  * @author 庄金明
  */
 public class PasswordUtil {
@@ -15,8 +15,7 @@ public class PasswordUtil {
     /**
      * 生成BCryptPasswordEncoder密码
      *
-     * @param password
-     *            密码
+     * @param password 密码
      * @return 加密字符串
      */
     public static String encryptPassword(String password) {
@@ -24,7 +23,7 @@ public class PasswordUtil {
     }
 
     private static PasswordEncoder getPasswordEncoder() {
-        PasswordEncoder passwordEncoder = SpringContextUtils.getBean("passwordEncoder");
+        PasswordEncoder passwordEncoder = SpringContextUtils.getBeanIgnoreNotFound("passwordEncoder");
         if (passwordEncoder == null) {
             passwordEncoder = ENCODER;
         }
@@ -34,10 +33,8 @@ public class PasswordUtil {
     /**
      * 判断密码是否相同
      *
-     * @param rawPassword
-     *            真实密码
-     * @param encodedPassword
-     *            加密后字符
+     * @param rawPassword     真实密码
+     * @param encodedPassword 加密后字符
      * @return 结果
      */
     public static boolean matchesPassword(String rawPassword, String encodedPassword) {

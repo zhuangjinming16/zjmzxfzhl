@@ -41,30 +41,30 @@ public class CreateJsonValue {
             }
             Object temp;
             switch (type) {
-            case "class java.lang.Integer":
-                temp = Integer.parseInt(defaultValue);
-                break;
-            case "class java.math.BigDecimal":
-                temp = new BigDecimal(defaultValue);
-                break;
-            case "class java.lang.Short":
-                temp = Short.parseShort(defaultValue);
-                break;
-            case "class java.lang.Long":
-                temp = Long.parseLong(defaultValue);
-                break;
-            case "class java.lang.Float":
-                temp = Float.parseFloat(defaultValue);
-                break;
-            case "class java.lang.Double":
-                temp = Double.parseDouble(defaultValue);
-                break;
-            case "class java.util.Date":
-                temp = dafaultDateValue;
-                break;
-            default:
-                temp = defaultValue;
-                break;
+                case "class java.lang.Integer":
+                    temp = Integer.parseInt(defaultValue);
+                    break;
+                case "class java.math.BigDecimal":
+                    temp = new BigDecimal(defaultValue);
+                    break;
+                case "class java.lang.Short":
+                    temp = Short.parseShort(defaultValue);
+                    break;
+                case "class java.lang.Long":
+                    temp = Long.parseLong(defaultValue);
+                    break;
+                case "class java.lang.Float":
+                    temp = Float.parseFloat(defaultValue);
+                    break;
+                case "class java.lang.Double":
+                    temp = Double.parseDouble(defaultValue);
+                    break;
+                case "class java.util.Date":
+                    temp = dafaultDateValue;
+                    break;
+                default:
+                    temp = defaultValue;
+                    break;
             }
             try {
                 PropertyUtils.setSimpleProperty(object, name, temp);

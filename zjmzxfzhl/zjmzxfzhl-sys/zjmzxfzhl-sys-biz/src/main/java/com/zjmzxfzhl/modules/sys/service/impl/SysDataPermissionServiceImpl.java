@@ -10,12 +10,11 @@ import com.zjmzxfzhl.modules.sys.service.SysDataPermissionService;
 
 /**
  * 数据权限Service
- * 
+ *
  * @author 庄金明
  */
 @Service
-public class SysDataPermissionServiceImpl extends BaseServiceImpl<SysDataPermissionMapper, SysDataPermission>
-        implements SysDataPermissionService {
+public class SysDataPermissionServiceImpl extends BaseServiceImpl<SysDataPermissionMapper, SysDataPermission> implements SysDataPermissionService {
     @Override
     public IPage<SysDataPermission> list(IPage<SysDataPermission> page, SysDataPermission sysDataPermission) {
         return page.setRecords(baseMapper.list(page, sysDataPermission));

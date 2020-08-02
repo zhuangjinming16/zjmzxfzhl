@@ -8,7 +8,6 @@ import lombok.Getter;
 
 /**
  * @author 庄金明
- *
  */
 @JsonSerialize(using = ZjmzxfzhlAuth2ExceptionSerializer.class)
 public class ZjmzxfzhlAuth2Exception extends OAuth2Exception {

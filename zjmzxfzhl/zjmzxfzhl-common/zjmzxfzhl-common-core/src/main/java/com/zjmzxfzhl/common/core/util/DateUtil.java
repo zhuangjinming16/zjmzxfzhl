@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * 日期工具类
- * 
+ *
  * @author 庄金明
  */
 public class DateUtil {
@@ -33,9 +33,9 @@ public class DateUtil {
 
     /**
      * 同一线程内获取统一的时间，用于数据库入库时间字段统一，无需一直将时间作为参数一直传入其余方法内部，同时减少new Date()
-     * 
+     * <p>
      * 使用方式: DateUtil.getNow()
-     * 
+     *
      * @return
      */
     public static Date getNow() {
@@ -64,11 +64,12 @@ public class DateUtil {
     /**
      * 存放不同的日期模板格式的sdf的Map
      */
-    private static Map<String, ThreadLocal<SimpleDateFormat>> simpleDateFormatMap = new HashMap<String, ThreadLocal<SimpleDateFormat>>();
+    private static Map<String, ThreadLocal<SimpleDateFormat>> simpleDateFormatMap = new HashMap<String,
+            ThreadLocal<SimpleDateFormat>>();
 
     /**
      * 返回一个ThreadLocal的sdf,每个线程只会new一次sdf
-     * 
+     *
      * @param pattern
      * @return
      */
@@ -96,11 +97,9 @@ public class DateUtil {
 
     /**
      * date根据不同的格式,转换成String
-     * 
-     * @param date
-     *            日期型
-     * @param pattern
-     *            目标转换的日期格式
+     *
+     * @param date    日期型
+     * @param pattern 目标转换的日期格式
      * @return
      */
     public static String dateToStr(Date date, String pattern) {
@@ -116,7 +115,7 @@ public class DateUtil {
 
     /**
      * 返回:20131128
-     * 
+     *
      * @param date
      * @return
      */
@@ -126,7 +125,7 @@ public class DateUtil {
 
     /**
      * 返回:2013-11-28
-     * 
+     *
      * @param date
      * @return
      */
@@ -136,7 +135,7 @@ public class DateUtil {
 
     /**
      * 返回:2013-11-28 18:44:39
-     * 
+     *
      * @param date
      * @return
      */
@@ -146,7 +145,7 @@ public class DateUtil {
 
     /**
      * 比较日期的天数
-     * 
+     *
      * @param firstDate
      * @param secondDate
      * @param pattern
@@ -177,9 +176,9 @@ public class DateUtil {
         try {
             /**
              * 比较两个 Calendar 对象表示的时间值（从历元至现在的毫秒偏移量）。
-             * 
+             *
              * 如果参数表示的时间等于此 Calendar 表示的时间，则返回 0 值；
-             * 
+             *
              * 如果此 Calendar 的时间在参数表示的时间之前，则返回小于 0 的值； 如果此 Calendar 的时间在参数表示的时间之后，则返回大于 0 的值
              **/
             return firstCalendar.compareTo(secondCalendar);
@@ -192,7 +191,7 @@ public class DateUtil {
 
     /**
      * 把对象返回:2013-11-28 18:44:39
-     * 
+     *
      * @param obj
      * @return
      */
@@ -210,11 +209,9 @@ public class DateUtil {
 
     /**
      * 字符串转换成Date格式
-     * 
-     * @param dateStr
-     *            日期型字符串
-     * @param pattern
-     *            日期格式
+     *
+     * @param dateStr 日期型字符串
+     * @param pattern 日期格式
      * @return
      */
     public static Date strToDate(String dateStr, String pattern) {
@@ -236,7 +233,7 @@ public class DateUtil {
 
     /**
      * 字符串转换的带time的Date格式
-     * 
+     *
      * @param dateStr
      * @return
      */
@@ -250,14 +247,11 @@ public class DateUtil {
 
     /**
      * 给时间加上或减去指定毫秒,秒,分,时,天、月或年等,返回变动后的时间
-     * 
-     * @param date
-     *            要加减前的时间,如果不传,则为当前日期
-     * @param field
-     *            时间域,有Calendar.MILLISECOND,Calendar.SECOND,Calendar.MINUTE,<br>
-     *            Calendar.HOUR,Calendar.DATE, Calendar.MONTH,Calendar.YEAR
-     * @param amount
-     *            按指定时间域加减的时间数量,正数为加,负数为减.
+     *
+     * @param date   要加减前的时间,如果不传,则为当前日期
+     * @param field  时间域,有Calendar.MILLISECOND,Calendar.SECOND,Calendar.MINUTE,<br>
+     *               Calendar.HOUR,Calendar.DATE, Calendar.MONTH,Calendar.YEAR
+     * @param amount 按指定时间域加减的时间数量,正数为加,负数为减.
      * @return 变动后的时间
      */
     public static Date add(Date date, int field, int amount) {
@@ -302,7 +296,7 @@ public class DateUtil {
 
     /**
      * 获取日期相差天数
-     * 
+     *
      * @param startDate
      * @param endDate
      * @return
@@ -339,7 +333,7 @@ public class DateUtil {
 
     /**
      * 获取系统启动时间
-     * 
+     *
      * @return
      */
     public static Date getServerStartDate() {

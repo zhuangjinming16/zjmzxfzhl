@@ -41,8 +41,8 @@ public class CreateService {
         String codeType = CodeUtil.getTuoFengName(StringUtils.substringAfter(moduleId, "_"), false);
 
         // 读取模板内容
-        File serviceFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template\\"
-                + templetPath + "\\Service.txt");
+        File serviceFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template" +
+                "\\" + templetPath + "\\Service.txt");
         try {
             FileInputStream fileInputStream = new FileInputStream(serviceFile);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "utf-8");
@@ -69,12 +69,12 @@ public class CreateService {
 
         // Service的Service类.
         try {
-            String filePath = CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\modules\\" + sys + "\\"
-                    + "\\service\\";
+            String filePath = CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\modules\\" + sys + "\\" +
+                    "\\service\\";
             File file = new File(filePath);
             file.mkdirs();
-            BufferedWriter bufferedWriter = new BufferedWriter(
-                    new FileWriter(new File(filePath + aSys + aCodeType + "Service.java")));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath + aSys + aCodeType +
+                    "Service.java")));
 
             // 根据表名替换:关键词
             String temp = stringBufferAll.toString();
@@ -108,7 +108,7 @@ public class CreateService {
 
     /**
      * 测试驱动开发
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {

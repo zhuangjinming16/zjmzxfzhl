@@ -10,13 +10,13 @@ import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
 
 /**
  * 流程表单Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface FlowableFormMapper extends BaseMapper<FlowableForm> {
     /**
      * 查询流程表单列表
-     * 
+     *
      * @param page
      * @param entity
      * @return

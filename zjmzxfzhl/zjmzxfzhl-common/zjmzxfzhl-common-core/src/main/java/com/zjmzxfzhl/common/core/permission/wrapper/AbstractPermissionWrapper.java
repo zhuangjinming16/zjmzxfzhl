@@ -1,64 +1,33 @@
 package com.zjmzxfzhl.common.core.permission.wrapper;
 
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.AND;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.BETWEEN;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.EQ;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.EXISTS;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.GE;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.GROUP_BY;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.GT;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.HAVING;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.IN;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.IS_NOT_NULL;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.IS_NULL;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.LE;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.LIKE;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.LT;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.NE;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.NOT;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.OR;
-import static com.baomidou.mybatisplus.core.enums.SqlKeyword.ORDER_BY;
-import static com.baomidou.mybatisplus.core.enums.WrapperKeyword.APPLY;
-import static com.baomidou.mybatisplus.core.enums.WrapperKeyword.BRACKET;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+import com.baomidou.mybatisplus.core.conditions.ISqlSegment;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import com.baomidou.mybatisplus.core.enums.SqlKeyword;
+import com.baomidou.mybatisplus.core.enums.SqlLike;
+import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.sql.SqlUtils;
+import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.session.Configuration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
-import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.session.Configuration;
-
-import com.baomidou.mybatisplus.core.conditions.ISqlSegment;
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
-import com.baomidou.mybatisplus.core.enums.SqlKeyword;
-import com.baomidou.mybatisplus.core.enums.SqlLike;
-import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.baomidou.mybatisplus.core.toolkit.SerializationUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.core.toolkit.sql.SqlUtils;
+import static com.baomidou.mybatisplus.core.enums.SqlKeyword.*;
+import static com.baomidou.mybatisplus.core.enums.WrapperKeyword.APPLY;
+import static com.baomidou.mybatisplus.core.enums.WrapperKeyword.BRACKET;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 /**
- * @author 庄金明
- *
  * @param <R>
  * @param <Children>
+ * @author 庄金明
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractPermissionWrapper<R, Children extends AbstractPermissionWrapper<R, Children>>
-        implements ISqlSegment {
+public abstract class AbstractPermissionWrapper<R, Children extends AbstractPermissionWrapper<R, Children>> implements ISqlSegment {
 
     private static final long serialVersionUID = 1L;
 
@@ -211,7 +180,7 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
 
     public Children in(String alias, R column, Object... values) {
         return in(alias, column,
-                Arrays.stream(Optional.ofNullable(values).orElseGet(() -> new Object[] {})).collect(toList()));
+                Arrays.stream(Optional.ofNullable(values).orElseGet(() -> new Object[]{})).collect(toList()));
     }
 
     public Children inSql(String alias, R column, String inValue) {
@@ -226,14 +195,12 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
         if (ArrayUtils.isEmpty(aliases) || ArrayUtils.isEmpty(columns) || aliases.length != columns.length) {
             return typedThis;
         }
-        return doIt(GROUP_BY, () -> aliases.length == 1 ? aliasAndColumnToString(aliases[0], columns[0])
-                : aliasesAndColumnsToString(aliases, columns));
+        return doIt(GROUP_BY, () -> aliases.length == 1 ? aliasAndColumnToString(aliases[0], columns[0]) :
+                aliasesAndColumnsToString(aliases, columns));
     }
 
     public Children orderBy(String[] aliases, R[] columns, SqlKeyword[] ascOrDescs) {
-        if (ArrayUtils.isEmpty(aliases) || ArrayUtils.isEmpty(columns) || ArrayUtils.isEmpty(ascOrDescs)
-                || aliases.length != columns.length || aliases.length != ascOrDescs.length
-                || columns.length != ascOrDescs.length) {
+        if (ArrayUtils.isEmpty(aliases) || ArrayUtils.isEmpty(columns) || ArrayUtils.isEmpty(ascOrDescs) || aliases.length != columns.length || aliases.length != ascOrDescs.length || columns.length != ascOrDescs.length) {
             return typedThis;
         }
         for (int i = 0; i < aliases.length; i++) {
@@ -279,21 +246,17 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
      * </p>
      */
     protected Children likeValue(String alias, R column, Object val, SqlLike sqlLike) {
-        return doIt(() -> aliasAndColumnToString(alias, column), LIKE,
-                () -> formatSql("{0}", SqlUtils.concatLike(val, sqlLike)));
+        return doIt(() -> aliasAndColumnToString(alias, column), LIKE, () -> formatSql("{0}", SqlUtils.concatLike(val
+                , sqlLike)));
     }
 
     /**
      * 普通查询条件
      *
-     * @param condition
-     *            是否执行
-     * @param column
-     *            属性
-     * @param sqlKeyword
-     *            SQL 关键词
-     * @param val
-     *            条件值
+     * @param condition  是否执行
+     * @param column     属性
+     * @param sqlKeyword SQL 关键词
+     * @param val        条件值
      */
     public Children addCondition(String alias, R column, SqlKeyword sqlKeyword, Object val) {
         return doIt(() -> aliasAndColumnToString(alias, column), sqlKeyword, () -> formatSql("{0}", val));
@@ -313,8 +276,7 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
     /**
      * 多重嵌套查询条件
      *
-     * @param condition
-     *            查询条件值
+     * @param condition 查询条件值
      */
     protected Children addNestedCondition(Consumer<Children> consumer) {
         final Children instance = instance();
@@ -324,7 +286,7 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
 
     /**
      * 多重嵌套查询条件
-     * 
+     *
      * @param consumer
      * @param list
      * @return
@@ -339,7 +301,7 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
 
     /**
      * 子类返回一个自己的新对象
-     * 
+     *
      * @return
      */
     protected abstract Children instance();
@@ -358,9 +320,8 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
                 sqlStr = "?";
                 if (configuration != null) {
                     paramNameValuePairs.put(genParamName, params[i]);
-                    parameterMappings.add(new ParameterMapping.Builder(configuration,
-                            additionalParameterName + ".paramNameValuePairs." + genParamName, params[i].getClass())
-                                    .build());
+                    parameterMappings.add(new ParameterMapping.Builder(configuration, additionalParameterName +
+                            ".paramNameValuePairs." + genParamName, params[i].getClass()).build());
                 }
 
             }
@@ -369,8 +330,8 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
     }
 
     private ISqlSegment inExpression(Collection<?> value) {
-        return () -> value.stream().map(i -> formatSql("{0}", i))
-                .collect(joining(StringPool.COMMA, StringPool.LEFT_BRACKET, StringPool.RIGHT_BRACKET));
+        return () -> value.stream().map(i -> formatSql("{0}", i)).collect(joining(StringPool.COMMA,
+                StringPool.LEFT_BRACKET, StringPool.RIGHT_BRACKET));
     }
 
     protected void initNeed(Configuration configuration, String additionalParameterName) {
@@ -385,10 +346,8 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
     /**
      * 对sql片段进行组装
      *
-     * @param condition
-     *            是否执行
-     * @param sqlSegments
-     *            sql片段数组
+     * @param condition   是否执行
+     * @param sqlSegments sql片段数组
      * @return children
      */
     protected Children doIt(ISqlSegment... sqlSegments) {

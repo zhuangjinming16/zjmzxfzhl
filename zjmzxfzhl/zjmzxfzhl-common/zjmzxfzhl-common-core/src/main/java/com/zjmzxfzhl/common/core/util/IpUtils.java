@@ -1,11 +1,10 @@
 package com.zjmzxfzhl.common.core.util;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import com.zjmzxfzhl.common.core.constant.Constants;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.zjmzxfzhl.common.core.Constants;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @author 庄金明

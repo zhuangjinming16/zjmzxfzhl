@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.app.entity.AppUser;
 
 /**
  * 用户Service
- * 
+ *
  * @author 庄金明
  */
 public interface AppUserService extends BaseService<AppUser> {
     /**
      * 分页查询用户
-     * 
+     *
      * @param page
      * @param appUser
      * @return

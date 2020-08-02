@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 
 /**
  * 开发示例Service
- * 
+ *
  * @author 庄金明
  */
 public interface DemoZjmzxfzhlService extends BaseService<DemoZjmzxfzhl> {
     /**
      * 分页查询开发实例
-     * 
+     *
      * @param page
      * @param demoZjmzxfzhl
      * @return

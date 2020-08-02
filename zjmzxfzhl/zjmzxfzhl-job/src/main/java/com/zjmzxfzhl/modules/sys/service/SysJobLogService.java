@@ -6,13 +6,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysJobLog;
 
 /**
  * 定时任务执行日志Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysJobLogService extends BaseService<SysJobLog> {
     /**
      * 分页查询定时任务执行日志
-     * 
+     *
      * @param page
      * @param sysJobLog
      * @return

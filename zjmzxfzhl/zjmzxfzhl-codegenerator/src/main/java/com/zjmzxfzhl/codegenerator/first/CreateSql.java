@@ -1,4 +1,3 @@
-
 package com.zjmzxfzhl.codegenerator.first;
 
 import java.io.BufferedWriter;
@@ -40,8 +39,8 @@ public class CreateSql {
         try {
             File file = new File(CodeUtil.createSqlPath);
             file.mkdirs();
-            BufferedWriter bufferedWriter = new BufferedWriter(
-                    new FileWriter(new File(CodeUtil.createSqlPath + createTableName + ".sql")));
+            BufferedWriter bufferedWriter =
+                    new BufferedWriter(new FileWriter(new File(CodeUtil.createSqlPath + createTableName + ".sql")));
             bufferedWriter.write(stringBufferAll.toString());
 
             bufferedWriter.close();
@@ -89,13 +88,12 @@ public class CreateSql {
             // 打印插入菜单的语句
             resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot);
             // 每张表建表语句累加
-            stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot)
-                    .append("\r\n");
+            stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot).append("\r\n");
         }
     }
 
     private static void resolveDb2Table(ArrayList<TableObject> list, StringBuffer stringBufferMid,
-            StringBuffer stringBufferFoot) {
+                                        StringBuffer stringBufferFoot) {
         // 主键字段
         String pkColumn = "";
         for (int i = 0; i < list.size(); i++) {
@@ -110,8 +108,7 @@ public class CreateSql {
             } else if ("整数型".equals(tableObject.getDataType())) {
                 stringBufferMid.append("INT ");
             } else if ("浮点型".equals(tableObject.getDataType())) {
-                stringBufferMid
-                        .append("NUMBER(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
+                stringBufferMid.append("NUMBER(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
             } else if ("日期型".equals(tableObject.getDataType())) {
                 stringBufferMid.append("DATE ");
             } else if ("时间型".equals(tableObject.getDataType())) {
@@ -145,26 +142,22 @@ public class CreateSql {
                 // 创建这张表的主键
                 if (!CommonUtil.isEmptyStr(pkColumn)) {
                     stringBufferFoot.insert(3,
-                            "IN IBRCH_DATA4K INDEX IN IBRCH_INDEX4K; \r\n ALTER TABLE " + tableObject.getTableName()
-                                    + " ADD CONSTRAINT PK_" + tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn
-                                    + ");" + "\r\n");
+                            "IN IBRCH_DATA4K INDEX IN IBRCH_INDEX4K; \r\n ALTER TABLE " + tableObject.getTableName() + " ADD CONSTRAINT PK_" + tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn + ");" + "\r\n");
                 }
             }
 
             // 表的注释,第一行才有
             if (i == 0) {
-                stringBufferFoot.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '"
-                        + tableObject.getTableNameCn() + "';" + "\r\n");
+                stringBufferFoot.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
             }
 
             // 字段注释
-            stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "."
-                    + tableObject.getColumnNameEn() + " IS '" + tableObject.getColumnNameCn() + "';" + "\r\n");
+            stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "." + tableObject.getColumnNameEn() + " IS '" + tableObject.getColumnNameCn() + "';" + "\r\n");
         }
     }
 
     private static void resolveMenuAndFuncSql(String aSysCodeType, String sysCodeType, String sys, String codeType,
-            StringBuffer stringBufferFoot) {
+                                              StringBuffer stringBufferFoot) {
         if (CodeUtil.isPringInsertMenuSql) {
             // stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sys + "', 'XX管理', null, null, null, null,
             // '1', '999',
@@ -172,16 +165,11 @@ public class CreateSql {
             // stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + _sysCodeType + "', 'XX功能', '" + _sys + "',
             // '/" + _sys + "/" +
             // _codeType + "/" + _codeType + "List', null, null, '1', '999', null);\r\n");
-            stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + sysCodeType + "', 'XX功能', '" + sys
-                    + "', 'list', '" + codeType + "', '" + sys + ":" + codeType + ":list', 'views/" + sys + "/"
-                    + codeType + "/index', NULL, '0', '1', '" + aSysCodeType
-                    + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-            stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + sysCodeType + "-1', '新增', '" + sysCodeType
-                    + "', '" + sys + ":" + codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-            stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + sysCodeType + "-2', '修改', '" + sysCodeType
-                    + "', '" + sys + ":" + codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
-            stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + sysCodeType + "-3', '删除', '" + sysCodeType
-                    + "', '" + sys + ":" + codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+            stringBufferFoot.append("--INSERT INTO T_SYS_MENU VALUES ('" + sysCodeType + "', 'XX功能', '" + sys + "', " +
+                    "'list', '" + codeType + "', '" + sys + ":" + codeType + ":list', 'views/" + sys + "/" + codeType + "/index', NULL, '0', '1', '" + aSysCodeType + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+            stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + sysCodeType + "-1', '新增', '" + sysCodeType + "', '" + sys + ":" + codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+            stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + sysCodeType + "-2', '修改', '" + sysCodeType + "', '" + sys + ":" + codeType + ":update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+            stringBufferFoot.append("--INSERT INTO T_SYS_FUNC VALUES ('" + sysCodeType + "-3', '删除', '" + sysCodeType + "', '" + sys + ":" + codeType + ":delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
         }
     }
 
@@ -226,7 +214,7 @@ public class CreateSql {
     }
 
     private static void resolveMysqlTable(ArrayList<TableObject> list, StringBuffer stringBufferMid,
-            StringBuffer stringBufferFoot) {
+                                          StringBuffer stringBufferFoot) {
         // 主键字段
         String pkColumn = "";
         // 主键是否数字，是的话，要自增长
@@ -241,15 +229,13 @@ public class CreateSql {
             if ("字符型".equals(tableObject.getDataType())) {
                 stringBufferMid.append("varchar(" + tableObject.getDataLength() + ") ");
             } else if ("整数型".equals(tableObject.getDataType())) {
-                if (CommonUtil.isEmptyStr(tableObject.getDataLength())
-                        || Integer.valueOf(tableObject.getDataLength()) < 11) {
+                if (CommonUtil.isEmptyStr(tableObject.getDataLength()) || Integer.valueOf(tableObject.getDataLength()) < 11) {
                     stringBufferMid.append("int(" + tableObject.getDataLength() + ") ");
                 } else {
                     stringBufferMid.append("bigint(" + tableObject.getDataLength() + ") ");
                 }
             } else if ("浮点型".equals(tableObject.getDataType())) {
-                stringBufferMid
-                        .append("float(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
+                stringBufferMid.append("float(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
             } else if ("日期型".equals(tableObject.getDataType())) {
                 stringBufferMid.append("date ");
             } else if ("时间型".equals(tableObject.getDataType())) {
@@ -297,19 +283,17 @@ public class CreateSql {
                 }
                 // mysql，主键为整数型，数据库自增长
                 if (isNumberPk) {
-                    stringBufferFoot.append(") ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 COMMENT='"
-                            + tableObject.getTableNameCn() + "';\r\n");
+                    stringBufferFoot.append(") ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 COMMENT='" + tableObject.getTableNameCn() + "';\r\n");
                 } else {
                     // 建表语句结束
-                    stringBufferFoot.append(
-                            ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='" + tableObject.getTableNameCn() + "';\r\n");
+                    stringBufferFoot.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='" + tableObject.getTableNameCn() + "';\r\n");
                 }
             }
         }
     }
 
-    private static void resolveOracle(String createTableName, StringBuffer stringBufferAll,
-            HashMap<String, ArrayList<TableObject>> hashMap) {
+    private static void resolveOracle(String createTableName, StringBuffer stringBufferAll, HashMap<String,
+            ArrayList<TableObject>> hashMap) {
         for (Object tableName : hashMap.keySet()) {
             // 读到的表名对象list.
             ArrayList<TableObject> list = hashMap.get(tableName);
@@ -350,13 +334,12 @@ public class CreateSql {
             resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot);
 
             // 每张表建表语句累加
-            stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot)
-                    .append("\r\n");
+            stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot).append("\r\n");
         }
     }
 
     private static void resolveOracleTable(ArrayList<TableObject> list, StringBuffer stringBufferMid,
-            StringBuffer stringBufferFoot) {
+                                           StringBuffer stringBufferFoot) {
         // 主键字段
         String pkColumn = "";
         for (int i = 0; i < list.size(); i++) {
@@ -371,8 +354,7 @@ public class CreateSql {
             } else if ("整数型".equals(tableObject.getDataType())) {
                 stringBufferMid.append("NUMBER(" + tableObject.getDataLength() + ") ");
             } else if ("浮点型".equals(tableObject.getDataType())) {
-                stringBufferMid
-                        .append("NUMBER(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
+                stringBufferMid.append("NUMBER(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
             } else if ("日期型".equals(tableObject.getDataType())) {
                 stringBufferMid.append("DATE ");
             } else if ("时间型".equals(tableObject.getDataType())) {
@@ -405,20 +387,18 @@ public class CreateSql {
             } else {
                 // 创建这张表的主键
                 if (!CommonUtil.isEmptyStr(pkColumn)) {
-                    stringBufferFoot.insert(4, "ALTER TABLE " + tableObject.getTableName() + " ADD CONSTRAINT PK_"
-                            + tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn + ");" + "\r\n");
+                    stringBufferFoot.insert(4,
+                            "ALTER TABLE " + tableObject.getTableName() + " ADD CONSTRAINT PK_" + tableObject.getTableName() + "  PRIMARY KEY (" + pkColumn + ");" + "\r\n");
                 }
             }
 
             // 表的注释,第一行才有
             if (i == 0) {
-                stringBufferFoot.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '"
-                        + tableObject.getTableNameCn() + "';" + "\r\n");
+                stringBufferFoot.append("COMMENT ON TABLE " + tableObject.getTableName() + " IS '" + tableObject.getTableNameCn() + "';" + "\r\n");
             }
 
             // 字段注释
-            stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "."
-                    + tableObject.getColumnNameEn() + " IS '" + tableObject.getColumnNameCn() + "';" + "\r\n");
+            stringBufferFoot.append("COMMENT ON COLUMN " + tableObject.getTableName() + "." + tableObject.getColumnNameEn() + " IS '" + tableObject.getColumnNameCn() + "';" + "\r\n");
         }
     }
 

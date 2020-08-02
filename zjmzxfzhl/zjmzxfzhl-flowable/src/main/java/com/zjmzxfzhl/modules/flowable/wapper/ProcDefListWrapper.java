@@ -17,7 +17,7 @@ public class ProcDefListWrapper implements IListWrapper {
     @Autowired
     private ResponseFactory responseFactory;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public List execute(List list) {
         return responseFactory.createProcessDefinitionResponseList(list);

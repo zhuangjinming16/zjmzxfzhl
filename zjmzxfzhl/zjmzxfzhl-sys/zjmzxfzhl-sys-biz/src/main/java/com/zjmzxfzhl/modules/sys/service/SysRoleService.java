@@ -11,14 +11,14 @@ import com.zjmzxfzhl.modules.sys.entity.SysUser;
 
 /**
  * 角色Service
- * 
+ *
  * @author 庄金明
  */
 public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 分页查询角色
-     * 
+     *
      * @param page
      * @param sysRole
      * @return
@@ -27,7 +27,7 @@ public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 查询角色权限
-     * 
+     *
      * @param sysUser
      * @param roleId
      * @return
@@ -36,7 +36,7 @@ public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 保存角色权限
-     * 
+     *
      * @param roleId
      * @param menuOrFuncIds
      * @param permissionTypes
@@ -45,7 +45,7 @@ public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 查询角色用户
-     * 
+     *
      * @param page
      * @param sysRoleUser
      * @return
@@ -54,7 +54,7 @@ public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 保存角色用户
-     * 
+     *
      * @param roleId
      * @param userIds
      */
@@ -62,7 +62,7 @@ public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 删除角色用户
-     * 
+     *
      * @param roleId
      * @param userIds
      */
@@ -70,7 +70,7 @@ public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 删除角色
-     * 
+     *
      * @param ids
      */
     void delete(String ids);

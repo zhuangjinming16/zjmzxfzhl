@@ -2,9 +2,8 @@ package com.zjmzxfzhl.common.core.permission;
 
 /**
  * 数据规则数据源策略
- * 
- * @author 庄金明
  *
+ * @author 庄金明
  */
 public enum SourceStrategy {
     /**

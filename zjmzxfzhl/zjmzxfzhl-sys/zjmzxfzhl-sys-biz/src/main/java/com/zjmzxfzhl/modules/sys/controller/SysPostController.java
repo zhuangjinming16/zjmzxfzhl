@@ -25,7 +25,7 @@ import com.zjmzxfzhl.modules.sys.service.SysPostService;
 
 /**
  * 岗位Controller
- * 
+ *
  * @author 庄金明
  */
 @RestController
@@ -36,7 +36,7 @@ public class SysPostController extends BaseController {
 
     /**
      * 自定义查询列表
-     * 
+     *
      * @param sysPost
      * @param current
      * @param size
@@ -57,9 +57,9 @@ public class SysPostController extends BaseController {
     }
 
     /**
-     * @功能：新增
      * @param sysPost
      * @return
+     * @功能：新增
      */
     @PreAuthorize("@elp.single('sys:post:save')")
     @PostMapping(value = "/save")
@@ -69,9 +69,9 @@ public class SysPostController extends BaseController {
     }
 
     /**
-     * @功能：修改
      * @param sysPost
      * @return
+     * @功能：修改
      */
     @PreAuthorize("@elp.single('sys:post:update')")
     @PutMapping(value = "/update")
@@ -81,9 +81,9 @@ public class SysPostController extends BaseController {
     }
 
     /**
-     * @功能：批量删除
      * @param ids
      * @return
+     * @功能：批量删除
      */
     @PreAuthorize("@elp.single('sys:post:delete')")
     @DeleteMapping(value = "/delete")
@@ -97,7 +97,7 @@ public class SysPostController extends BaseController {
 
     /**
      * 获取岗位用户
-     * 
+     *
      * @param sysPostUser
      * @param current
      * @param size
@@ -112,7 +112,7 @@ public class SysPostController extends BaseController {
 
     /**
      * 保存岗位用户
-     * 
+     *
      * @param sysPostUser
      * @return
      */
@@ -126,7 +126,7 @@ public class SysPostController extends BaseController {
 
     /**
      * 删除岗位用户
-     * 
+     *
      * @param postId
      * @param userIds
      * @return

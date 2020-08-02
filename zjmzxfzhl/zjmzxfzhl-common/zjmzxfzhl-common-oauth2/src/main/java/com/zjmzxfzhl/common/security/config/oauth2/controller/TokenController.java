@@ -14,7 +14,6 @@ import com.zjmzxfzhl.common.core.Result;
 
 /**
  * @author 庄金明
- *
  */
 @RestController
 @RequestMapping("/token")

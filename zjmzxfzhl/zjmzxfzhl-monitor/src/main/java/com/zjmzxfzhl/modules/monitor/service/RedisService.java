@@ -13,21 +13,21 @@ public interface RedisService {
 
     /**
      * 获取redis信息
-     * 
+     *
      * @return
      */
     List<RedisInfo> getInfo();
 
     /**
      * 获取key数量
-     * 
+     *
      * @return
      */
     Map<String, Object> getKeysSize();
 
     /**
      * 获取内存内容
-     * 
+     *
      * @return
      */
     Map<String, Object> getMemoryInfo();

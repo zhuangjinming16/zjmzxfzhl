@@ -8,9 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * 系统日志注解
- * 
- * @author 庄金明
  *
+ * @author 庄金明
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -18,7 +17,7 @@ import java.lang.annotation.Target;
 public @interface Log {
     /**
      * 日志内容
-     * 
+     *
      * @return
      */
     String value() default "";

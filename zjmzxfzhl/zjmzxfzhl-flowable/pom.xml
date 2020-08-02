@@ -1,62 +1,62 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.zjmzxfzhl</groupId>
-		<artifactId>zjmzxfzhl</artifactId>
-		<version>1.1.6-SNAPSHOT</version>
-	</parent>
-	<artifactId>zjmzxfzhl-flowable</artifactId>
-	<description>zjmzxfzhl-flowable工作流模块</description>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.zjmzxfzhl</groupId>
+        <artifactId>zjmzxfzhl</artifactId>
+        <version>1.1.6-SNAPSHOT</version>
+    </parent>
+    <artifactId>zjmzxfzhl-flowable</artifactId>
+    <description>zjmzxfzhl-flowable工作流模块</description>
 
-	<dependencies>
-		<!-- zjmzxfzhl -->
-		<dependency>
-			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-common-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.zjmzxfzhl</groupId>
-			<artifactId>zjmzxfzhl-sys-biz</artifactId>
-		</dependency>
-		
-		<!--flowable -->
-		<dependency>
-			<groupId>org.flowable</groupId>
-			<artifactId>flowable-spring-boot-starter-basic</artifactId>
-			<exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
-				<exclusion>
-					<groupId>org.mybatis</groupId>
-					<artifactId>mybatis</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.flowable</groupId>
-			<artifactId>flowable-idm-spring</artifactId>
-			<exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
-				<exclusion>
-					<groupId>org.mybatis</groupId>
-					<artifactId>mybatis</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.flowable</groupId>
-			<artifactId>flowable-idm-spring-configurator</artifactId>
-			<exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
-				<exclusion>
-					<groupId>org.mybatis</groupId>
-					<artifactId>mybatis</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.flowable</groupId>
-			<artifactId>flowable-json-converter</artifactId>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <!-- zjmzxfzhl -->
+        <dependency>
+            <groupId>com.zjmzxfzhl</groupId>
+            <artifactId>zjmzxfzhl-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zjmzxfzhl</groupId>
+            <artifactId>zjmzxfzhl-sys-biz</artifactId>
+        </dependency>
+
+        <!--flowable -->
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-basic</artifactId>
+            <exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-idm-spring</artifactId>
+            <exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-idm-spring-configurator</artifactId>
+            <exclusions><!-- 需要排除flowable的mybatis依赖，不然会跟mybatis-plus冲突 -->
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-json-converter</artifactId>
+        </dependency>
+    </dependencies>
 </project>

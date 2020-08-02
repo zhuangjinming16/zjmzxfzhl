@@ -1,6 +1,6 @@
 package com.zjmzxfzhl.common.core.util;
 
-import com.zjmzxfzhl.common.core.Constants;
+import com.zjmzxfzhl.common.core.constant.Constants;
 
 /**
  * @author 庄金明
@@ -10,9 +10,8 @@ public class ColumnUtils {
     /**
      * 将下划线大写方式命名的字符串转换为驼峰式。 如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。</br>
      * 例如：hello_world->helloWorld
-     * 
-     * @param name
-     *            转换前的下划线大写方式命名的字符串
+     *
+     * @param name 转换前的下划线大写方式命名的字符串
      * @return 转换后的驼峰式命名的字符串
      */
     public static String camelName(String name) {
@@ -48,9 +47,8 @@ public class ColumnUtils {
     /**
      * 将下划线大写方式命名的字符串转换为驼峰式。 如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。</br>
      * 例如：hello_world,test_id->helloWorld,testId
-     * 
-     * @param name
-     *            转换前的下划线大写方式命名的字符串
+     *
+     * @param name 转换前的下划线大写方式命名的字符串
      * @return 转换后的驼峰式命名的字符串
      */
     public static String camelNames(String names) {
@@ -70,9 +68,8 @@ public class ColumnUtils {
     /**
      * 将下划线大写方式命名的字符串转换为驼峰式。(首字母写) 如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。</br>
      * 例如：hello_world->HelloWorld
-     * 
-     * @param name
-     *            转换前的下划线大写方式命名的字符串
+     *
+     * @param name 转换前的下划线大写方式命名的字符串
      * @return 转换后的驼峰式命名的字符串
      */
     public static String camelNameCapFirst(String name) {
@@ -101,7 +98,7 @@ public class ColumnUtils {
 
     /**
      * 将驼峰命名转化成下划线
-     * 
+     *
      * @param para
      * @return
      */

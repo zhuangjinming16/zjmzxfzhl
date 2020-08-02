@@ -24,7 +24,7 @@ import com.zjmzxfzhl.modules.sys.service.SysMenuService;
 
 /**
  * 菜单Service
- * 
+ *
  * @author 庄金明
  */
 @Service
@@ -40,7 +40,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 
     /**
      * 新增菜单，自动计算是否叶子
-     * 
+     *
      * @param sysMenu
      * @return
      */
@@ -68,7 +68,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 
     /**
      * 修改菜单
-     * 
+     *
      * @param sysMenu
      * @return
      */
@@ -101,9 +101,9 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
     }
 
     /**
-     * @功能：批量删除
      * @param id
      * @return
+     * @功能：批量删除
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -118,8 +118,8 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
         sysFuncService.remove(new LambdaQueryWrapper<SysFunc>().eq(SysFunc::getMenuId, id));
         if (!CommonUtil.isEmptyStr(sysMenu.getParentMenuId())) {
             // 若父菜单的下级菜单为空，则修改为是叶子节点
-            int countParentChildren = this
-                    .count(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentMenuId, sysMenu.getParentMenuId()));
+            int countParentChildren = this.count(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentMenuId,
+                    sysMenu.getParentMenuId()));
             if (countParentChildren == 0) {
                 SysMenu parentSysMenu = this.getById(sysMenu.getParentMenuId());
                 parentSysMenu.setIsLeaf("1");
@@ -131,7 +131,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 
     /**
      * 菜单管理，菜单树数据
-     * 
+     *
      * @return
      */
     @Override

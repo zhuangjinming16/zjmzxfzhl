@@ -21,11 +21,8 @@ import com.zjmzxfzhl.codegenerator.util.TableObject;
 public class CreateController {
 
     /**
-     * 
-     * @param createTableName
-     *            需要创建的表名
-     * @param templetPath
-     *            模板路径
+     * @param createTableName 需要创建的表名
+     * @param templetPath     模板路径
      */
     @SuppressWarnings("resource")
     public static void create(String createTableName, String templetPath) {
@@ -49,8 +46,8 @@ public class CreateController {
         String codeType = CodeUtil.getTuoFengName(StringUtils.substringAfter(moduleId, "_"), false);
 
         // 读取模板内容
-        File actionFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template\\"
-                + templetPath + "\\Controller.txt");
+        File actionFile = new File(CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\codegenerator\\template" +
+                "\\" + templetPath + "\\Controller.txt");
         try {
             FileInputStream fileInputStream = new FileInputStream(actionFile);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "utf-8");
@@ -81,12 +78,12 @@ public class CreateController {
 
         // Controller的Controller类.
         try {
-            String filePath = CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\modules\\" + sys + "\\"
-                    + "\\controller\\";
+            String filePath = CodeUtil.projectPath + "src\\main\\java\\com\\zjmzxfzhl\\modules\\" + sys + "\\" +
+                    "\\controller\\";
             File file = new File(filePath);
             file.mkdirs();
-            BufferedWriter bufferedWriter = new BufferedWriter(
-                    new FileWriter(new File(filePath + aSys + aCodeType + "Controller.java")));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath + aSys + aCodeType +
+                    "Controller.java")));
 
             // 根据表名替换:关键词
             String temp = stringBufferAll.toString();

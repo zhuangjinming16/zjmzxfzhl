@@ -10,13 +10,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysCodeType;
 
 /**
  * 代码类别Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysCodeTypeMapper extends BaseMapper<SysCodeType> {
     /**
      * 查询代码类别列表
-     * 
+     *
      * @param page
      * @param entity
      * @return

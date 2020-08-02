@@ -3,39 +3,39 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysUserMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysUser">
-		select
-			a.USER_ID as userId,
-			a.USER_NAME as userName,
-			a.SEX as sex,
-			a.ROLE_ID as roleId,
-			a.ORG_ID as orgId,
-			a.MOBILE as mobile,
-			a.ID_CARD_NO as idCardNo,
-			a.EMAIL as email,
-			a.STATUS as status,
-			a.SORT_NO as sortNo,
-			a.REMARK as remark,
-			o.org_name as orgName
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysUser">
+        select
+        a.USER_ID as userId,
+        a.USER_NAME as userName,
+        a.SEX as sex,
+        a.ROLE_ID as roleId,
+        a.ORG_ID as orgId,
+        a.MOBILE as mobile,
+        a.ID_CARD_NO as idCardNo,
+        a.EMAIL as email,
+        a.STATUS as status,
+        a.SORT_NO as sortNo,
+        a.REMARK as remark,
+        o.org_name as orgName
 
-		from T_SYS_USER a 
-		join T_SYS_ORG o ON o.org_id=a.org_id
-		where 1=1 
-		<if test="entity.userId != null and entity.userId !=''">
-			<![CDATA[	AND a.USER_ID = #{entity.userId}	]]>
-		</if>
-		<if test="entity.userName != null and entity.userName !=''">
-			<![CDATA[	AND a.USER_NAME = #{entity.userName}	]]>
-		</if>
-		<if test="entity.orgId != null and entity.orgId !=''">
-			<![CDATA[	AND a.ORG_ID = #{entity.orgId}	]]>
-		</if>
-		{{authFilterSql}}
-		order by a.sort_no
-	</select>
-	
-	<select id="getRolesByUserId" resultType="com.zjmzxfzhl.modules.sys.entity.SysRole">
+        from T_SYS_USER a
+        join T_SYS_ORG o ON o.org_id=a.org_id
+        where 1=1
+        <if test="entity.userId != null and entity.userId !=''">
+            <![CDATA[	AND a.USER_ID = #{entity.userId}	]]>
+        </if>
+        <if test="entity.userName != null and entity.userName !=''">
+            <![CDATA[	AND a.USER_NAME = #{entity.userName}	]]>
+        </if>
+        <if test="entity.orgId != null and entity.orgId !=''">
+            <![CDATA[	AND a.ORG_ID = #{entity.orgId}	]]>
+        </if>
+        {{authFilterSql}}
+        order by a.sort_no
+    </select>
+
+    <select id="getRolesByUserId" resultType="com.zjmzxfzhl.modules.sys.entity.SysRole">
 		select r.ROLE_ID   as roleId,
 		       r.ROLE_NAME as roleName,
 		       r.SORT_NO   as sortNo,
@@ -44,8 +44,8 @@
 		  join t_sys_role_user ru on r.role_id = ru.role_id
 		 where ru.user_id = #{userId}
 	</select>
-	
-	<select id="getAdminPermissions" resultType="com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO">
+
+    <select id="getAdminPermissions" resultType="com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO">
 		SELECT '1' AS permissionType,
 		       M.MENU_ID AS menuOrFuncId,
 		       M.MENU_URL AS menuUrl,
@@ -61,8 +61,8 @@
 		       F.MENU_ID funcMenuId,
 		       F.FUNC_PERMISSIONS AS funcPermissions
 		  FROM T_SYS_FUNC F
-	</select>	
-	<select id="getRolePermissions" resultType="com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO">
+	</select>
+    <select id="getRolePermissions" resultType="com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO">
 		select
 				a.ROLE_PERMISSION_ID as rolePermissionId,
 				a.ROLE_ID as roleId,
@@ -77,30 +77,30 @@
 		left join t_sys_func f on f.FUNC_ID=a.MENU_OR_FUNC_ID
 		where a.ROLE_ID=#{roleId}
 	</select>
-	<select id="getRoleMenus" resultType="com.zjmzxfzhl.modules.sys.entity.SysMenu">
-		select
-			distinct
-			a.MENU_ID as menuId,
-			a.MENU_NAME as menuName,
-			a.PARENT_MENU_ID as parentMenuId,
-			a.MENU_ICON as menuIcon,
-			a.MENU_URL as menuUrl,
-			a.MENU_PERMISSIONS as menuPermissions,
-			a.COMPONENT as component,
-			a.REDIRECT as redirect,
-			a.HIDDEN as hidden,
-			a.IS_ROUTE as isRoute,
-			a.ROUTE_NAME as routeName,
-			a.IS_CACHE as isCache,
-			a.affix as affix,
-			a.IS_LEAF as isLeaf,
-			a.SORT_NO as sortNo
-		from T_SYS_MENU a 
-		left join T_SYS_ROLE_PERMISSION rp ON a.MENU_ID=rp.MENU_OR_FUNC_ID
-		where 1=1
-		<if test="roleId != null and roleId !=''">
-			<![CDATA[	AND rp.ROLE_ID=#{roleId}	]]>
-		</if>
-		order by a.SORT_NO
-	</select>
+    <select id="getRoleMenus" resultType="com.zjmzxfzhl.modules.sys.entity.SysMenu">
+        select
+        distinct
+        a.MENU_ID as menuId,
+        a.MENU_NAME as menuName,
+        a.PARENT_MENU_ID as parentMenuId,
+        a.MENU_ICON as menuIcon,
+        a.MENU_URL as menuUrl,
+        a.MENU_PERMISSIONS as menuPermissions,
+        a.COMPONENT as component,
+        a.REDIRECT as redirect,
+        a.HIDDEN as hidden,
+        a.IS_ROUTE as isRoute,
+        a.ROUTE_NAME as routeName,
+        a.IS_CACHE as isCache,
+        a.affix as affix,
+        a.IS_LEAF as isLeaf,
+        a.SORT_NO as sortNo
+        from T_SYS_MENU a
+        left join T_SYS_ROLE_PERMISSION rp ON a.MENU_ID=rp.MENU_OR_FUNC_ID
+        where 1=1
+        <if test="roleId != null and roleId !=''">
+            <![CDATA[	AND rp.ROLE_ID=#{roleId}	]]>
+        </if>
+        order by a.SORT_NO
+    </select>
 </mapper>

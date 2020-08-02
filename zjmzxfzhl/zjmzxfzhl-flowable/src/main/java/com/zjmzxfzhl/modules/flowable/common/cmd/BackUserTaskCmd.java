@@ -118,8 +118,8 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
                 }
                 // 当前节点相对目标节点在并行网关内，应筛选相对目标节点最近的并行网关的所有节点的execution
                 else {
-                    sourceRealAcitivtyIds = specialGatewayNodes
-                            .get(sourceInSpecialGatewayList.get(diffSpecialGatewayLevel));
+                    sourceRealAcitivtyIds =
+                            specialGatewayNodes.get(sourceInSpecialGatewayList.get(diffSpecialGatewayLevel));
                 }
                 // 目标节点最内层并行网关包含当前节点最内层并行网关
                 // 或理解为目标节点相对当前节点在并行网关外
@@ -137,10 +137,9 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
         List<ExecutionEntity> realExecutions = this.getRealExecutions(commandContext, processInstanceId,
                 task.getExecutionId(), sourceRealActivityId, sourceRealAcitivtyIds);
         // 执行退回，直接跳转到实际的 targetRealActivityId
-        List<String> realExecutionIds = realExecutions.stream().map(ExecutionEntity::getId)
-                .collect(Collectors.toList());
-        runtimeService.createChangeActivityStateBuilder().processInstanceId(processInstanceId)
-                .moveExecutionsToSingleActivityId(realExecutionIds, targetRealActivityId).changeState();
+        List<String> realExecutionIds =
+                realExecutions.stream().map(ExecutionEntity::getId).collect(Collectors.toList());
+        runtimeService.createChangeActivityStateBuilder().processInstanceId(processInstanceId).moveExecutionsToSingleActivityId(realExecutionIds, targetRealActivityId).changeState();
         // 目标节点相对当前节点处于并行网关内，需要特殊处理，需要手动生成并行网关汇聚节点(_end)的execution数据
         if (targetRealSpecialGateway != null) {
             createTargetInSpecialGatewayEndExecutions(commandContext, realExecutions, process,
@@ -150,8 +149,9 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
     }
 
     private void setSpecialGatewayList(String sourceActivityId, String targetActivityId,
-            Map<String, Set<String>> specialGatewayNodes, List<String> sourceInSpecialGatewayList,
-            List<String> targetInSpecialGatewayList) {
+                                       Map<String, Set<String>> specialGatewayNodes,
+                                       List<String> sourceInSpecialGatewayList,
+                                       List<String> targetInSpecialGatewayList) {
         for (Map.Entry<String, Set<String>> entry : specialGatewayNodes.entrySet()) {
             if (entry.getValue().contains(sourceActivityId)) {
                 sourceInSpecialGatewayList.add(entry.getKey());
@@ -163,8 +163,9 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
     }
 
     private void createTargetInSpecialGatewayEndExecutions(CommandContext commandContext,
-            List<ExecutionEntity> excutionEntitys, Process process, List<String> targetInSpecialGatewayList,
-            String targetRealSpecialGateway) {
+                                                           List<ExecutionEntity> excutionEntitys, Process process,
+                                                           List<String> targetInSpecialGatewayList,
+                                                           String targetRealSpecialGateway) {
         // 目标节点相对当前节点处于并行网关，需要手动生成并行网关汇聚节点(_end)的execution数据
         String parentExecutionId = excutionEntitys.iterator().next().getParentId();
         ExecutionEntityManager executionEntityManager = CommandContextUtil.getExecutionEntityManager(commandContext);
@@ -187,18 +188,20 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
     }
 
     private List<ExecutionEntity> getRealExecutions(CommandContext commandContext, String processInstanceId,
-            String taskExecutionId, String sourceRealActivityId, Set<String> activityIds) {
+                                                    String taskExecutionId, String sourceRealActivityId,
+                                                    Set<String> activityIds) {
         ExecutionEntityManager executionEntityManager = CommandContextUtil.getExecutionEntityManager(commandContext);
         ExecutionEntity taskExecution = executionEntityManager.findById(taskExecutionId);
-        List<ExecutionEntity> executions = executionEntityManager
-                .findChildExecutionsByProcessInstanceId(processInstanceId);
+        List<ExecutionEntity> executions =
+                executionEntityManager.findChildExecutionsByProcessInstanceId(processInstanceId);
         Set<String> parentExecutionIds = FlowableUtils.getParentExecutionIdsByActivityId(executions,
                 sourceRealActivityId);
         String realParentExecutionId = FlowableUtils.getParentExecutionIdFromParentIds(taskExecution,
                 parentExecutionIds);
 
-        List<ExecutionEntity> childExecutions = executionEntityManager
-                .findExecutionsByParentExecutionAndActivityIds(realParentExecutionId, activityIds);
+        List<ExecutionEntity> childExecutions =
+                executionEntityManager.findExecutionsByParentExecutionAndActivityIds(realParentExecutionId,
+                        activityIds);
         return childExecutions;
     }
 }

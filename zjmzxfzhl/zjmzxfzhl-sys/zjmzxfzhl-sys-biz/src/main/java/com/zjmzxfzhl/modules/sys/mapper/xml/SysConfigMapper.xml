@@ -3,26 +3,26 @@
 
 <mapper namespace="com.zjmzxfzhl.modules.sys.mapper.SysConfigMapper">
 
-	<!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
-	<select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysConfig">
-		select
-			a.CONFIG_ID as configId,
-			a.CONFIG_NAME as configName,
-			a.CONFIG_VALUE as configValue,
-			a.SORT_NO as sortNo,
-			a.REMARK as remark
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.sys.entity.SysConfig">
+        select
+        a.CONFIG_ID as configId,
+        a.CONFIG_NAME as configName,
+        a.CONFIG_VALUE as configValue,
+        a.SORT_NO as sortNo,
+        a.REMARK as remark
 
-		from T_SYS_CONFIG a 
-		where 1=1 
-		<if test="entity.configId != null and entity.configId !=''">
-			<![CDATA[	AND a.CONFIG_ID = #{entity.configId}	]]>
-		</if>
-		<if test="entity.configName != null and entity.configName !=''">
-			<![CDATA[	AND a.CONFIG_NAME = #{entity.configName}	]]>
-		</if>
-		<if test="entity.configValue != null and entity.configValue !=''">
-			<![CDATA[	AND a.CONFIG_VALUE = #{entity.configValue}	]]>
-		</if>
-		order by a.sort_no
-	</select>
+        from T_SYS_CONFIG a
+        where 1=1
+        <if test="entity.configId != null and entity.configId !=''">
+            <![CDATA[	AND a.CONFIG_ID = #{entity.configId}	]]>
+        </if>
+        <if test="entity.configName != null and entity.configName !=''">
+            <![CDATA[	AND a.CONFIG_NAME = #{entity.configName}	]]>
+        </if>
+        <if test="entity.configValue != null and entity.configValue !=''">
+            <![CDATA[	AND a.CONFIG_VALUE = #{entity.configValue}	]]>
+        </if>
+        order by a.sort_no
+    </select>
 </mapper>

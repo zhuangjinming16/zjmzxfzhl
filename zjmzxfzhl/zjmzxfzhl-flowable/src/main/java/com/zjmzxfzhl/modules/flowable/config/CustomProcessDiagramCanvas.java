@@ -13,7 +13,8 @@ import org.flowable.image.impl.DefaultProcessDiagramCanvas;
 public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
 
     public CustomProcessDiagramCanvas(int width, int height, int minX, int minY, String imageType,
-            String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader) {
+                                      String activityFontName, String labelFontName, String annotationFontName,
+                                      ClassLoader customClassLoader) {
         super(width, height, minX, minY, imageType, activityFontName, labelFontName, annotationFontName,
                 customClassLoader);
     }

@@ -10,13 +10,13 @@ import com.zjmzxfzhl.modules.sys.entity.SysJobLog;
 
 /**
  * 定时任务执行日志Mapper
- * 
+ *
  * @author 庄金明
  */
 public interface SysJobLogMapper extends BaseMapper<SysJobLog> {
     /**
      * 查询定时任务执行日志列表
-     * 
+     *
      * @param page
      * @param entity
      * @return

@@ -1,12 +1,12 @@
 package com.zjmzxfzhl.common.core.util;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
 /**
- * 错误信息处理类。
+ * 错误信息处理类
  *
  * @author 庄金明
  */
