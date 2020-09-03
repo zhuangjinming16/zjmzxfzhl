@@ -231,6 +231,10 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
 
         this.addComment(taskId, task.getProcessInstanceId(), userId, CommentTypeEnum.QXRL, taskRequest.getMessage());
         taskService.unclaim(taskId);
+        // 判断是否是协办取消认领
+        if (permissionService.isTaskPending((Task) task)) {
+            taskService.resolveTask(taskId, null);
+        }
     }
 
     @Override
