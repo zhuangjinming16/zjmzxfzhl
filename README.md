@@ -20,6 +20,8 @@ github: https://github.com/zhuangjinming16/zjmzxfzhl
 
 若需要使用微服务架构请移步 https://gitee.com/zjm16/zjmzxfzhl-cloud
 
+`特别提示：前端VUE流程设计器暂时只发布到` [zjmzxfzhl-cloud](https://gitee.com/zjm16/zjmzxfzhl-cloud)
+
 ## 技术架构
 ### 后端技术
 
@@ -113,6 +115,8 @@ github: https://github.com/zhuangjinming16/zjmzxfzhl
 QQ群 : 913659692
 
 ## 界面展示
+
+![](https://img-blog.csdnimg.cn/20200902215755388.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pqbTE2,size_16,color_FFFFFF,t_70#pic_center)
 
 ![](https://img-blog.csdnimg.cn/20200328211217434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pqbTE2,size_16,color_FFFFFF,t_70)
 
