@@ -20,6 +20,8 @@ github: https://github.com/zhuangjinming16/zjmzxfzhl
 
 若需要使用微服务架构请移步 https://gitee.com/zjm16/zjmzxfzhl-cloud
 
+<font color="red">特别提示：前端VUE流程设计器暂时只发布到 [zjmzxfzhl-cloud](https://gitee.com/zjm16/zjmzxfzhl-cloud)</font>
+
 ## 技术架构
 ### 后端技术
 
