@@ -117,6 +117,7 @@ public abstract class BaseFlowableController {
         List list = null;
         if (flowablePage == null) {
             list = query.list();
+            flowablePage = FlowablePage.of(0, 0);
         } else {
             setQueryOrder(flowablePage.getOrders(), query, allowedSortProperties, defaultDescSortProperty);
             list = query.listPage((int) flowablePage.getOffset(), flowablePage.getSize());

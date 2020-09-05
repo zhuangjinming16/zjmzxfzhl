@@ -45,11 +45,13 @@
         <swagger.version>2.9.2</swagger.version>
         <redisson.version>3.11.1</redisson.version>
         <flowable.version>6.4.1</flowable.version>
+        <xerces.version>2.12.0</xerces.version>
         <oshi.version>3.9.1</oshi.version>
         <quartz.version>2.3.2</quartz.version>
         <easyexcel.version>2.2.0-beta1</easyexcel.version>
         <hutool.version>5.3.8</hutool.version>
         <guava.version>28.2-android</guava.version>
+        <esapi.version>2.1.0</esapi.version>
     </properties>
 
     <dependencies>
@@ -218,10 +220,16 @@
             </dependency>
 
             <!-- jsoup HTML parser library @ https://jsoup.org/ -->
-            <dependency>
+            <!--<dependency>
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
+            </dependency>-->
+
+            <dependency>
+                <groupId>org.owasp.esapi</groupId>
+                <artifactId>esapi</artifactId>
+                <version>${esapi.version}</version>
             </dependency>
 
             <!-- Swagger2 API文档 -->
@@ -287,6 +295,11 @@
                 <groupId>org.flowable</groupId>
                 <artifactId>flowable-json-converter</artifactId>
                 <version>${flowable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>${xerces.version}</version>
             </dependency>
 
             <!-- 获取系统信息 -->

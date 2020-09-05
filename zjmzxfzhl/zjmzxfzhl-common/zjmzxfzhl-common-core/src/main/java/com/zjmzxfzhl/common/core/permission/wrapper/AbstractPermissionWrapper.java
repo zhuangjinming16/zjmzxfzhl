@@ -253,7 +253,7 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
     /**
      * 普通查询条件
      *
-     * @param condition  是否执行
+     * @param alias  是否执行
      * @param column     属性
      * @param sqlKeyword SQL 关键词
      * @param val        条件值
@@ -276,7 +276,7 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
     /**
      * 多重嵌套查询条件
      *
-     * @param condition 查询条件值
+     * @param consumer 查询条件值
      */
     protected Children addNestedCondition(Consumer<Children> consumer) {
         final Children instance = instance();
@@ -346,7 +346,6 @@ public abstract class AbstractPermissionWrapper<R, Children extends AbstractPerm
     /**
      * 对sql片段进行组装
      *
-     * @param condition   是否执行
      * @param sqlSegments sql片段数组
      * @return children
      */

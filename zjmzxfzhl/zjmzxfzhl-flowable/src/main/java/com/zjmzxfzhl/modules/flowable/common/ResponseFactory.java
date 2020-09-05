@@ -1,5 +1,6 @@
 package com.zjmzxfzhl.modules.flowable.common;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,10 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zjmzxfzhl.modules.flowable.vo.*;
 import org.flowable.engine.FormService;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.IdentityService;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.repository.Model;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Comment;
@@ -27,13 +32,6 @@ import org.springframework.stereotype.Component;
 
 import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
-import com.zjmzxfzhl.modules.flowable.vo.CommentResponse;
-import com.zjmzxfzhl.modules.flowable.vo.HistoricProcessInstanceResponse;
-import com.zjmzxfzhl.modules.flowable.vo.IdentityResponse;
-import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionResponse;
-import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
-import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceResponse;
-import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
 
 /**
  * @author 庄金明
@@ -44,12 +42,14 @@ public class ResponseFactory {
     private final IdentityService identityService;
     private final FormService formService;
     private final HistoryService historyService;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public ResponseFactory(IdentityService identityService, FormService formService, HistoryService historyService) {
+    public ResponseFactory(IdentityService identityService, FormService formService, HistoryService historyService,ObjectMapper objectMapper) {
         this.identityService = identityService;
         this.formService = formService;
         this.historyService = historyService;
+        this.objectMapper = objectMapper;
     }
 
     public List<ProcessDefinitionResponse> createProcessDefinitionResponseList(List<ProcessDefinition> processDefinitions) {
@@ -273,6 +273,38 @@ public class ResponseFactory {
             return group.getName();
         }
         return null;
+    }
+
+    public List<ModelResponse> createModelResponseList(List<Model> models) {
+        List<ModelResponse> responseList = new ArrayList<>();
+        for (Model instance : models) {
+            responseList.add(createModelResponse(instance));
+        }
+        return responseList;
+    }
+
+    public ModelResponse createModelResponse(Model model) {
+        ModelResponse response = new ModelResponse();
+        response.setCategory(model.getCategory());
+        response.setCreateTime(model.getCreateTime());
+        response.setId(model.getId());
+        response.setKey(model.getKey());
+        response.setLastUpdateTime(model.getLastUpdateTime());
+        try {
+            JsonNode modelNode = objectMapper.readTree(model.getMetaInfo());
+            response.setDescription(modelNode.get("description").asText());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        response.setName(model.getName());
+        response.setVersion(model.getVersion());
+        if (model.getDeploymentId() != null) {
+            response.setDeployed(true);
+        } else {
+            response.setDeployed(false);
+        }
+        response.setTenantId(model.getTenantId());
+        return response;
     }
 
 }
