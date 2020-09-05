@@ -38,6 +38,17 @@ export const constantRoutes = [
         }]
     },
     {
+        path: '/flowableModelEdit',
+        component: Layout,
+        hidden: true,
+        children: [{
+            path: '/',
+            name: 'flowableModelEdit',
+            component: () => import('@/views/flowable/model/edit'),
+            meta: {title: '流程设计'}
+        }]
+    },
+    {
         path: '/404',
         component: () => import('@/views/exception/404'),
         hidden: true

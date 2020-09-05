@@ -1,5 +1,6 @@
 import ErrorPlugin from './errorPlugin'
 import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
 Vue.use(ErrorPlugin)
 
 import Cookies from 'js-cookie'
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 let size = Cookies.get('size') || 'mini';
+Vue.use(VueClipboard)
 Vue.use(ElementUI, {locale,size})
 Vue.use(FormMaking)
 Vue.directive('permission', permission)

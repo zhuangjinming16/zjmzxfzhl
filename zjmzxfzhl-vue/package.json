@@ -16,6 +16,10 @@
   },
   "dependencies": {
     "axios": "0.18.1",
+    "bpmn-js": "^7.2.1",
+    "bpmn-js-properties-panel": "^0.34.0",
+    "bpmn-moddle": "^6.0.0",
+    "core-js": "^2.6.11",
     "el-table-editabled": "^1.0.22",
     "element-ui": "^2.13.2",
     "form-making": "^1.2.7",
@@ -25,7 +29,9 @@
     "path-to-regexp": "2.4.0",
     "screenfull": "^4.2.1",
     "vue": "2.6.10",
+    "vue-clipboard2": "^0.3.1",
     "vue-router": "3.0.6",
+    "vue2-ace-editor": "0.0.15",
     "vuex": "3.1.0",
     "webpack": "^4.39.3"
   },
