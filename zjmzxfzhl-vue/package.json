@@ -22,7 +22,7 @@
     "core-js": "^2.6.11",
     "el-table-editabled": "^1.0.22",
     "element-ui": "^2.13.2",
-    "form-making": "^1.2.7",
+    "form-making": "^1.2.9",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
