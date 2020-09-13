@@ -3,6 +3,7 @@
         <div class="filter-container">
             <div class="filter-container">
                 <el-checkbox v-model="listQuery.startByMe">我发起的</el-checkbox>
+                <el-checkbox v-model="listQuery.ccToMe">抄送我</el-checkbox>
             </div>
             <div>
                 <el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID"
@@ -95,6 +96,7 @@
                     current: 1,
                     size: 10,
                     startByMe: false,
+                    ccToMe: false,
                     processInstanceId: undefined,
                     processInstanceName: undefined,
                     businessKey: undefined,
@@ -129,6 +131,7 @@
                     current: 1,
                     size: 10,
                     startByMe: false,
+                    ccToMe: false,
                     processInstanceId: undefined,
                     processInstanceName: undefined,
                     businessKey: undefined,

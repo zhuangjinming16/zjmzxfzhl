@@ -4,8 +4,9 @@
             <el-tab-pane name="taskForm" label="任务表单" v-if="generateTaskFormVisible">
                 <fm-generate-form :data="taskFormJson" :value="taskFormData" ref="generateFormTask"></fm-generate-form>
             </el-tab-pane>
-            <el-tab-pane name="processInstanceForm" label="流程表单(只读)" >
-                <fm-generate-form v-if="generateStartFormVisible" :data="startFormJson" :value="processInstanceFormData" ref="generateFormStart"></fm-generate-form>
+            <el-tab-pane name="processInstanceForm" label="流程表单(只读)">
+                <fm-generate-form v-if="generateStartFormVisible" :data="startFormJson" :value="processInstanceFormData"
+                                  ref="generateFormStart"></fm-generate-form>
                 <el-form label-width="100px" v-if="showBusinessKey">
                     <el-form-item label="业务主键Key:">
                         <el-input v-model="businessKey" disabled/>
@@ -17,7 +18,8 @@
             </el-tab-pane>
         </el-tabs>
 
-        <select-user ref="selectUser" :visible.sync="selectUserVisible" :appendToBody="true" :multipleSelect="false"
+        <select-user ref="selectUser" :visible.sync="selectUserVisible" :appendToBody="true"
+                     :multipleSelect="selectUserMultipleSelect"
                      @selectUserFinished="selectUserFinished"></select-user>
 
         <task-back-nodes v-if="dialogTaskBackNodesVisible" :visible.sync="dialogTaskBackNodesVisible"
@@ -25,13 +27,29 @@
 
         <div slot="footer" class="dialog-footer" style="padding:0 15px 0 15px">
             <el-form label-width="100px">
+                <el-form-item label="抄送给:">
+                    <el-row align="left">
+                        <el-col :span="1" align="left">
+                            <i class="el-icon-plus el-icon--left" style="cursor:pointer" @click="doSelectCcTo"></i>
+                        </el-col>
+                        <el-col :span="23" align="left">
+                            <el-tag v-for="tag in ccToVos" :key="tag.userId" effect="plain" closable
+                                    @close="handleCcToClose(tag)"
+                                    style="margin-left: 5px">{{tag.userName}}
+                            </el-tag>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
                 <el-form-item label="意见:">
-                    <el-input v-model="message" :autosize="{ minRows: 2, maxRows: 3}" type="textarea" placeholder="请输入意见"/>
+                    <el-input v-model="message" :autosize="{ minRows: 2, maxRows: 3}" type="textarea"
+                              placeholder="请输入意见"/>
                 </el-form-item>
             </el-form>
             <el-button icon="el-icon-close" @click="dialogExcuteTaskVisibleInChild = false">取消</el-button>
             <el-button icon="el-icon-check" type="primary" @click="doComplete">提交</el-button>
-            <el-button v-if="$store.getters.sysUser.userId==='admin'||$store.getters.sysUser.userId===startUserId" icon="el-icon-close" type="primary" @click="doStop">终止</el-button>
+            <el-button v-if="$store.getters.sysUser.userId==='admin'||$store.getters.sysUser.userId===startUserId"
+                       icon="el-icon-close" type="primary" @click="doStop">终止
+            </el-button>
             <el-button v-if="!isInitiator" icon="el-icon-user" type="primary" @click="doAssign">转办</el-button>
             <el-button v-if="!isInitiator" icon="el-icon-user" type="primary" @click="doDelegate">委派</el-button>
             <el-button v-if="!isInitiator" icon="el-icon-back" type="primary" @click="doBack">退回</el-button>
@@ -91,8 +109,10 @@
                 startUserId: '',
                 isInitiator: false,
                 selectUserVisible: false,
+                selectUserMultipleSelect: false,
                 selectUserType: '',
                 message: '',
+                ccToVos: [],
                 dialogTaskBackNodesVisible: false
             }
         },
@@ -121,7 +141,7 @@
                         }
                         this.generateTaskFormVisible = true
                     }
-                    if(this.generateTaskFormVisible){
+                    if (this.generateTaskFormVisible) {
                         this.activeName = 'taskForm'
                     }
                     // if (!this.generateStartFormVisible && !this.generateTaskFormVisible) {
@@ -148,7 +168,8 @@
                                 taskId: this.executeTaskId,
                                 message: this.message,
                                 isInitiator: this.isInitiator,
-                                values: realValues
+                                values: realValues,
+                                ccToVos: this.ccToVos
                             }).then(({msg}) => {
                                 Message.success(msg)
                                 this.dialogExcuteTaskVisibleInChild = false
@@ -160,14 +181,14 @@
                 } else {
                     putAction('/flowable/task/complete', {
                         taskId: this.executeTaskId,
-                        message: this.message
+                        message: this.message,
+                        ccToVos: this.ccToVos
                     }).then(({msg}) => {
                         Message.success(msg)
                         this.dialogExcuteTaskVisibleInChild = false
                         this.$emit("executeTaskFinished");
                     })
                 }
-
             },
             doStop() {
                 this.checkMessage()
@@ -180,8 +201,20 @@
                     this.$emit("executeTaskFinished");
                 })
             },
+            doSelectCcTo() {
+                this.selectUserMultipleSelect = true
+                this.selectUserVisible = true
+                this.selectUserType = 'selectCcTo'
+                if (this.$refs.selectUser.treeData.length == 0) {
+                    this.$refs.selectUser.getTreeData()
+                }
+            },
+            handleCcToClose(tag) {
+                this.ccToVos.splice(this.ccToVos.indexOf(tag), 1);
+            },
             doAssign() {
                 this.checkMessage()
+                this.selectUserMultipleSelect = false
                 this.selectUserVisible = true
                 this.selectUserType = 'assign'
                 if (this.$refs.selectUser.treeData.length == 0) {
@@ -190,6 +223,7 @@
             },
             doDelegate() {
                 this.checkMessage()
+                this.selectUserMultipleSelect = false
                 this.selectUserVisible = true
                 this.selectUserType = 'delegate'
                 if (this.$refs.selectUser.treeData.length == 0) {
@@ -223,6 +257,8 @@
                         this.dialogExcuteTaskVisibleInChild = false
                         this.$emit("executeTaskFinished");
                     })
+                } else if (this.selectUserType === 'selectCcTo') {
+                    this.ccToVos = selectData
                 }
             },
             doBack() {
