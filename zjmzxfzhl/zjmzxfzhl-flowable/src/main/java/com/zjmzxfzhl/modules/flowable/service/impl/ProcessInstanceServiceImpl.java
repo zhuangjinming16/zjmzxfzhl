@@ -1,8 +1,16 @@
 package com.zjmzxfzhl.modules.flowable.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
+import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
+import com.zjmzxfzhl.modules.flowable.common.cmd.AddCcIdentityLinkCmd;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
+import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
+import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
+import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.impl.identity.Authentication;
@@ -20,16 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zjmzxfzhl.common.core.util.CommonUtil;
-import com.zjmzxfzhl.common.core.util.ObjectUtils;
-import com.zjmzxfzhl.common.core.util.SecurityUtils;
-import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
-import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
-import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
-import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
-import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
-import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
-import com.zjmzxfzhl.modules.sys.entity.SysUser;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 庄金明
@@ -113,6 +113,10 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
                     taskService.setAssignee(task.getId(), userId);
                 }
                 taskService.complete(task.getId());
+                if (CommonUtil.isNotEmptyObject(processInstanceRequest.getCcToVos())) {
+                    managementService.executeCommand(new AddCcIdentityLinkCmd(processInstanceId, task.getId(), userId
+                            , processInstanceRequest.getCcToVos()));
+                }
             }
         }
     }

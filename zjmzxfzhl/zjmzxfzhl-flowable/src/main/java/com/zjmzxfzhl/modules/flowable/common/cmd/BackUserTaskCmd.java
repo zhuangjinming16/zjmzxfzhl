@@ -50,7 +50,9 @@ public class BackUserTaskCmd implements Command<String>, Serializable {
         if (targetActivityId == null || targetActivityId.length() == 0) {
             throw new FlowableException("TargetActivityId cannot be empty");
         }
-        TaskEntity task = CommandContextUtil.getTaskService().getTask(taskId);
+        /// TaskEntity task = CommandContextUtil.getTaskService().getTask(taskId);
+        /// v6.5.1.28
+        TaskEntity task = CommandContextUtil.getProcessEngineConfiguration().getTaskServiceConfiguration().getTaskService().getTask(taskId);
         if (task == null) {
             throw new FlowableObjectNotFoundException("task " + taskId + " doesn't exist", Task.class);
         }

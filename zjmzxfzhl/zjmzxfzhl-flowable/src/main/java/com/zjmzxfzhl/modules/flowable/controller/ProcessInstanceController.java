@@ -1,10 +1,18 @@
 package com.zjmzxfzhl.modules.flowable.controller;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.common.log.annotation.Log;
+import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
+import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
+import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
+import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
+import com.zjmzxfzhl.modules.flowable.wapper.CommentListWrapper;
+import com.zjmzxfzhl.modules.flowable.wapper.ProcInsListWrapper;
 import org.flowable.common.engine.api.query.QueryProperty;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
@@ -15,28 +23,12 @@ import org.flowable.variable.api.history.HistoricVariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.zjmzxfzhl.common.core.Result;
-import com.zjmzxfzhl.common.core.util.CommonUtil;
-import com.zjmzxfzhl.common.core.util.ObjectUtils;
-import com.zjmzxfzhl.common.log.annotation.Log;
-import com.zjmzxfzhl.common.core.util.SecurityUtils;
-import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
-import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
-import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
-import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
-import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
-import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
-import com.zjmzxfzhl.modules.flowable.wapper.CommentListWrapper;
-import com.zjmzxfzhl.modules.flowable.wapper.ProcInsListWrapper;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 庄金明
@@ -124,6 +116,13 @@ public class ProcessInstanceController extends BaseFlowableController {
             boolean isStartByMe = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.START_BY_ME));
             if (isStartByMe) {
                 query.startedBy(SecurityUtils.getUserId());
+            }
+        }
+        // ccToMe 抄送我
+        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.CC_TO_ME))) {
+            boolean ccToMe = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.CC_TO_ME));
+            if (ccToMe) {
+                query.involvedUser(SecurityUtils.getUserId(), FlowableConstant.CC);
             }
         }
         if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.TENANT_ID))) {

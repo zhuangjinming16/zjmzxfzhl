@@ -16,4 +16,5 @@ public class TaskRequest {
     private String activityId;
     private String activityName;
     private Map<String, Object> values;
+    private CcToVo[] ccToVos;
 }

@@ -16,4 +16,5 @@ public class ProcessInstanceRequest {
     private String businessKey;
     private Map<String, Object> values;
     private String processInstanceId;
+    private CcToVo[] ccToVos;
 }

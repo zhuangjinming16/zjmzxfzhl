@@ -1,31 +1,27 @@
 package com.zjmzxfzhl.modules.flowable.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
+import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
+import com.zjmzxfzhl.modules.flowable.common.cmd.AddCcIdentityLinkCmd;
+import com.zjmzxfzhl.modules.flowable.common.cmd.BackUserTaskCmd;
+import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
+import com.zjmzxfzhl.modules.flowable.util.FlowableUtils;
+import com.zjmzxfzhl.modules.flowable.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
-import org.flowable.bpmn.model.BpmnModel;
-import org.flowable.bpmn.model.EndEvent;
-import org.flowable.bpmn.model.ExtensionElement;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.FlowNode;
 import org.flowable.bpmn.model.Process;
-import org.flowable.bpmn.model.UserTask;
+import org.flowable.bpmn.model.*;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.impl.identity.Authentication;
 import org.flowable.editor.language.json.converter.util.CollectionUtils;
-import org.flowable.engine.FormService;
-import org.flowable.engine.HistoryService;
-import org.flowable.engine.IdentityService;
-import org.flowable.engine.ManagementService;
-import org.flowable.engine.RepositoryService;
-import org.flowable.engine.RuntimeService;
-import org.flowable.engine.TaskService;
+import org.flowable.engine.*;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ActivityInstance;
@@ -45,21 +41,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zjmzxfzhl.common.core.util.CommonUtil;
-import com.zjmzxfzhl.common.core.util.ObjectUtils;
-import com.zjmzxfzhl.common.core.util.SecurityUtils;
-import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
-import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
-import com.zjmzxfzhl.modules.flowable.common.cmd.BackUserTaskCmd;
-import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
-import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
-import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
-import com.zjmzxfzhl.modules.flowable.util.FlowableUtils;
-import com.zjmzxfzhl.modules.flowable.vo.FlowNodeResponse;
-import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
-import com.zjmzxfzhl.modules.flowable.vo.TaskRequest;
-import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
-import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author 庄金明
@@ -305,6 +290,12 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         this.addComment(taskId, task.getProcessInstanceId(), currUserId,
                 FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey()) ? CommentTypeEnum.CXTJ :
                         CommentTypeEnum.WC, taskRequest.getMessage());
+
+        // 处理抄送
+        if (CommonUtil.isNotEmptyObject(taskRequest.getCcToVos())) {
+            managementService.executeCommand(new AddCcIdentityLinkCmd(task.getProcessInstanceId(), task.getId(),
+                    currUserId, taskRequest.getCcToVos()));
+        }
 
         if (task.getAssignee() == null || !task.getAssignee().equals(currUserId)) {
             taskService.setAssignee(taskId, currUserId);

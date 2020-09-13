@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zjmzxfzhl.common.core.redis.aspect.annotation.RedissonLock;
 import org.flowable.common.engine.api.query.QueryProperty;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
@@ -291,6 +292,7 @@ public class TaskController extends BaseFlowableController {
 
     @Log(value = "认领任务")
     @PutMapping(value = "/claim")
+    @RedissonLock(lockIndexs = 0, fieldNames = "taskId")
     public Result claim(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.claimTask(taskRequest);
         return Result.ok();

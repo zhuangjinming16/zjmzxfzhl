@@ -232,7 +232,9 @@ public class ResponseFactory {
     public List<CommentResponse> createCommentResponseList(List<Comment> comments) {
         List<CommentResponse> responseList = new ArrayList<>();
         for (Comment comment : comments) {
-            responseList.add(createCommentResponse(comment));
+            if(CommonUtil.isNotEmptyAfterTrim(comment.getTaskId())){
+                responseList.add(createCommentResponse(comment));
+            }
         }
         return responseList;
     }

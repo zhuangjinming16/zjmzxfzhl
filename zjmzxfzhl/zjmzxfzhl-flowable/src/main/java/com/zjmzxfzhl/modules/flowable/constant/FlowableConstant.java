@@ -39,6 +39,8 @@ public class FlowableConstant {
     public final static String STARTED_BEFORE = "startedBefore";
     public final static String STARTED_BY = "startedBy";
     public final static String START_BY_ME = "startByMe";
+    public final static String CC_TO_ME = "ccToMe";
+    public final static String CC = "CC";
     public final static String TASK_ID = "taskId";
     public final static String TASK_NAME = "taskName";
     public final static String TASK_DESCRIPTION = "taskDescription";
