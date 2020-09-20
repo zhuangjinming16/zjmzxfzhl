@@ -41,6 +41,7 @@
                                 border
                                 fit
                                 highlight-current-row
+                                height="337"
                                 style="width: 100%;"
                                 :cell-style="{padding:'3px'}"
                         >
@@ -81,6 +82,7 @@
                                 border
                                 fit
                                 highlight-current-row
+                                height="337"
                                 style="width: 100%;"
                                 :cell-style="{padding:'3px'}"
                         >

@@ -54,10 +54,10 @@
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row.processInstanceId)">查看详情
                             </el-dropdown-item>
                             <el-dropdown-item v-if="row.assignee==null||row.assignee==''" icon="el-icon-edit" divided
-                                              @click.native="btnClaim(row)">认领
+                                              @click.native="btnClaim(row)">签收执行
                             </el-dropdown-item>
                             <el-dropdown-item v-if="row.assignee===$store.getters.sysUser.userId && row.endTime==null"
-                                              icon="el-icon-edit" divided @click.native="btnUnclaim(row)">取消认领
+                                              icon="el-icon-edit" divided @click.native="btnUnclaim(row)">取消签收
                             </el-dropdown-item>
                             <el-dropdown-item v-if="row.endTime==null&&row.assignee!=null&&row.assignee!=''"
                                               icon="el-icon-edit" divided @click.native="btnExcuteTask(row)">执行
@@ -143,7 +143,9 @@
             },
             btnClaim(row) {
                 putAction('/flowable/task/claim', {taskId: row.id}).then(({msg}) => {
-                    Message.success(msg)
+                    this.list()
+                    this.btnExcuteTask(row)
+                }).catch((response) => {
                     this.list()
                 })
             },

@@ -60,6 +60,18 @@
             Powered by <a target="_blank" href="https://gitee.com/zjm16/zjmzxfzhl-cloud">Zjmzxfzhl-Cloud</a>
         </el-footer>
     </el-container>
+    <!--<el-dialog title="流程设计" :visible.sync="dialogFormVisible">
+        <el-form ref="dataForm" :rules="rules" label-position="right" label-width="110px">
+            <el-form-item label="模型ID"><el-input v-model="processId" :readonly="true"/></el-form-item>
+            <el-form-item label="名称"><el-input v-model="temp.configName"/></el-form-item>
+            <el-form-item label="Key"><el-input v-model="temp.configValue"/></el-form-item>
+            &lt;!&ndash;<el-form-item label="描述" prop="remark"><el-input v-model="temp.remark"/></el-form-item>&ndash;&gt;
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
+            <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">确定</el-button>
+        </div>
+    </el-dialog>-->
 
 </template>
 
@@ -82,10 +94,15 @@
 
     export default {
         props: {
-            editor: {
-                type: String,
-                default: undefined,
-            },
+            modelData:{
+                type: Object,
+                default:{
+                    id: undefined,
+                    key: 'processId_1',
+                    name: 'processName_1',
+                    category: 'category_1'
+                }
+            }
         },
         components: {VueAceEditor},
         data() {
@@ -119,14 +136,14 @@
                 return {
                     id: element.id,
                     name: element.name,
-                    category: element.$attrs['flowable:processCategory']
+                    category: element.$parent.targetNamespace
                 }
             },
             // 初始化流程图
             createNewDiagram(xml) {
                 if (!xml) {
                     // 初始化XML文本
-                    this.process.xml = newXml()
+                    this.process.xml = newXml(this.modelData.key, this.modelData.name, this.modelData.category)
                 } else {
                     this.process.xml = xml
                 }
@@ -234,8 +251,14 @@
             handleSave() {
                 const _this = this
                 this.bpmnModeler.saveXML({format: true}, (err, xml) => {
+                    const process = _this.getProcess()
                     _this.process.xml = xml
-                    _this.$emit("save", _this.process.xml);
+                    _this.modelData.editor = xml
+                    _this.modelData.key = process.id
+                    _this.modelData.name = process.name
+                    _this.modelData.category = process.category
+
+                    _this.$emit("save", _this.modelData);
                 })
             },
             // 复制成功
@@ -291,7 +314,7 @@
                 })
             })
             // 新增流程定义
-            this.createNewDiagram(this.editor)
+            _this.createNewDiagram(_this.modelData && _this.modelData.editor)
         }
     }
 </script>

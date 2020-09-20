@@ -236,6 +236,7 @@ export default {
     'Topic':'主题',
     'Configure Connector':'配置连接器',
     'Input Parameter':'输入参数',
+    'Category':'类别',
     'Assignee':'经办人',
     'Candidate Users':'候选用户',
     'Candidate Groups':'候选组',
@@ -316,5 +317,6 @@ export default {
     'Event has multiple event definitions': '事件具有多个事件定义',
     ' is missing start event': '缺少开始事件',
     'Start event must be blank': '开始事件必须为空',
-    'Gateway is superfluous. It only has one source and target.': '网关是多余的。它只有一个源和目标'
+    'Gateway is superfluous. It only has one source and target.': '网关是多余的。它只有一个源和目标',
+    'Invalid string': '无效的字符串'
 };

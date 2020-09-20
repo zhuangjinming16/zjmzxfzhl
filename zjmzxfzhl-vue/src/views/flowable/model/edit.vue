@@ -1,6 +1,6 @@
 <template>
     <div v-if="show">
-        <vue-bpmn @save="btnSave" :editor="modelData.editor"/>
+        <vue-bpmn @save="btnSave" :modelData="modelData"/>
     </div>
 </template>
 <script>
@@ -34,14 +34,16 @@
                     return
                 }
                 getAction('/flowable/model/queryById', {id: this.id}).then(({data}) => {
-                    this.modelData.editor = data.editor
                     this.modelData.id = data.id
+                    this.modelData.editor = data.editor
+                    this.modelData.key = data.key
+                    this.modelData.name = data.name
+                    this.modelData.category = data.category
                     this.show = true
                 })
             },
-            btnSave(xml) {
-                this.modelData.editor = xml
-                putAction('/flowable/model/saveModelEditor', this.modelData).then(({msg, data}) => {
+            btnSave(modelData) {
+                putAction('/flowable/model/saveModelEditor', modelData).then(({msg, data}) => {
                     Message.success(msg)
                 })
             }

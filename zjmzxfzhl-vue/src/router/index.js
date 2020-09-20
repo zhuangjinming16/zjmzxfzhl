@@ -78,6 +78,13 @@ export const constantRoutes = [
             hidden: false,
             name: "FlowableMyProcess",
             component: () => import('@/views/flowable/myProcess/index'),
+            meta: {"title": "我的汇总", "icon": "list", "isCache": true, "affix": false}
+        }, {
+            path: "myProcessQuery",
+            redirect: "",
+            hidden: true,
+            name: "FlowableMyProcessQuery",
+            component: () => import('@/views/flowable/myProcess/query'),
             meta: {"title": "我的流程", "icon": "list", "isCache": true, "affix": false}
         }, {
             path: "startMyProcess",
@@ -93,6 +100,13 @@ export const constantRoutes = [
             name: "FlowableTaskTodo",
             component: () => import('@/views/flowable/taskTodo/index'),
             meta: {"title": "我的待办", "icon": "list", "isCache": true, "affix": false}
+        }, {
+            path: "taskRead",
+            redirect: "",
+            hidden: false,
+            name: "FlowableTaskToRead",
+            component: () => import('@/views/flowable/taskToRead/index'),
+            meta: {"title": "我的待阅", "icon": "list", "isCache": true, "affix": false}
         }, {
             path: "taskDone",
             redirect: "",

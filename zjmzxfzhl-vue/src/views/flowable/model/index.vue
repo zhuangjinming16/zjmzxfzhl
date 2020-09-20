@@ -15,9 +15,12 @@
                 <el-button v-permission="'flowable:model:save'" icon="el-icon-plus" type="primary" @click="btnCreate"
                            class="filter-item">新增
                 </el-button>
-                <el-button v-permission="'flowable:model:delete'" icon="el-icon-delete" @click="btnDelete()"
-                           class="filter-item">批量删除
+                <el-button icon="el-icon-plus" type="primary" @click="btnImport"
+                           class="filter-item">导入
                 </el-button>
+                <!--<el-button v-permission="'flowable:model:delete'" icon="el-icon-delete" @click="btnDelete()"
+                           class="filter-item">批量删除
+                </el-button>-->
             </el-button-group>
         </div>
         <el-table
@@ -57,10 +60,13 @@
                                               @click.native="btnUpdate(row)">修改
                             </el-dropdown-item>
                             <el-dropdown-item v-permission="'flowable:model:update'" icon="el-icon-edit" divided
-                                              @click.native="btnUpdateModel(row)">修改模型
+                                              @click.native="btnUpdateModel(row)">流程设计
                             </el-dropdown-item>
                             <el-dropdown-item v-permission="'flowable:model:delete'" icon="el-icon-delete" divided
                                               @click.native="btnDelete(row.id)">删除
+                            </el-dropdown-item>
+                            <el-dropdown-item v-permission="'flowable:model:delete'" icon="el-icon-delete" divided
+                                              @click.native="btnDelete(row.id,true)">删除包含历史
                             </el-dropdown-item>
                             <el-dropdown-item v-permission="'flowable:model:deploy'" icon="el-icon-edit" divided
                                               @click.native="btnDeploy(row.id)">部署
@@ -77,7 +83,7 @@
             <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'"
                      label-position="right" label-width="110px">
                 <el-form-item label="模型key" prop="key">
-                    <el-input v-model="temp.key" :readonly="dialogStatus==='update'"/>
+                    <el-input v-model="temp.key"/>
                 </el-form-item>
                 <el-form-item label="模型名称" prop="name">
                     <el-input v-model="temp.name"/>
@@ -98,6 +104,24 @@
                            @click="dialogStatus==='create'?createData():updateData()">确定
                 </el-button>
             </div>
+        </el-dialog>
+
+        <el-dialog title="流程导入" :visible.sync="dialogImportVisible">
+            <!--<div class="filter-container">
+                <el-input v-model="importTenantId" placeholder="租户" clearable style="width: 200px;"/>
+            </div>-->
+            <el-upload
+                    class="upload-demo"
+                    drag
+                    action
+                    :show-file-list="false"
+                    :before-upload="beforeUpload"
+                    :http-request="doImport"
+            >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">只能上传.bpmn20.xml,.bpmn文件，且不超过512K</div>
+            </el-upload>
         </el-dialog>
     </div>
 </template>
@@ -136,7 +160,8 @@
                     id: [{required: true, message: '该项不能为空', trigger: 'change'}],
                     key: [{required: true, message: '该项不能为空', trigger: 'change'}],
                     name: [{required: true, message: '该项不能为空', trigger: 'change'}]
-                }
+                },
+                dialogImportVisible: false
             }
         },
         beforeCreate() {
@@ -192,6 +217,32 @@
                     this.$refs['dataForm'].clearValidate()
                 })
             },
+            btnImport() {
+                this.dialogImportVisible = true;
+            },
+            beforeUpload(file) {
+                // 上传前格式与大小校验
+                const fileName = file.name
+                const isFileTypeOk = fileName.endsWith('.bpmn20.xml') || fileName.endsWith('.bpmn')
+                const isLt512 = file.size / 1024 / 512 < 1;
+                if (!isFileTypeOk) {
+                    Message.error("上传文件格式不正确");
+                }
+                if (!isLt512) {
+                    Message.error("上传文件大小不能超过512K");
+                }
+                return isFileTypeOk && isLt512;
+            },
+            doImport(fileObj) {
+                let formData = new FormData();
+                formData.set("file", fileObj.file);
+                // formData.set("tenantId", this.importTenantId);
+                postAction('/flowable/model/import', formData).then(({msg}) => {
+                    this.dialogImportVisible = false
+                    Message.success(msg)
+                    this.list();
+                })
+            },
             createData() {
                 this.$refs['dataForm'].validate((valid) => {
                     if (valid) {
@@ -225,7 +276,7 @@
                     }
                 })
             },
-            btnDelete(id) {
+            btnDelete(id,cascade) {
                 let ids = id ? [id] : this.selectedRecords.map(record => {
                     return record.id
                 })
@@ -233,7 +284,7 @@
                     Message.error('请选择要删除的记录')
                     return
                 }
-                deleteAction('/flowable/model/delete', {ids: ids.toString()}).then(({msg}) => {
+                deleteAction('/flowable/model/delete', {ids: ids.toString(),cascade}).then(({msg}) => {
                     Message.success(msg)
                     this.list()
                 })

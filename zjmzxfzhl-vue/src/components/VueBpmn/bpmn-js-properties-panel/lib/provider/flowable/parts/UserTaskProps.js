@@ -6,6 +6,13 @@ var is = require('bpmn-js/lib/util/ModelUtil').is,
 module.exports = function(group, element, translate) {
   if (is(element, 'flowable:Assignable')) {
 
+      // Category
+      group.entries.push(entryFactory.textField({
+          id : 'category',
+          label : translate('Category'),
+          modelProperty : 'category',
+      }));
+
     // Assignee
     group.entries.push(entryFactory.textField({
       id : 'assignee',
