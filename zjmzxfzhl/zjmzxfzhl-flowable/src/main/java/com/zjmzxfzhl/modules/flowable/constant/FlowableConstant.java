@@ -64,5 +64,7 @@ public class FlowableConstant {
     public final static String EXECUTION_ID = "executionId";
     public final static String FILE_EXTENSION_BAR = ".bar";
     public final static String FILE_EXTENSION_ZIP = ".zip";
+    public final static String CATEGORY_TODO = "todo";
+    public final static String CATEGORY_TO_READ = "toRead";
 
 }

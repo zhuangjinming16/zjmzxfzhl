@@ -7,7 +7,11 @@ import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.common.cmd.AddCcIdentityLinkCmd;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.flowable.mapper.FlowableCommonMapper;
 import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
+import com.zjmzxfzhl.modules.flowable.vo.CategoryVo;
+import com.zjmzxfzhl.modules.flowable.vo.ListMyInvolvedSummaryVo;
+import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -28,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +57,8 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     protected FlowableTaskServiceImpl flowableTaskService;
     @Autowired
     protected TaskService taskService;
+    @Autowired
+    private FlowableCommonMapper flowableCommonMapper;
 
     @Override
     public ProcessInstance getProcessInstanceById(String processInstanceId) {
@@ -157,5 +165,26 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
             throw new FlowableException("Process instance is already suspended with id {0}" + processInstanceId);
         }
         runtimeService.suspendProcessInstanceById(processInstance.getId());
+    }
+
+    @Override
+    public List listMyInvolvedSummary(ListMyInvolvedSummaryVo listMyInvolvedSummaryVo, String userId){
+        listMyInvolvedSummaryVo.setUserId(userId);
+        List<ProcessDefinitionVo> vos = flowableCommonMapper.listMyInvolvedSummary(listMyInvolvedSummaryVo);
+        List<CategoryVo> result = new ArrayList<>();
+        Map<String, List<ProcessDefinitionVo>> categorysByParent = new HashMap<>();
+        for (ProcessDefinitionVo vo : vos) {
+            List<ProcessDefinitionVo> childs = categorysByParent.computeIfAbsent(vo.getCategory(), k -> new ArrayList<>());
+            childs.add(vo);
+        }
+        for (Map.Entry<String, List<ProcessDefinitionVo>> entry : categorysByParent.entrySet()){
+            CategoryVo aCategoryVo = new CategoryVo();
+            aCategoryVo.setCategory(entry.getKey());
+            aCategoryVo.setProcessDefinitionVoList(entry.getValue());
+            String categoryName = entry.getValue().iterator().next().getCategoryName();
+            aCategoryVo.setCategoryName(categoryName);
+            result.add(aCategoryVo);
+        }
+        return result;
     }
 }

@@ -248,7 +248,19 @@ public class TaskController extends BaseFlowableController {
     public Result listTodo(@RequestParam Map<String, String> requestParams) {
         String userId = SecurityUtils.getUserId();
         TaskQuery query = createTaskQuery(requestParams);
+        query.taskCategory(FlowableConstant.CATEGORY_TODO);
         query.or().taskCandidateOrAssigned(userId).taskOwner(userId).endOr();
+        FlowablePage page = this.pageList(requestParams, query, TaskTodoListWrapper.class, allowedSortProperties,
+                TaskQueryProperty.CREATE_TIME);
+        return Result.ok(page);
+    }
+
+    @GetMapping(value = "/listToRead")
+    public Result listToRead(@RequestParam Map<String, String> requestParams) {
+        String userId = SecurityUtils.getUserId();
+        TaskQuery query = createTaskQuery(requestParams);
+        query.taskCategory(FlowableConstant.CATEGORY_TO_READ);
+        query.or().taskAssignee(userId).taskOwner(userId).endOr();
         FlowablePage page = this.pageList(requestParams, query, TaskTodoListWrapper.class, allowedSortProperties,
                 TaskQueryProperty.CREATE_TIME);
         return Result.ok(page);
@@ -364,6 +376,12 @@ public class TaskController extends BaseFlowableController {
     @PutMapping(value = "/back")
     public Result back(@RequestBody TaskRequest taskRequest) {
         flowableTaskService.backTask(taskRequest);
+        return Result.ok();
+    }
+
+    @PutMapping(value = "/read")
+    public Result read(@RequestBody TaskRequest taskRequest) {
+        flowableTaskService.readTask(taskRequest);
         return Result.ok();
     }
 }

@@ -184,4 +184,10 @@ public interface FlowableTaskService {
      * @param identityType
      */
     void deleteTaskIdentityLink(String taskId, String identityId, String identityType);
+
+    /**
+     * 任务已阅
+     * @param taskRequest
+     */
+    void readTask(TaskRequest taskRequest);
 }

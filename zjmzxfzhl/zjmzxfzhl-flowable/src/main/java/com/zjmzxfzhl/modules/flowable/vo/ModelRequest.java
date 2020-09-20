@@ -18,6 +18,7 @@ public class ModelRequest {
     private String tenantId;
     private String editor;
     private boolean newVersion;
+    private boolean cascade;
 
     public String getMetaInfo() {
         ObjectMapper objectMapper = new ObjectMapper();

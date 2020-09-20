@@ -9,6 +9,7 @@ import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
+import com.zjmzxfzhl.modules.flowable.vo.ListMyInvolvedSummaryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import com.zjmzxfzhl.modules.flowable.wapper.CommentListWrapper;
@@ -61,6 +62,9 @@ public class ProcessInstanceController extends BaseFlowableController {
     public Result list(@RequestParam Map<String, String> requestParams) {
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
 
+        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.CATEGORY))) {
+            query.processDefinitionCategory(requestParams.get(FlowableConstant.CATEGORY));
+        }
         if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID))) {
             query.processInstanceId(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID));
         }
@@ -134,9 +138,26 @@ public class ProcessInstanceController extends BaseFlowableController {
         return Result.ok(page);
     }
 
+    @GetMapping(value = "/listMyInvolvedSummary")
+    public Result listMyInvolvedSummary(ListMyInvolvedSummaryVo listMyInvolvedSummaryVo) {
+        return Result.ok(this.processInstanceService.listMyInvolvedSummary(listMyInvolvedSummaryVo,SecurityUtils.getUserId()));
+    }
+
     @GetMapping(value = "/listMyInvolved")
     public Result listMyInvolved(@RequestParam Map<String, String> requestParams) {
         requestParams.put(FlowableConstant.INVOLVED_USER, SecurityUtils.getUserId());
+        return list(requestParams);
+    }
+
+    @GetMapping(value = "/listStartByMe")
+    public Result listStartByMe(@RequestParam Map<String, String> requestParams) {
+        requestParams.put(FlowableConstant.START_BY_ME, SecurityUtils.getUserId());
+        return list(requestParams);
+    }
+
+    @GetMapping(value = "/listCcToMe")
+    public Result listCcToMe(@RequestParam Map<String, String> requestParams) {
+        requestParams.put(FlowableConstant.CC_TO_ME, "true");
         return list(requestParams);
     }
 

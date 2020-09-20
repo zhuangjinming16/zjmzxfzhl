@@ -7,6 +7,7 @@ import com.zjmzxfzhl.modules.flowable.common.CommentTypeEnum;
 import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.common.cmd.AddCcIdentityLinkCmd;
 import com.zjmzxfzhl.modules.flowable.common.cmd.BackUserTaskCmd;
+import com.zjmzxfzhl.modules.flowable.common.cmd.CompleteTaskReadCmd;
 import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
@@ -209,6 +210,9 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         TaskInfo task = this.getTaskNotNull(taskId);
         if (!userId.equals(task.getAssignee())) {
             throw new FlowableNoPermissionException("User does not have permission");
+        }
+        if (FlowableConstant.CATEGORY_TO_READ.equals(task.getCategory())) {
+            throw new FlowableNoPermissionException("User cannot unclaim the read task");
         }
         if (FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey())) {
             throw new FlowableNoPermissionException("Initiator cannot unclaim the task");
@@ -581,6 +585,19 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
             taskService.deleteGroupIdentityLink(task.getId(), identityId, IdentityLinkType.CANDIDATE);
         } else if (FlowableConstant.IDENTITY_USER.equals(identityType)) {
             taskService.deleteUserIdentityLink(task.getId(), identityId, IdentityLinkType.CANDIDATE);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void readTask(TaskRequest taskRequest) {
+        String[] taskIds = taskRequest.getTaskIds();
+        if (taskIds == null || taskIds.length == 0) {
+            throw new FlowableException("taskIds is null or empty");
+        }
+        String userId = SecurityUtils.getUserId();
+        for (String taskId : taskIds) {
+            managementService.executeCommand(new CompleteTaskReadCmd(taskId, userId));
         }
     }
 }

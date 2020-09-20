@@ -15,4 +15,5 @@ public class Constants {
     public static final String CURRENT = "current";
     public static final String SIZE = "size";
     public static final String ORDER_RULE = "orderRule";
+    public static final String CHARSET_NAME_UTF8 = "UTF-8";
 }

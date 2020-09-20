@@ -9,6 +9,8 @@ import com.zjmzxfzhl.modules.flowable.common.FlowablePage.Order;
 import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
 import com.zjmzxfzhl.modules.flowable.service.PermissionService;
 import com.zjmzxfzhl.modules.flowable.wapper.IListWrapper;
+import org.flowable.bpmn.model.ExtensionElement;
+import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.ValuedDataObject;
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.query.Query;
@@ -176,6 +178,29 @@ public abstract class BaseFlowableController {
     protected boolean isShowBusinessKey(String processDefinitionId) {
         List<ValuedDataObject> dataObjects =
                 repositoryService.getBpmnModel(processDefinitionId).getMainProcess().getDataObjects();
+
+        Process process = repositoryService.getBpmnModel(processDefinitionId).getMainProcess();
+
+        Map<String, List<ExtensionElement>> extensionElements = process.getExtensionElements();
+        if (extensionElements != null && !extensionElements.isEmpty() && extensionElements.get("properties") != null && extensionElements.get("properties").size() > 0) {
+            List<ExtensionElement> properties = extensionElements.get("properties");
+            for (ExtensionElement extensionElement : properties) {
+                List<ExtensionElement> property = extensionElement.getChildElements().get("property");
+                if (property != null && property.size() > 0) {
+                    for (ExtensionElement propertyElement : property) {
+                        String name = propertyElement.getAttributeValue(null, "name");
+                        String value = propertyElement.getAttributeValue(null, "value");
+                        if ("showBusinessKey".equals(name)) {
+                            if (Boolean.valueOf(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if (dataObjects != null && dataObjects.size() > 0) {
             for (ValuedDataObject valuedDataObject : dataObjects) {
                 if ("showBusinessKey".equals(valuedDataObject.getId())) {

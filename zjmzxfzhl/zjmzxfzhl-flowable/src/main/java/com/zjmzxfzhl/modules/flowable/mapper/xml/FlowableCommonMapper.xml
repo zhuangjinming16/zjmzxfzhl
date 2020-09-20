@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.flowable.mapper.FlowableCommonMapper">
+
+    <select id="selectUserByQueryCriteria" parameterType="org.flowable.idm.engine.impl.UserQueryImpl"
+            resultType="org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl">
+        SELECT
+        t.USER_ID id,
+        t.USER_NAME firstName,
+        t.USER_NAME lastName,
+        t.USER_NAME displayName,
+        t.EMAIL email
+        <include refid="selectUserByQueryCriteriaSql"/>
+    </select>
+
+    <select id="selectUserCountByQueryCriteria" parameterType="org.flowable.idm.engine.impl.UserQueryImpl"
+            resultType="long">
+        select count(1)
+        <include refid="selectUserByQueryCriteriaSql"/>
+    </select>
+
+    <sql id="selectUserByQueryCriteriaSql">
+        FROM t_sys_user t
+        WHERE 1=1
+        <if test="id != null">
+            and t.USER_ID = #{id}
+        </if>
+        <if test="ids != null &amp;&amp; ids.size() &gt; 0">
+            and t.USER_ID IN
+            <foreach item="id" index="index" collection="ids"
+                     open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="firstName != null">
+            and t.USER_NAME = #{firstName}
+        </if>
+        <if test="firstNameLike != null">
+            and t.USER_NAME like #{firstNameLike}${wildcardEscapeClause}
+        </if>
+    </sql>
+
+    <select id="selectGroupByQueryCriteria" parameterType="org.flowable.idm.engine.impl.GroupQueryImpl"
+            resultType="org.flowable.idm.engine.impl.persistence.entity.GroupEntityImpl">
+        select r.POST_ID id,
+        r.POST_NAME name
+        <include refid="selectGroupByQueryCriteriaSql"/>
+    </select>
+
+    <select id="selectGroupCountByQueryCriteria" parameterType="org.flowable.idm.engine.impl.GroupQueryImpl"
+            resultType="org.flowable.idm.engine.impl.persistence.entity.GroupEntityImpl">
+        select count(1)
+        <include refid="selectGroupByQueryCriteriaSql"/>
+    </select>
+
+    <sql id="selectGroupByQueryCriteriaSql">
+        from t_sys_post r
+        where 1=1
+        <if test="id != null">
+            and r.post_id = #{id}
+        </if>
+        <if test="ids != null &amp;&amp; ids.size() &gt; 0">
+            and r.post_id IN
+            <foreach item="id" index="index" collection="ids"
+                     open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="name != null">
+            and r.post_name = #{name}
+        </if>
+        <if test="nameLike != null">
+            and r.post_name like #{nameLike}${wildcardEscapeClause}
+        </if>
+        <if test="userId != null">
+            and exists(select 1 from T_SYS_POST_USER m where m.post_id = r.post_id and M.USER_ID = #{userId})
+        </if>
+        <if test="userIds != null &amp;&amp; userIds.size() &gt; 0">
+            and exists(select 1 from T_SYS_POST_USER m where m.post_id = r.post_id and M.USER_ID in
+            <foreach item="userId" index="index" collection="userIds" open="(" separator="," close=")">
+                #{userId}</foreach>)
+        </if>
+    </sql>
+
+    <select id="listMyInvolvedSummary" parameterType="java.util.Map" resultType="com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionVo">
+        SELECT
+            DEF.CATEGORY_ "category",
+            DEF.CATEGORY_ "categoryName",
+            DEF.KEY_ "processDefinitionKey",
+            DEF.NAME_ "processDefinitionName",
+            count(1) "count"
+        FROM
+            ACT_HI_PROCINST RES
+        LEFT OUTER JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+        WHERE
+        (
+            EXISTS (
+                SELECT
+                    LINK.USER_ID_
+                FROM
+                    ACT_HI_IDENTITYLINK LINK
+                WHERE
+                    USER_ID_ = #{userId}
+                AND LINK.PROC_INST_ID_ = RES.ID_
+            )
+        )
+        <if test="ccToMe">
+            AND EXISTS (
+                SELECT
+                    ID_
+                FROM ACT_HI_IDENTITYLINK I
+                WHERE I.PROC_INST_ID_ = RES.ID_
+                    AND I.USER_ID_ = #{userId}
+                    AND I.TYPE_ = 'CC'
+            )
+        </if>
+
+        <if test="startByMe">
+            AND RES.START_USER_ID_ = #{userId}
+        </if>
+        <if test="unfinished != finished">
+            <if test="unfinished">
+                AND RES.END_TIME_ IS NULL
+            </if>
+            <if test="finished">
+                AND RES.END_TIME_ IS NOT NULL
+            </if>
+        </if>
+        GROUP BY
+            DEF.CATEGORY_,DEF.CATEGORY_,DEF.KEY_,DEF.NAME_
+        ORDER BY
+            DEF.CATEGORY_,DEF.KEY_
+    </select>
+</mapper>
