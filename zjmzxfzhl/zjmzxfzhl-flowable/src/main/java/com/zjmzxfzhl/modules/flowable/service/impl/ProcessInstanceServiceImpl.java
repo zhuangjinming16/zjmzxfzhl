@@ -10,8 +10,8 @@ import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.mapper.FlowableCommonMapper;
 import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
 import com.zjmzxfzhl.modules.flowable.vo.CategoryVo;
-import com.zjmzxfzhl.modules.flowable.vo.ListMyInvolvedSummaryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionVo;
+import com.zjmzxfzhl.modules.flowable.vo.query.ProcessInstanceQueryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
@@ -168,9 +168,8 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     @Override
-    public List listMyInvolvedSummary(ListMyInvolvedSummaryVo listMyInvolvedSummaryVo, String userId){
-        listMyInvolvedSummaryVo.setUserId(userId);
-        List<ProcessDefinitionVo> vos = flowableCommonMapper.listMyInvolvedSummary(listMyInvolvedSummaryVo);
+    public List listMyInvolvedSummary(ProcessInstanceQueryVo processInstanceQueryVo){
+        List<ProcessDefinitionVo> vos = flowableCommonMapper.listMyInvolvedSummary(processInstanceQueryVo);
         List<CategoryVo> result = new ArrayList<>();
         Map<String, List<ProcessDefinitionVo>> categorysByParent = new HashMap<>();
         for (ProcessDefinitionVo vo : vos) {

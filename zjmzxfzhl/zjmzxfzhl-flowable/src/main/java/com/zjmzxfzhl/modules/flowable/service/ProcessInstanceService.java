@@ -1,6 +1,6 @@
 package com.zjmzxfzhl.modules.flowable.service;
 
-import com.zjmzxfzhl.modules.flowable.vo.ListMyInvolvedSummaryVo;
+import com.zjmzxfzhl.modules.flowable.vo.query.ProcessInstanceQueryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -61,8 +61,7 @@ public interface ProcessInstanceService {
     /**
      * 查询我的流程汇总信息
      *
-     * @param listMyInvolvedSummaryVo
-     * @param userId
+     * @param processInstanceQueryVo
      */
-    List listMyInvolvedSummary(ListMyInvolvedSummaryVo listMyInvolvedSummaryVo, String userId);
+    List listMyInvolvedSummary(ProcessInstanceQueryVo processInstanceQueryVo);
 }

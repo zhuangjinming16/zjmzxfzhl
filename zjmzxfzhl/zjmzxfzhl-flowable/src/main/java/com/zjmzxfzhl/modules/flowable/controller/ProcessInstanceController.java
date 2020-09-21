@@ -9,8 +9,8 @@ import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
-import com.zjmzxfzhl.modules.flowable.vo.ListMyInvolvedSummaryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceDetailResponse;
+import com.zjmzxfzhl.modules.flowable.vo.query.ProcessInstanceQueryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
 import com.zjmzxfzhl.modules.flowable.wapper.CommentListWrapper;
 import com.zjmzxfzhl.modules.flowable.wapper.ProcInsListWrapper;
@@ -59,106 +59,102 @@ public class ProcessInstanceController extends BaseFlowableController {
 
     @PreAuthorize("@elp.single('flowable:processInstance:list')")
     @GetMapping(value = "/list")
-    public Result list(@RequestParam Map<String, String> requestParams) {
+    public Result list(ProcessInstanceQueryVo processInstanceQueryVo) {
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
 
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.CATEGORY))) {
-            query.processDefinitionCategory(requestParams.get(FlowableConstant.CATEGORY));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getProcessDefinitionCategory())) {
+            query.processDefinitionCategory(processInstanceQueryVo.getProcessDefinitionCategory());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID))) {
-            query.processInstanceId(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getProcessInstanceId())) {
+            query.processInstanceId(processInstanceQueryVo.getProcessInstanceId());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_INSTANCE_NAME))) {
-            query.processInstanceNameLike(requestParams.get(FlowableConstant.PROCESS_INSTANCE_NAME));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getProcessInstanceName())) {
+            query.processInstanceNameLike(processInstanceQueryVo.getProcessInstanceName());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME))) {
-            query.processDefinitionName(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getProcessDefinitionName())) {
+            query.processDefinitionName(processInstanceQueryVo.getProcessDefinitionName());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY))) {
-            query.processDefinitionKey(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getProcessDefinitionKey())) {
+            query.processDefinitionKey(processInstanceQueryVo.getProcessDefinitionKey());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID))) {
-            query.processDefinitionId(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getProcessDefinitionId())) {
+            query.processDefinitionId(processInstanceQueryVo.getProcessDefinitionId());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.BUSINESS_KEY))) {
-            query.processInstanceBusinessKey(requestParams.get(FlowableConstant.BUSINESS_KEY));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getBusinessKey())) {
+            query.processInstanceBusinessKey(processInstanceQueryVo.getBusinessKey());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.INVOLVED_USER))) {
-            query.involvedUser(requestParams.get(FlowableConstant.INVOLVED_USER));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getInvolvedUser())) {
+            query.involvedUser(processInstanceQueryVo.getInvolvedUser());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.FINISHED))) {
-            boolean isFinished = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.FINISHED));
-            if (isFinished) {
+        if (!processInstanceQueryVo.getFinished().equals(processInstanceQueryVo.getUnfinished())) {
+            if (processInstanceQueryVo.getFinished()) {
                 query.finished();
-            } else {
+            }
+            if (processInstanceQueryVo.getUnfinished()) {
                 query.unfinished();
             }
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.SUPER_PROCESS_INSTANCE_ID))) {
-            query.superProcessInstanceId(requestParams.get(FlowableConstant.SUPER_PROCESS_INSTANCE_ID));
+
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getSuperProcessInstanceId())) {
+            query.superProcessInstanceId(processInstanceQueryVo.getSuperProcessInstanceId());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.EXCLUDE_SUBPROCESSES))) {
-            query.excludeSubprocesses(ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.EXCLUDE_SUBPROCESSES)));
+        if (processInstanceQueryVo.getExcludeSubprocesses()) {
+            query.excludeSubprocesses(processInstanceQueryVo.getExcludeSubprocesses());
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.FINISHED_AFTER))) {
-            query.finishedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.FINISHED_AFTER)));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getFinishedAfter())) {
+            query.finishedAfter(ObjectUtils.convertToDatetime(processInstanceQueryVo.getFinishedAfter()));
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.FINISHED_BEFORE))) {
-            query.finishedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.FINISHED_BEFORE)));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getFinishedBefore())) {
+            query.finishedBefore(ObjectUtils.convertToDatetime(processInstanceQueryVo.getFinishedBefore()));
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.STARTED_AFTER))) {
-            query.startedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.STARTED_AFTER)));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getStartedAfter())) {
+            query.startedAfter(ObjectUtils.convertToDatetime(processInstanceQueryVo.getStartedAfter()));
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.STARTED_BEFORE))) {
-            query.startedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.STARTED_BEFORE)));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getStartedBefore())) {
+            query.startedBefore(ObjectUtils.convertToDatetime(processInstanceQueryVo.getStartedBefore()));
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.STARTED_BY))) {
-            query.startedBy(requestParams.get(FlowableConstant.STARTED_BY));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getStartedBy())) {
+            query.startedBy(processInstanceQueryVo.getStartedBy());
         }
         // startByMe 覆盖 startedBy
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.START_BY_ME))) {
-            boolean isStartByMe = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.START_BY_ME));
-            if (isStartByMe) {
-                query.startedBy(SecurityUtils.getUserId());
-            }
+        if (processInstanceQueryVo.getStartedByMe()) {
+            query.startedBy(SecurityUtils.getUserId());
         }
         // ccToMe 抄送我
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.CC_TO_ME))) {
-            boolean ccToMe = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.CC_TO_ME));
-            if (ccToMe) {
-                query.involvedUser(SecurityUtils.getUserId(), FlowableConstant.CC);
-            }
+        if (processInstanceQueryVo.getCcToMe()) {
+            query.involvedUser(SecurityUtils.getUserId(), FlowableConstant.CC);
         }
-        if (CommonUtil.isNotEmptyAfterTrim(requestParams.get(FlowableConstant.TENANT_ID))) {
-            query.processInstanceTenantIdLike(requestParams.get(FlowableConstant.TENANT_ID));
+        if (CommonUtil.isNotEmptyAfterTrim(processInstanceQueryVo.getTenantId())) {
+            query.processInstanceTenantIdLike(processInstanceQueryVo.getTenantId());
         }
 
-        FlowablePage page = this.pageList(requestParams, query, ProcInsListWrapper.class, allowedSortProperties,
+        FlowablePage page = this.pageList(processInstanceQueryVo, query, ProcInsListWrapper.class, allowedSortProperties,
                 HistoricProcessInstanceQueryProperty.START_TIME);
         return Result.ok(page);
     }
 
     @GetMapping(value = "/listMyInvolvedSummary")
-    public Result listMyInvolvedSummary(ListMyInvolvedSummaryVo listMyInvolvedSummaryVo) {
-        return Result.ok(this.processInstanceService.listMyInvolvedSummary(listMyInvolvedSummaryVo,SecurityUtils.getUserId()));
+    public Result listMyInvolvedSummary(ProcessInstanceQueryVo processInstanceQueryVo) {
+        processInstanceQueryVo.setUserId(SecurityUtils.getUserId());
+        return Result.ok(this.processInstanceService.listMyInvolvedSummary(processInstanceQueryVo));
     }
 
     @GetMapping(value = "/listMyInvolved")
-    public Result listMyInvolved(@RequestParam Map<String, String> requestParams) {
-        requestParams.put(FlowableConstant.INVOLVED_USER, SecurityUtils.getUserId());
-        return list(requestParams);
+    public Result listMyInvolved(ProcessInstanceQueryVo processInstanceQueryVo) {
+        processInstanceQueryVo.setInvolvedUser(SecurityUtils.getUserId());
+        return list(processInstanceQueryVo);
     }
 
-    @GetMapping(value = "/listStartByMe")
-    public Result listStartByMe(@RequestParam Map<String, String> requestParams) {
-        requestParams.put(FlowableConstant.START_BY_ME, SecurityUtils.getUserId());
-        return list(requestParams);
+    @GetMapping(value = "/listStartedByMe")
+    public Result listStartedByMe(ProcessInstanceQueryVo processInstanceQueryVo) {
+        processInstanceQueryVo.setStartedByMe(true);
+        return list(processInstanceQueryVo);
     }
 
     @GetMapping(value = "/listCcToMe")
-    public Result listCcToMe(@RequestParam Map<String, String> requestParams) {
-        requestParams.put(FlowableConstant.CC_TO_ME, "true");
-        return list(requestParams);
+    public Result listCcToMe(ProcessInstanceQueryVo processInstanceQueryVo) {
+        processInstanceQueryVo.setCcToMe(true);
+        return list(processInstanceQueryVo);
     }
 
     @GetMapping(value = "/queryById")

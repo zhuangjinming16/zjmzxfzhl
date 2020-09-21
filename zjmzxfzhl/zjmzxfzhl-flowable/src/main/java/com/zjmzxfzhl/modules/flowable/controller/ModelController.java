@@ -12,6 +12,7 @@ import com.zjmzxfzhl.modules.flowable.common.cmd.DeployModelCmd;
 import com.zjmzxfzhl.modules.flowable.common.cmd.SaveModelEditorCmd;
 import com.zjmzxfzhl.modules.flowable.vo.ModelRequest;
 import com.zjmzxfzhl.modules.flowable.vo.ModelResponse;
+import com.zjmzxfzhl.modules.flowable.vo.query.ModelQueryVo;
 import com.zjmzxfzhl.modules.flowable.wapper.ModelListWrapper;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.api.query.QueryProperty;
@@ -54,46 +55,44 @@ public class ModelController extends BaseFlowableController {
     }
 
     @GetMapping(value = "/list")
-    public Result getModels(@RequestParam Map<String, String> requestParams) {
+    public Result list(ModelQueryVo modelQueryVo) {
         ModelQuery modelQuery = repositoryService.createModelQuery();
 
-        if (ObjectUtils.isNotEmpty(requestParams.get("id"))) {
-            modelQuery.modelId(requestParams.get("id"));
+        if (ObjectUtils.isNotEmpty(modelQueryVo.getModelId())) {
+            modelQuery.modelId(modelQueryVo.getModelId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("category"))) {
-            modelQuery.modelCategoryLike(ObjectUtils.convertToLike(requestParams.get("category")));
+        if (ObjectUtils.isNotEmpty(modelQueryVo.getModelCategory())) {
+            modelQuery.modelCategoryLike(ObjectUtils.convertToLike(modelQueryVo.getModelCategory()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("name"))) {
-            modelQuery.modelNameLike(ObjectUtils.convertToLike(requestParams.get("name")));
+        if (ObjectUtils.isNotEmpty(modelQueryVo.getModelName())) {
+            modelQuery.modelNameLike(modelQueryVo.getModelName());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("key"))) {
-            modelQuery.modelKey(requestParams.get("key"));
+        if (ObjectUtils.isNotEmpty(modelQueryVo.getModelKey())) {
+            modelQuery.modelKey(modelQueryVo.getModelKey());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("version"))) {
-            modelQuery.modelVersion(ObjectUtils.convertToInteger(requestParams.get("version")));
+        if (ObjectUtils.isNotEmpty(modelQueryVo.getModelVersion())) {
+            modelQuery.modelVersion(modelQueryVo.getModelVersion());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("latestVersion"))) {
-            boolean isLatestVersion = ObjectUtils.convertToBoolean(requestParams.get("latestVersion"));
-            if (isLatestVersion) {
+        if (modelQueryVo.getLatestVersion() != null) {
+            if (modelQueryVo.getLatestVersion()) {
                 modelQuery.latestVersion();
             }
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("deploymentId"))) {
-            modelQuery.deploymentId(requestParams.get("deploymentId"));
+        if (ObjectUtils.isNotEmpty(modelQueryVo.getDeploymentId())) {
+            modelQuery.deploymentId(modelQueryVo.getDeploymentId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("deployed"))) {
-            boolean isDeployed = ObjectUtils.convertToBoolean(requestParams.get("deployed"));
-            if (isDeployed) {
+        if (modelQueryVo.getDeployed() != null) {
+            if (modelQueryVo.getDeployed()) {
                 modelQuery.deployed();
             } else {
                 modelQuery.notDeployed();
             }
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get("tenantId"))) {
-            modelQuery.modelTenantId(requestParams.get("tenantId"));
+        if (ObjectUtils.isNotEmpty(modelQueryVo.getTenantId())) {
+            modelQuery.modelTenantId(modelQueryVo.getTenantId());
         }
 
-        FlowablePage page = this.pageList(requestParams, modelQuery, ModelListWrapper.class, ALLOWED_SORT_PROPERTIES);
+        FlowablePage page = this.pageList(modelQueryVo, modelQuery, ModelListWrapper.class, ALLOWED_SORT_PROPERTIES);
         return Result.ok(page);
     }
 

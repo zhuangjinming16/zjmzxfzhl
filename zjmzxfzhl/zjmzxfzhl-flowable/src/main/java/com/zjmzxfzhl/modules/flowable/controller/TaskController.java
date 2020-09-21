@@ -1,11 +1,22 @@
 package com.zjmzxfzhl.modules.flowable.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.redis.aspect.annotation.RedissonLock;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.common.log.annotation.Log;
+import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
+import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
+import com.zjmzxfzhl.modules.flowable.vo.FlowNodeResponse;
+import com.zjmzxfzhl.modules.flowable.vo.TaskRequest;
+import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
+import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
+import com.zjmzxfzhl.modules.flowable.vo.query.TaskQueryVo;
+import com.zjmzxfzhl.modules.flowable.wapper.TaskListWrapper;
+import com.zjmzxfzhl.modules.flowable.wapper.TaskTodoListWrapper;
 import org.flowable.common.engine.api.query.QueryProperty;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
@@ -15,28 +26,12 @@ import org.flowable.task.service.impl.HistoricTaskInstanceQueryProperty;
 import org.flowable.task.service.impl.TaskQueryProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.zjmzxfzhl.common.core.Result;
-import com.zjmzxfzhl.common.core.util.ObjectUtils;
-import com.zjmzxfzhl.common.log.annotation.Log;
-import com.zjmzxfzhl.common.core.util.SecurityUtils;
-import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
-import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
-import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
-import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
-import com.zjmzxfzhl.modules.flowable.vo.FlowNodeResponse;
-import com.zjmzxfzhl.modules.flowable.vo.TaskRequest;
-import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
-import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
-import com.zjmzxfzhl.modules.flowable.wapper.TaskListWrapper;
-import com.zjmzxfzhl.modules.flowable.wapper.TaskTodoListWrapper;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 庄金明
@@ -82,144 +77,150 @@ public class TaskController extends BaseFlowableController {
         allowedSortPropertiesTodo.put("createTime", TaskQueryProperty.CREATE_TIME);
     }
 
-    protected HistoricTaskInstanceQuery createHistoricTaskInstanceQuery(Map<String, String> requestParams) {
+    protected HistoricTaskInstanceQuery createHistoricTaskInstanceQuery(TaskQueryVo taskQueryVo) {
         HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery();
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_ID))) {
-            query.taskId(requestParams.get(FlowableConstant.TASK_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskId())) {
+            query.taskId(taskQueryVo.getTaskId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID))) {
-            query.processInstanceId(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessInstanceId())) {
+            query.processInstanceId(taskQueryVo.getProcessInstanceId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY))) {
-            query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessInstanceBusinessKey())) {
+            query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(taskQueryVo.getProcessInstanceBusinessKey()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY))) {
-            query.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessDefinitionKey())) {
+            query.processDefinitionKeyLike(ObjectUtils.convertToLike(taskQueryVo.getProcessDefinitionKey()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID))) {
-            query.processDefinitionId(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessDefinitionId())) {
+            query.processDefinitionId(taskQueryVo.getProcessDefinitionId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME))) {
-            query.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessDefinitionName())) {
+            query.processDefinitionNameLike(ObjectUtils.convertToLike(taskQueryVo.getProcessDefinitionName()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.EXECUTION_ID))) {
-            query.executionId(requestParams.get(FlowableConstant.EXECUTION_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getExecutionId())) {
+            query.executionId(taskQueryVo.getExecutionId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_NAME))) {
-            query.taskNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.TASK_NAME)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskName())) {
+            query.taskNameLike(ObjectUtils.convertToLike(taskQueryVo.getTaskName()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_DESCRIPTION))) {
-            query.taskDescriptionLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.TASK_DESCRIPTION)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskDescription())) {
+            query.taskDescriptionLike(ObjectUtils.convertToLike(taskQueryVo.getTaskDescription()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_DEFINITION_KEY))) {
-            query.taskDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.TASK_DEFINITION_KEY)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskDefinitionKey())) {
+            query.taskDefinitionKeyLike(ObjectUtils.convertToLike(taskQueryVo.getTaskDefinitionKey()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_ASSIGNEE))) {
-            query.taskAssignee(requestParams.get(FlowableConstant.TASK_ASSIGNEE));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskAssignee())) {
+            query.taskAssignee(taskQueryVo.getTaskAssignee());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_OWNER))) {
-            query.taskOwner(requestParams.get(FlowableConstant.TASK_OWNER));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskOwner())) {
+            query.taskOwner(taskQueryVo.getTaskOwner());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_INVOLVED_USER))) {
-            query.taskInvolvedUser(requestParams.get(FlowableConstant.TASK_INVOLVED_USER));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskInvolvedUser())) {
+            query.taskInvolvedUser(taskQueryVo.getTaskInvolvedUser());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_PRIORITY))) {
-            query.taskPriority(ObjectUtils.convertToInteger(requestParams.get(FlowableConstant.TASK_PRIORITY)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskPriority())) {
+            query.taskPriority(taskQueryVo.getTaskPriority());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.FINISHED))) {
-            boolean isFinished = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.FINISHED));
-            if (isFinished) {
+        Boolean finished = CommonUtil.isEmptyDefault(taskQueryVo.getFinished(), false);
+        Boolean unfinished = CommonUtil.isEmptyDefault(taskQueryVo.getUnfinished(), false);
+        if (!finished.equals(unfinished)) {
+            if (finished) {
                 query.finished();
-            } else {
+            }
+            if (unfinished) {
                 query.unfinished();
             }
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_FINISHED))) {
-            boolean isProcessFinished =
-                    ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.PROCESS_FINISHED));
-            if (isProcessFinished) {
+        Boolean processFinished = CommonUtil.isEmptyDefault(taskQueryVo.getProcessFinished(), false);
+        Boolean processUnfinished = CommonUtil.isEmptyDefault(taskQueryVo.getProcessUnfinished(), false);
+        if (!processFinished.equals(processUnfinished)) {
+            if (processFinished) {
                 query.processFinished();
-            } else {
+            }
+            if (processUnfinished) {
                 query.processUnfinished();
             }
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PARENT_TASK_ID))) {
-            query.taskParentTaskId(requestParams.get(FlowableConstant.PARENT_TASK_ID));
+
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskParentTaskId())) {
+            query.taskParentTaskId(taskQueryVo.getTaskParentTaskId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TENANT_ID))) {
-            query.taskTenantId(requestParams.get(FlowableConstant.TENANT_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTenantId())) {
+            query.taskTenantId(taskQueryVo.getTenantId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CANDIDATE_USER))) {
-            query.taskCandidateUser(requestParams.get(FlowableConstant.TASK_CANDIDATE_USER));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCandidateUser())) {
+            query.taskCandidateUser(taskQueryVo.getTaskCandidateUser());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUP))) {
-            query.taskCandidateGroup(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUP));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCandidateGroup())) {
+            query.taskCandidateGroup(taskQueryVo.getTaskCandidateGroup());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUPS))) {
-            query.taskCandidateGroupIn(Arrays.asList(requestParams.get(FlowableConstant.TASK_CANDIDATE_GROUPS).split(
-                    ",")));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCandidateGroupIn())) {
+            query.taskCandidateGroupIn(Arrays.asList(taskQueryVo.getTaskCandidateGroupIn().split(",")));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_AFTER))) {
-            query.taskDueAfter(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_AFTER)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskDueAfter())) {
+            query.taskDueAfter(ObjectUtils.convertToDate(taskQueryVo.getTaskDueAfter()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_BEFORE))) {
-            query.taskDueBefore(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_BEFORE)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskDueBefore())) {
+            query.taskDueBefore(ObjectUtils.convertToDate(taskQueryVo.getTaskDueBefore()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE))) {
-            query.taskCreatedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCreatedAfter())) {
+            query.taskCreatedAfter(ObjectUtils.convertToDatetime(taskQueryVo.getTaskCreatedAfter()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_AFTER))) {
-            query.taskCreatedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_AFTER)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCreatedBefore())) {
+            query.taskCreatedBefore(ObjectUtils.convertToDatetime(taskQueryVo.getTaskCreatedBefore()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_COMPLETED_BEFORE))) {
-            query.taskCompletedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_COMPLETED_BEFORE)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCompletedAfter())) {
+            query.taskCompletedAfter(ObjectUtils.convertToDatetime(taskQueryVo.getTaskCompletedAfter()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_COMPLETED_AFTER))) {
-            query.taskCompletedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_COMPLETED_AFTER)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCompletedBefore())) {
+            query.taskCompletedBefore(ObjectUtils.convertToDatetime(taskQueryVo.getTaskCompletedBefore()));
         }
+
         return query;
     }
 
-    protected TaskQuery createTaskQuery(Map<String, String> requestParams) {
+    protected TaskQuery createTaskQuery(TaskQueryVo taskQueryVo) {
         TaskQuery query = taskService.createTaskQuery();
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID))) {
-            query.processInstanceId(requestParams.get(FlowableConstant.PROCESS_INSTANCE_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessInstanceId())) {
+            query.processInstanceId(taskQueryVo.getProcessInstanceId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_NAME))) {
-            query.taskNameLike(requestParams.get(FlowableConstant.TASK_NAME));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskName())) {
+            query.taskNameLike(ObjectUtils.convertToLike(taskQueryVo.getTaskName()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY))) {
-            query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_INSTANCE_BUSINESS_KEY)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessInstanceBusinessKey())) {
+            query.processInstanceBusinessKeyLike(ObjectUtils.convertToLike(taskQueryVo.getProcessInstanceBusinessKey()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY))) {
-            query.processDefinitionKeyLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_KEY)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessDefinitionKey())) {
+            query.processDefinitionKeyLike(ObjectUtils.convertToLike(taskQueryVo.getProcessDefinitionKey()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID))) {
-            query.processDefinitionId(requestParams.get(FlowableConstant.PROCESS_DEFINITION_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessDefinitionId())) {
+            query.processDefinitionId(taskQueryVo.getProcessDefinitionId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME))) {
-            query.processDefinitionNameLike(ObjectUtils.convertToLike(requestParams.get(FlowableConstant.PROCESS_DEFINITION_NAME)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getProcessDefinitionName())) {
+            query.processDefinitionNameLike(ObjectUtils.convertToLike(taskQueryVo.getProcessDefinitionName()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_AFTER))) {
-            query.taskDueAfter(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_AFTER)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskDueAfter())) {
+            query.taskDueAfter(ObjectUtils.convertToDate(taskQueryVo.getTaskDueAfter()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.DUE_DATE_BEFORE))) {
-            query.taskDueBefore(ObjectUtils.convertToDate(requestParams.get(FlowableConstant.DUE_DATE_BEFORE)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskDueBefore())) {
+            query.taskDueBefore(ObjectUtils.convertToDate(taskQueryVo.getTaskDueBefore()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE))) {
-            query.taskCreatedBefore(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_BEFORE)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCreatedAfter())) {
+            query.taskCreatedAfter(ObjectUtils.convertToDatetime(taskQueryVo.getTaskCreatedAfter()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TASK_CREATED_AFTER))) {
-            query.taskCreatedAfter(ObjectUtils.convertToDatetime(requestParams.get(FlowableConstant.TASK_CREATED_AFTER)));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTaskCreatedBefore())) {
+            query.taskCreatedBefore(ObjectUtils.convertToDatetime(taskQueryVo.getTaskCreatedBefore()));
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.TENANT_ID))) {
-            query.taskTenantId(requestParams.get(FlowableConstant.TENANT_ID));
+        if (ObjectUtils.isNotEmpty(taskQueryVo.getTenantId())) {
+            query.taskTenantId(taskQueryVo.getTenantId());
         }
-        if (ObjectUtils.isNotEmpty(requestParams.get(FlowableConstant.SUSPENDED))) {
-            boolean isSuspended = ObjectUtils.convertToBoolean(requestParams.get(FlowableConstant.SUSPENDED));
-            if (isSuspended) {
+        Boolean suspended = CommonUtil.isEmptyDefault(taskQueryVo.getSuspended(), false);
+        Boolean active = CommonUtil.isEmptyDefault(taskQueryVo.getActive(), false);
+        if (!suspended.equals(active)) {
+            if (suspended) {
                 query.suspended();
-            } else {
+            }
+            if (active) {
                 query.active();
             }
         }
@@ -228,40 +229,40 @@ public class TaskController extends BaseFlowableController {
 
     @PreAuthorize("@elp.single('flowable:task:list')")
     @GetMapping(value = "/list")
-    public Result list(@RequestParam Map<String, String> requestParams) {
-        HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(requestParams);
-        FlowablePage page = this.pageList(requestParams, query, TaskListWrapper.class, allowedSortProperties,
+    public Result list(TaskQueryVo taskQueryVo) {
+        HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(taskQueryVo);
+        FlowablePage page = this.pageList(taskQueryVo, query, TaskListWrapper.class, allowedSortProperties,
                 HistoricTaskInstanceQueryProperty.START);
         return Result.ok(page);
     }
 
     @GetMapping(value = "/listDone")
-    public Result listDone(@RequestParam Map<String, String> requestParams) {
-        HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(requestParams);
+    public Result listDone(TaskQueryVo taskQueryVo) {
+        HistoricTaskInstanceQuery query = createHistoricTaskInstanceQuery(taskQueryVo);
         query.finished().or().taskAssignee(SecurityUtils.getUserId()).taskOwner(SecurityUtils.getUserId()).endOr();
-        FlowablePage page = this.pageList(requestParams, query, TaskListWrapper.class, allowedSortProperties,
+        FlowablePage page = this.pageList(taskQueryVo, query, TaskListWrapper.class, allowedSortProperties,
                 HistoricTaskInstanceQueryProperty.START);
         return Result.ok(page);
     }
 
     @GetMapping(value = "/listTodo")
-    public Result listTodo(@RequestParam Map<String, String> requestParams) {
+    public Result listTodo(TaskQueryVo taskQueryVo) {
         String userId = SecurityUtils.getUserId();
-        TaskQuery query = createTaskQuery(requestParams);
+        TaskQuery query = createTaskQuery(taskQueryVo);
         query.taskCategory(FlowableConstant.CATEGORY_TODO);
         query.or().taskCandidateOrAssigned(userId).taskOwner(userId).endOr();
-        FlowablePage page = this.pageList(requestParams, query, TaskTodoListWrapper.class, allowedSortProperties,
+        FlowablePage page = this.pageList(taskQueryVo, query, TaskTodoListWrapper.class, allowedSortProperties,
                 TaskQueryProperty.CREATE_TIME);
         return Result.ok(page);
     }
 
     @GetMapping(value = "/listToRead")
-    public Result listToRead(@RequestParam Map<String, String> requestParams) {
+    public Result listToRead(TaskQueryVo taskQueryVo) {
         String userId = SecurityUtils.getUserId();
-        TaskQuery query = createTaskQuery(requestParams);
+        TaskQuery query = createTaskQuery(taskQueryVo);
         query.taskCategory(FlowableConstant.CATEGORY_TO_READ);
         query.or().taskAssignee(userId).taskOwner(userId).endOr();
-        FlowablePage page = this.pageList(requestParams, query, TaskTodoListWrapper.class, allowedSortProperties,
+        FlowablePage page = this.pageList(taskQueryVo, query, TaskTodoListWrapper.class, allowedSortProperties,
                 TaskQueryProperty.CREATE_TIME);
         return Result.ok(page);
     }
