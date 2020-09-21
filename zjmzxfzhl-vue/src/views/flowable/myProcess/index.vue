@@ -2,7 +2,7 @@
     <div class="app-container">
         <div class="filter-container">
             <div class="filter-container">
-                <el-checkbox v-model="listQuery.startByMe" @change="list">我发起的</el-checkbox>
+                <el-checkbox v-model="listQuery.startedByMe" @change="list">我发起的</el-checkbox>
                 <el-checkbox v-model="listQuery.ccToMe" @change="list">抄送我</el-checkbox>
                 <el-checkbox v-model="listQuery.unfinished" @change="list">未办结</el-checkbox>
                 <el-checkbox v-model="listQuery.finished" @change="list">已办结</el-checkbox>
@@ -13,7 +13,8 @@
                 <div class="filter-container" style="margin-right: 3px;margin-bottom: 3px;">
                     <el-card>
                         <div slot="header" class="clearfix">
-                            <router-link :to="{path:'/myFlowable/myProcessQuery', query: {category:row.category}}">
+                            <router-link
+                                    :to="{path:'/myFlowable/myProcessQuery', query: {processDefinitionCategory:row.category,startedByMe:listQuery.startedByMe,ccToMe:listQuery.ccToMe,unfinished:listQuery.unfinished,finished:listQuery.finished}}">
                                 <el-link type="primary">
                                     {{row.categoryName}}
                                 </el-link>
@@ -23,7 +24,8 @@
                         <div style="height: 110px;padding-left: 15px">
                             <el-scrollbar style="height: 100%">
                                 <router-link v-for="(item, index) in row.processDefinitionVoList"
-                                             :key="item.processDefinitionKey" :to="{path:'/myFlowable/myProcessQuery', query: {processDefinitionKey:item.processDefinitionKey}}">
+                                             :key="item.processDefinitionKey"
+                                             :to="{path:'/myFlowable/myProcessQuery', query: {processDefinitionKey:item.processDefinitionKey,startedByMe:listQuery.startedByMe,ccToMe:listQuery.ccToMe,unfinished:listQuery.unfinished,finished:listQuery.finished}}">
                                     <el-link type="info" style="padding-bottom: 5px">
                                         {{item.processDefinitionName}}({{item.count}})
                                     </el-link>
@@ -31,7 +33,6 @@
                                 </router-link>
                             </el-scrollbar>
                         </div>
-
                     </el-card>
                 </div>
             </el-col>
@@ -51,7 +52,7 @@
                 myInvolvedRecords: null,
                 myInvolvedTotal: 0,
                 listQuery: {
-                    startByMe: false,
+                    startedByMe: false,
                     ccToMe: false,
                     unfinished: false,
                     finished: false

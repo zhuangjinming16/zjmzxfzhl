@@ -2,11 +2,13 @@
     <div class="app-container">
         <div class="filter-container">
             <div class="filter-container">
-                <el-checkbox v-model="listQuery.startByMe">我发起的</el-checkbox>
+                <el-checkbox v-model="listQuery.startedByMe">我发起的</el-checkbox>
                 <el-checkbox v-model="listQuery.ccToMe">抄送我</el-checkbox>
+                <el-checkbox v-model="listQuery.unfinished">未办结</el-checkbox>
+                <el-checkbox v-model="listQuery.finished">已办结</el-checkbox>
             </div>
             <div>
-                <el-input v-model="listQuery.category" placeholder="分类"
+                <el-input v-model="listQuery.processDefinitionCategory" placeholder="流程分类"
                           style="width: 200px;"
                           class="filter-item"
                           @keyup.enter.native="btnMyInvolvedQuery"/>
@@ -14,27 +16,12 @@
                           style="width: 200px;"
                           class="filter-item"
                           @keyup.enter.native="btnMyInvolvedQuery"/>
-                <!--<el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID"
-                          style="width: 200px;"
-                          class="filter-item"
-                          @keyup.enter.native="btnMyInvolvedQuery"/>
-                <el-input v-model="listQuery.processInstanceName" placeholder="流程实例名称"
-                          style="width: 200px;"
-                          class="filter-item"
-                          @keyup.enter.native="btnMyInvolvedQuery"/>-->
                 <el-input v-model="listQuery.businessKey" placeholder="业务主键KEY" style="width: 200px;"
                           class="filter-item"
                           @keyup.enter.native="btnMyInvolvedQuery"/>
                 <el-input v-model="listQuery.startedBy" placeholder="启动人" style="width: 200px;"
                           class="filter-item"
                           @keyup.enter.native="btnMyInvolvedQuery"/>
-                <el-select v-model="listQuery.finished" placeholder="是否已结束" style="width: 200px;"
-                           class="filter-item">
-                    <el-option v-for="(item, index) in dicts.trueOrFalse"
-                               :key="index" :label="item.content"
-                               :value="item.value"></el-option>
-                </el-select>
-
                 <el-dropdown split-button type="primary" @click="btnMyInvolvedQuery" class="filter-item">
                     <i class="el-icon-search el-icon&#45;&#45;left"></i>查询
                     <el-dropdown-menu slot="dropdown">
@@ -103,31 +90,39 @@
                 listQuery: {
                     current: 1,
                     size: 10,
-                    startByMe: false,
+                    startedByMe: false,
                     ccToMe: false,
-                    category: undefined,
+                    finished: false,
+                    unfinished: false,
+                    processDefinitionCategory: undefined,
                     processDefinitionKey: undefined,
                     processInstanceId: undefined,
                     processInstanceName: undefined,
-                    businessKey: undefined,
-                    finished: undefined
+                    businessKey: undefined
                 },
                 processInstanceId: '',
                 dialogViewVisible: false
             }
         },
-        beforeCreate() {
-            this.getDicts('trueOrFalse').then(({data}) => {
-                this.dicts = data
-            })
-        },
         created() {
             if (this.$route.query) {
-                if (this.$route.query.category) {
-                    this.listQuery.category = this.$route.query.category
+                if (this.$route.query.processDefinitionCategory) {
+                    this.listQuery.processDefinitionCategory = this.$route.query.processDefinitionCategory
                 }
                 if (this.$route.query.processDefinitionKey) {
                     this.listQuery.processDefinitionKey = this.$route.query.processDefinitionKey
+                }
+                if (this.$route.query.startedByMe) {
+                    this.listQuery.startedByMe = this.$route.query.startedByMe
+                }
+                if (this.$route.query.ccToMe) {
+                    this.listQuery.ccToMe = this.$route.query.ccToMe
+                }
+                if (this.$route.query.unfinished) {
+                    this.listQuery.unfinished = this.$route.query.unfinished
+                }
+                if (this.$route.query.finished) {
+                    this.listQuery.finished = this.$route.query.finished
                 }
             }
             this.list()
@@ -148,14 +143,15 @@
                 this.listQuery = {
                     current: 1,
                     size: 10,
-                    startByMe: false,
+                    startedByMe: false,
                     ccToMe: false,
-                    category: undefined,
+                    processDefinitionCategory: undefined,
                     processInstanceId: undefined,
                     processInstanceName: undefined,
                     businessKey: undefined,
                     startedBy: undefined,
-                    finished: undefined
+                    unfinished: false,
+                    finished: false
                 }
                 this.list()
             },

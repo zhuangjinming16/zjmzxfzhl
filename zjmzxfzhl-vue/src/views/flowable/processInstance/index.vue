@@ -1,6 +1,10 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
+            <el-checkbox v-model="listQuery.unfinished">未办结</el-checkbox>
+            <el-checkbox v-model="listQuery.finished">已办结</el-checkbox>
+        </div>
+        <div class="filter-container">
             <el-input v-model="listQuery.processDefinitionId" placeholder="流程定义ID" style="width: 200px;"
                       class="filter-item"
                       @keyup.enter.native="btnQuery"/>
@@ -17,11 +21,6 @@
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.startedBy" placeholder="启动人" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.finished" placeholder="是否已结束" style="width: 200px;" class="filter-item">
-                <el-option v-for="(item, index) in dicts.trueOrFalse"
-                           :key="index" :label="item.content"
-                           :value="item.value"></el-option>
-            </el-select>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -215,7 +214,8 @@
                     processDefinitionKey: undefined,
                     businessKey: undefined,
                     startedBy: undefined,
-                    finished: undefined
+                    unfinished: false,
+                    finished: false
                 },
                 dialogFormVisible: false,
                 dialogImportVisible: false,
@@ -242,11 +242,6 @@
                 },
                 dialogViewVisible: false
             }
-        },
-        beforeCreate() {
-            this.getDicts('trueOrFalse').then(({data}) => {
-                this.dicts = data
-            })
         },
         created() {
             if (this.$route.query && this.$route.query.processDefinitionId) {
@@ -277,7 +272,8 @@
                     processDefinitionKey: undefined,
                     businessKey: undefined,
                     startedBy: undefined,
-                    finished: undefined
+                    unfinished: false,
+                    finished: false
                 }
                 this.list()
             },

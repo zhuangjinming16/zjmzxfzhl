@@ -1,6 +1,10 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
+            <el-checkbox v-model="listQuery.processUnfinished">流程未办结</el-checkbox>
+            <el-checkbox v-model="listQuery.processFinished">流程已办结</el-checkbox>
+        </div>
+        <div class="filter-container">
             <el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID" style="width: 200px;"
                       class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.taskName" placeholder="任务名称" style="width: 200px;" class="filter-item"
@@ -15,11 +19,6 @@
                             type="datetime" style="width: 200px;" class="filter-item"></el-date-picker>
             <el-date-picker v-model="listQuery.taskCompletedBefore" value-format="yyyy-MM-dd HH:mm:ss" placeholder="完成时间结束"
                             type="datetime" style="width: 200px;" class="filter-item"></el-date-picker>
-            <el-select v-model="listQuery.processFinished" placeholder="流程已完成" style="width: 200px;"
-                       class="filter-item">
-                <el-option v-for="(item, index) in dicts.trueOrFalse" :key="index" :label="item.content"
-                           :value="item.value"></el-option>
-            </el-select>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -99,17 +98,16 @@
                     taskName: undefined,
                     processInstanceBusinessKey: undefined,
                     taskCreatedAfter: undefined,
-                    taskCreatedBefore: undefined
+                    taskCreatedBefore: undefined,
+                    taskCompletedAfter: undefined,
+                    taskCompletedBefore: undefined,
+                    processUnfinished: false,
+                    processFinished: false
                 },
                 formJson: undefined,
                 processInstanceId: '',
                 dialogViewVisible: false
             }
-        },
-        beforeCreate() {
-            this.getDicts('trueOrFalse').then(({data}) => {
-                this.dicts = data
-            })
         },
         created() {
             this.list()
@@ -134,7 +132,11 @@
                     taskName: undefined,
                     processInstanceBusinessKey: undefined,
                     taskCreatedAfter: undefined,
-                    taskCreatedBefore: undefined
+                    taskCreatedBefore: undefined,
+                    taskCompletedAfter: undefined,
+                    taskCompletedBefore: undefined,
+                    processUnfinished: false,
+                    processFinished: false
                 }
                 this.list()
             },

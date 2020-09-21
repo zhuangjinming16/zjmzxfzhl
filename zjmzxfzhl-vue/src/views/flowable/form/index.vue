@@ -113,9 +113,6 @@
                 }
             }
         },
-        beforeCreate() {
-
-        },
         created() {
             this.list()
         },

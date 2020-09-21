@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.name" placeholder="流程定义名称" style="width: 200px;" class="filter-item"
+            <el-input v-model="listQuery.processDefinitionName" placeholder="流程定义名称" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
 
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
@@ -65,10 +65,10 @@
                 listQuery: {
                     current: 1,
                     size: 10,
-                    id: undefined,
-                    name: undefined,
-                    key: undefined,
-                    latestVersion: 'true',
+                    processDefinitionId: undefined,
+                    processDefinitionName: undefined,
+                    processDefinitionKey: undefined,
+                    latestVersion: true,
                     suspended: undefined
                 },
                 dialogFormVisible: false,
@@ -82,11 +82,6 @@
                 selectedProcessDefinitionName: '',
                 processDefinition: undefined
             }
-        },
-        beforeCreate() {
-            this.getDicts('trueOrFalse').then(({data}) => {
-                this.dicts = data
-            })
         },
         created() {
             this.list()
@@ -110,10 +105,10 @@
                 this.listQuery = {
                     current: 1,
                     size: 10,
-                    id: undefined,
-                    name: undefined,
-                    key: undefined,
-                    latestVersion: 'true',
+                    processDefinitionId: undefined,
+                    processDefinitionName: undefined,
+                    processDefinitionKey: undefined,
+                    latestVersion: true,
                     suspended: undefined
                 }
                 this.list()

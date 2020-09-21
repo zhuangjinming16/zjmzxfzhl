@@ -1,9 +1,9 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.key" placeholder="模型key" style="width: 200px;" class="filter-item"
+            <el-input v-model="listQuery.modelKey" placeholder="模型key" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.name" placeholder="模型名称" style="width: 200px;" class="filter-item"
+            <el-input v-model="listQuery.modelName" placeholder="模型名称" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
@@ -143,8 +143,8 @@
                 listQuery: {
                     current: 1,
                     size: 10,
-                    key: undefined,
-                    name: undefined
+                    modelKey: undefined,
+                    modelName: undefined
                 },
                 dialogFormVisible: false,
                 dialogStatus: '',
@@ -163,9 +163,6 @@
                 },
                 dialogImportVisible: false
             }
-        },
-        beforeCreate() {
-
         },
         created() {
             this.list()
@@ -186,8 +183,8 @@
                 this.listQuery = {
                     current: 1,
                     size: 10,
-                    key: undefined,
-                    name: undefined
+                    modelKey: undefined,
+                    modelName: undefined
                 }
                 this.list()
             },

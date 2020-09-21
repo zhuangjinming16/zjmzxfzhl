@@ -7,10 +7,10 @@
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.processInstanceBusinessKey" placeholder="业务主键Key" style="width: 200px;"
                       class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-date-picker v-model="listQuery.dueDateAfter" value-format="yyyy-MM-dd" placeholder="到期日开始"
+            <el-date-picker v-model="listQuery.taskDueAfter" value-format="yyyy-MM-dd" placeholder="到期日开始"
                             type="date" style="width: 200px;"
                             class="filter-item"></el-date-picker>
-            <el-date-picker v-model="listQuery.dueDateBefore" value-format="yyyy-MM-dd" placeholder="到期日结束"
+            <el-date-picker v-model="listQuery.taskDueBefore" value-format="yyyy-MM-dd" placeholder="到期日结束"
                             type="date" style="width: 200px;"
                             class="filter-item"></el-date-picker>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
@@ -98,18 +98,13 @@
                     processInstanceId: undefined,
                     taskName: undefined,
                     processInstanceBusinessKey: undefined,
-                    dueDateAfter: undefined,
-                    dueDateBefore: undefined
+                    taskDueAfter: undefined,
+                    taskDueBefore: undefined
                 },
                 formJson: undefined,
                 processInstanceId: '',
                 dialogViewVisible: false
             }
-        },
-        beforeCreate() {
-            this.getDicts('trueOrFalse').then(({data}) => {
-                this.dicts = data
-            })
         },
         created() {
             this.list()
@@ -133,8 +128,8 @@
                     processInstanceId: undefined,
                     taskName: undefined,
                     processInstanceBusinessKey: undefined,
-                    dueDateAfter: undefined,
-                    dueDateBefore: undefined
+                    taskDueAfter: undefined,
+                    taskDueBefore: undefined
                 }
                 this.list()
             },

@@ -1,6 +1,12 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
+            <el-checkbox v-model="listQuery.unfinished">任务未办结</el-checkbox>
+            <el-checkbox v-model="listQuery.finished">任务已办结</el-checkbox>
+            <el-checkbox v-model="listQuery.processUnfinished">流程未办结</el-checkbox>
+            <el-checkbox v-model="listQuery.processFinished">流程已办结</el-checkbox>
+        </div>
+        <div class="filter-container">
             <el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID" style="width: 200px;"
                       class="filter-item" @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.taskId" placeholder="任务ID" style="width: 200px;" class="filter-item"
@@ -9,29 +15,18 @@
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.processInstanceBusinessKey" placeholder="业务主键" style="width: 200px;"
                       class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.taskDescription" placeholder="任务描述" style="width: 200px;" class="filter-item"
-                      @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.taskAssignee" placeholder="执行人" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.taskOwner" placeholder="所有人" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.taskInvolvedUser" placeholder="干系人" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.finished" placeholder="任务已完成" style="width: 200px;" class="filter-item">
-                <el-option v-for="(item, index) in dicts.trueOrFalse" :key="index" :label="item.content"
-                           :value="item.value"></el-option>
-            </el-select>
-            <el-select v-model="listQuery.processFinished" placeholder="流程已完成" style="width: 200px;"
-                       class="filter-item">
-                <el-option v-for="(item, index) in dicts.trueOrFalse" :key="index" :label="item.content"
-                           :value="item.value"></el-option>
-            </el-select>
             <el-input v-model="listQuery.parentTaskId" placeholder="父任务ID" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-date-picker v-model="listQuery.dueDateAfter" value-format="yyyy-MM-dd" placeholder="到期日开始"
+            <el-date-picker v-model="listQuery.taskDueAfter" value-format="yyyy-MM-dd" placeholder="到期日开始"
                             type="date" style="width: 200px;"
                             class="filter-item"></el-date-picker>
-            <el-date-picker v-model="listQuery.dueDateBefore" value-format="yyyy-MM-dd" placeholder="到期日结束"
+            <el-date-picker v-model="listQuery.taskDueBefore" value-format="yyyy-MM-dd" placeholder="到期日结束"
                             type="date" style="width: 200px;"
                             class="filter-item"></el-date-picker>
             <el-date-picker v-model="listQuery.taskCreatedAfter" value-format="yyyy-MM-dd HH:mm:ss" placeholder="创建时间开始"
@@ -46,10 +41,6 @@
             <el-date-picker v-model="listQuery.taskCompletedBefore" value-format="yyyy-MM-dd HH:mm:ss"
                             placeholder="完成时间结束" type="datetime"
                             style="width: 200px;" class="filter-item"></el-date-picker>
-            <!--<el-input v-model="listQuery.taskCandidateUser" placeholder="候选人" style="width: 200px;" class="filter-item"
-                      @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.taskCandidateGroups" placeholder="候选组" style="width: 200px;"
-                      class="filter-item" @keyup.enter.native="btnQuery"/>-->
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -150,18 +141,21 @@
                     taskAssignee: undefined,
                     taskOwner: undefined,
                     taskInvolvedUser: undefined,
-                    finished: undefined,
-                    processFinished: undefined,
-                    parentTaskId: undefined,
-                    parentTaskName: undefined,
-                    dueDateBefore: undefined,
-                    dueDateAfter: undefined,
+                    finished: false,
+                    unfinished: false,
+                    processFinished: false,
+                    processUnfinished: false,
+                    suspended: false,
+                    active: false,
+                    taskParentTaskId: undefined,
+                    taskDueBefore: undefined,
+                    taskDueAfter: undefined,
                     taskCreatedBefore: undefined,
                     taskCreatedAfter: undefined,
                     taskCompletedBefore: undefined,
                     taskCompletedAfter: undefined,
                     taskCandidateUser: undefined,
-                    taskCandidateGroups: undefined
+                    taskCandidateGroupIn: undefined
                 },
                 dialogTaskDetailVisible: false,
                 dialogExcuteTaskVisible: false,
@@ -208,11 +202,6 @@
                 dialogViewVisible: false
             }
         },
-        beforeCreate() {
-            this.getDicts('trueOrFalse').then(({data}) => {
-                this.dicts = data
-            })
-        },
         created() {
             if (this.$route.query && this.$route.query.processInstanceId) {
                 this.listQuery.processInstanceId = this.$route.query.processInstanceId
@@ -243,18 +232,19 @@
                     taskAssignee: undefined,
                     taskOwner: undefined,
                     taskInvolvedUser: undefined,
-                    finished: undefined,
-                    processFinished: undefined,
-                    parentTaskId: undefined,
-                    parentTaskName: undefined,
-                    dueDateBefore: undefined,
-                    dueDateAfter: undefined,
+                    finished: false,
+                    unfinished: false,
+                    processFinished: false,
+                    processUnfinished: false,
+                    taskParentTaskId: undefined,
+                    taskDueBefore: undefined,
+                    taskDueAfter: undefined,
                     taskCreatedBefore: undefined,
                     taskCreatedAfter: undefined,
                     taskCompletedBefore: undefined,
                     taskCompletedAfter: undefined,
                     taskCandidateUser: undefined,
-                    taskCandidateGroups: undefined
+                    taskCandidateGroupIn: undefined
                 }
                 this.list()
             },

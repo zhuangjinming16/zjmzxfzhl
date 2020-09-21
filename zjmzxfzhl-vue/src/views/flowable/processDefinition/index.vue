@@ -1,21 +1,17 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-select v-model="listQuery.latestVersion" placeholder="最新版本" class="filter-item">
-                <el-option v-for="(item, index) in dicts.trueOrFalse" :key="index" :label="item.content"
-                           :value="item.value"></el-option>
-            </el-select>
-            <el-input v-model="listQuery.id" placeholder="流程定义ID" style="width: 200px;" class="filter-item"
+            <el-checkbox v-model="listQuery.latestVersion">最新版本</el-checkbox>
+            <el-checkbox v-model="listQuery.suspended">挂起的</el-checkbox>
+            <el-checkbox v-model="listQuery.active">激活的</el-checkbox>
+        </div>
+        <div class="filter-container">
+            <el-input v-model="listQuery.processDefinitionId" placeholder="流程定义ID" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.name" placeholder="流程定义名称" style="width: 200px;" class="filter-item"
+            <el-input v-model="listQuery.processDefinitionName" placeholder="流程定义名称" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.key" placeholder="流程定义KEY" style="width: 200px;" class="filter-item"
+            <el-input v-model="listQuery.processDefinitionKey" placeholder="流程定义KEY" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.suspended" placeholder="状态" class="filter-item">
-                <el-option v-for="(item, index) in [{'value':'true','content':'挂起'},{'value':'false','content':'激活'}]"
-                           :key="index" :label="item.content"
-                           :value="item.value"></el-option>
-            </el-select>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -190,11 +186,12 @@
                 listQuery: {
                     current: 1,
                     size: 10,
-                    id: undefined,
-                    name: undefined,
-                    key: undefined,
-                    latestVersion: 'true',
-                    suspended: undefined
+                    processDefinitionId: undefined,
+                    processDefinitionName: undefined,
+                    processDefinitionKey: undefined,
+                    latestVersion: false,
+                    suspended: false,
+                    active: false
                 },
                 dialogFormVisible: false,
                 dialogImportVisible: false,
@@ -220,11 +217,6 @@
                 selectedProcessDefinitionName: ''
             }
         },
-        beforeCreate() {
-            this.getDicts('trueOrFalse').then(({data}) => {
-                this.dicts = data
-            })
-        },
         created() {
             this.list()
         },
@@ -244,11 +236,12 @@
                 this.listQuery = {
                     current: 1,
                     size: 10,
-                    id: undefined,
-                    name: undefined,
-                    key: undefined,
-                    latestVersion: 'true',
-                    suspended: undefined
+                    processDefinitionId: undefined,
+                    processDefinitionName: undefined,
+                    processDefinitionKey: undefined,
+                    latestVersion: false,
+                    suspended: false,
+                    active: false
                 }
                 this.list()
             },
