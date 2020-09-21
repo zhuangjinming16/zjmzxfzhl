@@ -87,16 +87,18 @@ public class SaveModelEditorCmd implements Command<Void>, Serializable {
                 description = bpmnModel.getMainProcess().getDocumentation();
             } else {
                 byte[] oldBytes = repositoryService.getModelEditorSource(modelId);
-                XMLInputFactory xif = XMLInputFactory.newInstance();
-                InputStreamReader xmlIn = new InputStreamReader(new ByteArrayInputStream(oldBytes), "UTF-8");
-                XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
-                BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
-                bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);
-                bpmnModel.setTargetNamespace(category);
-                bpmnModel.getMainProcess().setId(key);
-                bpmnModel.getMainProcess().setName(name);
-                bpmnModel.getMainProcess().setDocumentation(description);
-                bytes = bpmnXMLConverter.convertToXML(bpmnModel, "UTF-8");
+                if (oldBytes != null) {
+                    XMLInputFactory xif = XMLInputFactory.newInstance();
+                    InputStreamReader xmlIn = new InputStreamReader(new ByteArrayInputStream(oldBytes), "UTF-8");
+                    XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
+                    BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
+                    bpmnModel = bpmnXMLConverter.convertToBpmnModel(xtr);
+                    bpmnModel.setTargetNamespace(category);
+                    bpmnModel.getMainProcess().setId(key);
+                    bpmnModel.getMainProcess().setName(name);
+                    bpmnModel.getMainProcess().setDocumentation(description);
+                    bytes = bpmnXMLConverter.convertToXML(bpmnModel, "UTF-8");
+                }
             }
 
             // 【2】获取Model并修改 对应 key 的 name、category
@@ -135,15 +137,19 @@ public class SaveModelEditorCmd implements Command<Void>, Serializable {
             model.setMetaInfo(getMetaInfo(name, description));
             repositoryService.saveModel(model);
 
-            repositoryService.addModelEditorSource(model.getId(), bytes);
+            if (bytes != null) {
+                repositoryService.addModelEditorSource(model.getId(), bytes);
 
-            ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-            InputStream resource = diagramGenerator.generateDiagram(bpmnModel, "png", Collections.emptyList(),
-                    Collections.emptyList(), processEngineConfiguration.getActivityFontName(),
-                    processEngineConfiguration.getLabelFontName(), processEngineConfiguration.getAnnotationFontName()
-                    , processEngineConfiguration.getClassLoader(), 1.0, true);
+                ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+                InputStream resource = diagramGenerator.generateDiagram(bpmnModel, "png", Collections.emptyList(),
+                        Collections.emptyList(), processEngineConfiguration.getActivityFontName(),
+                        processEngineConfiguration.getLabelFontName(),
+                        processEngineConfiguration.getAnnotationFontName(),
+                        processEngineConfiguration.getClassLoader(), 1.0, true);
 
-            repositoryService.addModelEditorSourceExtra(model.getId(), IOUtils.toByteArray(resource));
+                repositoryService.addModelEditorSourceExtra(model.getId(), IOUtils.toByteArray(resource));
+            }
+
         } catch (Exception e) {
             throw new FlowableException("SaveModelEditorCmd error :" + e.getMessage());
         }

@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="请假流程带Key">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="demo">
   <process id="leaveBusinessKey" name="请假流程带Key" isExecutable="true">
     <documentation>请假流程带Key</documentation>
-    <startEvent id="start" name="Start" activiti:formKey="leaveApply.form"></startEvent>
+    <startEvent id="start" name="Start" flowable:formKey="leaveApply.form"></startEvent>
     <endEvent id="end" name="End"></endEvent>
-    <userTask id="__initiator__" name="申请提交人" activiti:formKey="leaveApply.form">
+    <userTask id="__initiator__" name="申请提交人" flowable:formKey="leaveApply.form">
       <extensionElements>
         <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:initiator-can-complete>
       </extensionElements>
     </userTask>
-    <userTask id="managerApprove" name="部门经理审批并可修改流程表单" activiti:candidateGroups="manager" activiti:formKey="leaveApply.form"></userTask>
-    <userTask id="bossApprove" name="老板审批" activiti:candidateGroups="boss"></userTask>
+    <userTask id="managerApprove" name="部门经理审批并可修改流程表单" flowable:candidateGroups="manager" flowable:formKey="leaveApply.form"></userTask>
+    <userTask id="bossApprove" name="老板审批" flowable:candidateGroups="boss"></userTask>
     <sequenceFlow id="flow1" sourceRef="start" targetRef="__initiator__"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="__initiator__" targetRef="managerApprove"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="managerApprove" targetRef="bossApprove"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="bossApprove" targetRef="end"></sequenceFlow>
     <dataObject id="showBusinessKey" name="showBusinessKey" itemSubjectRef="xsd:boolean">
       <extensionElements>
-        <activiti:value>true</activiti:value>
+        <flowable:value>true</flowable:value>
       </extensionElements>
     </dataObject>
   </process>
