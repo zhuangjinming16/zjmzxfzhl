@@ -100,7 +100,8 @@
                     id: undefined,
                     key: 'processId_1',
                     name: 'processName_1',
-                    category: 'category_1'
+                    category: 'category_1',
+                    description: 'description_1'
                 }
             }
         },
@@ -143,7 +144,7 @@
             createNewDiagram(xml) {
                 if (!xml) {
                     // 初始化XML文本
-                    this.process.xml = newXml(this.modelData.key, this.modelData.name, this.modelData.category)
+                    this.process.xml = newXml(this.modelData.key, this.modelData.name, this.modelData.category, this.modelData.description)
                 } else {
                     this.process.xml = xml
                 }

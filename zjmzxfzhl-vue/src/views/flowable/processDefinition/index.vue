@@ -189,7 +189,7 @@
                     processDefinitionId: undefined,
                     processDefinitionName: undefined,
                     processDefinitionKey: undefined,
-                    latestVersion: false,
+                    latestVersion: true,
                     suspended: false,
                     active: false
                 },
@@ -239,7 +239,7 @@
                     processDefinitionId: undefined,
                     processDefinitionName: undefined,
                     processDefinitionKey: undefined,
-                    latestVersion: false,
+                    latestVersion: true,
                     suspended: false,
                     active: false
                 }

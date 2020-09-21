@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID" style="width: 200px;"
-                      class="filter-item" @keyup.enter.native="btnQuery"/>
+            <!--<el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID" style="width: 200px;"
+                      class="filter-item" @keyup.enter.native="btnQuery"/>-->
             <el-input v-model="listQuery.taskName" placeholder="任务名称" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.processInstanceBusinessKey" placeholder="业务主键Key" style="width: 200px;"
@@ -54,7 +54,7 @@
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row.processInstanceId)">查看详情
                             </el-dropdown-item>
                             <el-dropdown-item v-if="row.assignee==null||row.assignee==''" icon="el-icon-edit" divided
-                                              @click.native="btnClaim(row)">签收执行
+                                              @click.native="btnClaim(row)">认领并执行
                             </el-dropdown-item>
                             <el-dropdown-item v-if="row.assignee===$store.getters.sysUser.userId && row.endTime==null"
                                               icon="el-icon-edit" divided @click.native="btnUnclaim(row)">取消签收

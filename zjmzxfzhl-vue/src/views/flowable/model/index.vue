@@ -15,7 +15,7 @@
                 <el-button v-permission="'flowable:model:save'" icon="el-icon-plus" type="primary" @click="btnCreate"
                            class="filter-item">新增
                 </el-button>
-                <el-button icon="el-icon-plus" type="primary" @click="btnImport"
+                <el-button v-permission="'flowable:model:import'" icon="el-icon-plus" type="primary" @click="btnImport"
                            class="filter-item">导入
                 </el-button>
                 <!--<el-button v-permission="'flowable:model:delete'" icon="el-icon-delete" @click="btnDelete()"
@@ -59,7 +59,7 @@
                             <el-dropdown-item v-permission="'flowable:model:update'" icon="el-icon-edit" divided
                                               @click.native="btnUpdate(row)">修改
                             </el-dropdown-item>
-                            <el-dropdown-item v-permission="'flowable:model:update'" icon="el-icon-edit" divided
+                            <el-dropdown-item v-permission="'flowable:model:saveModelEditor'" icon="el-icon-edit" divided
                                               @click.native="btnUpdateModel(row)">流程设计
                             </el-dropdown-item>
                             <el-dropdown-item v-permission="'flowable:model:delete'" icon="el-icon-delete" divided

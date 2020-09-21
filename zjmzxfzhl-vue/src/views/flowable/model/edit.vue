@@ -39,6 +39,7 @@
                     this.modelData.key = data.key
                     this.modelData.name = data.name
                     this.modelData.category = data.category
+                    this.modelData.description = data.description
                     this.show = true
                 })
             },

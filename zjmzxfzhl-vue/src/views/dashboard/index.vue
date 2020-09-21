@@ -1,5 +1,10 @@
 <template>
     <div class="dashboard-container">
+        # 1.2.0 升级日志 2020-09-21 <br/>
+        1.新增流程模型设计器功能 <br/>
+        2.新增抄送功能 <br/>
+        3.新增我的待阅功能 <br/>
+        4.流程管理相关查询优化，不使用Map作为查询条件 <br/>
         # 1.1.6 升级日志 2020-06-21 <br/>
         1.使用spring-security-oauth2鉴权 <br/>
         2.代码重构 <br/>

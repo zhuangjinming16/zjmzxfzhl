@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID" style="width: 200px;"
-                      class="filter-item" @keyup.enter.native="btnQuery"/>
+            <!--<el-input v-model="listQuery.processInstanceId" placeholder="流程实例ID" style="width: 200px;"
+                      class="filter-item" @keyup.enter.native="btnQuery"/>-->
             <el-input v-model="listQuery.taskName" placeholder="任务名称" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.processInstanceBusinessKey" placeholder="业务主键Key" style="width: 200px;"

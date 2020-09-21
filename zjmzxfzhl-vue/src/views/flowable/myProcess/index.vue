@@ -6,6 +6,7 @@
                 <el-checkbox v-model="listQuery.ccToMe" @change="list">抄送我</el-checkbox>
                 <el-checkbox v-model="listQuery.unfinished" @change="list">未办结</el-checkbox>
                 <el-checkbox v-model="listQuery.finished" @change="list">已办结</el-checkbox>
+                <el-button icon="el-icon-zoom-out" type="primary" @click="btnReset" style="margin-left: 10px">重置</el-button>
             </div>
         </div>
         <el-row>
@@ -22,7 +23,7 @@
                         </div>
 
                         <div style="height: 110px;padding-left: 15px">
-                            <el-scrollbar style="height: 100%">
+                            <el-scrollbar class="scroll-container">
                                 <router-link v-for="(item, index) in row.processDefinitionVoList"
                                              :key="item.processDefinitionKey"
                                              :to="{path:'/myFlowable/myProcessQuery', query: {processDefinitionKey:item.processDefinitionKey,startedByMe:listQuery.startedByMe,ccToMe:listQuery.ccToMe,unfinished:listQuery.unfinished,finished:listQuery.finished}}">
@@ -70,12 +71,26 @@
                     const {data} = res
                     this.myInvolvedRecords = data;
                 })
-            }
+            },
+            btnReset() {
+                this.listQuery = {
+                    startedByMe: false,
+                    ccToMe: false,
+                    unfinished: false,
+                    finished: false
+                }
+                this.list()
+            },
         }
     }
 </script>
-<style lang="scss">
-    .el-scrollbar__wrap {
-        overflow-x: hidden;
+<style lang="scss" scoped>
+    .scroll-container {
+        height: 100%;
+        /deep/ {
+            .el-scrollbar__wrap {
+                overflow-x: hidden;
+            }
+        }
     }
 </style>
