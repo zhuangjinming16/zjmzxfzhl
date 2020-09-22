@@ -3067,6 +3067,10 @@ INSERT INTO `t_sys_code_info` VALUES ('userStatus-1', 'userStatus', '1', '正常
 INSERT INTO `t_sys_code_info` VALUES ('userStatus-2', 'userStatus', '2', '锁定', '', '2', '', '1', null, null, null, 'admin', '2020-03-30', '2020-03-30 22:28:30');
 INSERT INTO `t_sys_code_info` VALUES ('yesOrNo-0', 'yesOrNo', '0', '否', '', '2', '', '1', 'admin', '2020-01-09', '2020-01-09 23:08:54', null, null, null);
 INSERT INTO `t_sys_code_info` VALUES ('yesOrNo-1', 'yesOrNo', '1', '是', '', '1', '', '1', null, null, null, 'admin', '2020-01-09', '2020-01-09 23:08:35');
+INSERT INTO `t_sys_code_info` VALUES ('processCategory-demo', 'processCategory', 'demo', '示例流程', '', '1', '', '1', 'admin', '2020-09-23', '2020-09-23 00:00:38', 'admin', '2020-09-23', '2020-09-23 00:03:58');
+INSERT INTO `t_sys_code_info` VALUES ('processCategory-hr', 'processCategory', 'hr', 'HR流程', '', '2', '', '1', 'admin', '2020-09-23', '2020-09-23 00:01:43', 'admin', '2020-09-23', '2020-09-23 00:01:59');
+INSERT INTO `t_sys_code_info` VALUES ('taskCategory-todo', 'taskCategory', 'todo', '待办', '', '1', '', '1', 'admin', '2020-09-22', '2020-09-22 17:34:02', null, null, null);
+INSERT INTO `t_sys_code_info` VALUES ('taskCategory-toRead', 'taskCategory', 'toRead', '待阅', '', '2', '', '1', 'admin', '2020-09-22', '2020-09-22 17:34:21', null, null, null);
 
 -- ----------------------------
 -- Table structure for t_sys_code_type
@@ -3101,6 +3105,8 @@ INSERT INTO `t_sys_code_type` VALUES ('trueOrFalse', '是否', '8', '', 'admin',
 INSERT INTO `t_sys_code_type` VALUES ('userSex', '用户性别', '2', '', null, null, null, 'admin', '2019-08-21', '2019-08-21 23:27:09');
 INSERT INTO `t_sys_code_type` VALUES ('userStatus', '用户状态', '11', null, null, null, null, 'admin', '2019-09-08', '2019-09-08 14:34:34');
 INSERT INTO `t_sys_code_type` VALUES ('yesOrNo', '是否', '1', null, null, null, null, 'admin', '2019-09-08', '2019-09-08 14:34:34');
+INSERT INTO `t_sys_code_type` VALUES ('processCategory', '流程类别', '13', '', 'admin', '2020-09-23', '2020-09-23 00:00:13', null, null, null);
+INSERT INTO `t_sys_code_type` VALUES ('taskCategory', '任务类别', '14', '', 'admin', '2020-09-22', '2020-09-22 17:32:24', 'admin', '2020-09-22', '2020-09-22 17:32:32');
 
 -- ----------------------------
 -- Table structure for t_sys_config
