@@ -1,9 +1,31 @@
 import {isExternal} from '@/utils/validate'
-import Layout from '@/layout'
 import {getAction} from '@/api/manage'
+import store from '@/store'
 
-export function getDicts(codeTypeIds){
-    return getAction("/sys/codeInfo/getSysCodeInfos",{codeTypeIds})
+export function getDicts(codeTypeIds) {
+    let dicts = store.getters.dicts
+    let result = {}
+    if (dicts && dicts !== {}) {
+        let codeTypeIdArr = codeTypeIds.split(',')
+        let every = codeTypeIdArr.every(codeTypeId => {
+            if (dicts[codeTypeId] && dicts[codeTypeId].length > 0) {
+                result[codeTypeId] = dicts[codeTypeId]
+                return true
+            }
+            return false
+        })
+        if (every) {
+            return new Promise(function(resolve){
+                resolve({data: result})
+            })
+        }
+    }
+    return getAction("/sys/codeInfo/getSysCodeInfos", {codeTypeIds}).then((res) => {
+        store.dispatch('user/addDicts', res.data)
+        return new Promise(function(resolve){
+            resolve(res)
+        })
+    })
 }
 
 export function formatDictText(dicts,values){

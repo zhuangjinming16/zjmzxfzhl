@@ -2,7 +2,6 @@ import request from '@/utils/request'
 import {getAction, postAction, deleteAction} from '@/api/manage'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 import router, {resetRouter, constantRoutes, permissionRoutes} from '@/router'
-import store from "../index";
 
 const state = {
     token: '',
@@ -12,7 +11,8 @@ const state = {
     sysRole: {},
     sysRoles: [],
     sysOrg: {},
-    permissions: []
+    permissions: [],
+    dicts: {}
 }
 
 const mutations = {
@@ -40,6 +40,12 @@ const mutations = {
     SET_PERMISSIONS: (state, permissions) => {
         state.permissions = permissions
     },
+    SET_DICTS: (state, dicts) => {
+        state.dicts = dicts
+    },
+    ADD_DICTS: (state, dicts) => {
+        state.dicts = Object.assign(dicts, state.dicts)
+    }
 }
 
 const actions = {
@@ -73,7 +79,7 @@ const actions = {
                 if (!data) {
                     reject('登录失败，请重新登录')
                 }
-                const {sysUser, sysRole, sysRoles, sysOrg, routes, authorities, avatar} = data
+                const {sysUser, sysRole, sysRoles, sysOrg, routes, authorities, avatar, dicts} = data
                 // roles must be a non-empty array
                 if (!sysRoles || sysRoles.length == 0) {
                     reject('该用户未配置角色，请联系管理员授权')
@@ -88,6 +94,9 @@ const actions = {
                     return item.authority
                 })
                 commit('SET_PERMISSIONS', permissions)
+                // 预留后台获取用户信息时默认返回一些常用数据字典
+                commit('SET_DICTS', dicts || {})
+
                 resolve(data)
             }).catch(error => {
                 reject(error)
@@ -151,7 +160,13 @@ const actions = {
             router.push({path: '/'})
             resolve()
         })
-    }
+    },
+    addDicts({commit, state}, dicts) {
+        return new Promise(resolve => {
+            commit('ADD_DICTS', dicts)
+            resolve()
+        })
+    },
 }
 
 export default {

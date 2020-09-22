@@ -315,7 +315,7 @@
                 })
             })
             // 新增流程定义
-            _this.createNewDiagram(_this.modelData && _this.modelData.editor)
+            this.createNewDiagram(this.modelData && this.modelData.editor)
         }
     }
 </script>

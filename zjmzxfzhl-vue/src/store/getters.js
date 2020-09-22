@@ -10,6 +10,7 @@ const getters = {
     sysRoles: state => state.user.sysRoles,
     sysOrg: state => state.user.sysOrg,
     permissions: state => state.user.permissions,
+    dicts: state => state.user.dicts,
     routes: state => state.permission.routes,
     addRoutes: state => state.permission.addRoutes,
     visitedViews: state => state.tagsView.visitedViews,

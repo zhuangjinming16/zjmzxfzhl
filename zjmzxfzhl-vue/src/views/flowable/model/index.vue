@@ -5,6 +5,11 @@
                       @keyup.enter.native="btnQuery"/>
             <el-input v-model="listQuery.modelName" placeholder="模型名称" style="width: 200px;" class="filter-item"
                       @keyup.enter.native="btnQuery"/>
+            <el-select v-model="listQuery.modelCategory" placeholder="模型类别" class="filter-item">
+                <el-option v-for="(item, index) in dicts.processCategory" :key="index" :label="item.content"
+                           :value="item.value"></el-option>
+            </el-select>
+
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -41,8 +46,10 @@
             <el-table-column label="模型名称" prop="name" align="center">
                 <template slot-scope="scope"><span>{{ scope.row.name }}</span></template>
             </el-table-column>
-            <el-table-column label="模型分类" prop="category" align="center">
-                <template slot-scope="scope"><span>{{ scope.row.category }}</span></template>
+            <el-table-column label="模型类别" prop="category" align="center">
+                <template slot-scope="scope">
+                    <span v-html="formatDictText(dicts.processCategory,scope.row.category)"></span>
+                </template>
             </el-table-column>
             <el-table-column label="版本" prop="version" align="center">
                 <template slot-scope="scope"><span>{{ scope.row.version }}</span></template>
@@ -88,8 +95,10 @@
                 <el-form-item label="模型名称" prop="name">
                     <el-input v-model="temp.name"/>
                 </el-form-item>
-                <el-form-item label="模型分类" prop="category">
-                    <el-input v-model="temp.category"/>
+                <el-form-item label="模型类别" prop="category">
+                    <el-select v-model="temp.category" placeholder="模型类别">
+                        <el-option v-for="item in dicts.processCategory" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="模型描述" prop="description">
                     <el-input v-model="temp.description"/>
@@ -144,7 +153,8 @@
                     current: 1,
                     size: 10,
                     modelKey: undefined,
-                    modelName: undefined
+                    modelName: undefined,
+                    modelCategory: undefined
                 },
                 dialogFormVisible: false,
                 dialogStatus: '',
@@ -163,6 +173,9 @@
                 },
                 dialogImportVisible: false
             }
+        },
+        beforeCreate(){
+            this.getDicts('processCategory,taskCategory').then(({data}) => {this.dicts = data})
         },
         created() {
             this.list()
@@ -184,7 +197,8 @@
                     current: 1,
                     size: 10,
                     modelKey: undefined,
-                    modelName: undefined
+                    modelName: undefined,
+                    modelCategory: undefined
                 }
                 this.list()
             },
