@@ -1,27 +1,25 @@
 package com.zjmzxfzhl.modules.flowable.identity;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.zjmzxfzhl.modules.flowable.mapper.FlowableCommonMapper;
 import org.flowable.idm.api.Group;
 import org.flowable.idm.engine.IdmEngineConfiguration;
 import org.flowable.idm.engine.impl.GroupQueryImpl;
 import org.flowable.idm.engine.impl.persistence.entity.GroupEntity;
-import org.flowable.idm.engine.impl.persistence.entity.GroupEntityImpl;
 import org.flowable.idm.engine.impl.persistence.entity.GroupEntityManagerImpl;
 import org.flowable.idm.engine.impl.persistence.entity.data.GroupDataManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.zjmzxfzhl.modules.sys.entity.SysPost;
-import com.zjmzxfzhl.modules.sys.service.SysPostService;
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 庄金明
  * @date 2020年3月24日
  */
 public class CustomGroupEntityManager extends GroupEntityManagerImpl {
-    @Autowired
-    private SysPostService sysPostService;
+    @Resource
+    private FlowableCommonMapper flowableCommonMapper;
 
     public CustomGroupEntityManager(IdmEngineConfiguration idmEngineConfiguration, GroupDataManager groupDataManager) {
         super(idmEngineConfiguration, groupDataManager);
@@ -29,34 +27,26 @@ public class CustomGroupEntityManager extends GroupEntityManagerImpl {
 
     @Override
     public GroupEntity findById(String entityId) {
-        SysPost sysPost = sysPostService.getById(entityId);
-        if (sysPost == null) {
-            return null;
+        GroupQueryImpl aGroupQueryImpl = (GroupQueryImpl) new GroupQueryImpl().groupId(entityId);
+        List<Group> userEntities = flowableCommonMapper.selectGroupByQueryCriteria(aGroupQueryImpl);
+        if (userEntities != null && userEntities.size() > 0) {
+            return (GroupEntity) userEntities.get(0);
         }
-        GroupEntity groupEntity = new GroupEntityImpl();
-        groupEntity.setId(sysPost.getPostId());
-        groupEntity.setName(sysPost.getPostName());
-        return groupEntity;
+        return null;
     }
 
     @Override
     public List<Group> findGroupByQueryCriteria(GroupQueryImpl query) {
-        List<SysPost> sysPosts = sysPostService.getPostsByFlowableGroupQueryImpl(query);
-        if (sysPosts == null || sysPosts.size() == 0) {
+        List<Group> groups = flowableCommonMapper.selectGroupByQueryCriteria(query);
+        if (groups == null) {
             return new ArrayList<>();
+        } else {
+            return groups;
         }
-        List<Group> groups = new ArrayList<>();
-        for (SysPost sysPost : sysPosts) {
-            Group group = new GroupEntityImpl();
-            group.setId(sysPost.getPostId());
-            group.setName(sysPost.getPostName());
-            groups.add(group);
-        }
-        return groups;
     }
 
     @Override
     public long findGroupCountByQueryCriteria(GroupQueryImpl query) {
-        return sysPostService.getPostsByFlowableGroupQueryImpl(query).size();
+        return flowableCommonMapper.selectGroupCountByQueryCriteria(query);
     }
 }

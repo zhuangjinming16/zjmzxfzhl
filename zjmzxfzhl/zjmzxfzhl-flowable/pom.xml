@@ -20,7 +20,11 @@
         </dependency>
         <dependency>
             <groupId>com.zjmzxfzhl</groupId>
-            <artifactId>zjmzxfzhl-sys-biz</artifactId>
+            <artifactId>zjmzxfzhl-common-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zjmzxfzhl</groupId>
+            <artifactId>zjmzxfzhl-common-redis</artifactId>
         </dependency>
 
         <!--flowable -->

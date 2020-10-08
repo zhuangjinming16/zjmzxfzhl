@@ -1,5 +1,6 @@
 package com.zjmzxfzhl.modules.flowable.service.impl;
 
+import com.zjmzxfzhl.common.core.security.SecurityUser;
 import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.common.core.util.ObjectUtils;
 import com.zjmzxfzhl.common.core.util.SecurityUtils;
@@ -11,10 +12,8 @@ import com.zjmzxfzhl.modules.flowable.mapper.FlowableCommonMapper;
 import com.zjmzxfzhl.modules.flowable.service.ProcessInstanceService;
 import com.zjmzxfzhl.modules.flowable.vo.CategoryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionVo;
-import com.zjmzxfzhl.modules.flowable.vo.query.ProcessInstanceQueryVo;
 import com.zjmzxfzhl.modules.flowable.vo.ProcessInstanceRequest;
-import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
-import com.zjmzxfzhl.modules.sys.entity.SysUser;
+import com.zjmzxfzhl.modules.flowable.vo.query.ProcessInstanceQueryVo;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.impl.identity.Authentication;
@@ -32,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +57,7 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     protected FlowableTaskServiceImpl flowableTaskService;
     @Autowired
     protected TaskService taskService;
-    @Autowired
+    @Resource
     private FlowableCommonMapper flowableCommonMapper;
 
     @Override
@@ -90,8 +90,8 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         } else if (processDefinitionId.length() != 0 && processDefinitionKey.length() != 0) {
             throw new FlowableException("request param both processDefinitionId and processDefinitionKey is found");
         }
-        SysUser user = ((SysSecurityUser) SecurityUtils.getUserDetails()).getSysUser();
-        String userId = user.getUserId();
+        SecurityUser user = (SecurityUser) SecurityUtils.getUserDetails();
+        String userId = user.getUsername();
 
         ProcessDefinition definition = permissionService.validateReadPermissionOnProcessDefinition(userId,
                 processDefinitionId, processDefinitionKey, processInstanceRequest.getTenantId());
@@ -105,7 +105,7 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         ProcessInstanceBuilder processInstanceBuilder = runtimeService.createProcessInstanceBuilder();
         processInstanceBuilder.processDefinitionId(definition.getId());
         // 流程实例标题
-        processInstanceBuilder.name(user.getUserName() + definition.getName());
+        processInstanceBuilder.name(user.getUserRealName() + definition.getName());
         // 业务key
         processInstanceBuilder.businessKey(processInstanceRequest.getBusinessKey());
         processInstanceBuilder.variables(startVariables);

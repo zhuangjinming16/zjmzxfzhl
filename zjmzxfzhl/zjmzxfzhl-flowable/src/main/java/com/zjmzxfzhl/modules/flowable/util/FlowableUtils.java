@@ -1,42 +1,21 @@
 package com.zjmzxfzhl.modules.flowable.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.flowable.bpmn.model.Activity;
-import org.flowable.bpmn.model.ComplexGateway;
-import org.flowable.bpmn.model.EventSubProcess;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.FlowElementsContainer;
-import org.flowable.bpmn.model.FlowNode;
-import org.flowable.bpmn.model.InclusiveGateway;
-import org.flowable.bpmn.model.ParallelGateway;
+import com.google.common.collect.Sets;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import org.flowable.bpmn.model.Process;
-import org.flowable.bpmn.model.SequenceFlow;
-import org.flowable.bpmn.model.StartEvent;
-import org.flowable.bpmn.model.SubProcess;
+import org.flowable.bpmn.model.*;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntity;
 import org.flowable.engine.impl.util.ProcessDefinitionUtil;
 import org.flowable.idm.api.User;
 import org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl;
 
-import com.google.common.collect.Sets;
-import com.zjmzxfzhl.common.core.util.SecurityUtils;
-import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
-import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
-import com.zjmzxfzhl.modules.sys.entity.SysUser;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author 庄金明
@@ -45,12 +24,12 @@ import com.zjmzxfzhl.modules.sys.entity.SysUser;
 public class FlowableUtils {
 
     public static User getFlowableUser() {
-        SysUser sysUser = ((SysSecurityUser) SecurityUtils.getUserDetails()).getSysUser();
+        SecurityUser securityUser = ((SecurityUser) SecurityUtils.getUserDetails());
         User currentUser = new UserEntityImpl();
-        currentUser.setId(sysUser.getUserId());
-        currentUser.setFirstName(sysUser.getUserName());
-        currentUser.setLastName(sysUser.getUserName());
-        currentUser.setDisplayName(sysUser.getUserName());
+        currentUser.setId(securityUser.getUsername());
+        currentUser.setFirstName(securityUser.getUserRealName());
+        currentUser.setLastName(securityUser.getUserRealName());
+        currentUser.setDisplayName(securityUser.getUserRealName());
         return currentUser;
     }
 
