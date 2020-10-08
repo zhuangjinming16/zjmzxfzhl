@@ -312,20 +312,18 @@ public class HttpUtils {
         // String url = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest4?transId=t0001";
         // String url2 = "http://localhost:8081/zjmzxfzhl/app/demo/repeatRequest4?transId=t0002";
         // Map<String, String> headers = new HashMap<String, String>(16);
-        // headers.put(AppConstants.X_ACCESS_TOKEN,
-        // "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoxNTcxODA3NjQwLCJ1c2VySWQiOiIxODg4ODg4ODg4OCJ9
-        // .L_57nyEmmUrnOV8ds64Q5jpElG0TYPTdyzXAchnoPW8");
+        // headers.put("Authorization", "Bearer " + "eb89008f-3872-4d8a-a2e3-c40982d25864");
         // CyclicBarrier cyclicBarrier = new CyclicBarrier(10);
         // for (int i = 0; i < 10; i++) {
-        // new Thread(() -> {
-        // try {
-        // cyclicBarrier.await();
-        // HttpUtils.doGet(url, "", headers, null);
-        // HttpUtils.doGet(url2, "", headers, null);
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-        // }).start();
+        //     new Thread(() -> {
+        //         try {
+        //                 cyclicBarrier.await();
+        //                 HttpUtils.doGet(url, "", headers, null);
+        //                 HttpUtils.doGet(url2, "", headers, null);
+        //          } catch (Exception e) {
+        //                 e.printStackTrace();
+        //          }
+        //     }).start();
         // }
     }
 }

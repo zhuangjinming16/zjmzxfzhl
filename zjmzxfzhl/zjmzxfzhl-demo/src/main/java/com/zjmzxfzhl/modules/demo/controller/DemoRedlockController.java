@@ -3,6 +3,7 @@ package com.zjmzxfzhl.modules.demo.controller;
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.exception.BaseException;
 import com.zjmzxfzhl.common.core.redis.redlock.RedissonDistributedLocker;
+import com.zjmzxfzhl.common.security.annotation.AnonymousAccess;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.demo.service.DemoRedlockService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class DemoRedlockController {
      * @return
      */
     @GetMapping(value = "/redlock1")
+    @AnonymousAccess
     @ResponseBody
     public Result redlock1() {
         log.info("请求接入redlock1");
@@ -61,6 +63,7 @@ public class DemoRedlockController {
      * 通过注解@RedissonLock锁 整个方法
      */
     @GetMapping(value = "/redlock2")
+    @AnonymousAccess
     @ResponseBody
     public Result redlock2() throws Exception {
         log.info("请求接入redlock2");
@@ -75,6 +78,7 @@ public class DemoRedlockController {
      * @return
      */
     @GetMapping(value = "/redlock3")
+    @AnonymousAccess
     @ResponseBody
     public Result redlock3(String someId) throws Exception {
         log.info("请求接入redlock3");
@@ -90,6 +94,7 @@ public class DemoRedlockController {
      * @return
      */
     @GetMapping(value = "/redlock4")
+    @AnonymousAccess
     @ResponseBody
     public Result redlock4(String someId, int someInt) throws Exception {
         log.info("请求接入redlock4");
@@ -103,6 +108,7 @@ public class DemoRedlockController {
      * @return
      */
     @GetMapping(value = "/redlock5")
+    @AnonymousAccess
     @ResponseBody
     public Result redlock5() throws Exception {
         log.info("请求接入redlock5");
@@ -121,6 +127,7 @@ public class DemoRedlockController {
      * @return
      */
     @GetMapping(value = "/redlock6")
+    @AnonymousAccess
     @ResponseBody
     public Result redlock6() throws Exception {
         log.info("请求接入redlock6");

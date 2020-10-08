@@ -54,7 +54,8 @@ public class DemoRedlockServiceImpl implements DemoRedlockService {
      *
      * @param someId
      * @param someInt
-     * @param demoZjmzxfzhl.java
+     * @param demoZjmzxfzhl1
+     * @param demoZjmzxfzhl2
      */
     @Override
     @RedissonLock(lockIndexs = {0, 1, 2, 3}, fieldNames = {"", "", "zjmzxfzhlId", "zjmzxfzhlId"})
@@ -68,7 +69,7 @@ public class DemoRedlockServiceImpl implements DemoRedlockService {
      *
      * @param someId
      * @param someInt
-     * @param demoZjmzxfzhl.java
+     * @param demoZjmzxfzhl1
      */
     @Override
     @RedissonLock(lockIndexs = {0, 1, 2, 2}, fieldNames = {"", "", "zjmzxfzhlId", "zjmzxfzhlName"})

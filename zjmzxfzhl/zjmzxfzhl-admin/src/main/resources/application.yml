@@ -10,9 +10,9 @@ spring:
     active: dev #环境 dev|test|prod
   mvc:
     static-path-pattern: /**
-  resource:
-    #自定义静态资源路径,处理方式见WebMvcConfig.java
-    static-locations: classpath:/static/,classpath:/public/
+  #resource:
+    #自定义静态资源路径
+    #static-locations: classpath:/static/,classpath:/public/
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:com/**/mapper/xml/*.xml
