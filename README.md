@@ -6,8 +6,6 @@
 
 # 项目介绍
 
-zjmzxfzhl 是基于 SpringBoot + Vue + Elementui + FormMaking + Flowable + 代码生成器 的快速开发平台，采用前后端分离架构。
-
 `Zjmzxfzhl` 集成了 `SpringBoot` `Flowable` `Vue` `Elementui` `FormMaking`，采用前后端分离架构。
 
 [Gitee:Zjmzxfzhl](https://gitee.com/zjm16/zjmzxfzhl) [Github:Zjmzxfzhl](https://github.com/zhuangjinming16/zjmzxfzhl)
