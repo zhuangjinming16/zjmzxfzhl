@@ -14,6 +14,8 @@
 
 `v1.1.6`以后版本使用`spring-security-oauth2`鉴权，若需要使用 `shiro` 鉴权请移步 [zjmzxfzhl-shiro](https://gitee.com/zjm16/zjmzxfzhl/tree/v1.1.5)
 
+<font color="red">特别提醒：Zjmzxfzhl master 分支 （即 v1.2.0 分支）新增了 我的汇总、我的待阅、抄送功能，用到的 flowable6.5.1.28 相关 jar 包官方没有发布到maven中央仓库，我已打包好并放在群共享 可加群下载。</font>
+
 ## 技术架构
 ### 后端技术
 
