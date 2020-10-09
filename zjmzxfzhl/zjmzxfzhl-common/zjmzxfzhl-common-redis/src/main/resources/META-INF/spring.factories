@@ -1,0 +1,8 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.zjmzxfzhl.common.core.redis.RedisConfig,\
+  com.zjmzxfzhl.common.core.redis.RedissonConfig,\
+  com.zjmzxfzhl.common.core.redis.aspect.RedissonLockAspect,\
+  com.zjmzxfzhl.common.core.redis.aspect.RepeatRequestAspect,\
+  com.zjmzxfzhl.common.core.redis.util.RedisUtil
+
+  
