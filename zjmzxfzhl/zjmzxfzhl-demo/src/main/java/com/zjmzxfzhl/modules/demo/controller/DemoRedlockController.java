@@ -3,6 +3,7 @@ package com.zjmzxfzhl.modules.demo.controller;
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.exception.BaseException;
 import com.zjmzxfzhl.common.core.redis.redlock.RedissonDistributedLocker;
+import com.zjmzxfzhl.common.core.util.SpringContextUtils;
 import com.zjmzxfzhl.common.security.annotation.AnonymousAccess;
 import com.zjmzxfzhl.modules.demo.entity.DemoZjmzxfzhl;
 import com.zjmzxfzhl.modules.demo.service.DemoRedlockService;
@@ -23,9 +24,6 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/demo/redlock")
 @Slf4j
 public class DemoRedlockController {
-    @Autowired
-    private RedissonDistributedLocker redissonDistributedLocker;
-
     /**
      * 不使用注解，直接使用 RedissonDistributedLocker.tryLock 获得锁
      *
@@ -35,6 +33,7 @@ public class DemoRedlockController {
     @AnonymousAccess
     @ResponseBody
     public Result redlock1() {
+        RedissonDistributedLocker redissonDistributedLocker = SpringContextUtils.getBean(RedissonDistributedLocker.class);
         log.info("请求接入redlock1");
         // 方法内部写死锁要锁的key，也可以根据一定规则产生要锁的key
         String redlockKey = "redlockKey";
