@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.zjmzxfzhl</groupId>
         <artifactId>zjmzxfzhl</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>2.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>zjmzxfzhl-monitor</artifactId>
     <description>zjmzxfzhl-monitor系统监控模块</description>
