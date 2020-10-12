@@ -14,7 +14,7 @@ import java.util.Date;
  * @author 庄金明
  * @date 2020年3月24日
  */
-@Component
+// @Component
 public class GlobalMetaObjectHandler implements MetaObjectHandler {
     private static final String CREATE_BY = "createBy";
     private static final String CREATE_DATE = "createDate";
