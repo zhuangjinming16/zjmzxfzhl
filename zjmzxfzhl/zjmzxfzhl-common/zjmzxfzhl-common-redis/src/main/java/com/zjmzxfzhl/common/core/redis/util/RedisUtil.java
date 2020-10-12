@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
  * @author 庄金明
  * @date 2020年3月24日
  */
-@Component
 public class RedisUtil {
 
     @Autowired
