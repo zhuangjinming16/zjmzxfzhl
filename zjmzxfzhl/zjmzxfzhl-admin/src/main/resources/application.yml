@@ -56,3 +56,23 @@ zjmzxfzhl:
   # 需要验证码的客户端
   captcha:
     clients: zjmzxfzhl
+  resource:
+    config:
+      addFilterBeforeUsernamePasswordAuthenticationFilter:
+        - com.zjmzxfzhl.common.security.filter.CaptchaFilter
+      ignoreUrls:
+        - /
+        - /oauth/token
+        - /oauth/token_key
+        - /oauth/error
+        - /token/**
+        - /swagger-ui.html
+        - /csrf
+        - /**/*swagger*/**
+        - /v2/**
+        - /webjars/**
+      antMatchers:
+        - antPatterns: /app/**
+          hasAnyScopes: app
+        - antPatterns:
+          hasAnyScopes: admin

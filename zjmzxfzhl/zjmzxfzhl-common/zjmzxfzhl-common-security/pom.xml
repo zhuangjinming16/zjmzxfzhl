@@ -30,6 +30,10 @@
         </dependency>
         <dependency>
             <groupId>com.zjmzxfzhl</groupId>
+            <artifactId>zjmzxfzhl-common-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zjmzxfzhl</groupId>
             <artifactId>zjmzxfzhl-sys-api</artifactId>
         </dependency>
     </dependencies>

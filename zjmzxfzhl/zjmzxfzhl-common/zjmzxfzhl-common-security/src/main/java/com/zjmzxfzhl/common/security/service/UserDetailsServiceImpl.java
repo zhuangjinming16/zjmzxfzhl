@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author 庄金明
  */
-@Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     /**
@@ -29,8 +28,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     public static String OAUTH_AUTHORIZE_URL = "/oauth/authorize";
 
-    @Resource
     private JdbcClientDetailsService redisClientDetailsService;
+
+    public UserDetailsServiceImpl(JdbcClientDetailsService redisClientDetailsService){
+        this.redisClientDetailsService = redisClientDetailsService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -39,11 +39,6 @@
 
         <dependency>
             <groupId>com.zjmzxfzhl</groupId>
-            <artifactId>zjmzxfzhl-common-oauth2</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zjmzxfzhl</groupId>
             <artifactId>zjmzxfzhl-sys-api</artifactId>
         </dependency>
 

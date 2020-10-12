@@ -13,14 +13,9 @@
     <description>zjmzxfzhl 公共聚合模块</description>
 
     <modules>
-        <!-- <module>zjmzxfzhl-common-core</module> -->
-        <!-- <module>zjmzxfzhl-common-datasource</module> <module>zjmzxfzhl-common-log</module>
-            <module>zjmzxfzhl-common-mybatis</module> <module>zjmzxfzhl-common-security</module> -->
-        <!-- <module>zjmzxfzhl-common-swagger</module> -->
         <module>zjmzxfzhl-common-core</module>
         <module>zjmzxfzhl-common-log</module>
         <module>zjmzxfzhl-common-security</module>
-        <module>zjmzxfzhl-common-oauth2</module>
         <module>zjmzxfzhl-common-mybatis</module>
         <module>zjmzxfzhl-common-redis</module>
     </modules>

@@ -368,12 +368,6 @@
 
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
-                <artifactId>zjmzxfzhl-common-oauth2</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-sys-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
