@@ -79,7 +79,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
 
         // xss过滤
-        // json = xssEncodeRequestBody(json);
+        json = xssEncodeRequestBody(json);
         final ByteArrayInputStream bis = new ByteArrayInputStream(json.getBytes("utf-8"));
         return new ServletInputStream() {
             @Override

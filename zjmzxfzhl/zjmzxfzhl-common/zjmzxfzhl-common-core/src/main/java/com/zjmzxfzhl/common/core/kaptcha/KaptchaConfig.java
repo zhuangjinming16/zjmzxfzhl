@@ -2,6 +2,7 @@ package com.zjmzxfzhl.common.core.kaptcha;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,7 @@ import java.util.Properties;
  * @author 庄金明
  */
 @Configuration
+@ConditionalOnProperty(name = "zjmzxfzhl.kaptcha.enabled", havingValue = "true", matchIfMissing = true)
 public class KaptchaConfig {
 
     @Bean

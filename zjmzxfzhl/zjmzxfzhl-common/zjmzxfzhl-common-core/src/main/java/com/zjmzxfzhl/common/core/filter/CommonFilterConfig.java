@@ -1,20 +1,24 @@
-package com.zjmzxfzhl.common.core.xss;
+package com.zjmzxfzhl.common.core.filter;
 
-import javax.servlet.DispatcherType;
-
+import com.zjmzxfzhl.common.core.xss.XssFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.zjmzxfzhl.common.core.xss.XssFilter;
+import javax.servlet.DispatcherType;
 
 /**
+ * 通用过滤器配置
+ * zjmzxfzhl.common-filter.enabled=true 或者 未配置 都会注入
+ *
  * @author 庄金明
  * @date 2020年3月24日
  */
 @Configuration
-public class FilterConfig {
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+@ConditionalOnProperty(name = "zjmzxfzhl.common-filter.enabled", havingValue = "true", matchIfMissing = true)
+public class CommonFilterConfig {
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Bean
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();

@@ -16,6 +16,14 @@ public class SecurityConstants {
      */
     public static final String BEARER_TOKEN_TYPE = "Bearer";
     /**
+     * 令牌类型
+     */
+    public static final String BASIC_TOKEN_TYPE = "Basic";
+    /**
+     * 令牌类型
+     */
+    public static final String X_ZJMZXFZHL_INNER_APP_TOKEN_TYPE = "X-ZJMZXFZHL-INNER-APP ";
+    /**
      * 授权token url
      */
     public static final String OAUTH_TOKEN_URL = "/oauth/token";
@@ -27,4 +35,12 @@ public class SecurityConstants {
      * grant_type
      */
     public static final String REFRESH_TOKEN = "refresh_token";
+    /**
+     * 微服务间调用变量标志
+     */
+    public static final String INNER = "inner";
+    /**
+     * 是微服务间调用
+     */
+    public static final String INNER_TRUE = "true";
 }
