@@ -2,6 +2,7 @@ package com.zjmzxfzhl.common.log.aspect;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.zjmzxfzhl.common.core.Result;
+import com.zjmzxfzhl.common.core.constant.SecurityConstants;
 import com.zjmzxfzhl.common.core.threadpool.AsyncThreadExecutorProperties;
 import com.zjmzxfzhl.common.core.threadpool.manager.AsyncManager;
 import com.zjmzxfzhl.common.core.util.JacksonUtil;
@@ -9,7 +10,7 @@ import com.zjmzxfzhl.common.core.util.SpringContextUtils;
 import com.zjmzxfzhl.common.log.annotation.Log;
 import com.zjmzxfzhl.common.log.util.SysLogUtils;
 import com.zjmzxfzhl.modules.sys.entity.SysLog;
-import com.zjmzxfzhl.modules.sys.service.SysLogService;
+import com.zjmzxfzhl.modules.sys.service.LogService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -65,12 +66,12 @@ public class LogAspect {
             AsyncManager.me().execute(new Runnable() {
                 @Override
                 public void run() {
-                    SpringContextUtils.getBean(SysLogService.class).save(sysLog);
+                    SpringContextUtils.getBean(LogService.class).save(sysLog, SecurityConstants.INNER_TRUE);
                 }
             });
         } else {
             // 同步方式保存系统日志
-            SpringContextUtils.getBean(SysLogService.class).save(sysLog);
+            SpringContextUtils.getBean(LogService.class).save(sysLog, SecurityConstants.INNER_TRUE);
         }
 
         if (ex != null) {
