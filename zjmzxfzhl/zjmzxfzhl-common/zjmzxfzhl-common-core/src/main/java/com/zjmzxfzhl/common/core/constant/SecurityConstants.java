@@ -43,4 +43,27 @@ public class SecurityConstants {
      * 是微服务间调用
      */
     public static final String INNER_TRUE = "true";
+
+    /**
+     * 请求表达式
+     */
+    public static final String ANT_MATCHERS = "antMatchers";
+    /**
+     * 任意请求
+     */
+    public static final String ANY_REQUEST = "anyRequest";
+    /**
+     * 授权方法名
+     */
+    public static final String ACCESS = "access";
+    public static final String NOT_ACCESS = "notAccess";
+    public static final String ANONYMOUS = "anonymous";
+    public static final String DENY_ALL = "denyAll";
+    public static final String FULLY_AUTHENTICATED = "fullyAuthenticated";
+    public static final String HAS_ANY_AUTHORITY = "hasAnyAuthority";
+    public static final String HAS_ANY_ROLE = "hasAnyRole";
+    public static final String HAS_IP_ADDRESS = "hasIpAddress";
+    public static final String PERMIT_ALL = "permitAll";
+    public static final String REMEMBER_ME = "rememberMe";
+    public static final String AUTHENTICATED = "authenticated";
 }

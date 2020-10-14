@@ -8,6 +8,7 @@ import com.zjmzxfzhl.common.security.service.RedisAuthorizationCodeServices;
 import com.zjmzxfzhl.common.security.service.RedisClientDetailsService;
 import com.zjmzxfzhl.common.security.service.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,6 +30,12 @@ import java.util.Map;
  * @date 2020年6月23日
  */
 public class ZjmzxfzhlAuthorizationServerAutoConfiguration {
+
+    @Bean
+    @ConfigurationProperties(prefix="zjmzxfzhl.security.config")
+    public ZjmzxfzhlSecurityProperties zjmzxfzhlSecurityProperties(){
+        return new ZjmzxfzhlSecurityProperties();
+    }
 
     @Bean
     public TokenController tokenController(){

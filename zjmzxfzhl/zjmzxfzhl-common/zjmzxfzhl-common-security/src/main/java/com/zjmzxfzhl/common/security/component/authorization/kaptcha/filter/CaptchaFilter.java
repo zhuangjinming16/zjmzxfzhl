@@ -1,4 +1,4 @@
-package com.zjmzxfzhl.common.security.filter;
+package com.zjmzxfzhl.common.security.component.authorization.kaptcha.filter;
 
 import com.zjmzxfzhl.common.core.constant.CacheConstants;
 import com.zjmzxfzhl.common.core.constant.SecurityConstants;

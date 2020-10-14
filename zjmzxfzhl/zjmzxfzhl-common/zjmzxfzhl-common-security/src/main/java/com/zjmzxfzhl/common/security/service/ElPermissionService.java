@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 /**
  * @author 庄金明
  */
-@Service(value = "elp")
 public class ElPermissionService {
 
     public Boolean single(String permission) {

@@ -1,11 +1,11 @@
 package com.zjmzxfzhl.common.security.component.resource;
 
-import com.google.common.base.Joiner;
 import com.zjmzxfzhl.common.core.exception.BaseException;
 import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.common.core.util.SpringContextUtils;
 import com.zjmzxfzhl.common.security.annotation.AnonymousAccess;
 import com.zjmzxfzhl.common.security.annotation.Inner;
+import com.zjmzxfzhl.common.security.util.AuthorizeRequestUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +51,11 @@ public class ZjmzxfzhlResourceServerConfigurerAdapter extends ResourceServerConf
             if (null != anonymousAccess) {
                 anonymousUrls.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
             }
-            Inner inner = handlerMethod.getMethodAnnotation(Inner.class);
-            if (null != inner) {
-                innerUrls.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+            if (zjmzxfzhlResourceProperties.getInner()) {
+                Inner inner = handlerMethod.getMethodAnnotation(Inner.class);
+                if (null != inner) {
+                    innerUrls.addAll(infoEntry.getKey().getPatternsCondition().getPatterns());
+                }
             }
         }
 
@@ -63,31 +65,8 @@ public class ZjmzxfzhlResourceServerConfigurerAdapter extends ResourceServerConf
         zjmzxfzhlResourceProperties.getIgnoreUrls().forEach(url -> registry.antMatchers(url).permitAll());
         anonymousUrls.forEach(url -> registry.antMatchers(url).permitAll());
         innerUrls.forEach(url -> registry.antMatchers(url).permitAll());
-        if (CommonUtil.isNotEmptyObject(zjmzxfzhlResourceProperties.getAntMatchers())) {
-            List<AntMatchers> antMatchers = zjmzxfzhlResourceProperties.getAntMatchers();
-            for (int i = 0; i < antMatchers.size(); i++) {
-                AntMatchers antMatcher = antMatchers.get(i);
-                List<String> antPatterns = antMatcher.getAntPatterns();
-                List<String> hasAnyScopes = antMatcher.getHasAnyScopes();
-                CommonUtil.isEmptyObject(hasAnyScopes, "[zjmzxfzhl.resource.config]配置错误");
-                boolean anyRequest = false;
-                String hasAnyScopeParam = String.format("'%s'", Joiner.on("','").join(hasAnyScopes));
-                if (!CommonUtil.isEmptyObject(antPatterns)) {
-                    registry.antMatchers(antPatterns.toArray(new String[0])).access("#oauth2" + ".hasAnyScope(" + hasAnyScopeParam + ")");
-                } else {
-                    if (i != antMatchers.size() - 1) {
-                        throw new BaseException("[zjmzxfzhl.resource.config]配置错误");
-                    }
-                    registry.anyRequest().access("#oauth2.hasAnyScope(" + hasAnyScopeParam + ")");
-                    anyRequest = true;
-                }
-                if (!anyRequest) {
-                    registry.anyRequest().authenticated();
-                }
-            }
-        } else {
-            registry.anyRequest().authenticated();
-        }
+        List<AuthorizeRequest> authorizeRequests = zjmzxfzhlResourceProperties.getAuthorizeRequests();
+        AuthorizeRequestUtil.resolveAuthorizeRequest(registry, authorizeRequests);
         registry.and().csrf().disable();
 
         if (CommonUtil.isNotEmptyObject(zjmzxfzhlResourceProperties.getAddFilterBeforeUsernamePasswordAuthenticationFilter())) {
@@ -95,7 +74,7 @@ public class ZjmzxfzhlResourceServerConfigurerAdapter extends ResourceServerConf
                     zjmzxfzhlResourceProperties.getAddFilterBeforeUsernamePasswordAuthenticationFilter();
             addFilterBeforeUsernamePasswordAuthenticationFilter.forEach(item -> {
                 try {
-                    Filter filter = SpringContextUtils.getBean(item);
+                    Filter filter = (Filter) SpringContextUtils.getBean(Class.forName(item));
                     registry.and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
                 } catch (Exception e) {
                     throw new BaseException("设置过滤器失败");

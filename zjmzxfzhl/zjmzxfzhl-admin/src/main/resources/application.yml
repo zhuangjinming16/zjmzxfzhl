@@ -55,11 +55,12 @@ zjmzxfzhl:
     font-name: 宋体
   # 需要验证码的客户端
   captcha:
+    enabled: true
     clients: zjmzxfzhl
   resource:
     config:
       addFilterBeforeUsernamePasswordAuthenticationFilter:
-        - com.zjmzxfzhl.common.security.filter.CaptchaFilter
+        - com.zjmzxfzhl.common.security.component.authorization.kaptcha.filter.CaptchaFilter
       ignoreUrls:
         - /
         - /oauth/token
@@ -71,8 +72,28 @@ zjmzxfzhl:
         - /**/*swagger*/**
         - /v2/**
         - /webjars/**
-      antMatchers:
-        - antPatterns: /app/**
-          hasAnyScopes: app
-        - antPatterns:
-          hasAnyScopes: admin
+        - /druid/**
+      authorizeRequests:
+        - type: antMatchers
+          httpMethod:
+          antPatterns: /app/**
+          method: access
+          methodParams: "#oauth2.hasScope('app')"
+        - type: anyRequest
+          httpMethod:
+          antPatterns:
+          method: access
+          methodParams: "#oauth2.hasScope('admin')"
+  security:
+    config:
+      authorizeRequests:
+        - type: antMatchers
+          httpMethod:
+          antPatterns: /oauth/authorize,/oauth/confirm_access
+          method: authenticated
+          methodParams:
+        - type: anyRequest
+          httpMethod:
+          antPatterns:
+          method: permitAll
+          methodParams:

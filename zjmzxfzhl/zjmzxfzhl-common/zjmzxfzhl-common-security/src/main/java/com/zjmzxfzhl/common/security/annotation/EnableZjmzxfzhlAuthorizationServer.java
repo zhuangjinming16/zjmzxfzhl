@@ -1,6 +1,6 @@
 package com.zjmzxfzhl.common.security.annotation;
 
-import com.zjmzxfzhl.common.security.component.authorization.SecurityConfig;
+import com.zjmzxfzhl.common.security.component.authorization.ZjmzxfzhlSecurityConfig;
 import com.zjmzxfzhl.common.security.component.authorization.ZjmzxfzhlAuthorizationServerAutoConfiguration;
 import com.zjmzxfzhl.common.security.component.authorization.ZjmzxfzhlAuthorizationServerBeanDefinitionRegistrar;
 import org.springframework.context.annotation.Import;
@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 @EnableAuthorizationServer
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import({ZjmzxfzhlAuthorizationServerAutoConfiguration.class,SecurityConfig.class,
+@Import({ZjmzxfzhlAuthorizationServerAutoConfiguration.class, ZjmzxfzhlSecurityConfig.class,
         ZjmzxfzhlAuthorizationServerBeanDefinitionRegistrar.class})
 public @interface EnableZjmzxfzhlAuthorizationServer {
 }

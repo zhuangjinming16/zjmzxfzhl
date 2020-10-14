@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.zjmzxfzhl.common.security.filter.CaptchaFilter
+  com.zjmzxfzhl.common.security.component.authorization.kaptcha.KaptchaConfig

@@ -1,7 +1,8 @@
-package com.zjmzxfzhl.common.core.kaptcha;
+package com.zjmzxfzhl.common.security.component.authorization.kaptcha;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import com.zjmzxfzhl.common.security.component.authorization.kaptcha.filter.CaptchaFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,7 @@ import java.util.Properties;
  * @author 庄金明
  */
 @Configuration
-@ConditionalOnProperty(name = "zjmzxfzhl.kaptcha.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "zjmzxfzhl.captcha.enabled", havingValue = "true")
 public class KaptchaConfig {
 
     @Bean
@@ -28,5 +29,10 @@ public class KaptchaConfig {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         defaultKaptcha.setConfig(config);
         return defaultKaptcha;
+    }
+
+    @Bean
+    public CaptchaFilter captchaFilter(){
+        return new CaptchaFilter();
     }
 }

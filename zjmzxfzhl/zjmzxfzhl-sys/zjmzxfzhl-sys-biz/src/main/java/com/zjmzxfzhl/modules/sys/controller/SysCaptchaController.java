@@ -3,6 +3,7 @@ package com.zjmzxfzhl.modules.sys.controller;
 import com.google.code.kaptcha.Producer;
 import com.zjmzxfzhl.common.core.constant.CacheConstants;
 import com.zjmzxfzhl.common.core.redis.util.RedisUtil;
+import com.zjmzxfzhl.common.core.util.SpringContextUtils;
 import com.zjmzxfzhl.common.security.annotation.AnonymousAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +26,10 @@ public class SysCaptchaController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @Autowired
-    private Producer producer;
-
     @AnonymousAccess
     @GetMapping("/captcha.jpg")
     public void captcha(HttpServletResponse response, String uuid) throws IOException {
+        Producer producer = SpringContextUtils.getBean(Producer.class);
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
         // 生成文字验证码
