@@ -114,7 +114,7 @@ public class SysUserController extends BaseController {
     @Log(value = "获取用户信息")
     @GetMapping(value = "/getUserInfo")
     public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
-        SysUserInfo sysUserInfo = sysUserService.saveGetUserInfo(null, roleId);
+        SysUserInfo sysUserInfo = sysUserService.saveGetUserInfo(SecurityUtils.getUserId(), roleId);
         return Result.ok(sysUserInfo);
     }
 

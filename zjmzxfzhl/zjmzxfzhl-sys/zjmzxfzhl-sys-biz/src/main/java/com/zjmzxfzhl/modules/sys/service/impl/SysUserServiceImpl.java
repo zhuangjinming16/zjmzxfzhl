@@ -12,16 +12,24 @@ import com.zjmzxfzhl.common.core.constant.CacheConstants;
 import com.zjmzxfzhl.common.core.constant.Constants;
 import com.zjmzxfzhl.common.core.exception.SysException;
 import com.zjmzxfzhl.common.core.redis.util.RedisUtil;
+import com.zjmzxfzhl.common.core.security.SecurityUser;
 import com.zjmzxfzhl.common.core.util.CommonUtil;
 import com.zjmzxfzhl.common.core.util.PasswordUtil;
 import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.common.core.util.SpringContextUtils;
 import com.zjmzxfzhl.modules.sys.entity.*;
 import com.zjmzxfzhl.modules.sys.entity.vo.*;
 import com.zjmzxfzhl.modules.sys.mapper.SysUserMapper;
 import com.zjmzxfzhl.modules.sys.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,9 +98,48 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public SysUserInfo saveGetUserInfo(String userId, String roleId) {
-        if (userId == null || userId.isEmpty()) {
-            userId = SecurityUtils.getUserId();
+        SysUserInfo sysUserInfo = info(userId, roleId, true);
+        SysUser sysUser = sysUserInfo.getSysUser();
+        SysRole sysRole = sysUserInfo.getSysRole();
+        // 切换角色获取用户信息，需要更新用户表角色ID
+        if (!sysRole.getRoleId().equals(sysUser.getRoleId())) {
+            SysUser updateRoleIdUser = new SysUser();
+            updateRoleIdUser.setUserId(sysUser.getUserId());
+            updateRoleIdUser.setRoleId(roleId);
+            updateById(updateRoleIdUser);
         }
+        if (roleId != null && !roleId.isEmpty()) {
+            TokenStore tokenStore = SpringContextUtils.getBean(TokenStore.class);
+            OAuth2Authentication authentication = (OAuth2Authentication) SecurityUtils.getAuthentication();
+            SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+            SecurityUser newSecurityUser = new SecurityUser(sysRole.getRoleId(), securityUser.getOrgId(),
+                    securityUser.getUserRealName(), securityUser.getAdditionalInformation(),
+                    securityUser.getUsername(), "", true, true, true, true, sysUserInfo.getAuthorities());
+            OAuth2AccessToken token = tokenStore.getAccessToken(authentication);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(newSecurityUser, authentication.getCredentials(),
+                            newSecurityUser.getAuthorities());
+            usernamePasswordAuthenticationToken.setDetails(authentication.getUserAuthentication().getDetails());
+            OAuth2Authentication newAuthentication = new OAuth2Authentication(authentication.getOAuth2Request(),
+                    usernamePasswordAuthenticationToken);
+            newAuthentication.setDetails(authentication.getDetails());
+            tokenStore.storeAccessToken(token, newAuthentication);
+        }
+
+        return sysUserInfo;
+    }
+
+    @Override
+    public Result<UserInfo> info(String userId, String inner) {
+        SysUserInfo sysUserInfo = info(userId, null, false);
+        SysUser sysUser = sysUserInfo.getSysUser();
+        UserInfo userInfo = new UserInfo(userId, sysUser.getUserName(), sysUser.getPassword(), sysUser.getOrgId(),
+                sysUserInfo.getSysRole().getRoleId(), ImmutableMap.of("orgLevelCode",
+                sysUserInfo.getSysOrg().getOrgLevelCode()), sysUserInfo.getAuthorities());
+        return Result.ok(userInfo);
+    }
+
+    private SysUserInfo info(String userId, String roleId, boolean loadRoutes) {
         SysUser sysUser = getById(userId);
         List<SysRole> sysRoles = getRoleByUserId(sysUser.getUserId());
         if (sysRoles == null || sysRoles.size() == 0) {
@@ -126,69 +173,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             }
         }
 
-        SysOrg sysOrg = this.sysOrgService.getById(sysUser.getOrgId());
         Collection<? extends GrantedAuthority> authorities = loadPermissions(sysUser, roleId);
-        List<Route> routes = this.loadRoutes(sysUser, roleId);
-
-        // 切换角色获取用户信息，需要更新用户表角色ID
-        if (CommonUtil.isNotEmptyStr(roleId) && !roleId.equals(sysUser.getRoleId())) {
-            SysUser updateRoleIdUser = new SysUser();
-            updateRoleIdUser.setUserId(sysUser.getUserId());
-            updateRoleIdUser.setRoleId(roleId);
-            updateById(updateRoleIdUser);
+        SysOrg sysOrg = this.sysOrgService.getById(sysUser.getOrgId());
+        List<Route> routes = null;
+        if (loadRoutes) {
+            routes = this.loadRoutes(sysUser, roleId);
         }
-        //        String ipAddr =
-        //                IpUtils.getIpAddr(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-        //                .getRequest());
         return new SysUserInfo(sysUser, sysOrg, sysRoleUser, sysRoles, routes, authorities);
-    }
-
-    @Override
-    public Result<UserInfo> info(String userId, String inner) {
-        SysUser sysUser = getById(userId);
-        List<SysRole> sysRoles = getRoleByUserId(sysUser.getUserId());
-        if (sysRoles == null || sysRoles.size() == 0) {
-            if (!Constants.ADMIN.equals(sysUser.getUserId())) {
-                throw new SysException("用户未配置角色权限，请联系管理员授权!");
-            }
-            SysRole sysRoleAdmin = sysRoleService.getById("admin");
-            if (sysRoleAdmin == null) {
-                throw new SysException("系统未配置admin角色，请联系管理员!");
-            }
-            sysRoles.add(sysRoleAdmin);
-        }
-        // 默认以T_SYS_USER表中的角色登录
-        String roleId = sysUser.getRoleId();
-
-        SysRole sysRoleUser = null;
-        if (CommonUtil.isEmptyStr(roleId)) {
-            roleId = sysRoles.get(0).getRoleId();
-        } else {
-            for (SysRole sysRole : sysRoles) {
-                if (sysRole.getRoleId().equals(roleId)) {
-                    sysRoleUser = sysRole;
-                    break;
-                }
-            }
-            if (sysRoleUser == null) {
-                roleId = sysRoles.get(0).getRoleId();
-                sysRoleUser = sysRoles.get(0);
-            }
-        }
-
-        Collection<? extends GrantedAuthority> authorities = loadPermissions(sysUser, roleId);
-
-        // 切换角色获取用户信息，需要更新用户表角色ID
-        //        if (!roleId.equals(sysUser.getRoleId())) {
-        //            SysUser updateRoleIdUser = new SysUser();
-        //            updateRoleIdUser.setUserId(sysUser.getUserId());
-        //            updateRoleIdUser.setRoleId(roleId);
-        //            updateById(updateRoleIdUser);
-        //        }
-        SysOrg sysOrg = this.sysOrgService.getById(sysUser.getOrgId());
-        UserInfo userInfo = new UserInfo(userId, sysUser.getUserName(), sysUser.getPassword(), sysUser.getOrgId(),
-                roleId, ImmutableMap.of("orgLevelCode", sysOrg.getOrgLevelCode()), authorities);
-        return Result.ok(userInfo);
     }
 
     /**
