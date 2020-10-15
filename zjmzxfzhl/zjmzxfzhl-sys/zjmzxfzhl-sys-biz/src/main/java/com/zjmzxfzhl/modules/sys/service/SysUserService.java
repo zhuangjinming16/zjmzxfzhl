@@ -1,17 +1,16 @@
 package com.zjmzxfzhl.modules.sys.service;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zjmzxfzhl.common.core.base.BaseService;
-import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
 import com.zjmzxfzhl.modules.sys.entity.SysRole;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.Route;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysPasswordForm;
+import com.zjmzxfzhl.modules.sys.entity.vo.SysUserInfo;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 用户Service
@@ -52,14 +51,13 @@ public interface SysUserService extends BaseService<SysUser> {
      * @param roleId
      * @return
      */
-    SysSecurityUser saveGetUserInfo(String userId, String roleId);
+    SysUserInfo saveGetUserInfo(String userId, String roleId);
 
     /**
      * 加载用户按钮权限
      *
      * @param sysUser
      * @param roleId
-     * @param data
      * @return
      */
     Collection<? extends GrantedAuthority> loadPermissions(SysUser sysUser, String roleId);

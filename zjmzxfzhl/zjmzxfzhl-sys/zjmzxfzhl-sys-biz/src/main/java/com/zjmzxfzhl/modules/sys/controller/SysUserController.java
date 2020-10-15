@@ -1,34 +1,26 @@
 package com.zjmzxfzhl.modules.sys.controller;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.base.BaseController;
 import com.zjmzxfzhl.common.core.exception.SysException;
-import com.zjmzxfzhl.common.log.annotation.Log;
 import com.zjmzxfzhl.common.core.security.SecurityUser;
 import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.common.log.annotation.Log;
 import com.zjmzxfzhl.modules.sys.entity.SysUser;
 import com.zjmzxfzhl.modules.sys.entity.vo.SysPasswordForm;
+import com.zjmzxfzhl.modules.sys.entity.vo.SysUserInfo;
 import com.zjmzxfzhl.modules.sys.service.SysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * 用户Controller
@@ -122,15 +114,8 @@ public class SysUserController extends BaseController {
     @Log(value = "获取用户信息")
     @GetMapping(value = "/getUserInfo")
     public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
-        SecurityUser securityUser = null;
-        if (roleId != null && !roleId.isEmpty()) {
-            securityUser = sysUserService.saveGetUserInfo(null, roleId);
-        } else {
-            securityUser = (SecurityUser) SecurityUtils.getUserDetails();
-        }
-
-        // sessionObject = sysUserService.saveGetUserInfo("admin", roleId);
-        return Result.ok(securityUser);
+        SysUserInfo sysUserInfo = sysUserService.saveGetUserInfo(null, roleId);
+        return Result.ok(sysUserInfo);
     }
 
     @PostMapping(value = "/updatePassword")

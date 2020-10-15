@@ -8,9 +8,9 @@ package com.zjmzxfzhl.common.core.constant;
 public class SecurityConstants {
     public static final String CLIENT_ID = "client_id";
     /**
-     * 客户端用户登录获取用户信息 remoteUserInfoService
+     * 客户端用户登录获取用户信息 userInfoService
      */
-    public static final String REMOTE_USER_INFO_SERVICE = "remoteUserInfoService";
+    public static final String USER_INFO_SERVICE = "userInfoService";
     /**
      * 令牌类型
      */

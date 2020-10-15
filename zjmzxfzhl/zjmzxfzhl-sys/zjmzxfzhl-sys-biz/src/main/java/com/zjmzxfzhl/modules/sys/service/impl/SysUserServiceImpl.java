@@ -3,20 +3,20 @@ package com.zjmzxfzhl.modules.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
+import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
+import com.zjmzxfzhl.common.core.base.UserInfo;
 import com.zjmzxfzhl.common.core.constant.CacheConstants;
 import com.zjmzxfzhl.common.core.constant.Constants;
 import com.zjmzxfzhl.common.core.exception.SysException;
 import com.zjmzxfzhl.common.core.redis.util.RedisUtil;
-import com.zjmzxfzhl.common.core.util.*;
-import com.zjmzxfzhl.modules.sys.common.SysConstants;
-import com.zjmzxfzhl.modules.sys.common.SysSecurityUser;
+import com.zjmzxfzhl.common.core.util.CommonUtil;
+import com.zjmzxfzhl.common.core.util.PasswordUtil;
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
 import com.zjmzxfzhl.modules.sys.entity.*;
-import com.zjmzxfzhl.modules.sys.entity.vo.Meta;
-import com.zjmzxfzhl.modules.sys.entity.vo.Route;
-import com.zjmzxfzhl.modules.sys.entity.vo.SysPasswordForm;
-import com.zjmzxfzhl.modules.sys.entity.vo.SysRolePermissionVO;
+import com.zjmzxfzhl.modules.sys.entity.vo.*;
 import com.zjmzxfzhl.modules.sys.mapper.SysUserMapper;
 import com.zjmzxfzhl.modules.sys.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,7 +34,8 @@ import java.util.stream.Collectors;
  * @author 庄金明
  */
 @Service
-public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements SysUserService,
+        UserInfoService {
     @Autowired
     private SysRoleService sysRoleService;
 
@@ -90,7 +89,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SysSecurityUser saveGetUserInfo(String userId, String roleId) {
+    public SysUserInfo saveGetUserInfo(String userId, String roleId) {
         if (userId == null || userId.isEmpty()) {
             userId = SecurityUtils.getUserId();
         }
@@ -138,10 +137,58 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             updateRoleIdUser.setRoleId(roleId);
             updateById(updateRoleIdUser);
         }
-        String ipAddr =
-                IpUtils.getIpAddr(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-        return new SysSecurityUser(sysUser, sysOrg, sysRoleUser, sysRoles, routes, DateUtil.getNow(), ipAddr,
-                SysConstants.USER_STATUS_1.equals(sysUser.getStatus()), true, true, true, authorities);
+        //        String ipAddr =
+        //                IpUtils.getIpAddr(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+        //                .getRequest());
+        return new SysUserInfo(sysUser, sysOrg, sysRoleUser, sysRoles, routes, authorities);
+    }
+
+    @Override
+    public Result<UserInfo> info(String userId, String inner) {
+        SysUser sysUser = getById(userId);
+        List<SysRole> sysRoles = getRoleByUserId(sysUser.getUserId());
+        if (sysRoles == null || sysRoles.size() == 0) {
+            if (!Constants.ADMIN.equals(sysUser.getUserId())) {
+                throw new SysException("用户未配置角色权限，请联系管理员授权!");
+            }
+            SysRole sysRoleAdmin = sysRoleService.getById("admin");
+            if (sysRoleAdmin == null) {
+                throw new SysException("系统未配置admin角色，请联系管理员!");
+            }
+            sysRoles.add(sysRoleAdmin);
+        }
+        // 默认以T_SYS_USER表中的角色登录
+        String roleId = sysUser.getRoleId();
+
+        SysRole sysRoleUser = null;
+        if (CommonUtil.isEmptyStr(roleId)) {
+            roleId = sysRoles.get(0).getRoleId();
+        } else {
+            for (SysRole sysRole : sysRoles) {
+                if (sysRole.getRoleId().equals(roleId)) {
+                    sysRoleUser = sysRole;
+                    break;
+                }
+            }
+            if (sysRoleUser == null) {
+                roleId = sysRoles.get(0).getRoleId();
+                sysRoleUser = sysRoles.get(0);
+            }
+        }
+
+        Collection<? extends GrantedAuthority> authorities = loadPermissions(sysUser, roleId);
+
+        // 切换角色获取用户信息，需要更新用户表角色ID
+        //        if (!roleId.equals(sysUser.getRoleId())) {
+        //            SysUser updateRoleIdUser = new SysUser();
+        //            updateRoleIdUser.setUserId(sysUser.getUserId());
+        //            updateRoleIdUser.setRoleId(roleId);
+        //            updateById(updateRoleIdUser);
+        //        }
+        SysOrg sysOrg = this.sysOrgService.getById(sysUser.getOrgId());
+        UserInfo userInfo = new UserInfo(userId, sysUser.getUserName(), sysUser.getPassword(), sysUser.getOrgId(),
+                roleId, ImmutableMap.of("orgLevelCode", sysOrg.getOrgLevelCode()), authorities);
+        return Result.ok(userInfo);
     }
 
     /**
