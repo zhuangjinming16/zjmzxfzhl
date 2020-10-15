@@ -112,9 +112,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             TokenStore tokenStore = SpringContextUtils.getBean(TokenStore.class);
             OAuth2Authentication authentication = (OAuth2Authentication) SecurityUtils.getAuthentication();
             SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-            SecurityUser newSecurityUser = new SecurityUser(sysRole.getRoleId(), securityUser.getOrgId(),
-                    securityUser.getUserRealName(), securityUser.getAdditionalInformation(),
-                    securityUser.getUsername(), "", true, true, true, true, sysUserInfo.getAuthorities());
+            SecurityUser newSecurityUser = new SecurityUser(sysRole.getRoleId(), sysUser.getOrgId(),
+                    sysUser.getUserName(), securityUser.getAdditionalInformation(), sysUser.getUserId(), "", true,
+                    true, true, true, sysUserInfo.getAuthorities());
             OAuth2AccessToken token = tokenStore.getAccessToken(authentication);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                     new UsernamePasswordAuthenticationToken(newSecurityUser, authentication.getCredentials(),
