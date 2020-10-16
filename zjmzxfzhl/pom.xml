@@ -62,7 +62,6 @@
     </dependencies>
 
     <modules>
-        <module>zjmzxfzhl-common</module>
         <module>zjmzxfzhl-sys</module>
         <module>zjmzxfzhl-job</module>
         <module>zjmzxfzhl-monitor</module>
