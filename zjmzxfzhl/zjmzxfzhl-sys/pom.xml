@@ -13,7 +13,6 @@
 
     <description>zjmzxfzhl系统管理</description>
     <modules>
-        <module>zjmzxfzhl-sys-api</module>
         <module>zjmzxfzhl-sys-biz</module>
     </modules>
 </project>

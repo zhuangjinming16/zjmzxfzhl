@@ -18,5 +18,6 @@
         <module>zjmzxfzhl-common-security</module>
         <module>zjmzxfzhl-common-mybatis</module>
         <module>zjmzxfzhl-common-redis</module>
+        <module>zjmzxfzhl-common-sys-api</module>
     </modules>
 </project>

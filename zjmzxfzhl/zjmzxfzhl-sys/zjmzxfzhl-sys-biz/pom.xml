@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.zjmzxfzhl</groupId>
-            <artifactId>zjmzxfzhl-sys-api</artifactId>
+            <artifactId>zjmzxfzhl-common-sys-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.zjmzxfzhl</groupId>
