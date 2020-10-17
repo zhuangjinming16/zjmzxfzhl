@@ -52,6 +52,7 @@
         <hutool.version>5.3.8</hutool.version>
         <guava.version>28.2-android</guava.version>
         <esapi.version>2.1.0</esapi.version>
+        <zjmzxfzhl-common.version>2.0.0-SNAPSHOT</zjmzxfzhl-common.version>
     </properties>
 
     <dependencies>
@@ -338,37 +339,37 @@
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-common-core</artifactId>
-                <version>${project.version}</version>
+                <version>${zjmzxfzhl-common.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-common-log</artifactId>
-                <version>${project.version}</version>
+                <version>${zjmzxfzhl-common.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-common-redis</artifactId>
-                <version>${project.version}</version>
+                <version>${zjmzxfzhl-common.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-common-security</artifactId>
-                <version>${project.version}</version>
+                <version>${zjmzxfzhl-common.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-common-mybatis</artifactId>
-                <version>${project.version}</version>
+                <version>${zjmzxfzhl-common.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-common-sys-api</artifactId>
-                <version>${project.version}</version>
+                <version>${zjmzxfzhl-common.version}</version>
             </dependency>
 
             <dependency>
