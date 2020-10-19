@@ -10,35 +10,35 @@ var find = require('lodash/find');
 var TEMPLATE_ATTR = require('../Helper').TEMPLATE_ATTR;
 
 function isAny(element, types) {
-  return types.reduce(function(result, type) {
-    return result || is(element, type);
-  }, false);
+    return types.reduce(function (result, type) {
+        return result || is(element, type);
+    }, false);
 }
 
 
-module.exports = function(group, element, elementTemplates, translate) {
+module.exports = function (group, element, elementTemplates, translate) {
 
-  var options = getTemplateOptions(element, elementTemplates, translate);
+    var options = getTemplateOptions(element, elementTemplates, translate);
 
-  if (options.length === 1 && !options[0].isDefault) {
-    return;
-  }
-
-  // select element template (via dropdown)
-  group.entries.push(entryFactory.selectBox({
-    id: 'elementTemplate-chooser',
-    label: translate('Element Template'),
-    modelProperty: 'flowable:modelerTemplate',
-    selectOptions: options,
-    set: function(element, properties) {
-      return applyTemplate(element, properties[TEMPLATE_ATTR], elementTemplates);
-    },
-    disabled: function() {
-      var template = getTemplate(element, elementTemplates);
-
-      return template && isDefaultTemplate(template);
+    if (options.length === 1 && !options[0].isDefault) {
+        return;
     }
-  }));
+
+    // select element template (via dropdown)
+    group.entries.push(entryFactory.selectBox({
+        id: 'elementTemplate-chooser',
+        label: translate('Element Template'),
+        modelProperty: 'flowable:modelerTemplate',
+        selectOptions: options,
+        set: function (element, properties) {
+            return applyTemplate(element, properties[TEMPLATE_ATTR], elementTemplates);
+        },
+        disabled: function () {
+            var template = getTemplate(element, elementTemplates);
+
+            return template && isDefaultTemplate(template);
+        }
+    }));
 
 };
 
@@ -47,105 +47,105 @@ module.exports = function(group, element, elementTemplates, translate) {
 
 function applyTemplate(element, newTemplateId, elementTemplates) {
 
-  // cleanup
-  // clear input output mappings
-  // undo changes to properties defined in template
+    // cleanup
+    // clear input output mappings
+    // undo changes to properties defined in template
 
-  // re-establish
-  // set input output mappings
-  // apply changes to properties as defined in new template
+    // re-establish
+    // set input output mappings
+    // apply changes to properties as defined in new template
 
-  var oldTemplate = getTemplate(element, elementTemplates),
-      newTemplate = elementTemplates.get(newTemplateId);
+    var oldTemplate = getTemplate(element, elementTemplates),
+        newTemplate = elementTemplates.get(newTemplateId);
 
-  if (oldTemplate === newTemplate) {
-    return;
-  }
-
-  return {
-    cmd: 'propertiesPanel.flowable.changeTemplate',
-    context: {
-      element: element,
-      oldTemplate: oldTemplate,
-      newTemplate: newTemplate
+    if (oldTemplate === newTemplate) {
+        return;
     }
-  };
+
+    return {
+        cmd: 'propertiesPanel.flowable.changeTemplate',
+        context: {
+            element: element,
+            oldTemplate: oldTemplate,
+            newTemplate: newTemplate
+        }
+    };
 }
 
 function getTemplateOptions(element, elementTemplates, translate) {
 
-  var currentTemplateId = getTemplateId(element);
+    var currentTemplateId = getTemplateId(element);
 
-  var emptyOption = {
-    name: '',
-    value: ''
-  };
+    var emptyOption = {
+        name: '',
+        value: ''
+    };
 
-  var allOptions = elementTemplates.getAll().reduce(function(templates, t) {
-    if (!isAny(element, t.appliesTo)) {
-      return templates;
+    var allOptions = elementTemplates.getAll().reduce(function (templates, t) {
+        if (!isAny(element, t.appliesTo)) {
+            return templates;
+        }
+
+        return templates.concat({
+            name: translate(t.name),
+            value: t.id,
+            isDefault: t.isDefault
+        });
+    }, [emptyOption]);
+
+
+    var defaultOption = find(allOptions, function (option) {
+        return isDefaultTemplate(option);
+    });
+
+    var currentOption = find(allOptions, function (option) {
+        return option.value === currentTemplateId;
+    });
+
+    if (currentTemplateId && !currentOption) {
+        currentOption = unknownTemplate(currentTemplateId, translate);
+
+        allOptions.push(currentOption);
     }
 
-    return templates.concat({
-      name: translate(t.name),
-      value: t.id,
-      isDefault: t.isDefault
-    });
-  }, [ emptyOption ]);
+    if (!defaultOption) {
 
+        // return all options, including empty
+        // and optionally unknownTemplate option
+        return allOptions;
+    }
 
-  var defaultOption = find(allOptions, function(option) {
-    return isDefaultTemplate(option);
-  });
+    // special limited handling for
+    // default options
 
-  var currentOption = find(allOptions, function(option) {
-    return option.value === currentTemplateId;
-  });
+    var options = [];
 
-  if (currentTemplateId && !currentOption) {
-    currentOption = unknownTemplate(currentTemplateId, translate);
+    // current template not set
+    if (!currentTemplateId) {
+        options.push({
+            name: '',
+            value: ''
+        });
+    }
 
-    allOptions.push(currentOption);
-  }
+    // current template not default
+    if (currentOption && currentOption !== defaultOption) {
+        options.push(currentOption);
+    }
 
-  if (!defaultOption) {
+    options.push(defaultOption);
 
-    // return all options, including empty
-    // and optionally unknownTemplate option
-    return allOptions;
-  }
-
-  // special limited handling for
-  // default options
-
-  var options = [];
-
-  // current template not set
-  if (!currentTemplateId) {
-    options.push({
-      name: '',
-      value: ''
-    });
-  }
-
-  // current template not default
-  if (currentOption && currentOption !== defaultOption) {
-    options.push(currentOption);
-  }
-
-  options.push(defaultOption);
-
-  // [ (empty), (current), defaultOption ]
-  return options;
+    // [ (empty), (current), defaultOption ]
+    return options;
 }
 
 function unknownTemplate(templateId, translate) {
-  return {
-    name: translate('[unknown template: {templateId}]', { templateId: templateId }),
-    value: templateId
-  };
+    return {
+        name: translate('[unknown template: {templateId}]', {templateId: templateId}),
+        value: templateId
+    };
 }
 
 function isDefaultTemplate(elementTemplate) {
-  return elementTemplate.isDefault;
+    return elementTemplate.isDefault;
 }

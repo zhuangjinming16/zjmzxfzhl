@@ -12,5 +12,5 @@ var Validator = require('../Validator');
  */
 module.exports = function validate(descriptors) {
 
-  return new Validator().addAll(descriptors).getErrors();
+    return new Validator().addAll(descriptors).getErrors();
 };

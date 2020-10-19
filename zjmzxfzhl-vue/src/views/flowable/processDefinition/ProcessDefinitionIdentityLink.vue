@@ -1,7 +1,9 @@
 <template>
     <el-dialog :title="title" fullscreen :visible.sync="dialogProcessDefinitionIdentityLinkInChild" width="75%">
         <el-button-group style="padding-bottom: 10px">
-            <el-button v-permission="'flowable:processDefinitionIdentityLink:save'" icon="el-icon-plus" type="primary" @click="btnCreate" class="filter-item">新增</el-button>
+            <el-button v-permission="'flowable:processDefinitionIdentityLink:save'" icon="el-icon-plus" type="primary"
+                       @click="btnCreate" class="filter-item">新增
+            </el-button>
         </el-button-group>
         <el-table
                 :data="records"
@@ -33,7 +35,8 @@
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看
                             </el-dropdown-item>
-                            <el-dropdown-item v-permission="'flowable:processDefinitionIdentityLink:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row)">删除
+                            <el-dropdown-item v-permission="'flowable:processDefinitionIdentityLink:delete'"
+                                              icon="el-icon-delete" divided @click.native="btnDelete(row)">删除
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -65,7 +68,7 @@
 </template>
 
 <script>
-    import {getAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {
@@ -112,12 +115,12 @@
             },
             placeholderIdentityId: {
                 get() {
-                    if(this.temp.identityType == '1'){
-                        return  '请输入用户id'
-                    }else if(this.temp.identityType == '2'){
-                        return  '请输入岗位id'
-                    }else{
-                        return  '请先选择授权类型'
+                    if (this.temp.identityType == '1') {
+                        return '请输入用户id'
+                    } else if (this.temp.identityType == '2') {
+                        return '请输入岗位id'
+                    } else {
+                        return '请先选择授权类型'
                     }
                 }
             }
@@ -132,7 +135,7 @@
             return {
                 records: [],
                 selectedRecords: [],
-                dicts:[],
+                dicts: [],
                 listQuery: {
                     processDefinitionId: this.processDefinitionId,
                     identityType: '',

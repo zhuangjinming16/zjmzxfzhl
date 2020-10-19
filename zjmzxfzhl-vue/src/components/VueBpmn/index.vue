@@ -88,15 +88,14 @@
     // 而这个引入的是右侧属性栏里的内容
     import propertiesProviderModule from './bpmn-js-properties-panel/lib/provider/flowable'
     import './bpmn-js-properties-panel/styles/index.css' // 右边工具栏样式
-
     import VueAceEditor from 'vue2-ace-editor'
     import newXml from './resources/newDiagram.js'
 
     export default {
         props: {
-            modelData:{
+            modelData: {
                 type: Object,
-                default:{
+                default: {
                     id: undefined,
                     key: 'processId_1',
                     name: 'processName_1',

@@ -12,13 +12,13 @@ var InputOutputHelper = {};
 module.exports = InputOutputHelper;
 
 function getElements(bo, type, prop) {
-  var elems = extensionElementsHelper.getExtensionElements(bo, type) || [];
-  return !prop ? elems : (elems[0] || {})[prop] || [];
+    var elems = extensionElementsHelper.getExtensionElements(bo, type) || [];
+    return !prop ? elems : (elems[0] || {})[prop] || [];
 }
 
 function getParameters(element, prop, insideConnector) {
-  var inputOutput = InputOutputHelper.getInputOutput(element, insideConnector);
-  return (inputOutput && inputOutput.get(prop)) || [];
+    var inputOutput = InputOutputHelper.getInputOutput(element, insideConnector);
+    return (inputOutput && inputOutput.get(prop)) || [];
 }
 
 /**
@@ -29,13 +29,13 @@ function getParameters(element, prop, insideConnector) {
  *
  * @return {ModdleElement} the inputOutput object
  */
-InputOutputHelper.getInputOutput = function(element, insideConnector) {
-  if (!insideConnector) {
-    var bo = getBusinessObject(element);
-    return (getElements(bo, 'flowable:InputOutput') || [])[0];
-  }
-  var connector = this.getConnector(element);
-  return connector && connector.get('inputOutput');
+InputOutputHelper.getInputOutput = function (element, insideConnector) {
+    if (!insideConnector) {
+        var bo = getBusinessObject(element);
+        return (getElements(bo, 'flowable:InputOutput') || [])[0];
+    }
+    var connector = this.getConnector(element);
+    return connector && connector.get('inputOutput');
 };
 
 /**
@@ -45,9 +45,9 @@ InputOutputHelper.getInputOutput = function(element, insideConnector) {
  *
  * @return {ModdleElement} the connector object
  */
-InputOutputHelper.getConnector = function(element) {
-  var bo = implementationTypeHelper.getServiceTaskLikeBusinessObject(element);
-  return bo && (getElements(bo, 'flowable:Connector') || [])[0];
+InputOutputHelper.getConnector = function (element) {
+    var bo = implementationTypeHelper.getServiceTaskLikeBusinessObject(element);
+    return bo && (getElements(bo, 'flowable:Connector') || [])[0];
 };
 
 /**
@@ -59,8 +59,8 @@ InputOutputHelper.getConnector = function(element) {
  *
  * @return {Array} a list of input parameter objects
  */
-InputOutputHelper.getInputParameters = function(element, insideConnector) {
-  return getParameters.apply(this, [ element, 'inputParameters', insideConnector ]);
+InputOutputHelper.getInputParameters = function (element, insideConnector) {
+    return getParameters.apply(this, [element, 'inputParameters', insideConnector]);
 };
 
 /**
@@ -72,8 +72,8 @@ InputOutputHelper.getInputParameters = function(element, insideConnector) {
  *
  * @return {Array} a list of output parameter objects
  */
-InputOutputHelper.getOutputParameters = function(element, insideConnector) {
-  return getParameters.apply(this, [ element, 'outputParameters', insideConnector ]);
+InputOutputHelper.getOutputParameters = function (element, insideConnector) {
+    return getParameters.apply(this, [element, 'outputParameters', insideConnector]);
 };
 
 /**
@@ -85,8 +85,8 @@ InputOutputHelper.getOutputParameters = function(element, insideConnector) {
  *
  * @return {ModdleElement} input parameter
  */
-InputOutputHelper.getInputParameter = function(element, insideConnector, idx) {
-  return this.getInputParameters(element, insideConnector)[idx];
+InputOutputHelper.getInputParameter = function (element, insideConnector, idx) {
+    return this.getInputParameters(element, insideConnector)[idx];
 };
 
 /**
@@ -98,8 +98,8 @@ InputOutputHelper.getInputParameter = function(element, insideConnector, idx) {
  *
  * @return {ModdleElement} output parameter
  */
-InputOutputHelper.getOutputParameter = function(element, insideConnector, idx) {
-  return this.getOutputParameters(element, insideConnector)[idx];
+InputOutputHelper.getOutputParameter = function (element, insideConnector, idx) {
+    return this.getOutputParameters(element, insideConnector)[idx];
 };
 
 /**
@@ -110,24 +110,24 @@ InputOutputHelper.getOutputParameter = function(element, insideConnector, idx) {
  *
  * @return {boolean} a boolean value
  */
-InputOutputHelper.isInputOutputSupported = function(element, insideConnector) {
+InputOutputHelper.isInputOutputSupported = function (element, insideConnector) {
 
-  if (insideConnector) {
-    return true;
-  }
+    if (insideConnector) {
+        return true;
+    }
 
-  var bo = getBusinessObject(element);
+    var bo = getBusinessObject(element);
 
-  return (
-    is(bo, 'bpmn:FlowNode') && !(
-      is(bo, 'bpmn:StartEvent') ||
-      is(bo, 'bpmn:Gateway') ||
-      is(bo, 'bpmn:BoundaryEvent') ||
-      (
-        is(bo, 'bpmn:SubProcess') && bo.get('triggeredByEvent')
-      )
-    )
-  );
+    return (
+        is(bo, 'bpmn:FlowNode') && !(
+            is(bo, 'bpmn:StartEvent') ||
+            is(bo, 'bpmn:Gateway') ||
+            is(bo, 'bpmn:BoundaryEvent') ||
+            (
+                is(bo, 'bpmn:SubProcess') && bo.get('triggeredByEvent')
+            )
+        )
+    );
 };
 
 /**
@@ -138,7 +138,7 @@ InputOutputHelper.isInputOutputSupported = function(element, insideConnector) {
  *
  * @return {boolean} a boolean value
  */
-InputOutputHelper.areOutputParametersSupported = function(element, insideConnector) {
-  var bo = getBusinessObject(element);
-  return insideConnector || (!is(bo, 'bpmn:EndEvent') && !bo.loopCharacteristics);
+InputOutputHelper.areOutputParametersSupported = function (element, insideConnector) {
+    var bo = getBusinessObject(element);
+    return insideConnector || (!is(bo, 'bpmn:EndEvent') && !bo.loopCharacteristics);
 };

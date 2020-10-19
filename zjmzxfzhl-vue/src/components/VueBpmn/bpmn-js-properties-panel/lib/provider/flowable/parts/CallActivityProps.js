@@ -13,78 +13,76 @@ var flattenDeep = require('lodash/flattenDeep');
 var assign = require('lodash/assign');
 
 function getCallableType(element) {
-  var bo = getBusinessObject(element);
+    var bo = getBusinessObject(element);
 
-  var boCalledElement = bo.get('calledElement'),
-      boCaseRef = bo.get('flowable:caseRef');
+    var boCalledElement = bo.get('calledElement'),
+        boCaseRef = bo.get('flowable:caseRef');
 
-  var callActivityType = '';
-  if (typeof boCalledElement !== 'undefined') {
-    callActivityType = 'bpmn';
-  } else
+    var callActivityType = '';
+    if (typeof boCalledElement !== 'undefined') {
+        callActivityType = 'bpmn';
+    } else if (typeof boCaseRef !== 'undefined') {
+        callActivityType = 'cmmn';
+    }
 
-  if (typeof boCaseRef !== 'undefined') {
-    callActivityType = 'cmmn';
-  }
-
-  return callActivityType;
+    return callActivityType;
 }
 
 var DEFAULT_PROPS = {
-  calledElement: undefined,
-  'flowable:calledElementBinding': 'latest',
-  'flowable:calledElementVersion': undefined,
-  'flowable:calledElementTenantId': undefined,
-  'flowable:variableMappingClass' : undefined,
-  'flowable:variableMappingDelegateExpression' : undefined,
-  'flowable:caseRef': undefined,
-  'flowable:caseBinding': 'latest',
-  'flowable:caseVersion': undefined,
-  'flowable:caseTenantId': undefined
+    calledElement: undefined,
+    'flowable:calledElementBinding': 'latest',
+    'flowable:calledElementVersion': undefined,
+    'flowable:calledElementTenantId': undefined,
+    'flowable:variableMappingClass': undefined,
+    'flowable:variableMappingDelegateExpression': undefined,
+    'flowable:caseRef': undefined,
+    'flowable:caseBinding': 'latest',
+    'flowable:caseVersion': undefined,
+    'flowable:caseTenantId': undefined
 };
 
-module.exports = function(group, element, bpmnFactory, translate) {
+module.exports = function (group, element, bpmnFactory, translate) {
 
-  if (!is(element, 'flowable:CallActivity')) {
-    return;
-  }
-
-  group.entries.push(entryFactory.selectBox({
-    id : 'callActivity',
-    label: translate('CallActivity Type'),
-    selectOptions: [
-      { name: 'BPMN', value: 'bpmn' },
-      { name: 'CMMN', value: 'cmmn' }
-    ],
-    emptyParameter: true,
-    modelProperty: 'callActivityType',
-
-    get: function(element, node) {
-      return {
-        callActivityType: getCallableType(element)
-      };
-    },
-
-    set: function(element, values, node) {
-      var type = values.callActivityType;
-
-      var props = assign({}, DEFAULT_PROPS);
-
-      if (type === 'bpmn') {
-        props.calledElement = '';
-      }
-      else if (type === 'cmmn') {
-        props['flowable:caseRef'] = '';
-      }
-
-      return cmdHelper.updateProperties(element, props);
+    if (!is(element, 'flowable:CallActivity')) {
+        return;
     }
 
-  }));
+    group.entries.push(entryFactory.selectBox({
+        id: 'callActivity',
+        label: translate('CallActivity Type'),
+        selectOptions: [
+            {name: 'BPMN', value: 'bpmn'},
+            {name: 'CMMN', value: 'cmmn'}
+        ],
+        emptyParameter: true,
+        modelProperty: 'callActivityType',
 
-  group.entries.push(callable(element, bpmnFactory, {
-    getCallableType: getCallableType
-  }, translate));
+        get: function (element, node) {
+            return {
+                callActivityType: getCallableType(element)
+            };
+        },
 
-  group.entries = flattenDeep(group.entries);
+        set: function (element, values, node) {
+            var type = values.callActivityType;
+
+            var props = assign({}, DEFAULT_PROPS);
+
+            if (type === 'bpmn') {
+                props.calledElement = '';
+            }
+            else if (type === 'cmmn') {
+                props['flowable:caseRef'] = '';
+            }
+
+            return cmdHelper.updateProperties(element, props);
+        }
+
+    }));
+
+    group.entries.push(callable(element, bpmnFactory, {
+        getCallableType: getCallableType
+    }, translate));
+
+    group.entries = flattenDeep(group.entries);
 };

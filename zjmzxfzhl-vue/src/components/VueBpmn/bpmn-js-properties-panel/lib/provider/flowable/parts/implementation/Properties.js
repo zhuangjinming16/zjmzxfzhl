@@ -15,7 +15,7 @@ var assign = require('lodash/assign'),
     find = require('lodash/find');
 
 function generatePropertyId() {
-  return utils.nextId('Property_');
+    return utils.nextId('Property_');
 }
 
 /**
@@ -26,11 +26,11 @@ function generatePropertyId() {
  * @return {Array<ModdleElement>} a list of flowable:property objects
  */
 function getPropertyValues(parent) {
-  var properties = parent && getPropertiesElement(parent);
-  if (properties && properties.values) {
-    return properties.values;
-  }
-  return [];
+    var properties = parent && getPropertiesElement(parent);
+    if (properties && properties.values) {
+        return properties.values;
+    }
+    return [];
 }
 
 /**
@@ -41,11 +41,11 @@ function getPropertyValues(parent) {
  * @return {ModdleElement} a flowable:Properties object
  */
 function getPropertiesElement(element) {
-  if (!isExtensionElements(element)) {
-    return element.properties;
-  } else {
-    return getPropertiesElementInsideExtensionElements(element);
-  }
+    if (!isExtensionElements(element)) {
+        return element.properties;
+    } else {
+        return getPropertiesElementInsideExtensionElements(element);
+    }
 }
 
 /**
@@ -57,9 +57,9 @@ function getPropertiesElement(element) {
  * @return {ModdleElement} a flowable:Properties object
  */
 function getPropertiesElementInsideExtensionElements(extensionElements) {
-  return find(extensionElements.values, function(elem) {
-    return is(elem, 'flowable:Properties');
-  });
+    return find(extensionElements.values, function (elem) {
+        return is(elem, 'flowable:Properties');
+    });
 }
 
 /**
@@ -70,7 +70,7 @@ function getPropertiesElementInsideExtensionElements(extensionElements) {
  * @return {boolean} a boolean value
  */
 function isExtensionElements(element) {
-  return is(element, 'bpmn:ExtensionElements');
+    return is(element, 'bpmn:ExtensionElements');
 }
 
 /**
@@ -85,125 +85,125 @@ function isExtensionElements(element) {
  * @param  {function} options.getParent Gets the parent business object
  * @param  {function} options.show Indicate when the entry will be shown, should return boolean
  */
-module.exports = function(element, bpmnFactory, options, translate) {
+module.exports = function (element, bpmnFactory, options, translate) {
 
-  var getParent = options.getParent;
+    var getParent = options.getParent;
 
-  var modelProperties = options.modelProperties,
-      createParent = options.createParent;
+    var modelProperties = options.modelProperties,
+        createParent = options.createParent;
 
-  var bo = getBusinessObject(element);
-  if (is(element, 'bpmn:Participant')) {
-    bo = bo.get('processRef');
-  }
-
-  // build properties group only when the participant have a processRef
-  if (!bo) {
-    return;
-  }
-
-  assign(options, {
-    addLabel: translate('Add Property'),
-    getElements: function(element, node) {
-      var parent = getParent(element, node, bo);
-      return getPropertyValues(parent);
-    },
-    addElement: function(element, node) {
-      var commands = [],
-          parent = getParent(element, node, bo);
-
-      if (!parent && typeof createParent === 'function') {
-        var result = createParent(element, bo);
-        parent = result.parent;
-        commands.push(result.cmd);
-      }
-
-      var properties = getPropertiesElement(parent);
-      if (!properties) {
-        properties = elementHelper.createElement('flowable:Properties', {}, parent, bpmnFactory);
-
-        if (!isExtensionElements(parent)) {
-          commands.push(cmdHelper.updateBusinessObject(element, parent, { 'properties': properties }));
-        } else {
-          commands.push(cmdHelper.addAndRemoveElementsFromList(
-            element,
-            parent,
-            'values',
-            'extensionElements',
-            [ properties ],
-            []
-          ));
-        }
-      }
-
-      var propertyProps = {};
-      forEach(modelProperties, function(prop) {
-        propertyProps[prop] = undefined;
-      });
-
-      // create id if necessary
-      if (modelProperties.indexOf('id') >= 0) {
-        propertyProps.id = generatePropertyId();
-      }
-
-      var property = elementHelper.createElement('flowable:Property', propertyProps, properties, bpmnFactory);
-      commands.push(cmdHelper.addElementsTolist(element, properties, 'values', [ property ]));
-
-      return commands;
-    },
-    updateElement: function(element, value, node, idx) {
-      var parent = getParent(element, node, bo),
-          property = getPropertyValues(parent)[idx];
-
-      forEach(modelProperties, function(prop) {
-        value[prop] = value[prop] || undefined;
-      });
-
-      return cmdHelper.updateBusinessObject(element, property, value);
-    },
-    validate: function(element, value, node, idx) {
-      // validate id if necessary
-      if (modelProperties.indexOf('id') >= 0) {
-
-        var parent = getParent(element, node, bo),
-            properties = getPropertyValues(parent),
-            property = properties[idx];
-
-        if (property) {
-          // check if id is valid
-          var validationError = utils.isIdValid(property, value.id, translate);
-
-          if (validationError) {
-            return { id: validationError };
-          }
-        }
-      }
-    },
-    removeElement: function(element, node, idx) {
-      var commands = [],
-          parent = getParent(element, node, bo),
-          properties = getPropertiesElement(parent),
-          propertyValues = getPropertyValues(parent),
-          currentProperty = propertyValues[idx];
-
-      commands.push(cmdHelper.removeElementsFromList(element, properties, 'values', null, [ currentProperty ]));
-
-      if (propertyValues.length === 1) {
-        // remove flowable:properties if the last existing property has been removed
-        if (!isExtensionElements(parent)) {
-          commands.push(cmdHelper.updateBusinessObject(element, parent, { properties: undefined }));
-        } else {
-          forEach(parent.values, function(value) {
-            if (is(value, 'flowable:Properties')) {
-              commands.push(extensionElementsHelper.removeEntry(bo, element, value));
-            }
-          });
-        }
-      }
-
-      return commands;
+    var bo = getBusinessObject(element);
+    if (is(element, 'bpmn:Participant')) {
+        bo = bo.get('processRef');
     }
-  });
 
-  return factory.table(options);
+    // build properties group only when the participant have a processRef
+    if (!bo) {
+        return;
+    }
+
+    assign(options, {
+        addLabel: translate('Add Property'),
+        getElements: function (element, node) {
+            var parent = getParent(element, node, bo);
+            return getPropertyValues(parent);
+        },
+        addElement: function (element, node) {
+            var commands = [],
+                parent = getParent(element, node, bo);
+
+            if (!parent && typeof createParent === 'function') {
+                var result = createParent(element, bo);
+                parent = result.parent;
+                commands.push(result.cmd);
+            }
+
+            var properties = getPropertiesElement(parent);
+            if (!properties) {
+                properties = elementHelper.createElement('flowable:Properties', {}, parent, bpmnFactory);
+
+                if (!isExtensionElements(parent)) {
+                    commands.push(cmdHelper.updateBusinessObject(element, parent, {'properties': properties}));
+                } else {
+                    commands.push(cmdHelper.addAndRemoveElementsFromList(
+                        element,
+                        parent,
+                        'values',
+                        'extensionElements',
+                        [properties],
+                        []
+                    ));
+                }
+            }
+
+            var propertyProps = {};
+            forEach(modelProperties, function (prop) {
+                propertyProps[prop] = undefined;
+            });
+
+            // create id if necessary
+            if (modelProperties.indexOf('id') >= 0) {
+                propertyProps.id = generatePropertyId();
+            }
+
+            var property = elementHelper.createElement('flowable:Property', propertyProps, properties, bpmnFactory);
+            commands.push(cmdHelper.addElementsTolist(element, properties, 'values', [property]));
+
+            return commands;
+        },
+        updateElement: function (element, value, node, idx) {
+            var parent = getParent(element, node, bo),
+                property = getPropertyValues(parent)[idx];
+
+            forEach(modelProperties, function (prop) {
+                value[prop] = value[prop] || undefined;
+            });
+
+            return cmdHelper.updateBusinessObject(element, property, value);
+        },
+        validate: function (element, value, node, idx) {
+            // validate id if necessary
+            if (modelProperties.indexOf('id') >= 0) {
+
+                var parent = getParent(element, node, bo),
+                    properties = getPropertyValues(parent),
+                    property = properties[idx];
+
+                if (property) {
+                    // check if id is valid
+                    var validationError = utils.isIdValid(property, value.id, translate);
+
+                    if (validationError) {
+                        return {id: validationError};
+                    }
+                }
+            }
+        },
+        removeElement: function (element, node, idx) {
+            var commands = [],
+                parent = getParent(element, node, bo),
+                properties = getPropertiesElement(parent),
+                propertyValues = getPropertyValues(parent),
+                currentProperty = propertyValues[idx];
+
+            commands.push(cmdHelper.removeElementsFromList(element, properties, 'values', null, [currentProperty]));
+
+            if (propertyValues.length === 1) {
+                // remove flowable:properties if the last existing property has been removed
+                if (!isExtensionElements(parent)) {
+                    commands.push(cmdHelper.updateBusinessObject(element, parent, {properties: undefined}));
+                } else {
+                    forEach(parent.values, function (value) {
+                        if (is(value, 'flowable:Properties')) {
+                            commands.push(extensionElementsHelper.removeEntry(bo, element, value));
+                        }
+                    });
+                }
+            }
+
+            return commands;
+        }
+    });
+
+    return factory.table(options);
 };

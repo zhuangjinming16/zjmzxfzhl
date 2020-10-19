@@ -98,7 +98,8 @@
                             </el-table-column>
                             <el-table-column v-if="multipleSelect" label="操作" align="center">
                                 <template slot-scope="{row}">
-                                    <i class="el-icon-delete el-icon--left" style="cursor:pointer" @click="btnRemove(row)"></i>
+                                    <i class="el-icon-delete el-icon--left" style="cursor:pointer"
+                                       @click="btnRemove(row)"></i>
                                 </template>
                             </el-table-column>
                         </el-table>

@@ -15,18 +15,18 @@ var forEach = require('lodash/forEach');
  * @constructor
  */
 function MultiCommandHandler(commandStack) {
-  this._commandStack = commandStack;
+    this._commandStack = commandStack;
 }
 
-MultiCommandHandler.$inject = [ 'commandStack' ];
+MultiCommandHandler.$inject = ['commandStack'];
 
 module.exports = MultiCommandHandler;
 
-MultiCommandHandler.prototype.preExecute = function(context) {
+MultiCommandHandler.prototype.preExecute = function (context) {
 
-  var commandStack = this._commandStack;
+    var commandStack = this._commandStack;
 
-  forEach(context, function(command) {
-    commandStack.execute(command.cmd, command.context);
-  });
+    forEach(context, function (command) {
+        commandStack.execute(command.cmd, command.context);
+    });
 };

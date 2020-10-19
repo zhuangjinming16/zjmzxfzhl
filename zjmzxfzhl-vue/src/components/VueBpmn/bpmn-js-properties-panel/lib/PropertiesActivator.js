@@ -19,20 +19,20 @@ var DEFAULT_PRIORITY = 1000;
  * @param {Number} [priority] at which priority to hook into the activation
  */
 function PropertiesActivator(eventBus, priority) {
-  var self = this;
+    var self = this;
 
-  priority = priority || DEFAULT_PRIORITY;
+    priority = priority || DEFAULT_PRIORITY;
 
-  eventBus.on('propertiesPanel.isEntryVisible', priority, function(e) {
-    return self.isEntryVisible(e.entry, e.element);
-  });
+    eventBus.on('propertiesPanel.isEntryVisible', priority, function (e) {
+        return self.isEntryVisible(e.entry, e.element);
+    });
 
-  eventBus.on('propertiesPanel.isPropertyEditable', priority, function(e) {
-    return self.isPropertyEditable(e.entry, e.propertyName, e.element);
-  });
+    eventBus.on('propertiesPanel.isPropertyEditable', priority, function (e) {
+        return self.isPropertyEditable(e.entry, e.propertyName, e.element);
+    });
 }
 
-PropertiesActivator.$inject = [ 'eventBus' ];
+PropertiesActivator.$inject = ['eventBus'];
 
 module.exports = PropertiesActivator;
 
@@ -47,8 +47,8 @@ module.exports = PropertiesActivator;
  *
  * @returns {Boolean}
  */
-PropertiesActivator.prototype.isEntryVisible = function(entry, element) {
-  return true;
+PropertiesActivator.prototype.isEntryVisible = function (entry, element) {
+    return true;
 };
 
 /**
@@ -62,6 +62,6 @@ PropertiesActivator.prototype.isEntryVisible = function(entry, element) {
  *
  * @returns {Boolean}
  */
-PropertiesActivator.prototype.isPropertyEditable = function(entry, propertyName, element) {
-  return true;
+PropertiesActivator.prototype.isPropertyEditable = function (entry, propertyName, element) {
+    return true;
 };

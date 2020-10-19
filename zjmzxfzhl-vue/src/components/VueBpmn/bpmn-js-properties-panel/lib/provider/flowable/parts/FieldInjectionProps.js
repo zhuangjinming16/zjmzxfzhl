@@ -4,18 +4,18 @@ var ImplementationTypeHelper = require('../../../helper/ImplementationTypeHelper
 
 var fieldInjection = require('./implementation/FieldInjection');
 
-module.exports = function(group, element, bpmnFactory, translate) {
+module.exports = function (group, element, bpmnFactory, translate) {
 
-  var bo = ImplementationTypeHelper.getServiceTaskLikeBusinessObject(element);
+    var bo = ImplementationTypeHelper.getServiceTaskLikeBusinessObject(element);
 
-  if (!bo) {
-    return;
-  }
+    if (!bo) {
+        return;
+    }
 
-  var fieldInjectionEntry = fieldInjection(element, bpmnFactory, translate, { businessObject: bo });
+    var fieldInjectionEntry = fieldInjection(element, bpmnFactory, translate, {businessObject: bo});
 
-  if (fieldInjectionEntry && fieldInjectionEntry.length > 0) {
-    group.entries = group.entries.concat(fieldInjectionEntry);
-  }
+    if (fieldInjectionEntry && fieldInjectionEntry.length > 0) {
+        group.entries = group.entries.concat(fieldInjectionEntry);
+    }
 
 };

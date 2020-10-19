@@ -2,17 +2,17 @@
 
 var inputOutput = require('./implementation/InputOutput');
 
-module.exports = function(group, element, bpmnFactory, translate) {
+module.exports = function (group, element, bpmnFactory, translate) {
 
-  var inputOutputEntry = inputOutput(element, bpmnFactory, {
-    idPrefix: 'connector-',
-    insideConnector: true
-  }, translate);
+    var inputOutputEntry = inputOutput(element, bpmnFactory, {
+        idPrefix: 'connector-',
+        insideConnector: true
+    }, translate);
 
-  group.entries = group.entries.concat(inputOutputEntry.entries);
+    group.entries = group.entries.concat(inputOutputEntry.entries);
 
-  return {
-    getSelectedParameter: inputOutputEntry.getSelectedParameter
-  };
+    return {
+        getSelectedParameter: inputOutputEntry.getSelectedParameter
+    };
 
 };

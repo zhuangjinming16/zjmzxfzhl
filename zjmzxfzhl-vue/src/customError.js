@@ -1,5 +1,5 @@
 export default class CustomError extends Error {
-    constructor (message) {
+    constructor(message) {
         super(message)
         this.name = 'CustomError',
             // 这一步可不写，默认会保存堆栈追踪信息到自定义错误构造函数之前，

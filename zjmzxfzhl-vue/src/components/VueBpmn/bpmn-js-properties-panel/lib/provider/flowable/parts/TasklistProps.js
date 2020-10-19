@@ -5,23 +5,23 @@ var is = require('bpmn-js/lib/util/ModelUtil').is,
 
 var tasklist = require('./implementation/Tasklist');
 
-module.exports = function(group, element, bpmnFactory, translate) {
-  var businessObject = getBusinessObject(element);
+module.exports = function (group, element, bpmnFactory, translate) {
+    var businessObject = getBusinessObject(element);
 
-  if (is(element, 'flowable:Process') ||
-      is(element, 'bpmn:Participant') && businessObject.get('processRef')) {
+    if (is(element, 'flowable:Process') ||
+        is(element, 'bpmn:Participant') && businessObject.get('processRef')) {
 
-    group.entries = group.entries.concat(tasklist(element, bpmnFactory, {
-      getBusinessObject: function(element) {
-        var bo = getBusinessObject(element);
+        group.entries = group.entries.concat(tasklist(element, bpmnFactory, {
+            getBusinessObject: function (element) {
+                var bo = getBusinessObject(element);
 
-        if (!is(bo, 'bpmn:Participant')) {
-          return bo;
-        }
+                if (!is(bo, 'bpmn:Participant')) {
+                    return bo;
+                }
 
-        return bo.get('processRef');
-      }
-    }, translate));
+                return bo.get('processRef');
+            }
+        }, translate));
 
-  }
+    }
 };

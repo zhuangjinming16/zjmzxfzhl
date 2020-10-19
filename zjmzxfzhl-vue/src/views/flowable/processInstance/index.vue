@@ -64,11 +64,14 @@
                             </el-dropdown-item>
                             <el-dropdown-item icon="el-icon-view" divided @click.native="btnView(row.id)">查看详情
                             </el-dropdown-item>
-                            <el-dropdown-item v-permission="'flowable:task:list'" icon="el-icon-view" divided @click.native="btnViewTaskList(row)">任务列表
+                            <el-dropdown-item v-permission="'flowable:task:list'" icon="el-icon-view" divided
+                                              @click.native="btnViewTaskList(row)">任务列表
                             </el-dropdown-item>
-                            <el-dropdown-item v-permission="'flowable:processInstance:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.id)">删除
+                            <el-dropdown-item v-permission="'flowable:processInstance:delete'" icon="el-icon-delete"
+                                              divided @click.native="btnDelete(row.id)">删除
                             </el-dropdown-item>
-                            <el-dropdown-item v-permission="'flowable:processInstance:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.id,true)">
+                            <el-dropdown-item v-permission="'flowable:processInstance:delete'" icon="el-icon-delete"
+                                              divided @click.native="btnDelete(row.id,true)">
                                 删除包含历史
                             </el-dropdown-item>
                         </el-dropdown-menu>
@@ -179,19 +182,21 @@
                 </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button v-permission="'flowable:processInstance:suspendOrActivate'" v-if="temp.endTime==null" icon="el-icon-check"
+                <el-button v-permission="'flowable:processInstance:suspendOrActivate'" v-if="temp.endTime==null"
+                           icon="el-icon-check"
                            @click="btnSuspendOrActivate(temp.id,temp.suspended)">{{temp.suspended?'激活':'挂起'}}
                 </el-button>
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
             </div>
         </el-dialog>
-        <process-detail v-if="dialogViewVisible" :visible.sync="dialogViewVisible" :processInstanceId="processInstanceId"></process-detail>
+        <process-detail v-if="dialogViewVisible" :visible.sync="dialogViewVisible"
+                        :processInstanceId="processInstanceId"></process-detail>
     </div>
 </template>
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
     import {getToken} from '@/utils/auth'
     import ProcessDetail from "../components/ProcessDetail";

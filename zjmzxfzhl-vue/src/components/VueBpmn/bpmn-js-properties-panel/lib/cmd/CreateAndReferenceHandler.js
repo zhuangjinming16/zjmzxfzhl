@@ -10,11 +10,11 @@ var elementHelper = require('bpmn-js-properties-panel/lib/helper/ElementHelper')
  * @constructor
  */
 function CreateAndReferenceElementHandler(elementRegistry, bpmnFactory) {
-  this._elementRegistry = elementRegistry;
-  this._bpmnFactory = bpmnFactory;
+    this._elementRegistry = elementRegistry;
+    this._bpmnFactory = bpmnFactory;
 }
 
-CreateAndReferenceElementHandler.$inject = [ 'elementRegistry', 'bpmnFactory' ];
+CreateAndReferenceElementHandler.$inject = ['elementRegistry', 'bpmnFactory'];
 
 module.exports = CreateAndReferenceElementHandler;
 
@@ -36,31 +36,31 @@ module.exports = CreateAndReferenceElementHandler;
  *
  * @returns {Array<djs.mode.Base>} the updated element
  */
-CreateAndReferenceElementHandler.prototype.execute = function(context) {
+CreateAndReferenceElementHandler.prototype.execute = function (context) {
 
-  var referencingObject = ensureNotNull(context.referencingObject, 'referencingObject'),
-      referenceProperty = ensureNotNull(context.referenceProperty, 'referenceProperty'),
-      newObject = ensureNotNull(context.newObject, 'newObject'),
-      newObjectContainer = ensureNotNull(context.newObjectContainer, 'newObjectContainer'),
-      newObjectParent = ensureNotNull(context.newObjectParent, 'newObjectParent'),
-      changed = [ context.element ]; // this will not change any diagram-js elements
+    var referencingObject = ensureNotNull(context.referencingObject, 'referencingObject'),
+        referenceProperty = ensureNotNull(context.referenceProperty, 'referenceProperty'),
+        newObject = ensureNotNull(context.newObject, 'newObject'),
+        newObjectContainer = ensureNotNull(context.newObjectContainer, 'newObjectContainer'),
+        newObjectParent = ensureNotNull(context.newObjectParent, 'newObjectParent'),
+        changed = [context.element]; // this will not change any diagram-js elements
 
-  // create new object
-  var referencedObject = elementHelper
-    .createElement(newObject.type, newObject.properties, newObjectParent, this._bpmnFactory);
-  context.referencedObject = referencedObject;
+    // create new object
+    var referencedObject = elementHelper
+        .createElement(newObject.type, newObject.properties, newObjectParent, this._bpmnFactory);
+    context.referencedObject = referencedObject;
 
-  // add to containing list
-  newObjectContainer.push(referencedObject);
+    // add to containing list
+    newObjectContainer.push(referencedObject);
 
-  // adjust reference attribute
-  context.previousReference = referencingObject[referenceProperty];
-  referencingObject[referenceProperty] = referencedObject;
+    // adjust reference attribute
+    context.previousReference = referencingObject[referenceProperty];
+    referencingObject[referenceProperty] = referencedObject;
 
-  context.changed = changed;
+    context.changed = changed;
 
-  // indicate changed on objects affected by the update
-  return changed;
+    // indicate changed on objects affected by the update
+    return changed;
 };
 
 /**
@@ -72,30 +72,29 @@ CreateAndReferenceElementHandler.prototype.execute = function(context) {
  *
  * @returns {djs.mode.Base} the updated element
  */
-CreateAndReferenceElementHandler.prototype.revert = function(context) {
+CreateAndReferenceElementHandler.prototype.revert = function (context) {
 
-  var referencingObject = context.referencingObject,
-      referenceProperty = context.referenceProperty,
-      previousReference = context.previousReference,
-      referencedObject = context.referencedObject,
-      newObjectContainer = context.newObjectContainer;
+    var referencingObject = context.referencingObject,
+        referenceProperty = context.referenceProperty,
+        previousReference = context.previousReference,
+        referencedObject = context.referencedObject,
+        newObjectContainer = context.newObjectContainer;
 
-  // reset reference
-  referencingObject.set(referenceProperty, previousReference);
+    // reset reference
+    referencingObject.set(referenceProperty, previousReference);
 
-  // remove new element
-  newObjectContainer.splice(newObjectContainer.indexOf(referencedObject), 1);
+    // remove new element
+    newObjectContainer.splice(newObjectContainer.indexOf(referencedObject), 1);
 
-  return context.changed;
+    return context.changed;
 };
-
 
 
 // helpers //////////////
 
 function ensureNotNull(prop, name) {
-  if (!prop) {
-    throw new Error(name + ' required');
-  }
-  return prop;
+    if (!prop) {
+        throw new Error(name + ' required');
+    }
+    return prop;
 }

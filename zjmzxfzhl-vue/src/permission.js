@@ -1,11 +1,10 @@
-import router, {resetRouter, error404Routers} from './router'
+import router, {error404Routers} from './router'
 import store from './store'
 import {Message} from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import {getToken} from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
-import Layout from '@/layout'
 
 NProgress.configure({showSpinner: false}) // NProgress Configuration
 
@@ -29,7 +28,7 @@ router.beforeEach((to, from, next) => {
                         store.dispatch('permission/generateRoutes', data).then(permissionRoutes => {
                             //resetRouter()
                             router.addRoutes(permissionRoutes)
-                            router.addRoutes([{ path: '*', redirect: '/404', hidden: true }]);
+                            router.addRoutes([{path: '*', redirect: '/404', hidden: true}]);
                             next({...to, replace: true})
                         })
                     })

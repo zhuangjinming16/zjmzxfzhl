@@ -1,5 +1,6 @@
 import CustomError from './customError'
 import {Message} from 'element-ui'
+
 /**
  * 全局异常处理
  * @param {
@@ -7,9 +8,9 @@ import {Message} from 'element-ui'
  * @param {*} vm
  */
 const errorHandler = (error, vm, info) => {
-    if(error instanceof  CustomError){
+    if (error instanceof CustomError) {
         Message.error(error.message)
-    }else{
+    } else {
         console.error('抛出全局异常')
         console.error(vm)
         console.error(error)

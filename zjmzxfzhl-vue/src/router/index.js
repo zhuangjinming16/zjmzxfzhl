@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Layout from '@/layout'
 
 Vue.use(Router)
-import Layout from '@/layout'
 
 export const constantRoutes = [
     {

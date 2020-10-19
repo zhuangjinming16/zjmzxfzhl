@@ -5,19 +5,19 @@ var entryFactory = require('../../../factory/EntryFactory'),
     getBusinessObject = require('bpmn-js/lib/util/ModelUtil').getBusinessObject;
 
 
-module.exports = function(group, element, translate) {
+module.exports = function (group, element, translate) {
 
-  var bo = getBusinessObject(element);
+    var bo = getBusinessObject(element);
 
-  if (!bo) {
-    return;
-  }
+    if (!bo) {
+        return;
+    }
 
-  if (is(element, 'flowable:Initiator') && !is(element.parent, 'bpmn:SubProcess')) {
-    group.entries.push(entryFactory.textField({
-      id: 'initiator',
-      label: translate('Initiator'),
-      modelProperty: 'initiator'
-    }));
-  }
+    if (is(element, 'flowable:Initiator') && !is(element.parent, 'bpmn:SubProcess')) {
+        group.entries.push(entryFactory.textField({
+            id: 'initiator',
+            label: translate('Initiator'),
+            modelProperty: 'initiator'
+        }));
+    }
 };

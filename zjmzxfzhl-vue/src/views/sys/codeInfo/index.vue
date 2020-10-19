@@ -50,12 +50,17 @@
                     <el-dropdown split-button type="primary" @click="btnCodeInfoQuery" class="filter-item">
                         <i class="el-icon-search el-icon--left"></i>查询
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnCodeInfoReset">重置</el-dropdown-item>
+                            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnCodeInfoReset">重置
+                            </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <el-button-group>
-                        <el-button v-permission="'sys:codeInfo:save'" icon="el-icon-plus" type="primary" @click="btnCodeInfoCreate" class="filter-item">新增</el-button>
-                        <el-button v-permission="'sys:codeInfo:delete'" icon="el-icon-delete" @click="btnCodeInfoDelete()" class="filter-item">批量删除</el-button>
+                        <el-button v-permission="'sys:codeInfo:save'" icon="el-icon-plus" type="primary"
+                                   @click="btnCodeInfoCreate" class="filter-item">新增
+                        </el-button>
+                        <el-button v-permission="'sys:codeInfo:delete'" icon="el-icon-delete"
+                                   @click="btnCodeInfoDelete()" class="filter-item">批量删除
+                        </el-button>
                     </el-button-group>
                 </div>
                 <el-table
@@ -93,11 +98,17 @@
                     <el-table-column label="操作" align="center">
                         <template slot-scope="{row}">
                             <el-dropdown>
-                                <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"></i></span>
+                                <span class="el-dropdown-link">操作<i
+                                        class="el-icon-arrow-down el-icon--right"></i></span>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item icon="el-icon-view" @click.native="btnCodeInfoView(row)">查看</el-dropdown-item>
-                                    <el-dropdown-item v-permission="'sys:codeInfo:update'" icon="el-icon-edit" divided @click.native="btnCodeInfoUpdate(row)">修改</el-dropdown-item>
-                                    <el-dropdown-item v-permission="'sys:codeInfo:delete'" icon="el-icon-delete" divided @click.native="btnCodeInfoDelete(row.codeInfoId)">删除</el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-view" @click.native="btnCodeInfoView(row)">查看
+                                    </el-dropdown-item>
+                                    <el-dropdown-item v-permission="'sys:codeInfo:update'" icon="el-icon-edit" divided
+                                                      @click.native="btnCodeInfoUpdate(row)">修改
+                                    </el-dropdown-item>
+                                    <el-dropdown-item v-permission="'sys:codeInfo:delete'" icon="el-icon-delete" divided
+                                                      @click.native="btnCodeInfoDelete(row.codeInfoId)">删除
+                                    </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
@@ -108,7 +119,8 @@
             </el-col>
         </el-row>
         <el-dialog title="代码信息" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="110px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'"
+                     label-position="right" label-width="110px">
                 <el-form-item label="代码信息ID" prop="codeInfoId">
                     <el-input v-model="temp.codeInfoId" :readonly="dialogStatus==='update'"/>
                 </el-form-item>
@@ -126,7 +138,8 @@
                 </el-form-item>
                 <el-form-item label="是否显示" prop="isOk">
                     <el-select v-model="temp.isOk" placeholder="是否显示">
-                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content"
+                                   :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="备注">
@@ -138,7 +151,8 @@
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">
                     取消
                 </el-button>
-                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createCodeInfoData():updateCodeInfoData()">
+                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary"
+                           @click="dialogStatus==='create'?createCodeInfoData():updateCodeInfoData()">
                     确定
                 </el-button>
             </div>
@@ -148,7 +162,7 @@
 
 <script>
     import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {
@@ -156,7 +170,7 @@
         components: {Pagination},
         data() {
             return {
-                dicts : [],
+                dicts: [],
                 records: null,
                 total: 0,
                 listQuery: {
@@ -198,8 +212,10 @@
                 }
             }
         },
-        beforeCreate(){
-            this.getDicts('yesOrNo').then(({data}) => { this.dicts = data})
+        beforeCreate() {
+            this.getDicts('yesOrNo').then(({data}) => {
+                this.dicts = data
+            })
         },
         created() {
             this.list()
@@ -230,7 +246,7 @@
                 this.listCodeInfo();
             },
             listCodeInfo() {
-                if(!this.currCodeTypeId){
+                if (!this.currCodeTypeId) {
                     Message.error('请先选择代码类别')
                     return
                 }
@@ -277,7 +293,7 @@
                 })
             },
             btnCodeInfoCreate() {
-                if(!this.currCodeTypeId){
+                if (!this.currCodeTypeId) {
                     Message.error('请先选择代码类别')
                     return
                 }

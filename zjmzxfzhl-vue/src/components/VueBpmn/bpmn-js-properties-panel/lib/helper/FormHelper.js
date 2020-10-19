@@ -14,14 +14,14 @@ module.exports = FormHelper;
  *
  * @return {ModdleElement|undefined} formData
  */
-FormHelper.getFormData = function(element) {
-  var bo = getBusinessObject(element);
+FormHelper.getFormData = function (element) {
+    var bo = getBusinessObject(element);
 
-  var formData = getExtensionElements(bo, 'flowable:FormData');
+    var formData = getExtensionElements(bo, 'flowable:FormData');
 
-  if (typeof formData !== 'undefined') {
-    return formData[0];
-  }
+    if (typeof formData !== 'undefined') {
+        return formData[0];
+    }
 };
 
 
@@ -33,14 +33,14 @@ FormHelper.getFormData = function(element) {
  *
  * @return {Array} a list of form field objects
  */
-FormHelper.getFormFields = function(element) {
-  var formData = this.getFormData(element);
+FormHelper.getFormFields = function (element) {
+    var formData = this.getFormData(element);
 
-  if (typeof formData === 'undefined') {
-    return [];
-  }
+    if (typeof formData === 'undefined') {
+        return [];
+    }
 
-  return formData.fields || [];
+    return formData.fields || [];
 };
 
 
@@ -52,11 +52,11 @@ FormHelper.getFormFields = function(element) {
  *
  * @return {ModdleElement} the form field
  */
-FormHelper.getFormField = function(element, idx) {
+FormHelper.getFormField = function (element, idx) {
 
-  var formFields = this.getFormFields(element);
+    var formFields = this.getFormFields(element);
 
-  return formFields[idx];
+    return formFields[idx];
 };
 
 
@@ -67,11 +67,11 @@ FormHelper.getFormField = function(element, idx) {
  *
  * @return {Array<ModdleElement>} a list of constraint objects
  */
-FormHelper.getConstraints = function(formField) {
-  if (formField && formField.validation && formField.validation.constraints) {
-    return formField.validation.constraints;
-  }
-  return [];
+FormHelper.getConstraints = function (formField) {
+    if (formField && formField.validation && formField.validation.constraints) {
+        return formField.validation.constraints;
+    }
+    return [];
 };
 
 
@@ -82,10 +82,10 @@ FormHelper.getConstraints = function(formField) {
  *
  * @return {Array<ModdleElement>} a list of flowable:value objects
  */
-FormHelper.getEnumValues = function(formField) {
-  if (formField && formField.values) {
-    return formField.values;
-  }
-  return [];
+FormHelper.getEnumValues = function (formField) {
+    if (formField && formField.values) {
+        return formField.values;
+    }
+    return [];
 };
 

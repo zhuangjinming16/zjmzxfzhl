@@ -1,18 +1,24 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.roleId" placeholder="角色ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.roleName" placeholder="角色名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-dropdown v-permission="'sys:role:list'" split-button type="primary" @click="btnQuery" class="filter-item">
+            <el-input v-model="listQuery.roleId" placeholder="角色ID" style="width: 200px;" class="filter-item"
+                      @keyup.enter.native="btnQuery"/>
+            <el-input v-model="listQuery.roleName" placeholder="角色名称" style="width: 200px;" class="filter-item"
+                      @keyup.enter.native="btnQuery"/>
+            <el-dropdown v-permission="'sys:role:list'" split-button type="primary" @click="btnQuery"
+                         class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
             <el-button-group>
-                <el-button v-permission="'sys:role:save'" icon="el-icon-plus" type="primary" @click="btnCreate" class="filter-item">新增
+                <el-button v-permission="'sys:role:save'" icon="el-icon-plus" type="primary" @click="btnCreate"
+                           class="filter-item">新增
                 </el-button>
-                <el-button v-permission="'sys:role:delete'" icon="el-icon-delete" @click="btnDelete()" class="filter-item">批量删除</el-button>
+                <el-button v-permission="'sys:role:delete'" icon="el-icon-delete" @click="btnDelete()"
+                           class="filter-item">批量删除
+                </el-button>
             </el-button-group>
         </div>
         <el-table
@@ -53,16 +59,22 @@
                         <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:role:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">
-                                修改</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:role:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.roleId)">
-                                删除</el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:role:update'" icon="el-icon-edit" divided
+                                              @click.native="btnUpdate(row)">
+                                修改
+                            </el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:role:delete'" icon="el-icon-delete" divided
+                                              @click.native="btnDelete(row.roleId)">
+                                删除
+                            </el-dropdown-item>
                             <el-dropdown-item v-permission="'sys:role:getRolePermissions'" icon="el-icon-setting"
                                               divided @click.native="btnPermission(row.roleId)">
-                                角色授权</el-dropdown-item>
+                                角色授权
+                            </el-dropdown-item>
                             <el-dropdown-item v-permission="'sys:role:getRoleUser'" icon="el-icon-setting"
                                               divided @click.native="btnRoleUser(row.roleId)">
-                                分配用户</el-dropdown-item>
+                                分配用户
+                            </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -72,7 +84,8 @@
                     @pagination="list"/>
 
         <el-dialog title="角色" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="110px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'"
+                     label-position="right" label-width="110px">
                 <el-form-item label="角色ID" prop="roleId">
                     <el-input v-model="temp.roleId" :readonly="dialogStatus==='update'"/>
                 </el-form-item>
@@ -89,7 +102,8 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
-                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary"
+                           @click="dialogStatus==='create'?createData():updateData()">
                     确定
                 </el-button>
             </div>
@@ -113,7 +127,8 @@
                 <el-button icon="el-icon-check" type="primary" @click="permissionData">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog :title="roleUserTitle" fullscreen :visible.sync="dialogRoleUserFormVisible" custom-class="el-dialog-custom-height">
+        <el-dialog :title="roleUserTitle" fullscreen :visible.sync="dialogRoleUserFormVisible"
+                   custom-class="el-dialog-custom-height">
             <div class="filter-container">
                 <el-input v-model="listQueryRoleUser.userId" placeholder="用户ID" style="width: 120px;"
                           class="filter-item" @keyup.enter.native="getRoleUser"/>
@@ -126,7 +141,8 @@
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-button-group>
-                    <el-button icon="el-icon-plus" type="primary" class="filter-item" @click="btnRoleUserAdd">新增</el-button>
+                    <el-button icon="el-icon-plus" type="primary" class="filter-item" @click="btnRoleUserAdd">新增
+                    </el-button>
                     <el-button icon="el-icon-delete" class="filter-item" @click="btnRoleUserDelete">批量删除</el-button>
                 </el-button-group>
             </div>
@@ -175,7 +191,7 @@
 <script>
     import Pagination from '@/components/Pagination'
     import SelectUser from '@/components/select/SelectUser'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {
@@ -184,12 +200,12 @@
         computed: {
             rolePermissionTitle: {
                 get() {
-                    return '角色【'+ this.currRoleId +'】授权'
+                    return '角色【' + this.currRoleId + '】授权'
                 }
             },
             roleUserTitle: {
                 get() {
-                    return '角色【'+ this.currRoleId +'】分配用户'
+                    return '角色【' + this.currRoleId + '】分配用户'
                 }
             }
         },
@@ -380,7 +396,7 @@
                     this.totalRoleUser = data.total
                 })
             },
-            btnRoleUserQuery(){
+            btnRoleUserQuery() {
                 this.listQueryRoleUser.current = 1
                 this.getRoleUser()
             },
@@ -399,7 +415,7 @@
             },
             btnRoleUserAdd() {
                 this.selectUserVisible = true
-                if(this.$refs.selectUser.treeData.length == 0){
+                if (this.$refs.selectUser.treeData.length == 0) {
                     this.$refs.selectUser.getTreeData()
                 }
             },

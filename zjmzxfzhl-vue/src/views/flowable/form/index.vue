@@ -83,7 +83,7 @@
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {

@@ -51,7 +51,7 @@ export function downloadAction(url, method, parameter, filename) {
                 }
             }
             reader.readAsText(response)
-        }else {
+        } else {
             filename = decodeURI(filename);
             if (typeof window.navigator.msSaveBlob !== 'undefined') {
                 window.navigator.msSaveBlob(response, filename)

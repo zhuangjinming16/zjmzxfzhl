@@ -1,11 +1,22 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.jobName" placeholder="任务名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.jobGroup" placeholder="任务组名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.misfirePolicy" placeholder="计划执行错误策略" class="filter-item"><el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
-            <el-select v-model="listQuery.concurrent" placeholder="是否并发执行" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
-            <el-select v-model="listQuery.status" placeholder="是否正常状态" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
+            <el-input v-model="listQuery.jobName" placeholder="任务名称" style="width: 200px;" class="filter-item"
+                      @keyup.enter.native="btnQuery"/>
+            <el-input v-model="listQuery.jobGroup" placeholder="任务组名" style="width: 200px;" class="filter-item"
+                      @keyup.enter.native="btnQuery"/>
+            <el-select v-model="listQuery.misfirePolicy" placeholder="计划执行错误策略" class="filter-item">
+                <el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content"
+                           :value="item.value"></el-option>
+            </el-select>
+            <el-select v-model="listQuery.concurrent" placeholder="是否并发执行" class="filter-item">
+                <el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content"
+                           :value="item.value"></el-option>
+            </el-select>
+            <el-select v-model="listQuery.status" placeholder="是否正常状态" class="filter-item">
+                <el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content"
+                           :value="item.value"></el-option>
+            </el-select>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -13,8 +24,12 @@
                 </el-dropdown-menu>
             </el-dropdown>
             <el-button-group>
-                <el-button v-permission="'sys:job:save'" icon="el-icon-plus" type="primary" @click="btnCreate" class="filter-item">新增</el-button>
-                <el-button v-permission="'sys:job:delete'" icon="el-icon-delete" @click="btnDelete()" class="filter-item">批量删除</el-button>
+                <el-button v-permission="'sys:job:save'" icon="el-icon-plus" type="primary" @click="btnCreate"
+                           class="filter-item">新增
+                </el-button>
+                <el-button v-permission="'sys:job:delete'" icon="el-icon-delete" @click="btnDelete()"
+                           class="filter-item">批量删除
+                </el-button>
             </el-button-group>
         </div>
         <el-table
@@ -29,21 +44,42 @@
         >
             <el-table-column type="selection" align="center">
             </el-table-column>
-            <el-table-column label="任务名称" prop="jobName" align="center"><template slot-scope="scope"><span>{{ scope.row.jobName }}</span></template></el-table-column>
-            <el-table-column label="任务组名" prop="jobGroup" align="center"><template slot-scope="scope"><span>{{ scope.row.jobGroup }}</span></template></el-table-column>
-            <el-table-column label="计划执行错误策略" prop="misfirePolicy" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.misfirePolicy,scope.row.misfirePolicy)"></span></template></el-table-column>
-            <el-table-column label="是否并发执行" prop="concurrent" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.concurrent)"></span></template></el-table-column>
-            <el-table-column label="是否正常状态" prop="status" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.status)"></span></template></el-table-column>
+            <el-table-column label="任务名称" prop="jobName" align="center">
+                <template slot-scope="scope"><span>{{ scope.row.jobName }}</span></template>
+            </el-table-column>
+            <el-table-column label="任务组名" prop="jobGroup" align="center">
+                <template slot-scope="scope"><span>{{ scope.row.jobGroup }}</span></template>
+            </el-table-column>
+            <el-table-column label="计划执行错误策略" prop="misfirePolicy" align="center">
+                <template slot-scope="scope"><span
+                        v-html="formatDictText(dicts.misfirePolicy,scope.row.misfirePolicy)"></span></template>
+            </el-table-column>
+            <el-table-column label="是否并发执行" prop="concurrent" align="center">
+                <template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.concurrent)"></span>
+                </template>
+            </el-table-column>
+            <el-table-column label="是否正常状态" prop="status" align="center">
+                <template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.status)"></span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
                     <el-dropdown>
                         <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:job:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:job:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.jobId)">删除</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:job:changeStatus'" icon="el-icon-delete" divided @click.native="btnChangeStatus(row.jobId)">{{row.status=='0'?'激活':'挂起' }}</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:job:run'" icon="el-icon-delete" divided @click.native="btnRun(row.jobId)">立即执行</el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:job:update'" icon="el-icon-edit" divided
+                                              @click.native="btnUpdate(row)">修改
+                            </el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:job:delete'" icon="el-icon-delete" divided
+                                              @click.native="btnDelete(row.jobId)">删除
+                            </el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:job:changeStatus'" icon="el-icon-delete" divided
+                                              @click.native="btnChangeStatus(row.jobId)">{{row.status=='0'?'激活':'挂起' }}
+                            </el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:job:run'" icon="el-icon-delete" divided
+                                              @click.native="btnRun(row.jobId)">立即执行
+                            </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -53,20 +89,43 @@
                     @pagination="list"/>
 
         <el-dialog title="定时任务" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="135px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'"
+                     label-position="right" label-width="135px">
                 <!--<el-form-item label="任务ID" prop="jobId"><el-input v-model="temp.jobId" :readonly="dialogStatus==='update'"/></el-form-item>-->
-                <el-form-item label="任务名称" prop="jobName"><el-input v-model="temp.jobName"/></el-form-item>
-                <el-form-item label="任务组名" prop="jobGroup"><el-input v-model="temp.jobGroup"/></el-form-item>
-                <el-form-item label="调用目标字符串" prop="invokeTarget"><el-input v-model="temp.invokeTarget"/></el-form-item>
-                <el-form-item label="cron执行表达式" prop="cronExpression"><el-input v-model="temp.cronExpression"/></el-form-item>
-                <el-form-item label="计划执行错误策略" prop="misfirePolicy"><el-select v-model="temp.misfirePolicy" placeholder="计划执行错误策略"><el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content" :value="item.value"></el-option></el-select></el-form-item>
-                <el-form-item label="是否并发执行" prop="concurrent"><el-select v-model="temp.concurrent" placeholder="是否并发执行"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select></el-form-item>
+                <el-form-item label="任务名称" prop="jobName">
+                    <el-input v-model="temp.jobName"/>
+                </el-form-item>
+                <el-form-item label="任务组名" prop="jobGroup">
+                    <el-input v-model="temp.jobGroup"/>
+                </el-form-item>
+                <el-form-item label="调用目标字符串" prop="invokeTarget">
+                    <el-input v-model="temp.invokeTarget"/>
+                </el-form-item>
+                <el-form-item label="cron执行表达式" prop="cronExpression">
+                    <el-input v-model="temp.cronExpression"/>
+                </el-form-item>
+                <el-form-item label="计划执行错误策略" prop="misfirePolicy">
+                    <el-select v-model="temp.misfirePolicy" placeholder="计划执行错误策略">
+                        <el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content"
+                                   :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="是否并发执行" prop="concurrent">
+                    <el-select v-model="temp.concurrent" placeholder="是否并发执行">
+                        <el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content"
+                                   :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
                 <!--<el-form-item label="是否正常状态" prop="status"><el-select v-model="temp.status" placeholder="是否正常状态"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select></el-form-item>-->
-                <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark"/></el-form-item>
+                <el-form-item label="备注" prop="remark">
+                    <el-input v-model="temp.remark"/>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
-                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">确定</el-button>
+                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary"
+                           @click="dialogStatus==='create'?createData():updateData()">确定
+                </el-button>
             </div>
         </el-dialog>
     </div>
@@ -74,7 +133,7 @@
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {
@@ -119,8 +178,10 @@
                 }
             }
         },
-        beforeCreate(){
-            this.getDicts('misfirePolicy,yesOrNo').then(({data}) => {this.dicts = data})
+        beforeCreate() {
+            this.getDicts('misfirePolicy,yesOrNo').then(({data}) => {
+                this.dicts = data
+            })
         },
         created() {
             this.list()
@@ -224,13 +285,13 @@
             selectionChange(selectedRecords) {
                 this.selectedRecords = selectedRecords
             },
-            btnChangeStatus(jobId){
+            btnChangeStatus(jobId) {
                 putAction('/sys/job/changeStatus', {jobId}).then(({msg}) => {
                     Message.success(msg)
                     this.list()
                 })
             },
-            btnRun(jobId){
+            btnRun(jobId) {
                 putAction('/sys/job/run', {jobId}).then(({msg}) => {
                     Message.success(msg)
                     this.list()

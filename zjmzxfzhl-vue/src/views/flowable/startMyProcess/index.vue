@@ -1,7 +1,8 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.processDefinitionName" placeholder="流程定义名称" style="width: 200px;" class="filter-item"
+            <el-input v-model="listQuery.processDefinitionName" placeholder="流程定义名称" style="width: 200px;"
+                      class="filter-item"
                       @keyup.enter.native="btnQuery"/>
 
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
@@ -48,7 +49,7 @@
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
     import {getToken} from '@/utils/auth'
     import StartProcess from "../components/StartProcess";

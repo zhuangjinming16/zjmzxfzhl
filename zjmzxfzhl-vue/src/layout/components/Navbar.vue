@@ -10,7 +10,7 @@
             </div>
             <switch-roles class="right-menu-item hover-effect"/>
             <template v-if="device!=='mobile'">
-                <screenfull id="screenfull" class="right-menu-item hover-effect" />
+                <screenfull id="screenfull" class="right-menu-item hover-effect"/>
                 <size-select id="size-select" class="right-menu-item hover-effect"/>
             </template>
 

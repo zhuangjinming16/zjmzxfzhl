@@ -242,8 +242,7 @@
             },
         },
         data() {
-            return {
-            }
+            return {}
         }
     }
 </script>

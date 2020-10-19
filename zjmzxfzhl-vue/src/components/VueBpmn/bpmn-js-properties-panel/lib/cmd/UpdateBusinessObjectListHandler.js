@@ -18,19 +18,19 @@ var forEach = require('lodash/forEach');
  * @constructor
  */
 function UpdateBusinessObjectListHandler(elementRegistry, bpmnFactory) {
-  this._elementRegistry = elementRegistry;
-  this._bpmnFactory = bpmnFactory;
+    this._elementRegistry = elementRegistry;
+    this._bpmnFactory = bpmnFactory;
 }
 
-UpdateBusinessObjectListHandler.$inject = [ 'elementRegistry', 'bpmnFactory' ];
+UpdateBusinessObjectListHandler.$inject = ['elementRegistry', 'bpmnFactory'];
 
 module.exports = UpdateBusinessObjectListHandler;
 
 function ensureNotNull(prop, name) {
-  if (!prop) {
-    throw new Error(name + 'required');
-  }
-  return prop;
+    if (!prop) {
+        throw new Error(name + 'required');
+    }
+    return prop;
 }
 
 // api /////////////////////////////////////////////
@@ -38,54 +38,54 @@ function ensureNotNull(prop, name) {
 /**
  * Updates a element under a provided parent.
  */
-UpdateBusinessObjectListHandler.prototype.execute = function(context) {
+UpdateBusinessObjectListHandler.prototype.execute = function (context) {
 
-  var currentObject = ensureNotNull(context.currentObject, 'currentObject'),
-      propertyName = ensureNotNull(context.propertyName, 'propertyName'),
-      updatedObjectList = context.updatedObjectList,
-      objectsToRemove = context.objectsToRemove || [],
-      objectsToAdd = context.objectsToAdd || [],
-      changed = [ context.element], // this will not change any diagram-js elements
-      referencePropertyName;
+    var currentObject = ensureNotNull(context.currentObject, 'currentObject'),
+        propertyName = ensureNotNull(context.propertyName, 'propertyName'),
+        updatedObjectList = context.updatedObjectList,
+        objectsToRemove = context.objectsToRemove || [],
+        objectsToAdd = context.objectsToAdd || [],
+        changed = [context.element], // this will not change any diagram-js elements
+        referencePropertyName;
 
-  if (context.referencePropertyName) {
-    referencePropertyName = context.referencePropertyName;
-  }
-
-  var objectList = currentObject[propertyName];
-  // adjust array reference in the parent business object
-  context.previousList = currentObject[propertyName];
-
-  if (updatedObjectList) {
-    currentObject[propertyName] = updatedObjectList;
-  } else {
-    var listCopy = [];
-    // remove all objects which should be removed
-    forEach(objectList, function(object) {
-      if (objectsToRemove.indexOf(object) == -1) {
-        listCopy.push(object);
-      }
-    });
-    // add all objects which should be added
-    listCopy = listCopy.concat(objectsToAdd);
-
-    // set property to new list
-    if (listCopy.length > 0 || !referencePropertyName) {
-
-      // as long as there are elements in the list update the list
-      currentObject[propertyName] = listCopy;
-    } else if (referencePropertyName) {
-
-      // remove the list when it is empty
-      var parentObject = currentObject.$parent;
-      parentObject.set(referencePropertyName, undefined);
+    if (context.referencePropertyName) {
+        referencePropertyName = context.referencePropertyName;
     }
-  }
 
-  context.changed = changed;
+    var objectList = currentObject[propertyName];
+    // adjust array reference in the parent business object
+    context.previousList = currentObject[propertyName];
 
-  // indicate changed on objects affected by the update
-  return changed;
+    if (updatedObjectList) {
+        currentObject[propertyName] = updatedObjectList;
+    } else {
+        var listCopy = [];
+        // remove all objects which should be removed
+        forEach(objectList, function (object) {
+            if (objectsToRemove.indexOf(object) == -1) {
+                listCopy.push(object);
+            }
+        });
+        // add all objects which should be added
+        listCopy = listCopy.concat(objectsToAdd);
+
+        // set property to new list
+        if (listCopy.length > 0 || !referencePropertyName) {
+
+            // as long as there are elements in the list update the list
+            currentObject[propertyName] = listCopy;
+        } else if (referencePropertyName) {
+
+            // remove the list when it is empty
+            var parentObject = currentObject.$parent;
+            parentObject.set(referencePropertyName, undefined);
+        }
+    }
+
+    context.changed = changed;
+
+    // indicate changed on objects affected by the update
+    return changed;
 };
 
 /**
@@ -97,19 +97,19 @@ UpdateBusinessObjectListHandler.prototype.execute = function(context) {
  *
  * @return {djs.mode.Base} the updated element
  */
-UpdateBusinessObjectListHandler.prototype.revert = function(context) {
+UpdateBusinessObjectListHandler.prototype.revert = function (context) {
 
-  var currentObject = context.currentObject,
-      propertyName = context.propertyName,
-      previousList = context.previousList,
-      parentObject = currentObject.$parent;
+    var currentObject = context.currentObject,
+        propertyName = context.propertyName,
+        previousList = context.previousList,
+        parentObject = currentObject.$parent;
 
-  if (context.referencePropertyName) {
-    parentObject.set(context.referencePropertyName, currentObject);
-  }
+    if (context.referencePropertyName) {
+        parentObject.set(context.referencePropertyName, currentObject);
+    }
 
-  // remove new element
-  currentObject.set(propertyName, previousList);
+    // remove new element
+    currentObject.set(propertyName, previousList);
 
-  return context.changed;
+    return context.changed;
 };

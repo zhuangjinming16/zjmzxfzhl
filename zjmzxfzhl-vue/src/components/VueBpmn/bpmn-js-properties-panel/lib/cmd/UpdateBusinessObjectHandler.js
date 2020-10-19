@@ -21,10 +21,10 @@ var reduce = require('lodash/transform'),
  * @constructor
  */
 function UpdateBusinessObjectHandler(elementRegistry) {
-  this._elementRegistry = elementRegistry;
+    this._elementRegistry = elementRegistry;
 }
 
-UpdateBusinessObjectHandler.$inject = [ 'elementRegistry' ];
+UpdateBusinessObjectHandler.$inject = ['elementRegistry'];
 
 module.exports = UpdateBusinessObjectHandler;
 
@@ -32,25 +32,25 @@ module.exports = UpdateBusinessObjectHandler;
  * returns the root element
  */
 function getRoot(businessObject) {
-  var parent = businessObject;
-  while (parent.$parent) {
-    parent = parent.$parent;
-  }
-  return parent;
+    var parent = businessObject;
+    while (parent.$parent) {
+        parent = parent.$parent;
+    }
+    return parent;
 }
 
 function getProperties(businessObject, propertyNames) {
-  return reduce(propertyNames, function(result, key) {
-    result[key] = businessObject.get(key);
-    return result;
-  }, {});
+    return reduce(propertyNames, function (result, key) {
+        result[key] = businessObject.get(key);
+        return result;
+    }, {});
 }
 
 
 function setProperties(businessObject, properties) {
-  forEach(properties, function(value, key) {
-    businessObject.set(key, value);
-  });
+    forEach(properties, function (value, key) {
+        businessObject.set(key, value);
+    });
 }
 
 
@@ -68,46 +68,46 @@ function setProperties(businessObject, properties) {
  *
  * @return {Array<djs.mode.Base>} the updated element
  */
-UpdateBusinessObjectHandler.prototype.execute = function(context) {
+UpdateBusinessObjectHandler.prototype.execute = function (context) {
 
-  var element = context.element,
-      businessObject = context.businessObject,
-      rootElements = getRoot(businessObject).rootElements,
-      referenceType = context.referenceType,
-      referenceProperty = context.referenceProperty,
-      changed = [ element ]; // this will not change any diagram-js elements
+    var element = context.element,
+        businessObject = context.businessObject,
+        rootElements = getRoot(businessObject).rootElements,
+        referenceType = context.referenceType,
+        referenceProperty = context.referenceProperty,
+        changed = [element]; // this will not change any diagram-js elements
 
-  if (!element) {
-    throw new Error('element required');
-  }
+    if (!element) {
+        throw new Error('element required');
+    }
 
-  if (!businessObject) {
-    throw new Error('businessObject required');
-  }
+    if (!businessObject) {
+        throw new Error('businessObject required');
+    }
 
-  var properties = context.properties,
-      oldProperties = context.oldProperties || getProperties(businessObject, keys(properties));
+    var properties = context.properties,
+        oldProperties = context.oldProperties || getProperties(businessObject, keys(properties));
 
-  // check if there the update needs an external element for reference
-  if (typeof referenceType !== 'undefined' && typeof referenceProperty !== 'undefined') {
-    forEach(rootElements, function(rootElement) {
-      if (is(rootElement, referenceType)) {
-        if (rootElement.id === properties[referenceProperty]) {
-          properties[referenceProperty] = rootElement;
-        }
-      }
-    });
-  }
+    // check if there the update needs an external element for reference
+    if (typeof referenceType !== 'undefined' && typeof referenceProperty !== 'undefined') {
+        forEach(rootElements, function (rootElement) {
+            if (is(rootElement, referenceType)) {
+                if (rootElement.id === properties[referenceProperty]) {
+                    properties[referenceProperty] = rootElement;
+                }
+            }
+        });
+    }
 
-  // update properties
-  setProperties(businessObject, properties);
+    // update properties
+    setProperties(businessObject, properties);
 
-  // store old values
-  context.oldProperties = oldProperties;
-  context.changed = changed;
+    // store old values
+    context.oldProperties = oldProperties;
+    context.changed = changed;
 
-  // indicate changed on objects affected by the update
-  return changed;
+    // indicate changed on objects affected by the update
+    return changed;
 };
 
 /**
@@ -119,13 +119,13 @@ UpdateBusinessObjectHandler.prototype.execute = function(context) {
  *
  * @return {djs.mode.Base} the updated element
  */
-UpdateBusinessObjectHandler.prototype.revert = function(context) {
+UpdateBusinessObjectHandler.prototype.revert = function (context) {
 
-  var oldProperties = context.oldProperties,
-      businessObject = context.businessObject;
+    var oldProperties = context.oldProperties,
+        businessObject = context.businessObject;
 
-  // update properties
-  setProperties(businessObject, oldProperties);
+    // update properties
+    setProperties(businessObject, oldProperties);
 
-  return context.changed;
+    return context.changed;
 };

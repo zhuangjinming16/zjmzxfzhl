@@ -69,13 +69,14 @@
         <pagination v-show="myInvolvedTotal>0" :total="myInvolvedTotal" :current.sync="listQuery.current"
                     :size.sync="listQuery.size" @pagination="list"/>
 
-        <process-detail v-if="dialogViewVisible" :visible.sync="dialogViewVisible" :processInstanceId="processInstanceId"></process-detail>
+        <process-detail v-if="dialogViewVisible" :visible.sync="dialogViewVisible"
+                        :processInstanceId="processInstanceId"></process-detail>
     </div>
 </template>
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {getToken} from '@/utils/auth'
     import ProcessDetail from "../components/ProcessDetail";
 

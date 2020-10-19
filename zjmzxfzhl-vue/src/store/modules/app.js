@@ -43,7 +43,7 @@ const actions = {
     toggleDevice({commit}, device) {
         commit('TOGGLE_DEVICE', device)
     },
-    setSize({ commit }, size) {
+    setSize({commit}, size) {
         commit('SET_SIZE', size)
     }
 }

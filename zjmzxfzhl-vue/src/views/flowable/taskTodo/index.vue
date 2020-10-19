@@ -73,13 +73,14 @@
         <!-- 执行任务 -->
         <execute-task v-if="dialogExcuteTaskVisible" :visible.sync="dialogExcuteTaskVisible"
                       :executeTaskId="executeTaskId" @executeTaskFinished="list"></execute-task>
-        <process-detail v-if="dialogViewVisible" :visible.sync="dialogViewVisible" :processInstanceId="processInstanceId"></process-detail>
+        <process-detail v-if="dialogViewVisible" :visible.sync="dialogViewVisible"
+                        :processInstanceId="processInstanceId"></process-detail>
     </div>
 </template>
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
     import ExecuteTask from '../components/ExecuteTask'
     import ProcessDetail from '../components/ProcessDetail'

@@ -13,7 +13,7 @@ var extensionElementsHelper = require('./ExtensionElementsHelper');
  * @return {boolean} a boolean value
  */
 function isAsyncBefore(bo) {
-  return !!(bo.get('flowable:asyncBefore') || bo.get('flowable:async'));
+    return !!(bo.get('flowable:asyncBefore') || bo.get('flowable:async'));
 }
 
 module.exports.isAsyncBefore = isAsyncBefore;
@@ -27,7 +27,7 @@ module.exports.isAsyncBefore = isAsyncBefore;
  * @return {boolean} a boolean value
  */
 function isAsyncAfter(bo) {
-  return !!bo.get('flowable:asyncAfter');
+    return !!bo.get('flowable:asyncAfter');
 }
 
 module.exports.isAsyncAfter = isAsyncAfter;
@@ -41,7 +41,7 @@ module.exports.isAsyncAfter = isAsyncAfter;
  * @return {boolean} a boolean value
  */
 function isExclusive(bo) {
-  return !!bo.get('flowable:exclusive');
+    return !!bo.get('flowable:exclusive');
 }
 
 module.exports.isExclusive = isExclusive;
@@ -54,7 +54,7 @@ module.exports.isExclusive = isExclusive;
  * @return {Array<ModdleElement>} a list of 'flowable:FailedJobRetryTimeCycle'
  */
 function getFailedJobRetryTimeCycle(bo) {
-  return (extensionElementsHelper.getExtensionElements(bo, 'flowable:FailedJobRetryTimeCycle') || [])[0];
+    return (extensionElementsHelper.getExtensionElements(bo, 'flowable:FailedJobRetryTimeCycle') || [])[0];
 }
 
 module.exports.getFailedJobRetryTimeCycle = getFailedJobRetryTimeCycle;
@@ -67,10 +67,10 @@ module.exports.getFailedJobRetryTimeCycle = getFailedJobRetryTimeCycle;
  * @return {Array<ModdleElement>} a list of 'flowable:FailedJobRetryTimeCycle'
  */
 function removeFailedJobRetryTimeCycle(bo, element) {
-  var retryTimeCycles = extensionElementsHelper.getExtensionElements(bo, 'flowable:FailedJobRetryTimeCycle');
-  return map(retryTimeCycles, function(cycle) {
-    return extensionElementsHelper.removeEntry(bo, element, cycle);
-  });
+    var retryTimeCycles = extensionElementsHelper.getExtensionElements(bo, 'flowable:FailedJobRetryTimeCycle');
+    return map(retryTimeCycles, function (cycle) {
+        return extensionElementsHelper.removeEntry(bo, element, cycle);
+    });
 }
 
 module.exports.removeFailedJobRetryTimeCycle = removeFailedJobRetryTimeCycle;

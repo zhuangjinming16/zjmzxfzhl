@@ -1,6 +1,7 @@
 <template>
     <div class="login-container">
-        <el-form ref="loginForm" size="medium" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
+        <el-form ref="loginForm" size="medium" :model="loginForm" :rules="loginRules" class="login-form"
+                 auto-complete="on"
                  label-position="left">
 
             <div class="title-container">
@@ -12,13 +13,13 @@
                   <svg-icon icon-class="user"/>
                 </span>
                 <el-input size="medium"
-                        ref="username"
-                        v-model="loginForm.username"
-                        placeholder="用户名"
-                        name="username"
-                        type="text"
-                        tabindex="1"
-                        auto-complete="on"
+                          ref="username"
+                          v-model="loginForm.username"
+                          placeholder="用户名"
+                          name="username"
+                          type="text"
+                          tabindex="1"
+                          auto-complete="on"
                 />
             </el-form-item>
 
@@ -27,15 +28,15 @@
                   <svg-icon icon-class="password"/>
                 </span>
                 <el-input size="medium"
-                        :key="passwordType"
-                        ref="password"
-                        v-model="loginForm.password"
-                        :type="passwordType"
-                        placeholder="密码"
-                        name="password"
-                        tabindex="2"
-                        auto-complete="on"
-                        @keyup.enter.native="handleLogin"
+                          :key="passwordType"
+                          ref="password"
+                          v-model="loginForm.password"
+                          :type="passwordType"
+                          placeholder="密码"
+                          name="password"
+                          tabindex="2"
+                          auto-complete="on"
+                          @keyup.enter.native="handleLogin"
                 />
                 <span class="show-pwd" @click="showPwd">
                   <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"/>
@@ -46,7 +47,8 @@
                 <span class="svg-container">
                   <svg-icon icon-class="password"/>
                 </span>
-                <el-input size="medium" v-model="loginForm.captcha" placeholder="验证码" style="width: 200px;" @keyup.enter.native="handleLogin">
+                <el-input size="medium" v-model="loginForm.captcha" placeholder="验证码" style="width: 200px;"
+                          @keyup.enter.native="handleLogin">
                 </el-input>
                 <span class="show-captcha">
                     <img :src="captchaPath" @click="getCaptcha()" alt="">
@@ -61,28 +63,28 @@
 </template>
 
 <script>
-    import { getUUID } from '@/utils'
+    import {getUUID} from '@/utils'
     import {getAction} from '@/api/manage'
 
     export default {
         name: 'Login',
         data() {
             const validateUserId = (rule, value, callback) => {
-                if (value.length==0) {
+                if (value.length == 0) {
                     callback(new Error('请输入用户名'))
                 } else {
                     callback()
                 }
             }
             const validatePassword = (rule, value, callback) => {
-                if (value.length==0) {
+                if (value.length == 0) {
                     callback(new Error('请输入密码'))
                 } else {
                     callback()
                 }
             }
             const validateCaptcha = (rule, value, callback) => {
-                if (value.length==0) {
+                if (value.length == 0) {
                     callback(new Error('请输入验证码'))
                 } else {
                     callback()
@@ -114,7 +116,7 @@
                 immediate: true
             }
         },
-        created () {
+        created() {
             this.getCaptcha()
         },
         methods: {
@@ -133,7 +135,7 @@
                     if (valid) {
                         this.loading = true
                         this.$store.dispatch('user/login', this.loginForm).then(() => {
-                            this.$router.push({ path: this.redirect || '/' })
+                            this.$router.push({path: this.redirect || '/'})
                             // this.$router.push({path: '/'})
                             this.loading = false
                         }).catch(() => {
@@ -146,7 +148,7 @@
                 })
             },
             // 获取验证码
-            getCaptcha () {
+            getCaptcha() {
                 this.loginForm.uuid = getUUID()
                 this.captchaPath = `${process.env.VUE_APP_BASE_API}/captcha.jpg?uuid=${this.loginForm.uuid}`
             }

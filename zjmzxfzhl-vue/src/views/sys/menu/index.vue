@@ -3,7 +3,8 @@
         <el-row :gutter="5">
             <el-col :span="8">
                 <div>
-                    <el-button v-permission="'sys:menu:save'" icon="el-icon-plus" type="primary" @click="btnAdd">新增</el-button>
+                    <el-button v-permission="'sys:menu:save'" icon="el-icon-plus" type="primary" @click="btnAdd">新增
+                    </el-button>
                     <el-button v-permission="'sys:menu:delete'" icon="el-icon-delete" @click="btnDelete">删除</el-button>
                     <el-input v-model="filterText" placeholder="请输入过滤条件" style="margin:10px 0px 10px 0px"/>
                     <el-tree
@@ -76,7 +77,8 @@
                             <el-col :span="12">
                                 <el-form-item label="是否路由" prop="isRoute">
                                     <el-select v-model="temp.isRoute" placeholder="是否路由">
-                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content"
+                                                   :value="item.value"></el-option>
                                     </el-select>
                                 </el-form-item>
                             </el-col>
@@ -90,14 +92,16 @@
                             <el-col :span="12">
                                 <el-form-item label="是否隐藏" prop="hidden">
                                     <el-select v-model="temp.hidden" placeholder="是否隐藏">
-                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content"
+                                                   :value="item.value"></el-option>
                                     </el-select>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
                                 <el-form-item label="是否缓存" prop="isCache">
                                     <el-select v-model="temp.isCache" placeholder="是否缓存">
-                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content"
+                                                   :value="item.value"></el-option>
                                     </el-select>
                                 </el-form-item>
                             </el-col>
@@ -106,14 +110,16 @@
                             <el-col :span="12">
                                 <el-form-item label="是否常驻菜单" prop="affix">
                                     <el-select v-model="temp.affix" placeholder="是否常驻菜单">
-                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content"
+                                                   :value="item.value"></el-option>
                                     </el-select>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
                                 <el-form-item label="是否叶子" prop="isLeaf">
                                     <el-select v-model="temp.isLeaf" placeholder="是否叶子" disabled>
-                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                                        <el-option v-for="item in dicts.yesOrNo" :key="item.value" :label="item.content"
+                                                   :value="item.value"></el-option>
                                     </el-select>
                                 </el-form-item>
                             </el-col>
@@ -128,7 +134,9 @@
                         <el-row>
                             <el-col :span="24">
                                 <el-form-item>
-                                    <el-button v-permission="['sys:menu:save','sys:menu:update']" icon="el-icon-check" type="primary" @click="btnSave">保存</el-button>
+                                    <el-button v-permission="['sys:menu:save','sys:menu:update']" icon="el-icon-check"
+                                               type="primary" @click="btnSave">保存
+                                    </el-button>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -140,13 +148,14 @@
 </template>
 
 <script>
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
+
     export default {
         name: 'SysMenu',
         data() {
             return {
-                dicts : [],
+                dicts: [],
                 status: '',
                 temp: {
                     menuId: undefined,
@@ -178,7 +187,7 @@
                     children: 'children',
                     label: 'label',
                     isLeaf: 'isLeaf',
-                    data : 'data'
+                    data: 'data'
                 }
             }
         },
@@ -189,7 +198,9 @@
         },
         created() {
             this.getTreeData()
-            this.getDicts('menuLevel,menuType,yesOrNo').then(({data}) => { this.dicts = data})
+            this.getDicts('menuLevel,menuType,yesOrNo').then(({data}) => {
+                this.dicts = data
+            })
         },
         methods: {
             getTreeData() {
@@ -206,11 +217,11 @@
                 this.status = 'update'
                 this.temp = Object.assign({}, data) // copy obj
             },
-            btnSave(){
+            btnSave() {
                 this.$refs['dataForm'].validate((valid) => {
                     if (valid) {
-                        if(this.status==='update'){
-                            putAction('/sys/menu/update', this.temp).then(({msg,data}) => {
+                        if (this.status === 'update') {
+                            putAction('/sys/menu/update', this.temp).then(({msg, data}) => {
                                 Message.success(msg)
                                 // this.resetTemp()
                                 // this.getTreeData()
@@ -218,8 +229,8 @@
                                 this.$refs.menuTree.getCurrentNode().label = data.menuName
                                 this.$refs.menuTree.getCurrentNode().data = Object.assign({}, data)
                             })
-                        }else{
-                            postAction('/sys/menu/save', this.temp).then(({msg,data}) => {
+                        } else {
+                            postAction('/sys/menu/save', this.temp).then(({msg, data}) => {
                                 Message.success(msg)
                                 this.temp = Object.assign({}, data)
                                 this.getTreeData()
@@ -248,28 +259,28 @@
                     parentMenuName: ''
                 }
             },
-            btnAdd(){
+            btnAdd() {
                 let parentMenuId = ''
                 let parentMenuName = ''
-                if(this.temp.menuId){
+                if (this.temp.menuId) {
                     parentMenuId = this.temp.menuId
                     parentMenuName = this.temp.menuName
                 }
                 this.resetTemp()
-                this.temp.parentMenuId=parentMenuId
-                this.temp.parentMenuName=parentMenuName
+                this.temp.parentMenuId = parentMenuId
+                this.temp.parentMenuName = parentMenuName
                 this.status = 'create'
                 this.$nextTick(() => {
                     this.$refs['dataForm'].clearValidate()
                 })
             },
-            btnDelete(){
-                if(!this.temp.menuId){
+            btnDelete() {
+                if (!this.temp.menuId) {
                     Message.error('请选择要删除的记录')
                     return
                 }
                 let curNode = this.$refs.menuTree.getCurrentNode();
-                if(curNode && curNode.children && curNode.children.length>0){
+                if (curNode && curNode.children && curNode.children.length > 0) {
                     Message.error('请先删除叶子节点')
                     return
                 }

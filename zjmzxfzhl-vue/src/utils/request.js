@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {MessageBox, Message, Loading} from 'element-ui'
+import {Loading, Message} from 'element-ui'
 import errorCode from '@/utils/errorCode'
 import store from '@/store'
 import {getToken} from '@/utils/auth'
@@ -32,14 +32,14 @@ service.interceptors.response.use(
         const status = Number(response.status) || 200
         const res = response.data
         const message = res.msg || errorCode[status] || errorCode['default']
-        if(status === 401 || (res && res.code && res.code === 401)){
+        if (status === 401 || (res && res.code && res.code === 401)) {
             store.dispatch('user/resetToken').then(() => {
                 location.reload()
             })
             return
         }
 
-        if(status !== 200 || (res && res.code && res.code !== 200)){
+        if (status !== 200 || (res && res.code && res.code !== 200)) {
             Message.error(message)
             return Promise.reject(message)
         }
@@ -52,7 +52,7 @@ service.interceptors.response.use(
     },
     error => {
         Loading.service().close();
-        if(error.response && error.response.status && error.response.status === 401){
+        if (error.response && error.response.status && error.response.status === 401) {
             store.dispatch('user/resetToken').then(() => {
                 location.reload()
             })

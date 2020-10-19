@@ -26,9 +26,9 @@ export default {
         const permissions = value
         const allPermissions = store.getters && store.getters.permissions
         const hasPermission = permissions.some(permission => {
-            if(!permission.indexOf(',')){
+            if (!permission.indexOf(',')) {
                 return allPermissions.includes(permission)
-            }else{
+            } else {
                 let permissionSubAnds = permission.split(',')
                 let hasPermissionSubAnd = permissionSubAnds.every(permissionSubAdd => {
                     return allPermissions.includes(permissionSubAdd)

@@ -1,15 +1,15 @@
 <template>
-  <exception-page type="500" />
+    <exception-page type="500"/>
 </template>
 
 <script>
-  import ExceptionPage from './ExceptionPage'
+    import ExceptionPage from './ExceptionPage'
 
-  export default {
-    components: {
-      ExceptionPage
+    export default {
+        components: {
+            ExceptionPage
+        }
     }
-  }
 </script>
 
 <style scoped>

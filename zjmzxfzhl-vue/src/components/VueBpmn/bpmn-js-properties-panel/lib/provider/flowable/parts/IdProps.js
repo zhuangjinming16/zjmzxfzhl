@@ -11,7 +11,7 @@ module.exports = function (group, element, translate, options) {
     var description = options && options.description;
     var disabled = undefined
     if (is(element, 'bpmn:Process') || (is(element, 'bpmn:Participant') && businessObject.get('processRef'))) {
-        disabled = function(){
+        disabled = function () {
             return false
         }
     }

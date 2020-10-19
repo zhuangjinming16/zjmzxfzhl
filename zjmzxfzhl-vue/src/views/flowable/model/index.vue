@@ -66,7 +66,8 @@
                             <el-dropdown-item v-permission="'flowable:model:update'" icon="el-icon-edit" divided
                                               @click.native="btnUpdate(row)">修改
                             </el-dropdown-item>
-                            <el-dropdown-item v-permission="'flowable:model:saveModelEditor'" icon="el-icon-edit" divided
+                            <el-dropdown-item v-permission="'flowable:model:saveModelEditor'" icon="el-icon-edit"
+                                              divided
                                               @click.native="btnUpdateModel(row)">流程设计
                             </el-dropdown-item>
                             <el-dropdown-item v-permission="'flowable:model:delete'" icon="el-icon-delete" divided
@@ -97,7 +98,8 @@
                 </el-form-item>
                 <el-form-item label="模型类别" prop="category">
                     <el-select v-model="temp.category" placeholder="模型类别">
-                        <el-option v-for="item in dicts.processCategory" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                        <el-option v-for="item in dicts.processCategory" :key="item.value" :label="item.content"
+                                   :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="模型描述" prop="description">
@@ -137,7 +139,7 @@
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {
@@ -174,8 +176,10 @@
                 dialogImportVisible: false
             }
         },
-        beforeCreate(){
-            this.getDicts('processCategory,taskCategory').then(({data}) => {this.dicts = data})
+        beforeCreate() {
+            this.getDicts('processCategory,taskCategory').then(({data}) => {
+                this.dicts = data
+            })
         },
         created() {
             this.list()
@@ -287,7 +291,7 @@
                     }
                 })
             },
-            btnDelete(id,cascade) {
+            btnDelete(id, cascade) {
                 let ids = id ? [id] : this.selectedRecords.map(record => {
                     return record.id
                 })
@@ -295,12 +299,12 @@
                     Message.error('请选择要删除的记录')
                     return
                 }
-                deleteAction('/flowable/model/delete', {ids: ids.toString(),cascade}).then(({msg}) => {
+                deleteAction('/flowable/model/delete', {ids: ids.toString(), cascade}).then(({msg}) => {
                     Message.success(msg)
                     this.list()
                 })
             },
-            btnDeploy(id){
+            btnDeploy(id) {
                 postAction('/flowable/model/deploy', {id}).then(({msg}) => {
                     Message.success(msg)
                     this.list()

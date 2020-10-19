@@ -18,8 +18,12 @@
 
             <el-col :span="16">
                 <div>
-                        <el-button v-permission="'sys:func:save'" icon="el-icon-plus" type="primary" @click="btnFuncCreate" class="filter-item" style="margin-bottom:10px">新增</el-button>
-                        <el-button v-permission="'sys:func:delete'" icon="el-icon-delete" @click="btnFuncDelete()" class="filter-item" style="margin-bottom:10px">批量删除</el-button>
+                    <el-button v-permission="'sys:func:save'" icon="el-icon-plus" type="primary" @click="btnFuncCreate"
+                               class="filter-item" style="margin-bottom:10px">新增
+                    </el-button>
+                    <el-button v-permission="'sys:func:delete'" icon="el-icon-delete" @click="btnFuncDelete()"
+                               class="filter-item" style="margin-bottom:10px">批量删除
+                    </el-button>
                     <el-table
                             :data="funcRecords"
                             ref="funcTable"
@@ -50,11 +54,17 @@
                         <el-table-column label="操作" align="center">
                             <template slot-scope="{row}">
                                 <el-dropdown>
-                                    <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"></i></span>
+                                    <span class="el-dropdown-link">操作<i
+                                            class="el-icon-arrow-down el-icon--right"></i></span>
                                     <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
-                                        <el-dropdown-item v-permission="'sys:func:update'" icon="el-icon-edit" divided @click.native="btnFuncUpdate(row)">修改</el-dropdown-item>
-                                        <el-dropdown-item v-permission="'sys:func:delete'" icon="el-icon-delete" divided @click.native="btnFuncDelete(row.funcId)">删除</el-dropdown-item>
+                                        <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看
+                                        </el-dropdown-item>
+                                        <el-dropdown-item v-permission="'sys:func:update'" icon="el-icon-edit" divided
+                                                          @click.native="btnFuncUpdate(row)">修改
+                                        </el-dropdown-item>
+                                        <el-dropdown-item v-permission="'sys:func:delete'" icon="el-icon-delete" divided
+                                                          @click.native="btnFuncDelete(row.funcId)">删除
+                                        </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
@@ -68,7 +78,8 @@
         </el-row>
 
         <el-dialog title="功能" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="110px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'"
+                     label-position="right" label-width="110px">
                 <el-form-item label="功能ID" prop="funcId">
                     <el-input v-model="temp.funcId" :readonly="dialogStatus==='update'"/>
                 </el-form-item>
@@ -88,7 +99,8 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
-                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createFuncData():updateFuncData()">
+                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary"
+                           @click="dialogStatus==='create'?createFuncData():updateFuncData()">
                     确定
                 </el-button>
             </div>
@@ -98,7 +110,7 @@
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {
@@ -114,7 +126,7 @@
                     size: 10,
                     menuId: undefined
                 },
-                currMenuId : undefined,
+                currMenuId: undefined,
                 dialogFormVisible: false,
                 dialogStatus: '',
                 temp: {
@@ -160,7 +172,7 @@
                 return data.label.indexOf(value) !== -1
             },
             handleNodeClick(node) {
-                if(!node.isLeaf){
+                if (!node.isLeaf) {
                     return
                 }
                 this.currMenuId = node.id
@@ -193,7 +205,7 @@
                 })
             },
             btnFuncCreate() {
-                if(!this.currMenuId){
+                if (!this.currMenuId) {
                     Message.error('请先选择菜单')
                     return
                 }

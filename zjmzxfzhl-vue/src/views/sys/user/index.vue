@@ -13,11 +13,15 @@
                 </el-dropdown-menu>
             </el-dropdown>
             <el-button-group>
-                <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" @click="btnExport" class="filter-item">导出
+                <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" @click="btnExport"
+                           class="filter-item">导出
                 </el-button>
-                <el-button v-permission="'sys:user:save'" icon="el-icon-plus" type="primary" @click="btnCreate" class="filter-item">新增
+                <el-button v-permission="'sys:user:save'" icon="el-icon-plus" type="primary" @click="btnCreate"
+                           class="filter-item">新增
                 </el-button>
-                <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" @click="btnDelete()" class="filter-item">批量删除</el-button>
+                <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" @click="btnDelete()"
+                           class="filter-item">批量删除
+                </el-button>
             </el-button-group>
         </div>
         <el-table
@@ -70,8 +74,12 @@
                         <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"></i></span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
-                            <el-dropdown-item v-permission="'sys:user:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.userId)">删除</el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-edit" divided
+                                              @click.native="btnUpdate(row)">修改
+                            </el-dropdown-item>
+                            <el-dropdown-item v-permission="'sys:user:delete'" icon="el-icon-delete" divided
+                                              @click.native="btnDelete(row.userId)">删除
+                            </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -81,7 +89,8 @@
                     @pagination="list"/>
 
         <el-dialog title="用户" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="110px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'"
+                     label-position="right" label-width="110px">
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="用户ID" prop="userId">
@@ -98,14 +107,16 @@
                     <el-col :span="12">
                         <el-form-item label="性别" prop="sex">
                             <el-select v-model="temp.sex" placeholder="性别">
-                                <el-option v-for="item in dicts.userSex" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                                <el-option v-for="item in dicts.userSex" :key="item.value" :label="item.content"
+                                           :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="当前角色" prop="roleId">
                             <el-select v-model="temp.roleId" placeholder="当前角色">
-                                <el-option v-for="item in roles" :key="item.roleId" :label="item.roleName" :value="item.roleId"></el-option>
+                                <el-option v-for="item in roles" :key="item.roleId" :label="item.roleName"
+                                           :value="item.roleId"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -143,7 +154,8 @@
                     <el-col :span="12">
                         <el-form-item label="用户状态" prop="status">
                             <el-select v-model="temp.status" placeholder="用户状态">
-                                <el-option v-for="item in dicts.userStatus" :key="item.value" :label="item.content" :value="item.value"></el-option>
+                                <el-option v-for="item in dicts.userStatus" :key="item.value" :label="item.content"
+                                           :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -168,26 +180,27 @@
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">
                     取消
                 </el-button>
-                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+                <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary"
+                           @click="dialogStatus==='create'?createData():updateData()">
                     确定
                 </el-button>
             </div>
         </el-dialog>
 
         <select-org ref="selectOrg" :visible.sync="selectOrgVisible" :appendToBody="true" :multipleSelect="false"
-                     @selectOrgFinished="selectOrgFinished"></select-org>
+                    @selectOrgFinished="selectOrgFinished"></select-org>
     </div>
 </template>
 
 <script>
     import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-    import {getAction, putAction, postAction, deleteAction,downloadAction} from '@/api/manage'
+    import {deleteAction, downloadAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
     import SelectOrg from '@/components/select/SelectOrg'
 
     export default {
         name: 'SysUser',
-        components: {Pagination,SelectOrg},
+        components: {Pagination, SelectOrg},
         data() {
             return {
                 dicts: [],
@@ -232,11 +245,11 @@
                 selectOrgVisible: false
             }
         },
-        beforeCreate(){
+        beforeCreate() {
             this.getDicts('userSex,userStatus').then(({data}) => {
                 this.dicts = data
             })
-            getAction("/sys/role/listAll",{}).then(({data}) => {
+            getAction("/sys/role/listAll", {}).then(({data}) => {
                 this.roles = data
             })
         },
@@ -345,10 +358,10 @@
             selectionChange(selectedRecords) {
                 this.selectedRecords = selectedRecords
             },
-            roleFormatter(row,column){
+            roleFormatter(row, column) {
                 let result = row.roleId
-                for(let i=0;i<this.roles.length;i++){
-                    if(this.roles[i].roleId == result){
+                for (let i = 0; i < this.roles.length; i++) {
+                    if (this.roles[i].roleId == result) {
                         result = this.roles[i].roleName
                         break
                     }
@@ -357,7 +370,7 @@
             },
             btnSelectOrg() {
                 this.selectOrgVisible = true
-                if(this.$refs.selectOrg.treeData.length == 0){
+                if (this.$refs.selectOrg.treeData.length == 0) {
                     this.$refs.selectOrg.getTreeData()
                 }
             },

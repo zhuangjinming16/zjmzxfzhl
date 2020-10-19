@@ -1,7 +1,7 @@
 import request from '@/utils/request'
-import {getAction, postAction, deleteAction} from '@/api/manage'
-import {getToken, setToken, removeToken} from '@/utils/auth'
-import router, {resetRouter, constantRoutes, permissionRoutes} from '@/router'
+import {deleteAction, getAction, postAction} from '@/api/manage'
+import {getToken, removeToken, setToken} from '@/utils/auth'
+import router, {constantRoutes, permissionRoutes, resetRouter} from '@/router'
 
 const state = {
     token: '',
@@ -51,11 +51,11 @@ const mutations = {
 const actions = {
     login({commit}, sysLoginForm) {
         return new Promise((resolve, reject) => {
-            Object.assign(sysLoginForm,{grant_type:'password',scope:'admin'})
+            Object.assign(sysLoginForm, {grant_type: 'password', scope: 'admin'})
             request({
                 url: `${process.env.VUE_APP_BASE_AUTH_PATH}/oauth/token`,
                 headers: {
-                    isToken:false,
+                    isToken: false,
                     'Authorization': 'Basic emptenhmemhsOjE='
                 },
                 method: 'post',
@@ -90,7 +90,7 @@ const actions = {
                 commit('SET_ROLE', sysRole)
                 commit('SET_ROLES', sysRoles)
                 commit('SET_ORG', sysOrg)
-                let permissions = authorities && authorities.map(function(item,key,ary) {
+                let permissions = authorities && authorities.map(function (item, key, ary) {
                     return item.authority
                 })
                 commit('SET_PERMISSIONS', permissions)

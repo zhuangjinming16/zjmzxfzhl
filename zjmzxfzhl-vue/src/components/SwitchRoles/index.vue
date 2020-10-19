@@ -1,5 +1,5 @@
 <template>
-    <section v-if="roles.length>1" >
+    <section v-if="roles.length>1">
         <el-select v-model="roleId" @change="changeRoles" style="width: 100%;">
             <el-option v-for="item in roles" :key="item.roleId" :label="item.roleName" :value="item.roleId"></el-option>
         </el-select>

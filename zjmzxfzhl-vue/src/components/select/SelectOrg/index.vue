@@ -23,6 +23,7 @@
 <script>
     import {getAction} from '@/api/manage'
     import {Message} from 'element-ui'
+
     export default {
         name: "SelectOrg",
         props: {
@@ -34,9 +35,9 @@
                 type: Boolean,
                 default: false
             },
-            type :{
-                type : String,
-                default : ''
+            type: {
+                type: String,
+                default: ''
             },
             appendToBody: {
                 type: Boolean,
@@ -79,26 +80,26 @@
                 return data.label.indexOf(value) !== -1
             },
             getTreeData() {
-                getAction('/sys/org/getSelectTreeData', {type:this.type}).then(res => {
+                getAction('/sys/org/getSelectTreeData', {type: this.type}).then(res => {
                     const {data} = res
                     this.treeData = data
                 })
             },
-            confirm(){
-                if(this.multipleSelect){
+            confirm() {
+                if (this.multipleSelect) {
                     let checkedNodes = this.$refs._selectOrgTree.getCheckedNodes();
-                    if( !checkedNodes || checkedNodes.length==0){
+                    if (!checkedNodes || checkedNodes.length == 0) {
                         Message.error('请先选择机构')
                         return
                     }
-                    this.$emit("selectOrgFinished",checkedNodes);
-                }else{
+                    this.$emit("selectOrgFinished", checkedNodes);
+                } else {
                     let curNode = this.$refs._selectOrgTree.getCurrentNode();
-                    if( !curNode){
+                    if (!curNode) {
                         Message.error('请先选择机构')
                         return
                     }
-                    this.$emit("selectOrgFinished",curNode);
+                    this.$emit("selectOrgFinished", curNode);
                 }
                 this.visibleInChild = false;
             }

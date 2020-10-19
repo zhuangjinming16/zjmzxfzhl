@@ -61,9 +61,9 @@
         },
         computed: {
             userId() {
-                if(this.$store.getters.sysUser){
+                if (this.$store.getters.sysUser) {
                     return this.$store.getters.sysUser.userId
-                }else{
+                } else {
                     return ''
                 }
             }

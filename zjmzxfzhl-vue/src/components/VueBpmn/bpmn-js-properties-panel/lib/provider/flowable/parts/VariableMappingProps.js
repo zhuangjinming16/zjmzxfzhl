@@ -16,42 +16,42 @@ var extensionElementsEntry = require('./implementation/ExtensionElements');
 var entryFactory = require('../../../factory/EntryFactory');
 
 /**
-  * return depend on parameter 'type' flowable:in or flowable:out extension elements
-  */
+ * return depend on parameter 'type' flowable:in or flowable:out extension elements
+ */
 function getFlowableInOutMappings(element, type) {
-  var bo = getBusinessObject(element);
+    var bo = getBusinessObject(element);
 
-  var signalEventDefinition = eventDefinitionHelper.getSignalEventDefinition(bo);
+    var signalEventDefinition = eventDefinitionHelper.getSignalEventDefinition(bo);
 
-  return extensionElementsHelper.getExtensionElements(signalEventDefinition || bo, type) || [];
+    return extensionElementsHelper.getExtensionElements(signalEventDefinition || bo, type) || [];
 }
 
 /**
-  * return depend on parameter 'type' flowable:in or flowable:out extension elements
-  * with source or sourceExpression attribute
-  */
+ * return depend on parameter 'type' flowable:in or flowable:out extension elements
+ * with source or sourceExpression attribute
+ */
 function getVariableMappings(element, type) {
-  var flowableMappings = getFlowableInOutMappings(element, type);
+    var flowableMappings = getFlowableInOutMappings(element, type);
 
-  return filter(flowableMappings, function(mapping) {
-    return !mapping.businessKey;
-  });
+    return filter(flowableMappings, function (mapping) {
+        return !mapping.businessKey;
+    });
 }
 
 function getInOutType(mapping) {
-  var inOutType = 'source';
+    var inOutType = 'source';
 
-  if (mapping.variables === 'all') {
-    inOutType = 'variables';
-  }
-  else if (typeof mapping.source !== 'undefined') {
-    inOutType = 'source';
-  }
-  else if (typeof mapping.sourceExpression !== 'undefined') {
-    inOutType = 'sourceExpression';
-  }
+    if (mapping.variables === 'all') {
+        inOutType = 'variables';
+    }
+    else if (typeof mapping.source !== 'undefined') {
+        inOutType = 'source';
+    }
+    else if (typeof mapping.sourceExpression !== 'undefined') {
+        inOutType = 'sourceExpression';
+    }
 
-  return inOutType;
+    return inOutType;
 }
 
 var FLOWABLE_IN_EXTENSION_ELEMENT = 'flowable:In',
@@ -60,338 +60,338 @@ var FLOWABLE_IN_EXTENSION_ELEMENT = 'flowable:In',
 var WHITESPACE_REGEX = /\s/;
 
 
-module.exports = function(group, element, bpmnFactory, translate) {
+module.exports = function (group, element, bpmnFactory, translate) {
 
-  var inOutTypeOptions = [
-    {
-      name: translate('Source'),
-      value: 'source'
-    },
-    {
-      name: translate('Source Expression'),
-      value: 'sourceExpression'
-    },
-    {
-      name: translate('All'),
-      value: 'variables'
-    }
-  ];
+    var inOutTypeOptions = [
+        {
+            name: translate('Source'),
+            value: 'source'
+        },
+        {
+            name: translate('Source Expression'),
+            value: 'sourceExpression'
+        },
+        {
+            name: translate('All'),
+            value: 'variables'
+        }
+    ];
 
-  var signalEventDefinition = eventDefinitionHelper.getSignalEventDefinition(element);
+    var signalEventDefinition = eventDefinitionHelper.getSignalEventDefinition(element);
 
-  if (!is(element, 'flowable:CallActivity') && !signalEventDefinition) {
-    return;
-  }
-
-  if (signalEventDefinition && !(isAny(element, [
-    'bpmn:IntermediateThrowEvent',
-    'bpmn:EndEvent'
-  ]))) {
-    return;
-  }
-
-  var isSelected = function(element, node) {
-    return !!getSelected(element, node);
-  };
-
-  var getSelected = function(element, node) {
-    var parentNode = node.parentNode;
-    var selection = inEntry.getSelected(element, parentNode);
-
-    var parameter = getVariableMappings(element, FLOWABLE_IN_EXTENSION_ELEMENT)[selection.idx];
-
-    if (!parameter && outEntry) {
-      selection = outEntry.getSelected(element, parentNode);
-      parameter = getVariableMappings(element, FLOWABLE_OUT_EXTENSION_ELEMENT)[selection.idx];
+    if (!is(element, 'flowable:CallActivity') && !signalEventDefinition) {
+        return;
     }
 
-    return parameter;
-  };
+    if (signalEventDefinition && !(isAny(element, [
+        'bpmn:IntermediateThrowEvent',
+        'bpmn:EndEvent'
+    ]))) {
+        return;
+    }
 
-  var setOptionLabelValue = function(type) {
-    return function(element, node, option, property, value, idx) {
-      var variableMappings = getVariableMappings(element, type);
-      var mappingValue = variableMappings[idx];
-      var label = (mappingValue.target || '<undefined>') + ' := ';
-      var mappingType = getInOutType(mappingValue);
-
-      if (mappingType === 'variables') {
-        label = 'all';
-      }
-      else if (mappingType === 'source') {
-        label = label + (mappingValue.source || '<empty>');
-      }
-      else if (mappingType === 'sourceExpression') {
-        label = label + (mappingValue.sourceExpression || '<empty>');
-      } else {
-        label = label + '<empty>';
-      }
-
-      option.text = label;
+    var isSelected = function (element, node) {
+        return !!getSelected(element, node);
     };
-  };
 
-  var newElement = function(type) {
-    return function(element, extensionElements, value) {
-      var newElem = elementHelper.createElement(type, { source: '' }, extensionElements, bpmnFactory);
+    var getSelected = function (element, node) {
+        var parentNode = node.parentNode;
+        var selection = inEntry.getSelected(element, parentNode);
 
-      return cmdHelper.addElementsTolist(element, extensionElements, 'values', [ newElem ]);
+        var parameter = getVariableMappings(element, FLOWABLE_IN_EXTENSION_ELEMENT)[selection.idx];
+
+        if (!parameter && outEntry) {
+            selection = outEntry.getSelected(element, parentNode);
+            parameter = getVariableMappings(element, FLOWABLE_OUT_EXTENSION_ELEMENT)[selection.idx];
+        }
+
+        return parameter;
     };
-  };
 
-  var removeElement = function(type) {
-    return function(element, extensionElements, value, idx) {
-      var variablesMappings= getVariableMappings(element, type);
-      var mapping = variablesMappings[idx];
+    var setOptionLabelValue = function (type) {
+        return function (element, node, option, property, value, idx) {
+            var variableMappings = getVariableMappings(element, type);
+            var mappingValue = variableMappings[idx];
+            var label = (mappingValue.target || '<undefined>') + ' := ';
+            var mappingType = getInOutType(mappingValue);
 
-      if (mapping) {
-        return extensionElementsHelper
-          .removeEntry(signalEventDefinition || getBusinessObject(element), element, mapping);
-      }
+            if (mappingType === 'variables') {
+                label = 'all';
+            }
+            else if (mappingType === 'source') {
+                label = label + (mappingValue.source || '<empty>');
+            }
+            else if (mappingType === 'sourceExpression') {
+                label = label + (mappingValue.sourceExpression || '<empty>');
+            } else {
+                label = label + '<empty>';
+            }
+
+            option.text = label;
+        };
     };
-  };
 
-  // in mapping for source and sourceExpression ///////////////////////////////////////////////////////////////
+    var newElement = function (type) {
+        return function (element, extensionElements, value) {
+            var newElem = elementHelper.createElement(type, {source: ''}, extensionElements, bpmnFactory);
 
-  var inEntry = extensionElementsEntry(element, bpmnFactory, {
-    id: 'variableMapping-in',
-    label: translate('In Mapping'),
-    modelProperty: 'source',
-    prefix: 'In',
-    idGeneration: false,
-    resizable: true,
-    businessObject: signalEventDefinition || getBusinessObject(element),
+            return cmdHelper.addElementsTolist(element, extensionElements, 'values', [newElem]);
+        };
+    };
 
-    createExtensionElement: newElement(FLOWABLE_IN_EXTENSION_ELEMENT),
-    removeExtensionElement: removeElement(FLOWABLE_IN_EXTENSION_ELEMENT),
+    var removeElement = function (type) {
+        return function (element, extensionElements, value, idx) {
+            var variablesMappings = getVariableMappings(element, type);
+            var mapping = variablesMappings[idx];
 
-    getExtensionElements: function(element) {
-      return getVariableMappings(element, FLOWABLE_IN_EXTENSION_ELEMENT);
-    },
+            if (mapping) {
+                return extensionElementsHelper
+                    .removeEntry(signalEventDefinition || getBusinessObject(element), element, mapping);
+            }
+        };
+    };
 
-    onSelectionChange: function(element, node, event, scope) {
-      outEntry && outEntry.deselect(element, node.parentNode);
-    },
+    // in mapping for source and sourceExpression ///////////////////////////////////////////////////////////////
 
-    setOptionLabelValue: setOptionLabelValue(FLOWABLE_IN_EXTENSION_ELEMENT)
-  });
-  group.entries.push(inEntry);
+    var inEntry = extensionElementsEntry(element, bpmnFactory, {
+        id: 'variableMapping-in',
+        label: translate('In Mapping'),
+        modelProperty: 'source',
+        prefix: 'In',
+        idGeneration: false,
+        resizable: true,
+        businessObject: signalEventDefinition || getBusinessObject(element),
 
-  // out mapping for source and sourceExpression ///////////////////////////////////////////////////////
+        createExtensionElement: newElement(FLOWABLE_IN_EXTENSION_ELEMENT),
+        removeExtensionElement: removeElement(FLOWABLE_IN_EXTENSION_ELEMENT),
 
-  if (!signalEventDefinition) {
-    var outEntry = extensionElementsEntry(element, bpmnFactory, {
-      id: 'variableMapping-out',
-      label: translate('Out Mapping'),
-      modelProperty: 'source',
-      prefix: 'Out',
-      idGeneration: false,
-      resizable: true,
+        getExtensionElements: function (element) {
+            return getVariableMappings(element, FLOWABLE_IN_EXTENSION_ELEMENT);
+        },
 
-      createExtensionElement: newElement(FLOWABLE_OUT_EXTENSION_ELEMENT),
-      removeExtensionElement: removeElement(FLOWABLE_OUT_EXTENSION_ELEMENT),
+        onSelectionChange: function (element, node, event, scope) {
+            outEntry && outEntry.deselect(element, node.parentNode);
+        },
 
-      getExtensionElements: function(element) {
-        return getVariableMappings(element, FLOWABLE_OUT_EXTENSION_ELEMENT);
-      },
-
-      onSelectionChange: function(element, node, event, scope) {
-        inEntry.deselect(element, node.parentNode);
-      },
-
-      setOptionLabelValue: setOptionLabelValue(FLOWABLE_OUT_EXTENSION_ELEMENT)
+        setOptionLabelValue: setOptionLabelValue(FLOWABLE_IN_EXTENSION_ELEMENT)
     });
-    group.entries.push(outEntry);
-  }
+    group.entries.push(inEntry);
 
-  // label for selected mapping ///////////////////////////////////////////////////////
+    // out mapping for source and sourceExpression ///////////////////////////////////////////////////////
 
-  group.entries.push(entryFactory.label({
-    id: 'variableMapping-typeLabel',
-    get: function(element, node) {
-      var mapping = getSelected(element, node);
+    if (!signalEventDefinition) {
+        var outEntry = extensionElementsEntry(element, bpmnFactory, {
+            id: 'variableMapping-out',
+            label: translate('Out Mapping'),
+            modelProperty: 'source',
+            prefix: 'Out',
+            idGeneration: false,
+            resizable: true,
 
-      var value = '';
-      if (is(mapping, FLOWABLE_IN_EXTENSION_ELEMENT)) {
-        value = translate('In Mapping');
-      }
-      else if (is(mapping, FLOWABLE_OUT_EXTENSION_ELEMENT)) {
-        value = translate('Out Mapping');
-      }
+            createExtensionElement: newElement(FLOWABLE_OUT_EXTENSION_ELEMENT),
+            removeExtensionElement: removeElement(FLOWABLE_OUT_EXTENSION_ELEMENT),
 
-      return {
-        label: value
-      };
-    },
+            getExtensionElements: function (element) {
+                return getVariableMappings(element, FLOWABLE_OUT_EXTENSION_ELEMENT);
+            },
 
-    showLabel: function(element, node) {
-      return isSelected(element, node);
-    }
-  }));
+            onSelectionChange: function (element, node, event, scope) {
+                inEntry.deselect(element, node.parentNode);
+            },
 
-
-  group.entries.push(entryFactory.selectBox({
-    id: 'variableMapping-inOutType',
-    label: translate('Type'),
-    selectOptions: inOutTypeOptions,
-    modelProperty: 'inOutType',
-    get: function(element, node) {
-      var mapping = getSelected(element, node) || {};
-      return {
-        inOutType: getInOutType(mapping)
-      };
-    },
-    set: function(element, values, node) {
-      var inOutType = values.inOutType;
-
-      var props = {
-        'source' : undefined,
-        'sourceExpression' : undefined,
-        'variables' : undefined
-      };
-
-      if (inOutType === 'source') {
-        props.source = '';
-      }
-      else if (inOutType === 'sourceExpression') {
-        props.sourceExpression = '';
-      }
-      else if (inOutType === 'variables') {
-        props.variables = 'all';
-        props.target = undefined;
-      }
-
-      var mapping = getSelected(element, node);
-      return cmdHelper.updateBusinessObject(element, mapping, props);
-    },
-    hidden: function(element, node) {
-      return !isSelected(element, node);
+            setOptionLabelValue: setOptionLabelValue(FLOWABLE_OUT_EXTENSION_ELEMENT)
+        });
+        group.entries.push(outEntry);
     }
 
-  }));
+    // label for selected mapping ///////////////////////////////////////////////////////
+
+    group.entries.push(entryFactory.label({
+        id: 'variableMapping-typeLabel',
+        get: function (element, node) {
+            var mapping = getSelected(element, node);
+
+            var value = '';
+            if (is(mapping, FLOWABLE_IN_EXTENSION_ELEMENT)) {
+                value = translate('In Mapping');
+            }
+            else if (is(mapping, FLOWABLE_OUT_EXTENSION_ELEMENT)) {
+                value = translate('Out Mapping');
+            }
+
+            return {
+                label: value
+            };
+        },
+
+        showLabel: function (element, node) {
+            return isSelected(element, node);
+        }
+    }));
 
 
-  group.entries.push(entryFactory.textField({
-    id: 'variableMapping-source',
-    dataValueLabel: 'sourceLabel',
-    modelProperty: 'source',
-    get: function(element, node) {
-      var mapping = getSelected(element, node) || {};
+    group.entries.push(entryFactory.selectBox({
+        id: 'variableMapping-inOutType',
+        label: translate('Type'),
+        selectOptions: inOutTypeOptions,
+        modelProperty: 'inOutType',
+        get: function (element, node) {
+            var mapping = getSelected(element, node) || {};
+            return {
+                inOutType: getInOutType(mapping)
+            };
+        },
+        set: function (element, values, node) {
+            var inOutType = values.inOutType;
 
-      var label = '';
-      var inOutType = getInOutType(mapping);
-      if (inOutType === 'source') {
-        label = translate('Source');
-      }
-      else if (inOutType === 'sourceExpression') {
-        label = translate('Source Expression');
-      }
+            var props = {
+                'source': undefined,
+                'sourceExpression': undefined,
+                'variables': undefined
+            };
 
-      return {
-        source: mapping[inOutType],
-        sourceLabel: label
-      };
-    },
-    set: function(element, values, node) {
-      values.source = values.source || undefined;
+            if (inOutType === 'source') {
+                props.source = '';
+            }
+            else if (inOutType === 'sourceExpression') {
+                props.sourceExpression = '';
+            }
+            else if (inOutType === 'variables') {
+                props.variables = 'all';
+                props.target = undefined;
+            }
 
-      var mapping = getSelected(element, node);
-      var inOutType = getInOutType(mapping);
-
-      var props = {};
-      props[inOutType] = values.source || '';
-
-      return cmdHelper.updateBusinessObject(element, mapping, props);
-    },
-    // one of both (source or sourceExpression) must have a value to make
-    // the configuration easier and more understandable
-    // it is not engine conform
-    validate: function(element, values, node) {
-      var mapping = getSelected(element, node);
-
-      var validation = {};
-      if (mapping) {
-        if (!values.source) {
-          validation.source =
-          validation.source = values.sourceLabel ?
-            translate('Mapping must have a {value}', { value: values.sourceLabel.toLowerCase() }) :
-            translate('Mapping must have a value');
+            var mapping = getSelected(element, node);
+            return cmdHelper.updateBusinessObject(element, mapping, props);
+        },
+        hidden: function (element, node) {
+            return !isSelected(element, node);
         }
 
-        var inOutType = getInOutType(mapping);
+    }));
 
-        if (WHITESPACE_REGEX.test(values.source) && inOutType !== 'sourceExpression') {
-          validation.source = translate('{label} must not contain whitespace', { label: values.sourceLabel });
+
+    group.entries.push(entryFactory.textField({
+        id: 'variableMapping-source',
+        dataValueLabel: 'sourceLabel',
+        modelProperty: 'source',
+        get: function (element, node) {
+            var mapping = getSelected(element, node) || {};
+
+            var label = '';
+            var inOutType = getInOutType(mapping);
+            if (inOutType === 'source') {
+                label = translate('Source');
+            }
+            else if (inOutType === 'sourceExpression') {
+                label = translate('Source Expression');
+            }
+
+            return {
+                source: mapping[inOutType],
+                sourceLabel: label
+            };
+        },
+        set: function (element, values, node) {
+            values.source = values.source || undefined;
+
+            var mapping = getSelected(element, node);
+            var inOutType = getInOutType(mapping);
+
+            var props = {};
+            props[inOutType] = values.source || '';
+
+            return cmdHelper.updateBusinessObject(element, mapping, props);
+        },
+        // one of both (source or sourceExpression) must have a value to make
+        // the configuration easier and more understandable
+        // it is not engine conform
+        validate: function (element, values, node) {
+            var mapping = getSelected(element, node);
+
+            var validation = {};
+            if (mapping) {
+                if (!values.source) {
+                    validation.source =
+                        validation.source = values.sourceLabel ?
+                            translate('Mapping must have a {value}', {value: values.sourceLabel.toLowerCase()}) :
+                            translate('Mapping must have a value');
+                }
+
+                var inOutType = getInOutType(mapping);
+
+                if (WHITESPACE_REGEX.test(values.source) && inOutType !== 'sourceExpression') {
+                    validation.source = translate('{label} must not contain whitespace', {label: values.sourceLabel});
+                }
+            }
+
+            return validation;
+        },
+        hidden: function (element, node) {
+            var selectedMapping = getSelected(element, node);
+            return !selectedMapping || (selectedMapping && selectedMapping.variables);
         }
-      }
-
-      return validation;
-    },
-    hidden: function(element, node) {
-      var selectedMapping = getSelected(element, node);
-      return !selectedMapping || (selectedMapping && selectedMapping.variables);
-    }
-  }));
+    }));
 
 
-  group.entries.push(entryFactory.textField({
-    id: 'variableMapping-target',
-    label: translate('Target'),
-    modelProperty: 'target',
-    get: function(element, node) {
-      return {
-        target: (getSelected(element, node) || {}).target
-      };
-    },
-    set: function(element, values, node) {
-      values.target = values.target || undefined;
-      var mapping = getSelected(element, node);
-      return cmdHelper.updateBusinessObject(element, mapping, values);
-    },
-    validate: function(element, values, node) {
-      var mapping = getSelected(element, node);
+    group.entries.push(entryFactory.textField({
+        id: 'variableMapping-target',
+        label: translate('Target'),
+        modelProperty: 'target',
+        get: function (element, node) {
+            return {
+                target: (getSelected(element, node) || {}).target
+            };
+        },
+        set: function (element, values, node) {
+            values.target = values.target || undefined;
+            var mapping = getSelected(element, node);
+            return cmdHelper.updateBusinessObject(element, mapping, values);
+        },
+        validate: function (element, values, node) {
+            var mapping = getSelected(element, node);
 
-      var validation = {};
-      if (mapping) {
-        var mappingType = getInOutType(mapping);
+            var validation = {};
+            if (mapping) {
+                var mappingType = getInOutType(mapping);
 
-        if (!values.target && mappingType !== 'variables') {
-          validation.target = translate('Mapping must have a target');
+                if (!values.target && mappingType !== 'variables') {
+                    validation.target = translate('Mapping must have a target');
+                }
+
+                if (values.target
+                    && WHITESPACE_REGEX.test(values.target)
+                    && mappingType !== 'variables') {
+                    validation.target = translate('Target must not contain whitespace');
+                }
+            }
+
+            return validation;
+        },
+        hidden: function (element, node) {
+            var selectedMapping = getSelected(element, node);
+            return !selectedMapping || (selectedMapping && selectedMapping.variables);
         }
+    }));
 
-        if (values.target
-          && WHITESPACE_REGEX.test(values.target)
-          && mappingType !== 'variables') {
-          validation.target = translate('Target must not contain whitespace');
+
+    group.entries.push(entryFactory.checkbox({
+        id: 'variableMapping-local',
+        label: translate('Local'),
+        modelProperty: 'local',
+        get: function (element, node) {
+            return {
+                local: (getSelected(element, node) || {}).local
+            };
+        },
+        set: function (element, values, node) {
+            values.local = values.local || false;
+            var mapping = getSelected(element, node);
+            return cmdHelper.updateBusinessObject(element, mapping, values);
+        },
+        hidden: function (element, node) {
+            return !isSelected(element, node);
         }
-      }
-
-      return validation;
-    },
-    hidden: function(element, node) {
-      var selectedMapping = getSelected(element, node);
-      return !selectedMapping || (selectedMapping && selectedMapping.variables);
-    }
-  }));
-
-
-  group.entries.push(entryFactory.checkbox({
-    id: 'variableMapping-local',
-    label: translate('Local'),
-    modelProperty: 'local',
-    get: function(element, node) {
-      return {
-        local: (getSelected(element, node) || {}).local
-      };
-    },
-    set: function(element, values, node) {
-      values.local = values.local || false;
-      var mapping = getSelected(element, node);
-      return cmdHelper.updateBusinessObject(element, mapping, values);
-    },
-    hidden: function(element, node) {
-      return !isSelected(element, node);
-    }
-  }));
+    }));
 
 };

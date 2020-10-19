@@ -20,26 +20,27 @@ var elementHelper = require('bpmn-js-properties-panel/lib/helper/ElementHelper')
  * @constructor
  */
 function CreateBusinessObjectListHandler(elementRegistry, bpmnFactory) {
-  this._elementRegistry = elementRegistry;
-  this._bpmnFactory = bpmnFactory;
+    this._elementRegistry = elementRegistry;
+    this._bpmnFactory = bpmnFactory;
 }
 
-CreateBusinessObjectListHandler.$inject = [ 'elementRegistry', 'bpmnFactory' ];
+CreateBusinessObjectListHandler.$inject = ['elementRegistry', 'bpmnFactory'];
 
 module.exports = CreateBusinessObjectListHandler;
 
 function ensureNotNull(prop, name) {
-  if (!prop) {
-    throw new Error(name + ' required');
-  }
-  return prop;
+    if (!prop) {
+        throw new Error(name + ' required');
+    }
+    return prop;
 
 }
+
 function ensureList(prop, name) {
-  if (!prop || Object.prototype.toString.call(prop) !== '[object Array]') {
-    throw new Error(name + ' needs to be a list');
-  }
-  return prop;
+    if (!prop || Object.prototype.toString.call(prop) !== '[object Array]') {
+        throw new Error(name + ' needs to be a list');
+    }
+    return prop;
 }
 
 // api /////////////////////////////////////////////
@@ -59,33 +60,33 @@ function ensureList(prop, name) {
  *
  * @return {Array<djs.mode.Base>} the updated element
  */
-CreateBusinessObjectListHandler.prototype.execute = function(context) {
+CreateBusinessObjectListHandler.prototype.execute = function (context) {
 
-  var currentObject = ensureNotNull(context.currentObject, 'currentObject'),
-      propertyName = ensureNotNull(context.propertyName, 'propertyName'),
-      newObjects = ensureList(context.newObjects, 'newObjects'),
-      changed = [ context.element ]; // this will not change any diagram-js elements
+    var currentObject = ensureNotNull(context.currentObject, 'currentObject'),
+        propertyName = ensureNotNull(context.propertyName, 'propertyName'),
+        newObjects = ensureList(context.newObjects, 'newObjects'),
+        changed = [context.element]; // this will not change any diagram-js elements
 
 
-  var childObjects = [];
-  var self = this;
+    var childObjects = [];
+    var self = this;
 
-  // create new array of business objects
-  forEach(newObjects, function(obj) {
-    var element = elementHelper.createElement(obj.type, obj.properties, currentObject, self._bpmnFactory);
+    // create new array of business objects
+    forEach(newObjects, function (obj) {
+        var element = elementHelper.createElement(obj.type, obj.properties, currentObject, self._bpmnFactory);
 
-    childObjects.push(element);
-  });
-  context.childObject = childObjects;
+        childObjects.push(element);
+    });
+    context.childObject = childObjects;
 
-  // adjust array reference in the parent business object
-  context.previousChilds = currentObject[propertyName];
-  currentObject[propertyName] = childObjects;
+    // adjust array reference in the parent business object
+    context.previousChilds = currentObject[propertyName];
+    currentObject[propertyName] = childObjects;
 
-  context.changed = changed;
+    context.changed = changed;
 
-  // indicate changed on objects affected by the update
-  return changed;
+    // indicate changed on objects affected by the update
+    return changed;
 };
 
 /**
@@ -97,14 +98,14 @@ CreateBusinessObjectListHandler.prototype.execute = function(context) {
  *
  * @return {djs.mode.Base} the updated element
  */
-CreateBusinessObjectListHandler.prototype.revert = function(context) {
+CreateBusinessObjectListHandler.prototype.revert = function (context) {
 
-  var currentObject = context.currentObject,
-      propertyName = context.propertyName,
-      previousChilds = context.previousChilds;
+    var currentObject = context.currentObject,
+        propertyName = context.propertyName,
+        previousChilds = context.previousChilds;
 
-  // remove new element
-  currentObject.set(propertyName, previousChilds);
+    // remove new element
+    currentObject.set(propertyName, previousChilds);
 
-  return context.changed;
+    return context.changed;
 };

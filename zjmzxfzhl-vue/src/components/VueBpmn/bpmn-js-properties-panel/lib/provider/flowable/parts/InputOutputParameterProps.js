@@ -4,8 +4,8 @@ var inputOutputParameter = require('./implementation/InputOutputParameter');
 
 var assign = require('lodash/assign');
 
-module.exports = function(group, element, bpmnFactory, options, translate) {
+module.exports = function (group, element, bpmnFactory, options, translate) {
 
-  group.entries = group.entries.concat(inputOutputParameter(element, bpmnFactory, assign({}, options), translate));
+    group.entries = group.entries.concat(inputOutputParameter(element, bpmnFactory, assign({}, options), translate));
 
 };

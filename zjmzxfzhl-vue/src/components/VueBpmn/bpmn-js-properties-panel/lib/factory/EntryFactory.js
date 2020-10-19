@@ -21,11 +21,11 @@ var cmdHelper = require('../helper/CmdHelper');
 // helpers ////////////////////////////////////////
 
 function ensureNotNull(prop) {
-  if (!prop) {
-    throw new Error(prop + ' must be set.');
-  }
+    if (!prop) {
+        throw new Error(prop + ' must be set.');
+    }
 
-  return prop;
+    return prop;
 }
 
 /**
@@ -35,45 +35,45 @@ function ensureNotNull(prop) {
  * @returns {{id: *, description: (*|string), get: (*|Function), set: (*|Function),
  *            validate: (*|Function), html: string}}
  */
-var setDefaultParameters = function(options) {
+var setDefaultParameters = function (options) {
 
-  // default method to fetch the current value of the input field
-  var defaultGet = function(element) {
-    var bo = getBusinessObject(element),
-        res = {},
-        prop = ensureNotNull(options.modelProperty);
-    res[prop] = bo.get(prop);
+    // default method to fetch the current value of the input field
+    var defaultGet = function (element) {
+        var bo = getBusinessObject(element),
+            res = {},
+            prop = ensureNotNull(options.modelProperty);
+        res[prop] = bo.get(prop);
 
-    return res;
-  };
+        return res;
+    };
 
-  // default method to set a new value to the input field
-  var defaultSet = function(element, values) {
-    var res = {},
-        prop = ensureNotNull(options.modelProperty);
-    if (values[prop] !== '') {
-      res[prop] = values[prop];
-    } else {
-      res[prop] = undefined;
-    }
+    // default method to set a new value to the input field
+    var defaultSet = function (element, values) {
+        var res = {},
+            prop = ensureNotNull(options.modelProperty);
+        if (values[prop] !== '') {
+            res[prop] = values[prop];
+        } else {
+            res[prop] = undefined;
+        }
 
-    return cmdHelper.updateProperties(element, res);
-  };
+        return cmdHelper.updateProperties(element, res);
+    };
 
-  // default validation method
-  var defaultValidate = function() {
-    return {};
-  };
+    // default validation method
+    var defaultValidate = function () {
+        return {};
+    };
 
-  return {
-    id : options.id,
-    description : (options.description || ''),
-    get : (options.get || defaultGet),
-    set : (options.set || defaultSet),
-    validate : (options.validate || defaultValidate),
-    html: '',
-    multiple: options.multiple
-  };
+    return {
+        id: options.id,
+        description: (options.description || ''),
+        get: (options.get || defaultGet),
+        set: (options.set || defaultSet),
+        validate: (options.validate || defaultValidate),
+        html: '',
+        multiple: options.multiple
+    };
 };
 
 function EntryFactory() {
@@ -108,26 +108,26 @@ function EntryFactory() {
  * @param options
  * @returns the propertyPanel entry resource object
  */
-EntryFactory.textField = function(options) {
-  return textInputField(options, setDefaultParameters(options));
+EntryFactory.textField = function (options) {
+    return textInputField(options, setDefaultParameters(options));
 };
 
-EntryFactory.numberField = function(options) {
-  return numberInputField(options, setDefaultParameters(options));
+EntryFactory.numberField = function (options) {
+    return numberInputField(options, setDefaultParameters(options));
 };
 
 // 时间组件 start
-EntryFactory.timeField = function(options) {
-  return timeInputField(options, setDefaultParameters(options));
+EntryFactory.timeField = function (options) {
+    return timeInputField(options, setDefaultParameters(options));
 };
 
-EntryFactory.dateField = function(options) {
-  return dateInputField(options, setDefaultParameters(options));
+EntryFactory.dateField = function (options) {
+    return dateInputField(options, setDefaultParameters(options));
 };
 // end
 
-EntryFactory.validationAwareTextField = function(options) {
-  return validationAwareTextInputField(options, setDefaultParameters(options));
+EntryFactory.validationAwareTextField = function (options) {
+    return validationAwareTextInputField(options, setDefaultParameters(options));
 };
 
 /**
@@ -150,32 +150,32 @@ EntryFactory.validationAwareTextField = function(options) {
  * @param options
  * @returns the propertyPanel entry resource object
  */
-EntryFactory.checkbox = function(options) {
-  return checkboxField(options, setDefaultParameters(options));
+EntryFactory.checkbox = function (options) {
+    return checkboxField(options, setDefaultParameters(options));
 };
 
-EntryFactory.textBox = function(options) {
-  return textBoxField(options, setDefaultParameters(options));
+EntryFactory.textBox = function (options) {
+    return textBoxField(options, setDefaultParameters(options));
 };
 
-EntryFactory.selectBox = function(options) {
-  return selectBoxField(options, setDefaultParameters(options));
+EntryFactory.selectBox = function (options) {
+    return selectBoxField(options, setDefaultParameters(options));
 };
 
-EntryFactory.comboBox = function(options) {
-  return comboBoxField(options);
+EntryFactory.comboBox = function (options) {
+    return comboBoxField(options);
 };
 
-EntryFactory.table = function(options) {
-  return tableField(options);
+EntryFactory.table = function (options) {
+    return tableField(options);
 };
 
-EntryFactory.label = function(options) {
-  return labelEntry(options);
+EntryFactory.label = function (options) {
+    return labelEntry(options);
 };
 
-EntryFactory.link = function(options) {
-  return link(options);
+EntryFactory.link = function (options) {
+    return link(options);
 };
 
 module.exports = EntryFactory;

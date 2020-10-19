@@ -6,41 +6,41 @@ var getTemplate = require('../Helper').getTemplate,
     getDefaultTemplate = require('../Helper').getDefaultTemplate;
 
 function registerHandlers(commandStack, elementTemplates, eventBus, elementRegistry) {
-  commandStack.registerHandler(
-    'propertiesPanel.flowable.changeTemplate',
-    ChangeElementTemplateHandler
-  );
+    commandStack.registerHandler(
+        'propertiesPanel.flowable.changeTemplate',
+        ChangeElementTemplateHandler
+    );
 
-  // apply default element templates on shape creation
-  eventBus.on([ 'commandStack.shape.create.postExecuted' ], function(context) {
-    applyDefaultTemplate(context.context.shape, elementTemplates, commandStack);
-  });
+    // apply default element templates on shape creation
+    eventBus.on(['commandStack.shape.create.postExecuted'], function (context) {
+        applyDefaultTemplate(context.context.shape, elementTemplates, commandStack);
+    });
 
-  // apply default element templates on connection creation
-  eventBus.on([ 'commandStack.connection.create.postExecuted' ], function(context) {
-    applyDefaultTemplate(context.context.connection, elementTemplates, commandStack);
-  });
+    // apply default element templates on connection creation
+    eventBus.on(['commandStack.connection.create.postExecuted'], function (context) {
+        applyDefaultTemplate(context.context.connection, elementTemplates, commandStack);
+    });
 }
 
-registerHandlers.$inject = [ 'commandStack', 'elementTemplates', 'eventBus', 'elementRegistry' ];
+registerHandlers.$inject = ['commandStack', 'elementTemplates', 'eventBus', 'elementRegistry'];
 
 
 module.exports = {
-  __init__: [ registerHandlers ]
+    __init__: [registerHandlers]
 };
 
 
 function applyDefaultTemplate(element, elementTemplates, commandStack) {
 
-  if (!getTemplate(element, elementTemplates)
-      && getDefaultTemplate(element, elementTemplates)) {
+    if (!getTemplate(element, elementTemplates)
+        && getDefaultTemplate(element, elementTemplates)) {
 
-    var command = 'propertiesPanel.flowable.changeTemplate';
-    var commandContext = {
-      element: element,
-      newTemplate: getDefaultTemplate(element, elementTemplates)
-    };
+        var command = 'propertiesPanel.flowable.changeTemplate';
+        var commandContext = {
+            element: element,
+            newTemplate: getDefaultTemplate(element, elementTemplates)
+        };
 
-    commandStack.execute(command, commandContext);
-  }
+        commandStack.execute(command, commandContext);
+    }
 }

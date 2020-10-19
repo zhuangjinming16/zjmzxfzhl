@@ -16,7 +16,6 @@
 
 <script>
     import {getAction, putAction} from '@/api/manage'
-    import {Message} from 'element-ui'
 
     export default {
         name: 'TaskBackNodes',

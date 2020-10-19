@@ -11,45 +11,45 @@ var values = require('lodash/values');
  */
 function ElementTemplates() {
 
-  this._templates = {};
+    this._templates = {};
 
-  /**
-   * Sets the known element templates.
-   *
-   * @param {Array<TemplateDescriptor>} descriptors
-   *
-   * @return {ElementTemplates}
-   */
-  this.set = function(descriptors) {
+    /**
+     * Sets the known element templates.
+     *
+     * @param {Array<TemplateDescriptor>} descriptors
+     *
+     * @return {ElementTemplates}
+     */
+    this.set = function (descriptors) {
 
-    var templates = this._templates = {};
+        var templates = this._templates = {};
 
-    descriptors.forEach(function(descriptor) {
-      templates[descriptor.id] = descriptor;
-    });
+        descriptors.forEach(function (descriptor) {
+            templates[descriptor.id] = descriptor;
+        });
 
-    return this;
-  };
+        return this;
+    };
 
-  /**
-   * Get template descriptor with given id.
-   *
-   * @param {String} id
-   *
-   * @return {TemplateDescriptor}
-   */
-  this.get = function(id) {
-    return this._templates[id];
-  };
+    /**
+     * Get template descriptor with given id.
+     *
+     * @param {String} id
+     *
+     * @return {TemplateDescriptor}
+     */
+    this.get = function (id) {
+        return this._templates[id];
+    };
 
-  /**
-   * Return all known template descriptors.
-   *
-   * @return {Array<TemplateDescriptor>}
-   */
-  this.getAll = function() {
-    return values(this._templates);
-  };
+    /**
+     * Return all known template descriptors.
+     *
+     * @return {Array<TemplateDescriptor>}
+     */
+    this.getAll = function () {
+        return values(this._templates);
+    };
 
 }
 

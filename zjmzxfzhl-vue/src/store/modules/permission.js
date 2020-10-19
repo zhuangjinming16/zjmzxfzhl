@@ -1,5 +1,4 @@
 import {constantRoutes} from '@/router'
-import Layout from '@/layout'
 
 const state = {
     routes: [],

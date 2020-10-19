@@ -13,24 +13,24 @@ var assign = require('lodash/assign');
  * @return {ModdleElement}
  */
 function createInputParameter(binding, value, bpmnFactory) {
-  var scriptFormat = binding.scriptFormat,
-      parameterValue,
-      parameterDefinition;
+    var scriptFormat = binding.scriptFormat,
+        parameterValue,
+        parameterDefinition;
 
-  if (scriptFormat) {
-    parameterDefinition = bpmnFactory.create('flowable:Script', {
-      scriptFormat: scriptFormat,
-      value: value
+    if (scriptFormat) {
+        parameterDefinition = bpmnFactory.create('flowable:Script', {
+            scriptFormat: scriptFormat,
+            value: value
+        });
+    } else {
+        parameterValue = value;
+    }
+
+    return bpmnFactory.create('flowable:InputParameter', {
+        name: binding.name,
+        value: parameterValue,
+        definition: parameterDefinition
     });
-  } else {
-    parameterValue = value;
-  }
-
-  return bpmnFactory.create('flowable:InputParameter', {
-    name: binding.name,
-    value: parameterValue,
-    definition: parameterDefinition
-  });
 }
 
 module.exports.createInputParameter = createInputParameter;
@@ -47,24 +47,24 @@ module.exports.createInputParameter = createInputParameter;
  * @return {ModdleElement}
  */
 function createOutputParameter(binding, value, bpmnFactory) {
-  var scriptFormat = binding.scriptFormat,
-      parameterValue,
-      parameterDefinition;
+    var scriptFormat = binding.scriptFormat,
+        parameterValue,
+        parameterDefinition;
 
-  if (scriptFormat) {
-    parameterDefinition = bpmnFactory.create('flowable:Script', {
-      scriptFormat: scriptFormat,
-      value: binding.source
+    if (scriptFormat) {
+        parameterDefinition = bpmnFactory.create('flowable:Script', {
+            scriptFormat: scriptFormat,
+            value: binding.source
+        });
+    } else {
+        parameterValue = binding.source;
+    }
+
+    return bpmnFactory.create('flowable:OutputParameter', {
+        name: value,
+        value: parameterValue,
+        definition: parameterDefinition
     });
-  } else {
-    parameterValue = binding.source;
-  }
-
-  return bpmnFactory.create('flowable:OutputParameter', {
-    name: value,
-    value: parameterValue,
-    definition: parameterDefinition
-  });
 }
 
 module.exports.createOutputParameter = createOutputParameter;
@@ -80,10 +80,10 @@ module.exports.createOutputParameter = createOutputParameter;
  * @return {ModdleElement}
  */
 function createFlowableProperty(binding, value, bpmnFactory) {
-  return bpmnFactory.create('flowable:Property', {
-    name: binding.name,
-    value: value || ''
-  });
+    return bpmnFactory.create('flowable:Property', {
+        name: binding.name,
+        value: value || ''
+    });
 }
 
 module.exports.createFlowableProperty = createFlowableProperty;
@@ -100,9 +100,9 @@ module.exports.createFlowableProperty = createFlowableProperty;
  */
 function createFlowableIn(binding, value, bpmnFactory) {
 
-  var properties = createFlowableInOutAttrs(binding, value);
+    var properties = createFlowableInOutAttrs(binding, value);
 
-  return bpmnFactory.create('flowable:In', properties);
+    return bpmnFactory.create('flowable:In', properties);
 }
 
 module.exports.createFlowableIn = createFlowableIn;
@@ -118,9 +118,9 @@ module.exports.createFlowableIn = createFlowableIn;
  * @return {ModdleElement}
  */
 function createFlowableInWithBusinessKey(binding, value, bpmnFactory) {
-  return bpmnFactory.create('flowable:In', {
-    businessKey: value
-  });
+    return bpmnFactory.create('flowable:In', {
+        businessKey: value
+    });
 }
 
 module.exports.createFlowableInWithBusinessKey = createFlowableInWithBusinessKey;
@@ -136,9 +136,9 @@ module.exports.createFlowableInWithBusinessKey = createFlowableInWithBusinessKey
  * @return {ModdleElement}
  */
 function createFlowableOut(binding, value, bpmnFactory) {
-  var properties = createFlowableInOutAttrs(binding, value);
+    var properties = createFlowableInOutAttrs(binding, value);
 
-  return bpmnFactory.create('flowable:Out', properties);
+    return bpmnFactory.create('flowable:Out', properties);
 }
 
 module.exports.createFlowableOut = createFlowableOut;
@@ -154,24 +154,24 @@ module.exports.createFlowableOut = createFlowableOut;
  * @return {ModdleElement}
  */
 function createFlowableExecutionListenerScript(binding, value, bpmnFactory) {
-  var scriptFormat = binding.scriptFormat,
-      parameterValue,
-      parameterDefinition;
+    var scriptFormat = binding.scriptFormat,
+        parameterValue,
+        parameterDefinition;
 
-  if (scriptFormat) {
-    parameterDefinition = bpmnFactory.create('flowable:Script', {
-      scriptFormat: scriptFormat,
-      value: value
+    if (scriptFormat) {
+        parameterDefinition = bpmnFactory.create('flowable:Script', {
+            scriptFormat: scriptFormat,
+            value: value
+        });
+    } else {
+        parameterValue = value;
+    }
+
+    return bpmnFactory.create('flowable:ExecutionListener', {
+        event: binding.event,
+        value: parameterValue,
+        script: parameterDefinition
     });
-  } else {
-    parameterValue = value;
-  }
-
-  return bpmnFactory.create('flowable:ExecutionListener', {
-    event: binding.event,
-    value: parameterValue,
-    script: parameterDefinition
-  });
 }
 
 module.exports.createFlowableExecutionListenerScript = createFlowableExecutionListenerScript;
@@ -186,23 +186,24 @@ module.exports.createFlowableExecutionListenerScript = createFlowableExecutionLi
  * @return {ModdleElement}
  */
 function createFlowableFieldInjection(binding, value, bpmnFactory) {
-  var DEFAULT_PROPS = {
-    'string': undefined,
-    'expression': undefined,
-    'name': undefined
-  };
+    var DEFAULT_PROPS = {
+        'string': undefined,
+        'expression': undefined,
+        'name': undefined
+    };
 
-  var props = assign({}, DEFAULT_PROPS);
+    var props = assign({}, DEFAULT_PROPS);
 
-  if (!binding.expression) {
-    props.string = value;
-  } else {
-    props.expression = value;
-  }
-  props.name = binding.name;
+    if (!binding.expression) {
+        props.string = value;
+    } else {
+        props.expression = value;
+    }
+    props.name = binding.name;
 
-  return bpmnFactory.create('flowable:Field', props);
+    return bpmnFactory.create('flowable:Field', props);
 }
+
 module.exports.createFlowableFieldInjection = createFlowableFieldInjection;
 
 
@@ -213,39 +214,39 @@ module.exports.createFlowableFieldInjection = createFlowableFieldInjection;
  */
 function createFlowableInOutAttrs(binding, value) {
 
-  var properties = {};
+    var properties = {};
 
-  // flowable:in source(Expression) target
-  if (binding.target) {
+    // flowable:in source(Expression) target
+    if (binding.target) {
 
-    properties.target = binding.target;
+        properties.target = binding.target;
 
-    if (binding.expression) {
-      properties.sourceExpression = value;
-    } else {
-      properties.source = value;
+        if (binding.expression) {
+            properties.sourceExpression = value;
+        } else {
+            properties.source = value;
+        }
+    } else
+
+    // flowable:(in|out) variables local
+    if (binding.variables) {
+        properties.variables = 'all';
+
+        if (binding.variables === 'local') {
+            properties.local = true;
+        }
     }
-  } else
 
-  // flowable:(in|out) variables local
-  if (binding.variables) {
-    properties.variables = 'all';
+    // flowable:out source(Expression) target
+    else {
+        properties.target = value;
 
-    if (binding.variables === 'local') {
-      properties.local = true;
+        ['source', 'sourceExpression'].forEach(function (k) {
+            if (binding[k]) {
+                properties[k] = binding[k];
+            }
+        });
     }
-  }
 
-  // flowable:out source(Expression) target
-  else {
-    properties.target = value;
-
-    [ 'source', 'sourceExpression' ].forEach(function(k) {
-      if (binding[k]) {
-        properties[k] = binding[k];
-      }
-    });
-  }
-
-  return properties;
+    return properties;
 }

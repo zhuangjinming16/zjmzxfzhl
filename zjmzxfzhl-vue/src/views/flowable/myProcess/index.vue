@@ -6,7 +6,8 @@
                 <el-checkbox v-model="listQuery.ccToMe" @change="list">抄送我</el-checkbox>
                 <el-checkbox v-model="listQuery.unfinished" @change="list">未办结</el-checkbox>
                 <el-checkbox v-model="listQuery.finished" @change="list">已办结</el-checkbox>
-                <el-button icon="el-icon-zoom-out" type="primary" @click="btnReset" style="margin-left: 10px">重置</el-button>
+                <el-button icon="el-icon-zoom-out" type="primary" @click="btnReset" style="margin-left: 10px">重置
+                </el-button>
             </div>
         </div>
         <el-row>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {getToken} from '@/utils/auth'
 
     export default {

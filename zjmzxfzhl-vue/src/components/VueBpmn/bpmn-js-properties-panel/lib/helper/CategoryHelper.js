@@ -15,17 +15,17 @@ module.exports = CategoryHelper;
  *
  * @return {ModdleElement} categoryValue.
  */
-CategoryHelper.createCategoryValue = function(definitions, bpmnFactory) {
-  var categoryValue = bpmnFactory.create('bpmn:CategoryValue'),
-      category = bpmnFactory.create('bpmn:Category', {
-        categoryValue: [ categoryValue ]
-      });
+CategoryHelper.createCategoryValue = function (definitions, bpmnFactory) {
+    var categoryValue = bpmnFactory.create('bpmn:CategoryValue'),
+        category = bpmnFactory.create('bpmn:Category', {
+            categoryValue: [categoryValue]
+        });
 
-  // add to correct place
-  collectionAdd(definitions.get('rootElements'), category);
-  getBusinessObject(category).$parent = definitions;
-  getBusinessObject(categoryValue).$parent = category;
+    // add to correct place
+    collectionAdd(definitions.get('rootElements'), category);
+    getBusinessObject(category).$parent = definitions;
+    getBusinessObject(categoryValue).$parent = category;
 
-  return categoryValue;
+    return categoryValue;
 
 };

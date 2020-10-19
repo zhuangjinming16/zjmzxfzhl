@@ -3,7 +3,8 @@
         <el-row :gutter="5">
             <el-col :span="8">
                 <div>
-                    <el-button v-permission="'sys:org:save'" icon="el-icon-plus" type="primary" @click="btnAdd">新增</el-button>
+                    <el-button v-permission="'sys:org:save'" icon="el-icon-plus" type="primary" @click="btnAdd">新增
+                    </el-button>
                     <el-button v-permission="'sys:org:delete'" icon="el-icon-delete" @click="btnDelete">删除</el-button>
                     <el-input v-model="filterText" placeholder="请输入过滤条件" style="margin:10px 0px 10px 0px"/>
                     <el-tree
@@ -93,7 +94,9 @@
                         <el-row>
                             <el-col :span="24">
                                 <el-form-item>
-                                    <el-button v-permission="['sys:org:save','sys:org:update']" icon="el-icon-check" type="primary" @click="btnSave">保存</el-button>
+                                    <el-button v-permission="['sys:org:save','sys:org:update']" icon="el-icon-check"
+                                               type="primary" @click="btnSave">保存
+                                    </el-button>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -105,7 +108,7 @@
 </template>
 
 <script>
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
     import {Message} from 'element-ui'
 
     export default {

@@ -1,9 +1,14 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input v-model="listQuery.jobName" placeholder="任务名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-input v-model="listQuery.jobGroup" placeholder="任务组名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery"/>
-            <el-select v-model="listQuery.status" placeholder="是否正常执行" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select>
+            <el-input v-model="listQuery.jobName" placeholder="任务名称" style="width: 200px;" class="filter-item"
+                      @keyup.enter.native="btnQuery"/>
+            <el-input v-model="listQuery.jobGroup" placeholder="任务组名" style="width: 200px;" class="filter-item"
+                      @keyup.enter.native="btnQuery"/>
+            <el-select v-model="listQuery.status" placeholder="是否正常执行" class="filter-item">
+                <el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content"
+                           :value="item.value"></el-option>
+            </el-select>
             <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
                 <i class="el-icon-search el-icon--left"></i>查询
                 <el-dropdown-menu slot="dropdown">
@@ -23,12 +28,25 @@
         >
             <el-table-column type="selection" align="center">
             </el-table-column>
-            <el-table-column label="任务名称" prop="jobName" align="center"><template slot-scope="scope"><span>{{ scope.row.jobName }}</span></template></el-table-column>
-            <el-table-column label="任务组名" prop="jobGroup" align="center"><template slot-scope="scope"><span>{{ scope.row.jobGroup }}</span></template></el-table-column>
-            <el-table-column label="调用目标字符串" prop="invokeTarget" align="center"><template slot-scope="scope"><span>{{ scope.row.invokeTarget }}</span></template></el-table-column>
-            <el-table-column label="是否正常执行" prop="status" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.status)"></span></template></el-table-column>
-            <el-table-column label="开始时间" prop="startTime" align="center"><template slot-scope="scope"><span>{{ scope.row.startTime }}</span></template></el-table-column>
-            <el-table-column label="结束时间" prop="stopTime" align="center"><template slot-scope="scope"><span>{{ scope.row.stopTime }}</span></template></el-table-column>
+            <el-table-column label="任务名称" prop="jobName" align="center">
+                <template slot-scope="scope"><span>{{ scope.row.jobName }}</span></template>
+            </el-table-column>
+            <el-table-column label="任务组名" prop="jobGroup" align="center">
+                <template slot-scope="scope"><span>{{ scope.row.jobGroup }}</span></template>
+            </el-table-column>
+            <el-table-column label="调用目标字符串" prop="invokeTarget" align="center">
+                <template slot-scope="scope"><span>{{ scope.row.invokeTarget }}</span></template>
+            </el-table-column>
+            <el-table-column label="是否正常执行" prop="status" align="center">
+                <template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.status)"></span>
+                </template>
+            </el-table-column>
+            <el-table-column label="开始时间" prop="startTime" align="center">
+                <template slot-scope="scope"><span>{{ scope.row.startTime }}</span></template>
+            </el-table-column>
+            <el-table-column label="结束时间" prop="stopTime" align="center">
+                <template slot-scope="scope"><span>{{ scope.row.stopTime }}</span></template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
                     <el-dropdown>
@@ -44,15 +62,37 @@
                     @pagination="list"/>
 
         <el-dialog title="定时任务执行日志" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="135px">
-                <el-form-item label="任务名称" prop="jobName"><el-input v-model="temp.jobName"/></el-form-item>
-                <el-form-item label="任务组名" prop="jobGroup"><el-input v-model="temp.jobGroup"/></el-form-item>
-                <el-form-item label="调用目标字符串" prop="invokeTarget"><el-input v-model="temp.invokeTarget"/></el-form-item>
-                <el-form-item label="日志信息" prop="jobMessage"><el-input v-model="temp.jobMessage"/></el-form-item>
-                <el-form-item label="是否正常执行" prop="status"><el-select v-model="temp.status" placeholder="是否正常执行"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select></el-form-item>
-                <el-form-item label="异常信息" prop="exceptionInfo"><el-input v-model="temp.exceptionInfo"/></el-form-item>
-                <el-form-item label="开始时间" prop="startTime"><el-date-picker v-model="temp.startTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker></el-form-item>
-                <el-form-item label="结束时间" prop="stopTime"><el-date-picker v-model="temp.stopTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker></el-form-item>
+            <el-form ref="dataForm" :model="temp" :disabled="dialogStatus==='view'" label-position="right"
+                     label-width="135px">
+                <el-form-item label="任务名称" prop="jobName">
+                    <el-input v-model="temp.jobName"/>
+                </el-form-item>
+                <el-form-item label="任务组名" prop="jobGroup">
+                    <el-input v-model="temp.jobGroup"/>
+                </el-form-item>
+                <el-form-item label="调用目标字符串" prop="invokeTarget">
+                    <el-input v-model="temp.invokeTarget"/>
+                </el-form-item>
+                <el-form-item label="日志信息" prop="jobMessage">
+                    <el-input v-model="temp.jobMessage"/>
+                </el-form-item>
+                <el-form-item label="是否正常执行" prop="status">
+                    <el-select v-model="temp.status" placeholder="是否正常执行">
+                        <el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content"
+                                   :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="异常信息" prop="exceptionInfo">
+                    <el-input v-model="temp.exceptionInfo"/>
+                </el-form-item>
+                <el-form-item label="开始时间" prop="startTime">
+                    <el-date-picker v-model="temp.startTime" type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="结束时间" prop="stopTime">
+                    <el-date-picker v-model="temp.stopTime" type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
@@ -63,8 +103,7 @@
 
 <script>
     import Pagination from '@/components/Pagination'
-    import {getAction, putAction, postAction, deleteAction} from '@/api/manage'
-    import {Message} from 'element-ui'
+    import {deleteAction, getAction, postAction, putAction} from '@/api/manage'
 
     export default {
         name: 'SysJobLog',
@@ -97,8 +136,10 @@
                 }
             }
         },
-        beforeCreate(){
-            this.getDicts('yesOrNo').then(({data}) => {this.dicts = data})
+        beforeCreate() {
+            this.getDicts('yesOrNo').then(({data}) => {
+                this.dicts = data
+            })
         },
         created() {
             this.list()

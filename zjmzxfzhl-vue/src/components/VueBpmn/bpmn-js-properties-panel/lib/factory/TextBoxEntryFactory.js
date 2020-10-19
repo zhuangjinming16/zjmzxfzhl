@@ -5,38 +5,38 @@ var escapeHTML = require('../Utils').escapeHTML;
 var entryFieldDescription = require('./EntryFieldDescription');
 
 
-var textBox = function(options, defaultParameters) {
+var textBox = function (options, defaultParameters) {
 
-  var resource = defaultParameters,
-      label = options.label || resource.id,
-      canBeShown = !!options.show && typeof options.show === 'function',
-      description = options.description;
+    var resource = defaultParameters,
+        label = options.label || resource.id,
+        canBeShown = !!options.show && typeof options.show === 'function',
+        description = options.description;
 
-  resource.html =
-    '<label for="flowable-' + escapeHTML(resource.id) + '" ' +
-    (canBeShown ? 'data-show="isShown"' : '') +
-    '>' + label + '</label>' +
-    '<div class="bpp-field-wrapper" ' +
-    (canBeShown ? 'data-show="isShown"' : '') +
-    '>' +
-      '<div contenteditable="true" id="flowable-' + escapeHTML(resource.id) + '" ' +
-            'name="' + escapeHTML(options.modelProperty) + '" />' +
-    '</div>';
+    resource.html =
+        '<label for="flowable-' + escapeHTML(resource.id) + '" ' +
+        (canBeShown ? 'data-show="isShown"' : '') +
+        '>' + label + '</label>' +
+        '<div class="bpp-field-wrapper" ' +
+        (canBeShown ? 'data-show="isShown"' : '') +
+        '>' +
+        '<div contenteditable="true" id="flowable-' + escapeHTML(resource.id) + '" ' +
+        'name="' + escapeHTML(options.modelProperty) + '" />' +
+        '</div>';
 
-  // add description below text box entry field
-  if (description) {
-    resource.html += entryFieldDescription(description);
-  }
+    // add description below text box entry field
+    if (description) {
+        resource.html += entryFieldDescription(description);
+    }
 
-  if (canBeShown) {
-    resource.isShown = function() {
-      return options.show.apply(resource, arguments);
-    };
-  }
+    if (canBeShown) {
+        resource.isShown = function () {
+            return options.show.apply(resource, arguments);
+        };
+    }
 
-  resource.cssClasses = ['bpp-textbox'];
+    resource.cssClasses = ['bpp-textbox'];
 
-  return resource;
+    return resource;
 };
 
 module.exports = textBox;

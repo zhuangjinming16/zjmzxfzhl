@@ -16,81 +16,81 @@ var Validator = require('./Validator');
  * @param {ElementTemplates} elementTemplates
  */
 function ElementTemplatesLoader(loadTemplates, eventBus, elementTemplates) {
-  this._loadTemplates = loadTemplates;
-  this._eventBus = eventBus;
-  this._elementTemplates = elementTemplates;
+    this._loadTemplates = loadTemplates;
+    this._eventBus = eventBus;
+    this._elementTemplates = elementTemplates;
 
-  var self = this;
+    var self = this;
 
-  eventBus.on('diagram.init', function() {
-    self.reload();
-  });
+    eventBus.on('diagram.init', function () {
+        self.reload();
+    });
 }
 
 module.exports = ElementTemplatesLoader;
 
 ElementTemplatesLoader.$inject = [
-  'config.elementTemplates',
-  'eventBus',
-  'elementTemplates'
+    'config.elementTemplates',
+    'eventBus',
+    'elementTemplates'
 ];
 
 
-ElementTemplatesLoader.prototype.reload = function() {
+ElementTemplatesLoader.prototype.reload = function () {
 
-  var self = this;
+    var self = this;
 
-  var loadTemplates = this._loadTemplates;
+    var loadTemplates = this._loadTemplates;
 
-  // no templates specified
-  if (typeof loadTemplates === 'undefined') {
-    return;
-  }
+    // no templates specified
+    if (typeof loadTemplates === 'undefined') {
+        return;
+    }
 
-  // template loader function specified
-  if (typeof loadTemplates === 'function') {
+    // template loader function specified
+    if (typeof loadTemplates === 'function') {
 
-    return loadTemplates(function(err, templates) {
+        return loadTemplates(function (err, templates) {
 
-      if (err) {
-        return self.templateErrors([ err ]);
-      }
+            if (err) {
+                return self.templateErrors([err]);
+            }
 
-      self.setTemplates(templates);
+            self.setTemplates(templates);
+        });
+    }
+
+    // templates array specified
+    if (loadTemplates.length) {
+        return this.setTemplates(loadTemplates);
+    }
+
+};
+
+ElementTemplatesLoader.prototype.setTemplates = function (templates) {
+
+    var elementTemplates = this._elementTemplates;
+
+    var validator = new Validator().addAll(templates);
+
+    var errors = validator.getErrors(),
+        validTemplates = validator.getValidTemplates();
+
+    elementTemplates.set(validTemplates);
+
+    if (errors.length) {
+        this.templateErrors(errors);
+    }
+
+    this.templatesChanged();
+};
+
+ElementTemplatesLoader.prototype.templatesChanged = function () {
+    this._eventBus.fire('elementTemplates.changed');
+};
+
+ElementTemplatesLoader.prototype.templateErrors = function (errors) {
+    this._eventBus.fire('elementTemplates.errors', {
+        errors: errors
     });
-  }
-
-  // templates array specified
-  if (loadTemplates.length) {
-    return this.setTemplates(loadTemplates);
-  }
-
-};
-
-ElementTemplatesLoader.prototype.setTemplates = function(templates) {
-
-  var elementTemplates = this._elementTemplates;
-
-  var validator = new Validator().addAll(templates);
-
-  var errors = validator.getErrors(),
-      validTemplates = validator.getValidTemplates();
-
-  elementTemplates.set(validTemplates);
-
-  if (errors.length) {
-    this.templateErrors(errors);
-  }
-
-  this.templatesChanged();
-};
-
-ElementTemplatesLoader.prototype.templatesChanged = function() {
-  this._eventBus.fire('elementTemplates.changed');
-};
-
-ElementTemplatesLoader.prototype.templateErrors = function(errors) {
-  this._eventBus.fire('elementTemplates.errors', {
-    errors: errors
-  });
 };
