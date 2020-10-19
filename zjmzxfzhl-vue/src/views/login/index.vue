@@ -148,7 +148,7 @@
             // 获取验证码
             getCaptcha () {
                 this.loginForm.uuid = getUUID()
-                this.captchaPath = `${process.env.VUE_APP_BASE_API}/sys/captcha.jpg?uuid=${this.loginForm.uuid}`
+                this.captchaPath = `${process.env.VUE_APP_BASE_API}/captcha.jpg?uuid=${this.loginForm.uuid}`
             }
         }
     }

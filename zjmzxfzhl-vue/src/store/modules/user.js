@@ -53,7 +53,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             Object.assign(sysLoginForm,{grant_type:'password',scope:'admin'})
             request({
-                url: '/oauth/token',
+                url: `${process.env.VUE_APP_BASE_AUTH_PATH}/oauth/token`,
                 headers: {
                     isToken:false,
                     'Authorization': 'Basic emptenhmemhsOjE='
@@ -107,7 +107,7 @@ const actions = {
     // user logout
     logout({commit, state}) {
         return new Promise((resolve, reject) => {
-            deleteAction('/token/logout', state.token).then(() => {
+            deleteAction(`${process.env.VUE_APP_BASE_AUTH_PATH}/token/logout`, state.token).then(() => {
                 commit('SET_TOKEN', '')
                 commit('SET_NAME', '')
                 commit('SET_AVATAR', '')
