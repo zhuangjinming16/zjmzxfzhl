@@ -336,6 +336,7 @@
             </dependency>
 
             <!-- zjmzxfzhl -->
+            <!-- zjmzxfzhl-common 下载地址: https://gitee.com/zjm16/zjmzxfzhl-common -->
             <dependency>
                 <groupId>com.zjmzxfzhl</groupId>
                 <artifactId>zjmzxfzhl-common-core</artifactId>
