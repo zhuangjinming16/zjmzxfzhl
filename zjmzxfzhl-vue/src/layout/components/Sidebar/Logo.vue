@@ -14,6 +14,8 @@
 </template>
 
 <script>
+    import defaultSettings from '@/settings'
+
     export default {
         name: 'SidebarLogo',
         props: {
@@ -24,7 +26,7 @@
         },
         data() {
             return {
-                title: 'zjmzxfzhl',
+                title: defaultSettings.title,
                 logo: ''
             }
         }
