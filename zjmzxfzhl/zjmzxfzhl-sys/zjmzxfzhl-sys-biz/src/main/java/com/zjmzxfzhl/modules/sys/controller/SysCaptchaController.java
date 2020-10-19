@@ -21,7 +21,6 @@ import java.io.IOException;
  * @date 2020年3月23日
  */
 @RestController
-@RequestMapping("/sys")
 public class SysCaptchaController {
     @Autowired
     private RedisUtil redisUtil;
