@@ -29,9 +29,6 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLogMapper, SysLog> imp
     public Result save(LogInfo logInfo, String inner) {
         SysLog sysLog = new SysLog();
         BeanUtils.copyProperties(logInfo, sysLog);
-        sysLog.setCreateTime(DateUtil.getNow());
-        sysLog.setCreateTime(DateUtil.getNow());
-        sysLog.setCreateBy(logInfo.getUserId());
         save(sysLog);
         return Result.ok();
     }
