@@ -7,7 +7,7 @@ import com.zjmzxfzhl.common.core.base.UserInfo;
 import com.zjmzxfzhl.modules.app.entity.AppUser;
 import com.zjmzxfzhl.modules.app.mapper.AppUserMapper;
 import com.zjmzxfzhl.modules.app.service.AppUserService;
-import com.zjmzxfzhl.modules.sys.service.UserInfoService;
+import com.zjmzxfzhl.common.core.base.UserInfoService;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 

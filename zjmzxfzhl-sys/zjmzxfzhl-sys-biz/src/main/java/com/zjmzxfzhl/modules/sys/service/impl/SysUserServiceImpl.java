@@ -8,6 +8,7 @@ import com.google.common.collect.Sets;
 import com.zjmzxfzhl.common.core.Result;
 import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
 import com.zjmzxfzhl.common.core.base.UserInfo;
+import com.zjmzxfzhl.common.core.base.UserInfoService;
 import com.zjmzxfzhl.common.core.constant.CacheConstants;
 import com.zjmzxfzhl.common.core.constant.Constants;
 import com.zjmzxfzhl.common.core.exception.SysException;
