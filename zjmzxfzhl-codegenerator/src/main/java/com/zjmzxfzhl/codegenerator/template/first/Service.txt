@@ -1,0 +1,21 @@
+package com.zjmzxfzhl.modules.{_sys}.service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.zjmzxfzhl.common.core.base.BaseService;
+import com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType};
+
+/**
+ * {tableNameCn}Service
+ * 
+ * @author {author}
+ */
+public interface {_Sys}{_CodeType}Service extends BaseService<{_Sys}{_CodeType}> {
+    /**
+     * 分页查询{tableNameCn}
+     * 
+     * @param page
+     * @param {_sys}{_CodeType}
+     * @return
+     */
+    IPage<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, {_Sys}{_CodeType} {_sys}{_CodeType});
+}

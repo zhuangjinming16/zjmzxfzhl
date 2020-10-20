@@ -1,0 +1,23 @@
+package com.zjmzxfzhl.modules.{_sys}.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.zjmzxfzhl.common.core.base.BaseServiceImpl;
+import com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType};
+import com.zjmzxfzhl.modules.{_sys}.mapper.{_Sys}{_CodeType}Mapper;
+import com.zjmzxfzhl.modules.{_sys}.service.{_Sys}{_CodeType}Service;
+
+/**
+ * {tableNameCn}Service
+ * 
+ * @author {author}
+ */
+@Service
+public class {_Sys}{_CodeType}ServiceImpl extends BaseServiceImpl<{_Sys}{_CodeType}Mapper, {_Sys}{_CodeType}>
+        implements {_Sys}{_CodeType}Service {
+    @Override
+    public IPage<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, {_Sys}{_CodeType} {_sys}{_CodeType}) {
+        return page.setRecords(baseMapper.list(page, {_sys}{_CodeType}));
+    }
+}

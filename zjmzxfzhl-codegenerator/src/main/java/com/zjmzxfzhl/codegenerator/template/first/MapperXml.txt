@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.{_sys}.mapper.{_Sys}{_CodeType}Mapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.{_sys}.entity.{_Sys}{_CodeType}">
+        select
+{searchColumns}
+
+        from {tableName} a 
+        where 1=1 
+{whereConditions}{orderBy}
+    </select>
+</mapper>

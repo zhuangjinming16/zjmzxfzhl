@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjmzxfzhl.modules.app.mapper.AppUserMapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.zjmzxfzhl.modules.app.entity.AppUser">
+        select
+        a.USER_ID as userId,
+        a.USER_NAME as userName,
+        a.MOBILE as mobile,
+        a.SEX as sex,
+        a.ID_CARD_NO as idCardNo,
+        a.EMAIL as email,
+        a.CREATE_BY as createBy,
+        a.CREATE_DATE as createDate,
+        a.CREATE_TIME as createTime,
+        a.UPDATE_BY as updateBy,
+        a.UPDATE_DATE as updateDate,
+        a.UPDATE_TIME as updateTime
+
+        from T_APP_USER a
+        where 1=1
+        <if test="entity.userName != null and entity.userName !=''">
+            <![CDATA[	AND a.USER_NAME = #{entity.userName}	]]>
+        </if>
+        <if test="entity.password != null and entity.password !=''">
+            <![CDATA[	AND a.PASSWORD = #{entity.password}	]]>
+        </if>
+        <if test="entity.sex != null and entity.sex !=''">
+            <![CDATA[	AND a.SEX = #{entity.sex}	]]>
+        </if>
+        <if test="entity.idCardNo != null and entity.idCardNo !=''">
+            <![CDATA[	AND a.ID_CARD_NO = #{entity.idCardNo}	]]>
+        </if>
+        order by a.USER_ID
+    </select>
+</mapper>
