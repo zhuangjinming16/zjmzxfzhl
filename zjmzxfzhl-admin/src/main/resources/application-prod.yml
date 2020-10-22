@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    include: prodRedisson
   #排除 原生Druid的快速配置类
   autoconfigure:
     exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
