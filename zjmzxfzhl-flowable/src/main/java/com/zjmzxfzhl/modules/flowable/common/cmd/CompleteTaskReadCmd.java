@@ -37,7 +37,7 @@ public class CompleteTaskReadCmd extends NeedsActiveTaskCmd<Void> {
         }
         commandContext.getCommandExecutor().execute(new AddCommentCmd(taskId, task.getProcessInstanceId(),
                 CommentTypeEnum.YY.toString(), "已阅！"));
-        TaskHelper.completeTask(task, null, null, false, commandContext);
+        TaskHelper.completeTask(task, null, null, null, null, commandContext);
         return null;
     }
 

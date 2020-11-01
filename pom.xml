@@ -44,7 +44,7 @@
         <jsoup.version>1.12.1</jsoup.version>
         <swagger.version>2.9.2</swagger.version>
         <redisson.version>3.11.1</redisson.version>
-        <flowable.version>6.5.1.28</flowable.version>
+        <flowable.version>6.6.0</flowable.version>
         <xerces.version>2.12.0</xerces.version>
         <oshi.version>3.9.1</oshi.version>
         <quartz.version>2.3.2</quartz.version>
