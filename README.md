@@ -81,6 +81,8 @@
 ## 文档及演示环境
 文档地址：[https://zjm16.gitee.io/zjmzxfzhl-doc](https://zjm16.gitee.io/zjmzxfzhl-doc)
 
+流程设计器在线体验：[https://zjm16.gitee.io/zjmzxfzhl-doc/zjmzxfzhl-bpmn](https://zjm16.gitee.io/zjmzxfzhl-doc/zjmzxfzhl-bpmn)
+
 演示环境：[http://118.190.100.3:8080/zjmzxfzhl](http://118.190.100.3:8080/zjmzxfzhl)
 
 测试用户（默认密码都是 `1`）：
