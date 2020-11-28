@@ -3,14 +3,17 @@ package com.zjmzxfzhl.modules.flowable.util;
 import com.google.common.collect.Sets;
 import com.zjmzxfzhl.common.core.security.SecurityUser;
 import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.modules.flowable.common.model.ZjmzxfzhlUserTask;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.*;
 import org.flowable.common.engine.api.FlowableException;
+import org.flowable.engine.RepositoryService;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntity;
 import org.flowable.engine.impl.util.ProcessDefinitionUtil;
 import org.flowable.idm.api.User;
 import org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl;
+import org.springframework.beans.BeanUtils;
 
 import java.util.*;
 import java.util.function.Function;
@@ -176,12 +179,12 @@ public class FlowableUtils {
             targetElement = (FlowNode) ((SequenceFlow) targetFlowElement).getTargetFlowElement();
         }
         if (sourceElement == null) {
-            throw new FlowableException("Invalid sourceElementId '" + sourceElementId + "': no element found for this" +
-                    " id n process definition '" + processDefinitionId + "'");
+            throw new FlowableException("Invalid sourceElementId '" + sourceElementId + "': no element found for " +
+                    "this" + " id n process definition '" + processDefinitionId + "'");
         }
         if (targetElement == null) {
-            throw new FlowableException("Invalid targetElementId '" + targetElementId + "': no element found for this" +
-                    " id n process definition '" + processDefinitionId + "'");
+            throw new FlowableException("Invalid targetElementId '" + targetElementId + "': no element found for " +
+                    "this" + " id n process definition '" + processDefinitionId + "'");
         }
         Set<String> visitedElements = new HashSet<>();
         return isReachable(process, sourceElement, targetElement, visitedElements);
@@ -406,5 +409,36 @@ public class FlowableUtils {
                     targetParentProcesss.get(diffParentLevel);
         }
         return new String[]{sourceRealActivityId, targetRealActivityId};
+    }
+
+    public static String getAttributeValue(BaseElement element, String namespace, String name) {
+        return element.getAttributeValue(namespace, name);
+    }
+
+    public static String getFlowableAttributeValue(BaseElement element, String name) {
+        return element.getAttributeValue(FlowableConstant.FLOWABLE_NAMESPACE, name);
+    }
+
+    public static List<ExtensionElement> getExtensionElements(BaseElement element, String name) {
+        return element.getExtensionElements().get(name);
+    }
+
+    public static ZjmzxfzhlUserTask getZjmzxfzhlUserTask(UserTask userTask) {
+        ZjmzxfzhlUserTask zjmzxfzhlUserTask = new ZjmzxfzhlUserTask();
+        BeanUtils.copyProperties(userTask, zjmzxfzhlUserTask, FlowableConstant.BUTTONS);
+        zjmzxfzhlUserTask.setButtons(getFlowableAttributeValue(userTask, FlowableConstant.BUTTONS));
+        return zjmzxfzhlUserTask;
+    }
+
+    public static FlowElement getFlowElement(RepositoryService repositoryService, String processDefinitionId,
+                                             String flowElementId, boolean searchRecursive) {
+        Process process = repositoryService.getBpmnModel(processDefinitionId).getMainProcess();
+        FlowElement flowElement = process.getFlowElement(flowElementId, searchRecursive);
+        return flowElement;
+    }
+
+    public static FlowElement getFlowElement(RepositoryService repositoryService, String processDefinitionId,
+                                             String flowElementId) {
+        return getFlowElement(repositoryService, processDefinitionId, flowElementId, true);
     }
 }

@@ -98,6 +98,12 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         Map<String, Object> startVariables = null;
         if (processInstanceRequest.getValues() != null && !processInstanceRequest.getValues().isEmpty()) {
             startVariables = processInstanceRequest.getValues();
+            // 默认设置流程启动人变量 __initiator__
+            startVariables.put(FlowableConstant.INITIATOR, userId);
+        } else {
+            startVariables = new HashMap<>(1);
+            // 默认设置流程启动人变量 __initiator__
+            startVariables.put(FlowableConstant.INITIATOR, userId);
         }
 
         Authentication.setAuthenticatedUserId(userId);
@@ -168,15 +174,16 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     @Override
-    public List listMyInvolvedSummary(ProcessInstanceQueryVo processInstanceQueryVo){
+    public List listMyInvolvedSummary(ProcessInstanceQueryVo processInstanceQueryVo) {
         List<ProcessDefinitionVo> vos = flowableCommonMapper.listMyInvolvedSummary(processInstanceQueryVo);
         List<CategoryVo> result = new ArrayList<>();
         Map<String, List<ProcessDefinitionVo>> categorysByParent = new HashMap<>();
         for (ProcessDefinitionVo vo : vos) {
-            List<ProcessDefinitionVo> childs = categorysByParent.computeIfAbsent(vo.getCategory(), k -> new ArrayList<>());
+            List<ProcessDefinitionVo> childs = categorysByParent.computeIfAbsent(vo.getCategory(),
+                    k -> new ArrayList<>());
             childs.add(vo);
         }
-        for (Map.Entry<String, List<ProcessDefinitionVo>> entry : categorysByParent.entrySet()){
+        for (Map.Entry<String, List<ProcessDefinitionVo>> entry : categorysByParent.entrySet()) {
             CategoryVo aCategoryVo = new CategoryVo();
             aCategoryVo.setCategory(entry.getKey());
             aCategoryVo.setProcessDefinitionVoList(entry.getValue());

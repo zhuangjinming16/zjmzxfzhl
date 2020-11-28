@@ -1,8 +1,12 @@
 package com.zjmzxfzhl.modules.flowable.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.zjmzxfzhl.common.core.util.SecurityUtils;
+import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
+import com.zjmzxfzhl.modules.flowable.common.enums.ButtonsEnum;
+import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.flowable.service.PermissionService;
+import com.zjmzxfzhl.modules.flowable.util.FlowableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.ExtensionElement;
@@ -10,13 +14,7 @@ import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
-import org.flowable.editor.language.json.converter.util.CollectionUtils;
-import org.flowable.engine.HistoryService;
-import org.flowable.engine.IdentityService;
-import org.flowable.engine.ManagementService;
-import org.flowable.engine.RepositoryService;
-import org.flowable.engine.RuntimeService;
-import org.flowable.engine.TaskService;
+import org.flowable.engine.*;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -32,10 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zjmzxfzhl.common.core.util.SecurityUtils;
-import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
-import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
-import com.zjmzxfzhl.modules.flowable.service.PermissionService;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 庄金明
@@ -175,7 +172,7 @@ public class PermissionServiceImpl implements PermissionService {
         if (flowElement instanceof UserTask) {
             UserTask userTask = (UserTask) flowElement;
             List<ExtensionElement> extensionElements = userTask.getExtensionElements().get("initiator-can-complete");
-            if (CollectionUtils.isNotEmpty(extensionElements)) {
+            if (extensionElements != null && !extensionElements.isEmpty()) {
                 String value = extensionElements.get(0).getElementText();
                 if (StringUtils.isNotEmpty(value) && Boolean.valueOf(value)) {
                     canCompleteTask = true;
@@ -218,8 +215,7 @@ public class PermissionServiceImpl implements PermissionService {
     public boolean hasReadPermissionOnProcessInstance(String userId, HistoricProcessInstance historicProcessInstance,
                                                       String processInstanceId) {
         if (historicProcessInstance == null) {
-            throw new FlowableObjectNotFoundException("ProcessInstance with id: " + processInstanceId + " does not " +
-                    "exist");
+            throw new FlowableObjectNotFoundException("ProcessInstance with id: " + processInstanceId + " does not " + "exist");
         }
 
         if (isAdmin(userId)) {
@@ -342,6 +338,7 @@ public class PermissionServiceImpl implements PermissionService {
         if (task == null) {
             throw new FlowableObjectNotFoundException("Task with id: " + taskId + " does not exist");
         }
+        validateTaskHasButtonPermission(task, ButtonsEnum.ASSIGN);
         String owner = task.getOwner();
         String oldAssignee = task.getAssignee();
         boolean canAssignFlag =
@@ -377,6 +374,7 @@ public class PermissionServiceImpl implements PermissionService {
         if (task == null) {
             throw new FlowableObjectNotFoundException("Task with id: " + taskId + " does not exist");
         }
+        validateTaskHasButtonPermission(task, ButtonsEnum.DELEGATE);
         if (isAdmin(userId) || isTaskOwnerOrAssignee(userId, task)) {
             String owner = task.getOwner();
             String oldAssignee = task.getAssignee();
@@ -410,11 +408,11 @@ public class PermissionServiceImpl implements PermissionService {
         if (task == null) {
             throw new FlowableObjectNotFoundException("Task with id: " + taskId + " does not exist");
         }
+        validateTaskHasButtonPermission(task, ButtonsEnum.STOP);
         ProcessInstance processInstance =
                 runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
         if (processInstance == null) {
-            throw new FlowableObjectNotFoundException("ProcessInstance with id: " + task.getProcessInstanceId() + " " +
-                    "does not exist");
+            throw new FlowableObjectNotFoundException("ProcessInstance with id: " + task.getProcessInstanceId() + " " + "does not exist");
         }
         boolean canStopFlag =
                 isAdmin(userId) || (userId != null && userId.length() > 0 && userId.equals(processInstance.getStartUserId()));
@@ -430,5 +428,22 @@ public class PermissionServiceImpl implements PermissionService {
             userId = SecurityUtils.getUserId();
         }
         return "admin".equals(userId);
+    }
+
+    @Override
+    public void validateTaskHasButtonPermission(Task task, ButtonsEnum buttonsEnum) {
+        UserTask userTask = (UserTask) FlowableUtils.getFlowElement(repositoryService, task.getProcessDefinitionId(),
+                task.getTaskDefinitionKey());
+        if (userTask == null) {
+            throw new FlowableObjectNotFoundException("Can not find userTask by id " + task.getTaskDefinitionKey());
+        }
+        String buttons = FlowableUtils.getFlowableAttributeValue(userTask, FlowableConstant.BUTTONS);
+        if (buttons != null) {
+            boolean hasButtonPermission =
+                    Arrays.stream(buttons.split(",")).anyMatch(button -> button.equals(buttonsEnum.name()));
+            if (!hasButtonPermission) {
+                throw new FlowableNoPermissionException("User does not have permission");
+            }
+        }
     }
 }

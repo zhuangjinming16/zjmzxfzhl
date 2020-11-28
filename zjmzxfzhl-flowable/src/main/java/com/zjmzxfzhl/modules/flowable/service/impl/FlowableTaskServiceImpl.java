@@ -8,6 +8,7 @@ import com.zjmzxfzhl.modules.flowable.common.ResponseFactory;
 import com.zjmzxfzhl.modules.flowable.common.cmd.AddCcIdentityLinkCmd;
 import com.zjmzxfzhl.modules.flowable.common.cmd.BackUserTaskCmd;
 import com.zjmzxfzhl.modules.flowable.common.cmd.CompleteTaskReadCmd;
+import com.zjmzxfzhl.modules.flowable.common.enums.ButtonsEnum;
 import com.zjmzxfzhl.modules.flowable.common.exception.FlowableNoPermissionException;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
@@ -21,7 +22,6 @@ import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.impl.identity.Authentication;
-import org.flowable.editor.language.json.converter.util.CollectionUtils;
 import org.flowable.engine.*;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -43,6 +43,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -289,6 +290,20 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
             }
             // 允许任务表单修改流程表单场景 end
 
+            // 非会签用户节点，默认设置流程变量 __taskDefinitionKey__=currUserId，用于存储该节点执行人，且以最近的执行人为准
+            UserTask userTask = (UserTask) FlowableUtils.getFlowElement(repositoryService,
+                    task.getProcessDefinitionId(), task.getTaskDefinitionKey());
+            if (userTask != null && !userTask.hasMultiInstanceLoopCharacteristics()) {
+                completeVariables.put("__" + task.getTaskDefinitionKey() + "__", currUserId);
+            }
+        } else {
+            // 非会签用户节点，默认设置流程变量 __taskDefinitionKey__=currUserId，用于存储该节点执行人，且以最近的执行人为准
+            UserTask userTask = (UserTask) FlowableUtils.getFlowElement(repositoryService,
+                    task.getProcessDefinitionId(), task.getTaskDefinitionKey());
+            if (userTask != null && !userTask.hasMultiInstanceLoopCharacteristics()) {
+                completeVariables = new HashMap<>(1);
+                completeVariables.put("__" + task.getTaskDefinitionKey() + "__", currUserId);
+            }
         }
 
         this.addComment(taskId, task.getProcessInstanceId(), currUserId,
@@ -354,6 +369,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
     public List<FlowNodeResponse> getBackNodes(String taskId) {
         TaskEntity taskEntity = (TaskEntity) permissionService.validateExcutePermissionOnTask(taskId,
                 SecurityUtils.getUserId());
+        permissionService.validateTaskHasButtonPermission(taskEntity, ButtonsEnum.BACK);
         String processInstanceId = taskEntity.getProcessInstanceId();
         String currActId = taskEntity.getTaskDefinitionKey();
         String processDefinitionId = taskEntity.getProcessDefinitionId();
@@ -382,6 +398,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
         String taskId = taskRequest.getTaskId();
         String userId = SecurityUtils.getUserId();
         Task task = permissionService.validateExcutePermissionOnTask(taskId, userId);
+        permissionService.validateTaskHasButtonPermission(task, ButtonsEnum.BACK);
         String backSysMessage = "退回到" + taskRequest.getActivityName() + "。";
         this.addComment(taskId, task.getProcessInstanceId(), userId, CommentTypeEnum.TH,
                 backSysMessage + taskRequest.getMessage());
@@ -422,7 +439,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
                     UserTask userTask = (UserTask) flowElement;
                     List<ExtensionElement> extensionElements = userTask.getExtensionElements().get("initiator-can" +
                             "-complete");
-                    if (CollectionUtils.isNotEmpty(extensionElements)) {
+                    if (extensionElements != null && !extensionElements.isEmpty()) {
                         String value = extensionElements.get(0).getElementText();
                         if (StringUtils.isNotEmpty(value)) {
                             taskResponse.setInitiatorCanCompleteTask(value);

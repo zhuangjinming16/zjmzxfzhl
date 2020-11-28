@@ -66,5 +66,7 @@ public class FlowableConstant {
     public final static String FILE_EXTENSION_ZIP = ".zip";
     public final static String CATEGORY_TODO = "todo";
     public final static String CATEGORY_TO_READ = "toRead";
+    public final static String BUTTONS = "buttons";
+    public final static String FLOWABLE_NAMESPACE = "http://flowable.org/bpmn";
 
 }

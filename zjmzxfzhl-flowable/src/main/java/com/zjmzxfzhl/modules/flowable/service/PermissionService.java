@@ -2,6 +2,7 @@ package com.zjmzxfzhl.modules.flowable.service;
 
 import java.util.List;
 
+import com.zjmzxfzhl.modules.flowable.common.enums.ButtonsEnum;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -215,4 +216,11 @@ public interface PermissionService {
      * @return
      */
     boolean isAdmin(String userId);
+
+    /**
+     * 验证任务节点是否有指定的按钮权限
+     * @param task
+     * @param buttonsEnum
+     */
+    public void validateTaskHasButtonPermission(Task task, ButtonsEnum buttonsEnum);
 }

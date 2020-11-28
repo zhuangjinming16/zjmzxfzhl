@@ -1,26 +1,13 @@
 package com.zjmzxfzhl.modules.flowable.config;
 
-import java.awt.Color;
+import org.flowable.bpmn.model.Process;
+import org.flowable.bpmn.model.*;
+import org.flowable.image.impl.DefaultProcessDiagramGenerator;
+
+import java.awt.*;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
-
-import org.flowable.bpmn.model.Activity;
-import org.flowable.bpmn.model.Artifact;
-import org.flowable.bpmn.model.BpmnModel;
-import org.flowable.bpmn.model.CallActivity;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.FlowElementsContainer;
-import org.flowable.bpmn.model.FlowNode;
-import org.flowable.bpmn.model.Gateway;
-import org.flowable.bpmn.model.GraphicInfo;
-import org.flowable.bpmn.model.Lane;
-import org.flowable.bpmn.model.MultiInstanceLoopCharacteristics;
-import org.flowable.bpmn.model.Pool;
-import org.flowable.bpmn.model.Process;
-import org.flowable.bpmn.model.SequenceFlow;
-import org.flowable.bpmn.model.SubProcess;
-import org.flowable.image.impl.DefaultProcessDiagramGenerator;
 
 /**
  * @author 庄金明

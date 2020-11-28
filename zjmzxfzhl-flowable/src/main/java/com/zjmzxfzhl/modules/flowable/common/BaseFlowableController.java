@@ -170,11 +170,7 @@ public abstract class BaseFlowableController {
     }
 
     protected boolean isShowBusinessKey(String processDefinitionId) {
-        List<ValuedDataObject> dataObjects =
-                repositoryService.getBpmnModel(processDefinitionId).getMainProcess().getDataObjects();
-
         Process process = repositoryService.getBpmnModel(processDefinitionId).getMainProcess();
-
         Map<String, List<ExtensionElement>> extensionElements = process.getExtensionElements();
         if (extensionElements != null && !extensionElements.isEmpty() && extensionElements.get("properties") != null && extensionElements.get("properties").size() > 0) {
             List<ExtensionElement> properties = extensionElements.get("properties");
@@ -195,6 +191,9 @@ public abstract class BaseFlowableController {
                 }
             }
         }
+
+        List<ValuedDataObject> dataObjects =
+                repositoryService.getBpmnModel(processDefinitionId).getMainProcess().getDataObjects();
         if (dataObjects != null && dataObjects.size() > 0) {
             for (ValuedDataObject valuedDataObject : dataObjects) {
                 if ("showBusinessKey".equals(valuedDataObject.getId())) {

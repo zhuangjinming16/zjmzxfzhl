@@ -10,13 +10,14 @@ import com.zjmzxfzhl.modules.flowable.common.BaseFlowableController;
 import com.zjmzxfzhl.modules.flowable.common.FlowablePage;
 import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
 import com.zjmzxfzhl.modules.flowable.service.FlowableTaskService;
-import com.zjmzxfzhl.modules.flowable.vo.FlowNodeResponse;
-import com.zjmzxfzhl.modules.flowable.vo.TaskRequest;
-import com.zjmzxfzhl.modules.flowable.vo.TaskResponse;
-import com.zjmzxfzhl.modules.flowable.vo.TaskUpdateRequest;
+import com.zjmzxfzhl.modules.flowable.util.FlowableUtils;
+import com.zjmzxfzhl.modules.flowable.vo.*;
 import com.zjmzxfzhl.modules.flowable.vo.query.TaskQueryVo;
 import com.zjmzxfzhl.modules.flowable.wapper.TaskListWrapper;
 import com.zjmzxfzhl.modules.flowable.wapper.TaskTodoListWrapper;
+import org.flowable.bpmn.model.Process;
+import org.flowable.bpmn.model.UserTask;
+import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.common.engine.api.query.QueryProperty;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
@@ -342,6 +343,13 @@ public class TaskController extends BaseFlowableController {
     @GetMapping(value = "/executeTaskData")
     public Result executeTaskData(@RequestParam String taskId) {
         Task task = permissionService.validateReadPermissionOnTask2(taskId, SecurityUtils.getUserId(), true, true);
+
+        Process process = repositoryService.getBpmnModel(task.getProcessDefinitionId()).getMainProcess();
+        UserTask userTask = (UserTask) process.getFlowElement(task.getTaskDefinitionKey(), true);
+        if (userTask == null) {
+            throw new FlowableObjectNotFoundException("Can not find userTask by id " + task.getTaskDefinitionKey());
+        }
+
         String startFormKey = formService.getStartFormKey(task.getProcessDefinitionId());
         String taskFormKey = formService.getTaskFormKey(task.getProcessDefinitionId(), task.getTaskDefinitionKey());
         Object renderedStartForm = formService.getRenderedStartForm(task.getProcessDefinitionId());
@@ -350,21 +358,28 @@ public class TaskController extends BaseFlowableController {
 
         ProcessInstance processInstance =
                 runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
-        Map<String, Object> ret = new HashMap<String, Object>(7);
-        ret.put("startUserId", processInstance.getStartUserId());
-        ret.put("startFormKey", startFormKey);
-        ret.put("taskFormKey", taskFormKey);
-        ret.put("renderedStartForm", renderedStartForm);
-        ret.put("renderedTaskForm", renderedTaskForm);
-        ret.put("variables", variables);
-        boolean showBusinessKey = isShowBusinessKey(task.getProcessDefinitionId());
-        ret.put("showBusinessKey", showBusinessKey);
-        ret.put(FlowableConstant.BUSINESS_KEY, processInstance.getBusinessKey());
+        Boolean showBusinessKey = isShowBusinessKey(task.getProcessDefinitionId());
+
+        ExecuteTaskDataVo executeTaskDataVo = new ExecuteTaskDataVo();
+        executeTaskDataVo.setStartUserId(processInstance.getStartUserId());
+        executeTaskDataVo.setStartFormKey(startFormKey);
+        executeTaskDataVo.setTaskFormKey(taskFormKey);
+        executeTaskDataVo.setRenderedStartForm(renderedStartForm);
+        executeTaskDataVo.setRenderedTaskForm(renderedTaskForm);
+        executeTaskDataVo.setVariables(variables);
+        executeTaskDataVo.setShowBusinessKey(showBusinessKey);
         // 当前任务是发起者
         if (FlowableConstant.INITIATOR.equals(task.getTaskDefinitionKey())) {
-            ret.put("isInitiator", true);
+            executeTaskDataVo.setInitiator(true);
         }
-        return Result.ok(ret);
+
+        String buttons = FlowableUtils.getFlowableAttributeValue(userTask, FlowableConstant.BUTTONS);
+        if (buttons != null) {
+            executeTaskDataVo.setButtons(buttons.split(","));
+        }
+
+        historyService.createHistoricVariableInstanceQuery().processInstanceId("ss").variableNameLike("ss");
+        return Result.ok(executeTaskDataVo);
     }
 
     @GetMapping(value = "/backNodes")
