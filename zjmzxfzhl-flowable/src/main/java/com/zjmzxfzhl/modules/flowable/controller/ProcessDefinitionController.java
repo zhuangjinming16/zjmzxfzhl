@@ -144,7 +144,8 @@ public class ProcessDefinitionController extends BaseFlowableController {
         permissionService.validateReadPermissionOnProcessDefinition(SecurityUtils.getUserId(), processDefinitionId);
         Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
         boolean showBusinessKey = this.isShowBusinessKey(processDefinitionId);
-        return Result.ok(ImmutableMap.of("renderedStartForm", renderedStartForm, "showBusinessKey", showBusinessKey));
+        return Result.ok(ImmutableMap.of("renderedStartForm", renderedStartForm != null ? renderedStartForm : "",
+                "showBusinessKey", showBusinessKey));
     }
 
     @GetMapping(value = "/image")
@@ -183,8 +184,7 @@ public class ProcessDefinitionController extends BaseFlowableController {
         }
         Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId).singleResult();
         if (deployment == null) {
-            throw new FlowableException(messageFormat("Process definition deployment is not found with deploymentId " +
-                    "{0}", deploymentId));
+            throw new FlowableException(messageFormat("Process definition deployment is not found with deploymentId " + "{0}", deploymentId));
         }
 
         List<String> resourceList = repositoryService.getDeploymentResourceNames(deploymentId);
