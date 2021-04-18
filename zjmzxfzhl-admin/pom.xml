@@ -10,7 +10,6 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>zjmzxfzhl-admin</artifactId>
-    <version>${project.parent.version}</version>
     <name>zjmzxfzhl-admin</name>
     <description>zjmzxfzhl-admin模块</description>
     <packaging>jar</packaging>
@@ -150,10 +149,10 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!-- mybatis-plus -->
         <dependency>

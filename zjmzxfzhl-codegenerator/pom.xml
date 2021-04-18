@@ -10,7 +10,6 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>zjmzxfzhl-codegenerator</artifactId>
-    <version>${project.parent.version}</version>
     <description>zjmzxfzhl代码生成模块</description>
 
     <dependencies>
