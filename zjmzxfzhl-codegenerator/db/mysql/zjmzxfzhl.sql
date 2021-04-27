@@ -2994,7 +2994,8 @@ INSERT INTO `t_sys_func` VALUES ('flowableForm-1', '新增', 'flowableForm', 'fl
 INSERT INTO `t_sys_func` VALUES ('flowableForm-2', '修改', 'flowableForm', 'flowable:form:update', '', '2', null, null, null, null, null, null);
 INSERT INTO `t_sys_func` VALUES ('flowableForm-3', '删除', 'flowableForm', 'flowable:form:delete', '', '3', null, null, null, null, null, null);
 INSERT INTO `t_sys_func` VALUES ('flowableModel-1', '新增', 'flowableModel', 'flowable:model:save', '', '1', 'admin', '2020-08-30', '2020-08-30 19:13:50', null, null, null);
-INSERT INTO `t_sys_func` VALUES ('flowableModel-2', '复制', 'flowableModel', 'flowable:model:copy', '', '6', 'admin', '2020-09-20', '2020-09-20 13:57:24', 'admin', '2020-09-20', '2020-09-20 13:59:04');
+INSERT INTO `t_sys_func` VALUES ('flowableModel-2', '复制', 'flowableModel', 'flowable:model:copy', '', '2', 'admin',
+'2020-09-20', '2020-09-20 13:57:24', 'admin', '2020-09-20', '2020-09-20 13:59:04');
 INSERT INTO `t_sys_func` VALUES ('flowableModel-3', '删除', 'flowableModel', 'flowable:model:delete', '', '3', 'admin', '2020-08-30', '2020-08-30 19:14:40', 'admin', '2020-08-30', '2020-08-30 19:14:47');
 INSERT INTO `t_sys_func` VALUES ('flowableModel-4', '流程设计', 'flowableModel', 'flowable:model:saveModelEditor', '', '4', 'admin', '2020-08-30', '2020-08-30 21:57:22', 'admin', '2020-08-30', '2020-08-30 22:16:53');
 INSERT INTO `t_sys_func` VALUES ('flowableModel-5', '部署', 'flowableModel', 'flowable:model:deploy', '', '5', 'admin', '2020-08-30', '2020-08-30 22:17:16', null, null, null);
