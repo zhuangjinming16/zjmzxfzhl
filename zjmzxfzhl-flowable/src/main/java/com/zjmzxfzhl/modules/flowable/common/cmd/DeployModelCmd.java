@@ -44,19 +44,24 @@ public class DeployModelCmd implements Command<Deployment>, Serializable {
 
     @Override
     public Deployment execute(CommandContext commandContext) {
-        Deployment deployment;
-
-        RepositoryService repositoryService = CommandContextUtil.getProcessEngineConfiguration(commandContext).getRepositoryService();
+        RepositoryService repositoryService =
+                CommandContextUtil.getProcessEngineConfiguration(commandContext).getRepositoryService();
         Model model = repositoryService.getModel(modelId);
         if (model == null) {
             throw new FlowableObjectNotFoundException("Could not find a model with id '" + modelId + "'.", Model.class);
         }
-        if (!model.hasEditorSource()) {
-            throw new FlowableObjectNotFoundException("Model with id '" + modelId + "' does not have source available.", String.class);
+        if (model.getDeploymentId() != null && model.getDeploymentId().length() > 0) {
+            throw new FlowableException("The model is already deployed");
         }
-        byte[] bpmnBytes = CommandContextUtil.getProcessEngineConfiguration(commandContext).getModelEntityManager().findEditorSourceByModelId(modelId);
+        if (!model.hasEditorSource()) {
+            throw new FlowableObjectNotFoundException("Model with id '" + modelId + "' does not have source " +
+                    "available" + ".", String.class);
+        }
+        byte[] bpmnBytes =
+                CommandContextUtil.getProcessEngineConfiguration(commandContext).getModelEntityManager().findEditorSourceByModelId(modelId);
         if (bpmnBytes == null) {
-            throw new FlowableObjectNotFoundException("Model with id '" + modelId + "' does not have source available.", String.class);
+            throw new FlowableObjectNotFoundException("Model with id '" + modelId + "' does not have source " +
+                    "available" + ".", String.class);
         }
 
         try {
@@ -92,8 +97,7 @@ public class DeployModelCmd implements Command<Deployment>, Serializable {
                         continue;
                     } else {
                         String formKeyDefinition = formKey.replace(".form", "");
-                        FlowableFormService flowableFormService =
-                                SpringContextUtils.getBean(FlowableFormService.class);
+                        FlowableFormService flowableFormService = SpringContextUtils.getBean(FlowableFormService.class);
                         FlowableForm form = flowableFormService.getById(formKeyDefinition);
                         if (form != null && form.getFormJson() != null && form.getFormJson().length() > 0) {
                             byte[] formJson = form.getFormJson().getBytes("UTF-8");
@@ -110,10 +114,12 @@ public class DeployModelCmd implements Command<Deployment>, Serializable {
             if (model.getTenantId() != null) {
                 deploymentBuilder.tenantId(model.getTenantId());
             }
-            deployment = deploymentBuilder.deploy();
-            if(deployment!=null){
+            Deployment deployment = deploymentBuilder.deploy();
+            if (deployment != null) {
                 model.setDeploymentId(deployment.getId());
             }
+
+            return deployment;
         } catch (Exception e) {
             if (e instanceof FlowableException) {
                 throw (FlowableException) e;
@@ -121,7 +127,7 @@ public class DeployModelCmd implements Command<Deployment>, Serializable {
             throw new FlowableException(e.getMessage(), e);
         }
 
-        return deployment;
+
     }
 
 }

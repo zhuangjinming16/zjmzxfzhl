@@ -1,27 +1,20 @@
 package com.zjmzxfzhl.modules.flowable.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipInputStream;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.flowable.bpmn.converter.BpmnXMLConverter;
-import org.flowable.bpmn.model.BpmnModel;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.StartEvent;
-import org.flowable.bpmn.model.UserTask;
+import com.zjmzxfzhl.common.core.util.ObjectUtils;
+import com.zjmzxfzhl.modules.flowable.common.cmd.DeployModelCmd;
+import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
+import com.zjmzxfzhl.modules.flowable.common.cmd.SaveModelEditorCmd;
+import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
+import com.zjmzxfzhl.modules.flowable.service.FlowableFormService;
+import com.zjmzxfzhl.modules.flowable.service.ProcessDefinitionService;
+import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
+import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionRequest;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
-import org.flowable.common.engine.impl.util.io.InputStreamSource;
-import org.flowable.common.engine.impl.util.io.StreamSource;
+import org.flowable.common.engine.impl.util.IoUtil;
 import org.flowable.engine.ManagementService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
-import org.flowable.engine.repository.DeploymentBuilder;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.job.api.Job;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.zjmzxfzhl.common.core.util.ObjectUtils;
-import com.zjmzxfzhl.modules.flowable.common.cmd.GetProcessDefinitionInfoCmd;
-import com.zjmzxfzhl.modules.flowable.constant.FlowableConstant;
-import com.zjmzxfzhl.modules.flowable.entity.FlowableForm;
-import com.zjmzxfzhl.modules.flowable.service.FlowableFormService;
-import com.zjmzxfzhl.modules.flowable.service.ProcessDefinitionService;
-import com.zjmzxfzhl.modules.flowable.vo.IdentityRequest;
-import com.zjmzxfzhl.modules.flowable.vo.ProcessDefinitionRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author 庄金明
@@ -128,54 +117,30 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
             throw new IllegalArgumentException("Request file must end with .bpmn20.xml,.bpmn|,.bar,.zip");
         }
         try {
-            DeploymentBuilder deploymentBuilder = repositoryService.createDeployment();
             boolean isBpmnFile = fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn");
             if (isBpmnFile) {
-                deploymentBuilder.addInputStream(fileName, file.getInputStream());
-                StreamSource xmlSource = new InputStreamSource(file.getInputStream());
-                BpmnModel bpmnModel = new BpmnXMLConverter().convertToBpmnModel(xmlSource, false, false, "UTF-8");
-
-                org.flowable.bpmn.model.Process process = bpmnModel.getMainProcess();
-                Collection<FlowElement> flowElements = process.getFlowElements();
-                Map<String, String> formKeyMap = new HashMap<String, String>(16);
-                for (FlowElement flowElement : flowElements) {
-                    String formKey = null;
-                    if (flowElement instanceof StartEvent) {
-                        StartEvent startEvent = (StartEvent) flowElement;
-                        if (startEvent.getFormKey() != null && startEvent.getFormKey().length() > 0) {
-                            formKey = startEvent.getFormKey();
-                        }
-                    } else if (flowElement instanceof UserTask) {
-                        UserTask userTask = (UserTask) flowElement;
-                        if (userTask.getFormKey() != null && userTask.getFormKey().length() > 0) {
-                            formKey = userTask.getFormKey();
-                        }
-                    }
-                    if (formKey != null && formKey.length() > 0) {
-                        if (formKeyMap.containsKey(formKey)) {
-                            continue;
-                        } else {
-                            String formKeyDefinition = formKey.replace(".form", "");
-                            FlowableForm form = flowableFormService.getById(formKeyDefinition);
-                            if (form != null && form.getFormJson() != null && form.getFormJson().length() > 0) {
-                                byte[] formJson = form.getFormJson().getBytes("UTF-8");
-                                ByteArrayInputStream bi = new ByteArrayInputStream(formJson);
-                                deploymentBuilder.addInputStream(formKey, bi);
-                                formKeyMap.put(formKey, formKey);
-                            } else {
-                                throw new FlowableObjectNotFoundException("Cannot find formJson with formKey " + formKeyDefinition);
-                            }
-                        }
-                    }
-                }
+                String modelId = managementService.executeCommand(new SaveModelEditorCmd(SaveModelEditorCmd.TYPE_2,
+                        null, null, null, null, null, file.getBytes(), tenantId));
+                managementService.executeCommand(new DeployModelCmd(modelId));
             } else if (fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_BAR) || fileName.toLowerCase().endsWith(FlowableConstant.FILE_EXTENSION_ZIP)) {
-                deploymentBuilder.addZipInputStream(new ZipInputStream(file.getInputStream()));
+                try {
+                    ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream());
+                    ZipEntry entry = zipInputStream.getNextEntry();
+                    while (entry != null) {
+                        if (!entry.isDirectory()) {
+                            String entryName = entry.getName();
+                            byte[] bytes = IoUtil.readInputStream(zipInputStream, entryName);
+                            String modelId =
+                                    managementService.executeCommand(new SaveModelEditorCmd(SaveModelEditorCmd.TYPE_2
+                                            , null, null, null, null, null, bytes, tenantId));
+                            managementService.executeCommand(new DeployModelCmd(modelId));
+                        }
+                        entry = zipInputStream.getNextEntry();
+                    }
+                } catch (Exception e) {
+                    throw new FlowableException("problem reading zip input stream", e);
+                }
             }
-            deploymentBuilder.name(fileName);
-            if (tenantId != null && tenantId.length() > 0) {
-                deploymentBuilder.tenantId(tenantId);
-            }
-            deploymentBuilder.deploy();
         } catch (FlowableObjectNotFoundException e) {
             throw e;
         } catch (Exception e) {

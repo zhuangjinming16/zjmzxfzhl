@@ -292,12 +292,7 @@ public class ResponseFactory {
         response.setId(model.getId());
         response.setKey(model.getKey());
         response.setLastUpdateTime(model.getLastUpdateTime());
-        try {
-            JsonNode modelNode = objectMapper.readTree(model.getMetaInfo());
-            response.setDescription(modelNode.get("description").asText());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        response.setDescription(model.getMetaInfo());
         response.setName(model.getName());
         response.setVersion(model.getVersion());
         if (model.getDeploymentId() != null) {
