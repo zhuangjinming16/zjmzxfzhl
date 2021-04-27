@@ -1,6 +1,6 @@
 # Zjmzxfzhl
 
-## 开源不易，如果`Zjmzxfzhl`对您有帮助，请点右上角 `Star`或者 `Fork` 支持一下。
+## 开源不易，如果`Zjmzxfzhl`对您有帮助，请点右上角 `Star` &&  `Fork` 支持一下。
 
 ## 您的支持，是我继续做开源项目的动力，谢谢！
 
@@ -15,17 +15,17 @@
 `v1.1.6`以后版本使用`spring-security-oauth2`鉴权，若需要使用 `shiro` 鉴权请移步 [zjmzxfzhl-shiro](https://gitee.com/zjm16/zjmzxfzhl/tree/v1.1.5)
 
 特别提醒：
-1. `zjmzxfzhl` `master` 分支新增了 我的汇总、我的待阅、抄送功能，用到的 `flowable6.5.1.28` 相关 `jar` 包官方没有发布到 `maven`
-中央仓库，我已打包好并放在群共享 可加群下载，QQ群：913659692。
-
-2. `zjmzxfzhl-common` 已独立管理，可以同时用于 `zjmzxfzhl` 和 `zjmzxfzhl-cloud` ，欢迎 star & fork 支持，谢谢！！！
+1. `zjmzxfzhl-common` 已独立管理，可以同时用于 `zjmzxfzhl` 和 `zjmzxfzhl-cloud` ，欢迎 star && fork 支持，谢谢！！！
 
    [Gitee:zjmzxfzhl-common](https://gitee.com/zjm16/zjmzxfzhl-common) [Github:zjmzxfzhl-common](https://github.com/zhuangjinming16/zjmzxfzhl-common)
 
-3. `zjmzxfzhl-vue` 已独立管理，可以同时用于 `zjmzxfzhl` 和 `zjmzxfzhl-cloud` ，欢迎 star & fork 支持，谢谢！！！
+2. `zjmzxfzhl-vue` 已独立管理，可以同时用于 `zjmzxfzhl` 和 `zjmzxfzhl-cloud` ，欢迎 star && fork 支持，谢谢！！！
 
    [Gitee:zjmzxfzhl-vue](https://gitee.com/zjm16/zjmzxfzhl-vue) [Github:zjmzxfzhl-vue](https://github.com/zhuangjinming16/zjmzxfzhl-vue)
+   
+3. `zjmzxfzhl-bpmn` 已独立管理，可以同时用于 `zjmzxfzhl` 和 `zjmzxfzhl-cloud` ，欢迎 star && fork 支持，谢谢！！！
 
+   [Gitee:zjmzxfzhl-bpmn](https://gitee.com/zjm16/zjmzxfzhl-bpmn) [Github:zjmzxfzhl-bpmn](https://github.com/zhuangjinming16/zjmzxfzhl-bpmn)
 
 ## 技术架构
 ### 后端技术
