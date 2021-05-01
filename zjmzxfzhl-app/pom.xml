@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.zjmzxfzhl</groupId>
         <artifactId>zjmzxfzhl</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>zjmzxfzhl-app</artifactId>
     <description>zjmzxfzhl-appDemo模块</description>
