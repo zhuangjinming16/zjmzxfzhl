@@ -27,7 +27,9 @@
 
    [Gitee:zjmzxfzhl-bpmn](https://gitee.com/zjm16/zjmzxfzhl-bpmn) [Github:zjmzxfzhl-bpmn](https://github.com/zhuangjinming16/zjmzxfzhl-bpmn)
    
-   目前已实现属性面板配置化 bpmn 流程设计器，详见 设计器 体验地址 [zjmzxfzhl-bpmn体验地址](https://zjm16.gitee.io/zjmzxfzhl-doc/zjmzxfzhl-bpmn/)
+4. 流程设计器已实现 `属性面板配置化`，详见 [流程设计器体验地址](https://zjm16.gitee.io/zjmzxfzhl-doc/zjmzxfzhl-bpmn/)
+
+5. 表单设计器已实现 `响应式布局及表单初始化数据从后端获取`，详见 [演示环境](http://118.190.100.3:8080/zjmzxfzhl)
    
 ## 技术架构
 ### 后端技术
