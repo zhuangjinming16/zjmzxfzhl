@@ -6,7 +6,7 @@
 
 # 项目介绍
 
-`Zjmzxfzhl` 集成了 `SpringBoot` `Flowable` `Vue` `Elementui` `FormMaking`，采用前后端分离架构。
+`Zjmzxfzhl` 集成了 `SpringBoot` `Flowable` `Vue` `Elementui` `FormGenerator`，采用前后端分离架构。
 
 [Gitee:Zjmzxfzhl](https://gitee.com/zjm16/zjmzxfzhl) [Github:Zjmzxfzhl](https://github.com/zhuangjinming16/zjmzxfzhl)
 
@@ -26,7 +26,9 @@
 3. `zjmzxfzhl-bpmn` 已独立管理，可以同时用于 `zjmzxfzhl` 和 `zjmzxfzhl-cloud` ，欢迎 star && fork 支持，谢谢！！！
 
    [Gitee:zjmzxfzhl-bpmn](https://gitee.com/zjm16/zjmzxfzhl-bpmn) [Github:zjmzxfzhl-bpmn](https://github.com/zhuangjinming16/zjmzxfzhl-bpmn)
-
+   
+   目前已实现属性面板配置化 bpmn 流程设计器，详见 设计器 体验地址 [zjmzxfzhl-bpmn体验地址](https://zjm16.gitee.io/zjmzxfzhl-doc/zjmzxfzhl-bpmn/)
+   
 ## 技术架构
 ### 后端技术
 
@@ -55,7 +57,7 @@
    流程设计约定：
    - 发起者启动流程后若要自动完成第一个用户任务，则第一个 `userTask` 的 `id` 要定义为`__initiator__`，若涉及流程表单，则可设置`__initiator__`的任务表单 `formKey` 与流程表单相同
    - 如果涉及并行网关，并行网关需成对出现，且发散节点要以 `_begin` 结尾，汇聚节点要以 `_end` 结尾，可以嵌套但不能交叉嵌套，这样就能确保可以退回到并行网关的单个节点上（不会退回到并行网关的其他分支）
-   - 如果流程涉及业务主键 `businessKey`，流程设计时加入 `流程扩展属性` 或者 `流程数据对象` 即可
+   - 如果流程涉及业务主键 `businessKey`，流程设计时加入 `流程扩展属性` 即可
     ```xml
     <extensionElements>
         <flowable:properties>
@@ -63,15 +65,8 @@
         </flowable:properties>
     </extensionElements>
     ```
-    ```xml
-    <dataObject id="showBusinessKey" name="showBusinessKey" itemSubjectRef="xsd:boolean">
-        <extensionElements>
-            <flowable:value>true</flowable:value>
-        </extensionElements>
-    </dataObject>
-    ```
    - 流程设计可参考 `zjmzxfzhl/zjmzxfzhl-admin/src/main/resources/processes_test` 下的流程
-   - 自定义表单使用LGPL协议开源的 [FormMaking](http://form.xiaoyaoji.cn/pricing/#/zh-CN/)，若使用的 `FormMaking` 安装包（及通过 `npm` 引入）的方式，不需要购买授权，但若有使用 `FormMaking` 的源代码，需要到官方购买授权
+   - 自定义表单使用 `MIT` 开源的 [FormGenerator](https://gitee.com/mrhj/form-generator)，后续我也会进行更深层次的封装，目前已优化可以支持响应式布局
 6. `Redis` 分布式锁，可实现交易防重发等业务场景
 7. `App` 开发示例，包含：注册、登录、获取用户信息等
 8. 代码生成器，包含前端和后端
