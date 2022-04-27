@@ -53,7 +53,7 @@
         <httpclient.version>4.5.7</httpclient.version>
         <hutool.version>5.3.8</hutool.version>
         <guava.version>29.0-jre</guava.version>
-        <esapi.version>2.1.0</esapi.version>
+        <esapi.version>2.3.0.0</esapi.version>
         <zjmzxfzhl-common.version>1.0.0-SNAPSHOT</zjmzxfzhl-common.version>
     </properties>
 
