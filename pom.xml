@@ -28,7 +28,7 @@
         <mysql.version>8.0.19</mysql.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <dom4j.version>1.6.1</dom4j.version>
-        <poi.version>4.0.0</poi.version>
+        <poi.version>4.1.1</poi.version>
         <poi-ooxml.version>4.0.0</poi-ooxml.version>
         <poi-ooxml-schemas.version>4.0.0</poi-ooxml-schemas.version>
         <aspectjweaver.version>1.8.14</aspectjweaver.version>
