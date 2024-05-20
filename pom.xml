@@ -50,7 +50,7 @@
         <oshi.version>3.9.1</oshi.version>
         <quartz.version>2.3.2</quartz.version>
         <easyexcel.version>2.2.0-beta1</easyexcel.version>
-        <httpclient.version>4.5.7</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <hutool.version>5.3.8</hutool.version>
         <guava.version>29.0-jre</guava.version>
         <esapi.version>2.1.0</esapi.version>
