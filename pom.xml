@@ -37,7 +37,7 @@
         <mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
         <mybatis-plus-dynamic-datasource.version>2.5.4</mybatis-plus-dynamic-datasource.version>
         <p6spy.version>3.8.0</p6spy.version>
-        <commons.version>2.6</commons.version>
+        <commons.version>2.7</commons.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <jwt.version>3.4.1</jwt.version>
         <shiro.version>1.4.2</shiro.version>
